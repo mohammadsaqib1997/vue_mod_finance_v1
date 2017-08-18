@@ -7,21 +7,12 @@ import login from '../pages/login/login.vue'
 import dashboardLayout from '../partials/layouts/dashboardLayout/dashboardLayout.vue'
 import dashboard from '../pages/dashboard/dashboard.vue'
 
-/*import parentComLayout from '../partials/layouts/parentComLayout/parentComLayout.vue'
-import addDriver from '../pages/add_driver/add_driver.vue'
-import driverList from '../pages/driver_listing/driver_listing.vue'
-import driverListDeactive from '../pages/driver_listing_deactive/driver_listing_deactive.vue'
-import profile from '../pages/profile/profile.vue'
+import masterDetails from '../pages/master_files/master_details/master_details.vue'
+import control from '../pages/master_files/chart_of_accounts/control/control.vue'
+import subControl from '../pages/master_files/chart_of_accounts/sub_control/sub_control.vue'
+import subsidiary from '../pages/master_files/chart_of_accounts/subsidiary/subsidiary.vue'
 
-import userList from '../pages/user_listing/user_listing.vue'
-import user_profile from '../pages/user_profile/user_profile.vue'
-
-import completedRequests from '../pages/completed_req/completed_req.vue'
-import pendingRequests from '../pages/pending_req/pending_req.vue'
-import newRequests from '../pages/new_req/new_req.vue'
-
-import userAccount from '../pages/user_account/user_account.vue'
-import driverAccount from '../pages/driver_account/driver_account.vue'*/
+import listingControl from '../pages/master_listing/list_chart_of_accounts/list_control/list_control.vue'
 
 const routes = [
     {
@@ -31,46 +22,34 @@ const routes = [
             {
                 path: '',
                 component: dashboardLayout,
+                meta: {
+                    requiresAuth: true
+                },
                 children: [
                     {
                         path: '',
                         component: dashboard
-                    }/*,
-                    {
-                        path: 'users',
-                        component: parentComLayout,
-                        children: [
-                            {path: '', component: userList},
-                            {path: 'profile/:id', component: user_profile}
-                        ]
                     },
                     {
-                        path: 'drivers',
-                        component: parentComLayout,
-                        children: [
-                            {path: '', component: driverList},
-                            {path: 'requests', component: driverListDeactive},
-                            {path: 'profile/:id', component: profile},
-                            {path: 'add_driver', component: addDriver}
-                        ]
+                        path: '/master_details',
+                        component: masterDetails
                     },
                     {
-                        path: 'requests',
-                        component: parentComLayout,
-                        children: [
-                            {path: 'new_requests', component: newRequests},
-                            {path: 'completed', component: completedRequests},
-                            {path: 'pending', component: pendingRequests}
-                        ]
+                        path: '/create_control',
+                        component: control
                     },
                     {
-                        path: 'accounts',
-                        component: parentComLayout,
-                        children: [
-                            {path: 'user', component: userAccount},
-                            {path: 'driver', component: driverAccount}
-                        ]
-                    }*/
+                        path: '/create_sub_control',
+                        component: subControl
+                    },
+                    {
+                        path: '/create_subsidiary',
+                        component: subsidiary
+                    },
+                    {
+                        path: '/listing_control',
+                        component: listingControl
+                    }
                 ]
             },
             {

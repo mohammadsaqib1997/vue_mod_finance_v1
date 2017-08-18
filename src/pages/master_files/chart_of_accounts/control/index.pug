@@ -1,0 +1,94 @@
+#container.wrap-content.container
+    section#page-title
+        .row
+            .col-sm-8
+                h1.mainTitle Master Files
+                span.mainDescription Chart of Accounts
+            ol.breadcrumb
+                li
+                    span Master Files
+                li
+                    span Chart of Accounts
+                li.active
+                    span Control
+    .container-fluid.container-fullw.bg-white
+        .row
+            .col-md-12
+                h2 Control
+                p
+                    | Create one control.
+                hr
+                form#form(action='sub-control.html', role='form', novalidate='novalidate')
+                    .row
+                        .col-md-12
+                            .errorHandler.alert.alert-danger.no-display
+                                i.fa.fa-times-sign
+                                |  You have some form errors. Please check
+                                |                                             below.
+                            .successHandler.alert.alert-success.no-display
+                                i.fa.fa-ok
+                                |  Your form validation is successful!
+                        .col-md-12
+                            .form-group
+                                label.control-label
+                                    | Project
+                                    span.symbol.required(aria-required='true')
+                                .row
+                                    .col-md-3
+                                        input#Project_id.form-control(type='text', placeholder='ID of project', name='project_id', disabled='')
+                                    .col-md-7
+                                        select.form-control(name='project')
+                                            option(value='01') Elegent Residency
+                                            option(value='02') Elegent Homes
+                                    .col-md-2.icon-container
+                                        ul.ul-action
+                                            li
+                                                a.add-project(href='#', data-toggle='modal', data-target='.add-project')
+                                                    i.ti-plus
+                                            li
+                                                a.edit-project(href='#', data-toggle='modal', data-target='.edit-project')
+                                                    i.ti-pencil-alt
+                                            li
+                                                a.Control-link(href='#delete')
+                                                    i.ti-close
+                            .form-group
+                                label.control-label
+                                    | Control
+                                    span.symbol.required(aria-required='true')
+                                .row
+                                    .col-md-3
+                                        input#Control_id.form-control(type='text', placeholder='ID of Control number', name='control_id', disabled='')
+                                    .col-md-7
+                                        select.form-control(name='project')
+                                            option(value='01') Control 1
+                                            option(value='02') Control 2
+                                    .col-md-2.icon-container
+                                        ul.ul-action
+                                            li
+                                                a.add-project(href='#', data-toggle='modal', data-target='.add-control')
+                                                    i.ti-plus
+                                            li
+                                                a.edit-project(href='#', data-toggle='modal', data-target='.edit-control')
+                                                    i.ti-pencil-alt
+                                            li
+                                                a.Control-link(href='#delete-control')
+                                                    i.ti-close
+                    .row
+                        .col-md-3
+                            .form-group
+                                label.control-label
+                                    | Open Debit
+                                    span.symbol.required(aria-required='true')
+                                input.form-control(type='number', name='open_debit', disabled='')
+                    .row
+                        .col-md-3
+                            .form-group
+                                label.control-label
+                                    | Open Credit
+                                    span.symbol.required(aria-required='true')
+                                input.form-control(type='number', name='open_credit', disabled='')
+                    .row
+                        .col-md-4.pull-right
+                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
+                                | Submit
+                                i.fa.fa-arrow-circle-right

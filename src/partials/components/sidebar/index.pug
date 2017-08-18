@@ -15,7 +15,7 @@
                 span Main Navigation
             ul.main-navigation-menu
                 li.active
-                    a(href='index.html')
+                    router-link(to='/')
                         .item-content
                             .item-media
                                 i.ti-home
@@ -36,13 +36,13 @@
                                 i.icon-arrow
                             ul.sub-menu
                                 li
-                                    a(href='control.html') Control
+                                    router-link(to='/create_control') Control
                                 li
-                                    a(href='sub-control.html') Sub Control
+                                    router-link(to='/create_sub_control') Sub Control
                                 li
-                                    a(href='subsidiary.html') Subsidiary
+                                    router-link(to='/create_subsidiary') Subsidiary
                         li
-                            a(href='master_detail.html')
+                            router-link(to='/master_details')
                                 span Master Detail
                 li
                     a(href='javascript:void(0)')
@@ -59,11 +59,11 @@
                                 i.icon-arrow
                             ul.sub-menu
                                 li
-                                    a(href='master_listing_control.html') Control
+                                    router-link(to='/listing_control') Control
                                 li
-                                    a(href='master_listing_subcontrol.html') Sub Control
+                                    router-link(to='/create_sub_control') Sub Control
                                 li
-                                    a(href='master_listing_subsidiary.html') Subsidiary
+                                    router-link(to='/create_sub_control') Subsidiary
                 li
                     a(href='javascript:void(0)')
                         .item-content
@@ -74,7 +74,7 @@
                                 i.icon-arrow
                     ul.sub-menu
                         li
-                            a(href='journalvoucher.html')
+                            router-link(to='/create_sub_control')
                                 span Journal Voucher
                 li
                     a(href='javascript:void(0)')
@@ -86,7 +86,7 @@
                                 i.icon-arrow
                     ul.sub-menu
                         li
-                            a(href='post-unpost.html')
+                            router-link(to='/create_sub_control')
                                 span Post/Unpost
                 li
                     a(href='javascript:void(0)')
@@ -121,7 +121,7 @@
                                 i.icon-arrow
                     ul.sub-menu
                         li
-                            a(href='create_user.html')
+                            router-link(to='/create_sub_control')
                                 span Create New User
                 li
                     a(href='javascript:void(0)')

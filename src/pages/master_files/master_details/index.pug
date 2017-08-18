@@ -1,0 +1,241 @@
+#container.wrap-content.container
+    section#page-title
+        .row
+            .col-sm-8
+                h1.mainTitle Master Files
+                span.mainDescription Chart of Accounts
+            ol.breadcrumb
+                li
+                    span Master Files
+                li.active
+                    span Master Detail
+    .container-fluid.container-fullw.bg-white
+        .row
+            .col-md-12
+                h2 Master Detail
+                .row
+                    .col-md-12
+                        .form-group
+                            .row
+                                .col-md-4
+                                    select#control_name.form-control(name='control')
+                                        option(value='01') Master Detail 1
+                                        option(value='02') Master Detail 2
+                                .col-md-1.icon-container
+                                    ul.ul-action
+                                        li
+                                            a.edit-project(href='master_detail.html', data-toggle='modal', data-target='.edit-control')
+                                                i.ti-pencil-alt
+                                        li
+                                            a.Control-link(href='#delete-control')
+                                                i.ti-close
+                hr
+                p
+                    | Create one Master Detail.
+                form#form(action='#', role='form', novalidate='novalidate')
+                    .row
+                        .col-md-12
+                            .errorHandler.alert.alert-danger.no-display
+                                i.fa.fa-times-sign
+                                |  You have some form errors. Please check
+                                |                                             below.
+                            .successHandler.alert.alert-success.no-display
+                                i.fa.fa-ok
+                                |  Your form validation is successful!
+                            .row
+                                .col-md-4
+                                    .form-group
+                                        label
+                                            | Co Code
+                                        input.form-control(type='number', name='co_code', placeholder='Enter your Co Code')
+                                    .form-group
+                                        label
+                                            | Allotee Code
+                                        input.form-control(type='number', name='allotee_code', placeholder='Enter your Allotee Code')
+                                    .form-group
+                                        label
+                                            | Allotee Name
+                                        input.form-control(type='text', name='allotee_name', placeholder='Enter your Allotee Name')
+                                    .form-group
+                                        label
+                                            | Contact No.
+                                        input.form-control(type='tel', name='contact_no', placeholder='Enter your Contact Number')
+                                    .form-group
+                                        label
+                                            | E Mail
+                                        input.form-control(type='email', name='allotee_email', placeholder='Enter your E Mail')
+                                .col-md-4
+                                    .form-group
+                                        label
+                                            | Broker ID
+                                        input.form-control(type='number', name='broker_id', placeholder='Enter your Broker ID')
+                                    .form-group
+                                        label
+                                            | Type
+                                        select.form-control(name='booking_type')
+                                            option(value='', selected='') Select a Type
+                                            option(value='01') Type 1
+                                            option(value='02') Type 2
+                                            option(value='03') Type 3
+                                            option(value='04') Type 4
+                                            option(value='05') Type 5
+                                    .form-group
+                                        label
+                                            | Document Year
+                                        input.form-control.yearpicker(type='number', name='booking_amount', placeholder='Enter your Booking Amount')
+                                    .form-group
+                                        label
+                                            | Flat No.
+                                        select.form-control(name='booking_type')
+                                            option(value='01') Flat no 1
+                                            option(value='02') Flat no 2
+                                            option(value='03') Flat no 3
+                                            option(value='04') Flat no 4
+                                            option(value='05') Flat no 5
+                                    .form-group
+                                        label
+                                            | Booking Date
+                                        .input-group.date
+                                            input.form-control.datepicker(type='text', name='booking_date', placeholder='Enter your Booking Date')
+                                .col-md-4
+                                    .form-group
+                                        label
+                                            | Selling Price
+                                        input.form-control(type='number', name='selling_price', placeholder='Enter your Selling Price')
+                                    .form-group
+                                        label
+                                            | Booking Amount
+                                        input.form-control(type='number', name='booking_amount', placeholder='Enter your Booking Amount')
+                                    .form-group
+                                        label
+                                            | Installment
+                                        input.form-control(type='text', name='Payment_installment', placeholder='Enter your Installment')
+                                    .form-group
+                                        label
+                                            | Payment Plan
+                                        input.form-control(type='text', name='payment_plan', placeholder='Enter your Payment Plan')
+                            h2 Detail
+                            .row.detail-heading
+                                .col-md-2 Date
+                                .col-md-2 Recipt Number
+                                .col-md-4 Particulars
+                                .col-md-2 Debit
+                                .col-md-2 Credit
+                            .detail-Content.form-group
+                                .row.row1
+                                    .col-md-2.padding-right-0
+                                        .input-group.date
+                                            input.form-control.datepicker(type='text')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
+                                .row.row2
+                                    .col-md-2.padding-right-0
+                                        .input-group.date
+                                            input.form-control.datepicker(type='text')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
+                                .row.row3
+                                    .col-md-2.padding-right-0
+                                        .input-group.date
+                                            input.form-control.datepicker(type='text')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
+                                .row.row4
+                                    .col-md-2.padding-right-0
+                                        .input-group.date
+                                            input.form-control.datepicker(type='text')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
+                                .row.row5
+                                    .col-md-2.padding-right-0
+                                        .input-group.date
+                                            input.form-control.datepicker(type='text')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
+                                .row.row6
+                                    .col-md-2.padding-right-0
+                                        .input-group.date
+                                            input.form-control.datepicker(type='text')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
+                                .row.row7
+                                    .col-md-2.padding-right-0
+                                        .input-group.date
+                                            input.form-control.datepicker(type='text')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
+                                .row.row8
+                                    .col-md-2.padding-right-0
+                                        .input-group.date
+                                            input.form-control.datepicker(type='text')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
+                                .row.Total
+                                    .col-md-2.padding-right-0
+                                    .col-md-4.padding-none
+                                    .col-md-2.padding-none
+                                        h3.margin-bottom-0(style='line-height: 33px;') Total
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='total_debit', placeholder='Total Debit')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number', name='total_credit', placeholder='Total Credit')
+                                .row.Total
+                                    .col-md-2.padding-right-0
+                                    .col-md-4.padding-none
+                                    .col-md-2.padding-none
+                                        h3.margin-bottom-0(style='line-height: 33px;') Balance
+                                    .col-md-4.col-md-4.padding-left-0
+                                        input.form-control(type='number', name='Balance')
+                    .row
+                        .col-md-4.pull-right
+                            button.btn.btn-primary.btn-wide.pull-right(type='submit')
+                                | Submit
+                                i.fa.fa-arrow-circle-right
