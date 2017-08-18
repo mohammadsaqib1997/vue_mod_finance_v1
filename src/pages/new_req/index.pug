@@ -1,0 +1,42 @@
+aside.right-side
+    section.content-header
+        h1 New Requests
+        ol.breadcrumb
+            li
+                router-link(to='/')
+                    i.fa.fa-dashboard
+                    |  Dashboard
+            li Deliveries
+            li New Requests
+    section.content
+        .row
+            .col-xs-12
+                div.map_container
+                    #map
+                .box
+                    .box-body
+                        div.table-responsive
+                            div.text-center(v-if='dataLoad')
+                                i.fa.fa-refresh.fa-spin.fa-3x.fa-fw
+                            h3.text-center(style='margin: 15px 0;' v-if='!dataLoad && Object.keys(all).length === 0')
+                                | No Data Found!
+                            table.table.table-hover(v-if='!dataLoad && Object.keys(all).length > 0')
+                                thead
+                                    tr
+                                        th S.No#
+                                        th Date
+                                        th Origin
+                                        th Destination
+                                        th Distance
+                                        th Duration
+                                        th Require Vehicle
+                                tbody
+                                    tr(v-for='(row, key, ind) in all')
+                                        td {{ ind+1 }}
+                                        td {{ row.createdAt }}
+                                        td {{ row.orgText }}
+                                        td {{ row.desText }}
+                                        td {{ row.disText }}
+                                        td {{ row.durText }}
+                                        td {{ row.vecType }}
+

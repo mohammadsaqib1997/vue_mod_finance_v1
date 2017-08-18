@@ -1,0 +1,123 @@
+aside.right-side
+    section.content-header
+        h1 Add Driver
+        ol.breadcrumb
+            li
+                router-link(to='/')
+                    i.fa.fa-dashboard
+                    |  Dashboard
+            li.active Add Driver
+    section.content
+        .row
+            .col-xs-12
+                .box
+                    .box-header
+                        h3.box-title Add Driver
+                    .box-body
+                        .row
+                            .col-md-6.col-md-offset-3
+                                form(method='post' id="fm_add_driver" enctype="multipart/form-data" action='#' v-on:submit="form_submit($event)")
+                                    .row
+                                        .col-md-12
+                                            h4.page-header General Information
+                                        .col-md-12
+                                            .row
+                                                .col-md-6
+                                                    .form-group
+                                                        label(for='fname') First Name
+                                                        input.form-control(type='text' name='fname' autocomplete='off' id='fname' v-model='formdata.fname')
+                                                        p.text-danger.text-right(v-if="typeof formerrors.fname !== 'undefined'") {{ formerrors.fname.msg }}
+                                                .col-md-6
+                                                    .form-group
+                                                        label(for='lname') Last Name
+                                                        input.form-control(type='text' name='lname' autocomplete='off' id='lname' v-model='formdata.lname')
+                                                        p.text-danger.text-right(v-if="typeof formerrors.lname !== 'undefined'") {{ formerrors.lname.msg }}
+                                        .col-md-12
+                                            .form-group
+                                                label(for='email') Email
+                                                input.form-control(type='email' name='email' autocomplete='off' id='email' v-model='formdata.email')
+                                                p.text-danger.text-right(v-if="typeof formerrors.email !== 'undefined'") {{ formerrors.email.msg }}
+                                        .col-md-12
+                                            .row
+                                                .col-md-6
+                                                    .form-group
+                                                        label(for='password') Password
+                                                        input.form-control(type='password' name='password' id='password' v-model='formdata.password')
+                                                        p.text-danger.text-right(v-if="typeof formerrors.password !== 'undefined'") {{ formerrors.password.msg }}
+                                                .col-md-6
+                                                    .form-group
+                                                        label(for='confirm_password') Re-Type Password
+                                                        input.form-control(type='password' name='confirm_password' id='confirm_password' v-model='formdata.confirm_password')
+                                                        p.text-danger.text-right(v-if="typeof formerrors.confirm_password !== 'undefined'") {{ formerrors.confirm_password.msg }}
+                                        .col-md-12
+                                            .row
+                                                .col-md-6
+                                                    .form-group
+                                                        label(for='mobile_number') Mobile No.
+                                                        input.form-control(type='text' name='mobile_number' autocomplete='off' id='mobile_number' v-model='formdata.mobile_number')
+                                                        p.text-danger.text-right(v-if="typeof formerrors.mobile_number !== 'undefined'") {{ formerrors.mobile_number.msg }}
+                                                .col-md-6
+                                                    .form-group
+                                                        label(for='cnic_number') CNIC No.
+                                                        input.form-control(type='text' name='cnic_number' autocomplete='off' id='cnic_number' v-model='formdata.cnic_number')
+                                                        p.text-danger.text-right(v-if="typeof formerrors.cnic_number !== 'undefined'") {{ formerrors.cnic_number.msg }}
+                                        .col-md-12
+                                            .form-group
+                                                label(for='driving_license') Driving License
+                                                input.form-control(type='text' name='driving_license' autocomplete='off' id='driving_license' v-model='formdata.driving_license')
+                                                p.text-danger.text-right(v-if="typeof formerrors.driving_license !== 'undefined'") {{ formerrors.driving_license.msg }}
+                                        .col-md-12
+                                            h4.page-header Vehicle Information
+                                        .col-md-12
+                                            .form-group
+                                                label(for='vehicle') Vehicle Type
+                                                select.form-control(name='vehicle' id='vehicle' v-model='formdata.vehicle')
+                                                    option(value='') Select Vehicle Type
+                                                    option(value='Bike') Bike
+                                                    option(value='Car') Car
+                                                    option(value='Pickup') Pickup
+                                                    option(value='Truck') Truck
+                                                p.text-danger.text-right(v-if="typeof formerrors.vehicle !== 'undefined'") {{ formerrors.vehicle.msg }}
+                                        .col-md-12
+                                            .row
+                                                .col-md-6
+                                                    .form-group
+                                                        label(for='model_year') Model Year
+                                                        input.form-control(type='text' name='model_year' autocomplete='off' id='model_year' v-model='formdata.model_year')
+                                                        p.text-danger.text-right(v-if="typeof formerrors.model_year !== 'undefined'") {{ formerrors.model_year.msg }}
+                                                .col-md-6
+                                                    .form-group
+                                                        label(for='vehicle_number') Vehicle Number
+                                                        input.form-control(type='text' name='vehicle_number' autocomplete='off' id='vehicle_number' v-model='formdata.vehicle_number')
+                                                        p.text-danger.text-right(v-if="typeof formerrors.vehicle_number !== 'undefined'") {{ formerrors.vehicle_number.msg }}
+                                        .col-md-12
+                                            .form-group
+                                                label(for='make') Make
+                                                input.form-control(type='text' name='make' autocomplete='off' id='make' v-model='formdata.make')
+                                                p.text-danger.text-right(v-if="typeof formerrors.make !== 'undefined'") {{ formerrors.make.msg }}
+                                        .col-md-12
+                                            h4.page-header Documents
+                                        .col-md-12
+                                            .form-group
+                                                label(for='fm_profile_img') Profile Image
+                                                input.form-control(type='file' name='fm_profile_img' id='fm_profile_img')
+                                                p.text-danger.text-right(v-if="typeof formerrors.fm_profile_img !== 'undefined'") {{ formerrors.fm_profile_img.msg }}
+                                        .col-md-12
+                                            .form-group
+                                                label(for='fm_cnic_img') Scanned CNIC
+                                                input.form-control(type='file' name='fm_cnic_img' id='fm_cnic_img')
+                                                p.text-danger.text-right(v-if="typeof formerrors.fm_cnic_img !== 'undefined'") {{ formerrors.fm_cnic_img.msg }}
+                                        .col-md-12
+                                            .form-group
+                                                label(for='fm_license_img') Scanned License
+                                                input.form-control(type='file' name='fm_license_img' id='fm_license_img')
+                                                p.text-danger.text-right(v-if="typeof formerrors.fm_license_img !== 'undefined'") {{ formerrors.fm_license_img.msg }}
+                                        .col-md-12
+                                            .form-group
+                                                label(for='fm_reg_letter_img') Scanned Registration Letter
+                                                input.form-control(type='file' name='fm_reg_letter_img' id='fm_reg_letter_img')
+                                                p.text-danger.text-right(v-if="typeof formerrors.fm_reg_letter_img !== 'undefined'") {{ formerrors.fm_reg_letter_img.msg }}
+                                        .col-md-12
+                                            .form-group.text-center
+                                                button(type='submit').btn.btn-success.btn-lg Submit
+                                                i.fa.fa-refresh.fa-spin.fa-3x.fa-fw(style="vertical-align:middle" v-if="formStatus")

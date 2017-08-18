@@ -1,0 +1,32 @@
+header.navbar.navbar-default.navbar-static-top
+    .navbar-header
+        a.sidebar-mobile-toggler.pull-left.hidden-md.hidden-lg(href='#', data-toggle-class='app-slide-off', data-toggle-target='#app', data-toggle-click-outside='#sidebar')
+            i.ti-align-justify
+        a.navbar-brand(href='#')
+            img(src='assets/images/logo.png', alt='Clip-Two')
+        a.sidebar-toggler.pull-right.visible-md.visible-lg(href='#', data-toggle-class='app-sidebar-closed', data-toggle-target='#app')
+            i.ti-align-justify
+        a#menu-toggler.pull-right.menu-toggler.visible-xs-block(data-toggle='collapse', href='.navbar-collapse')
+            span.sr-only Toggle navigation
+            i.ti-view-grid
+    .navbar-collapse.collapse
+        ul.nav.navbar-right
+            li.dropdown.current-user
+                a.dropdown-toggle(href='', data-toggle='dropdown')
+                    img(src='assets/images/avatar-1.jpg', alt='Peter')
+                    span.username
+                        | Peter
+                        i.ti-angle-down
+                ul.dropdown-menu.dropdown-dark
+                    li
+                        a(href='profile.html')
+                            | My Profile
+                    li
+                        a(href='login_lockscreen.html')
+                            | Lock Screen
+                    li
+                        a(href='login_signin.html')
+                            | Log Out
+        .close-handle.visible-xs-block.menu-toggler(data-toggle='collapse', href='.navbar-collapse')
+            .arrow-left
+            .arrow-right

@@ -1,0 +1,270 @@
+aside.right-side
+    section.content-header
+        h1 Profile
+        ol.breadcrumb
+            li
+                a(href='/')
+                    i.fa.fa-dashboard
+                    |  Dashboard
+            li.active Profile
+    section.content
+        .row
+            .col-xs-12
+                .col-md-8.col-md-offset-2
+                    .box
+                        .box-body
+                            div.text-center(v-if='dataLoad')
+                                i.fa.fa-refresh.fa-spin.fa-3x.fa-fw
+                            .row(v-if='!dataLoad')
+                                .col-xs-12
+                                    .col-xs-6
+                                        img.img-thumbnail.img-circle.img-avatar(src='/images/avatar.png')
+                                        h2.user-name-profile {{ userData.first_name }} {{ userData.last_name }}
+                                    .col-xs-6.text-right
+                                        button.btn.btn-success(style='margin-right:10px;' v-on:click='active(userData.key)' v-if='userData.status === 0') Activate
+                                        button.btn.btn-danger(style='margin-right:10px;' v-on:click='deActive(userData.key)' v-else) Deactivate
+                                        button.btn.btn-primary(v-if='userData.type === "driver"') Edit Profile
+                                    .col-md-12
+                                        h4  General Information
+                                        .col-xs-6
+                                            p First Name
+                                        .col-xs-6
+                                            p {{ userData.first_name }}
+                                    .col-md-12
+                                        .col-xs-6
+                                            p Last Name
+                                        .col-xs-6
+                                            p {{ userData.last_name }}
+                                    .col-md-12
+                                        .col-xs-6
+                                            p Email
+                                        .col-xs-6
+                                            p {{ userData.email }}
+                                    .col-md-12
+                                        .col-xs-6
+                                            p Password
+                                        .col-xs-6
+                                            p ********
+                                    .col-md-12
+                                        .col-xs-6
+                                            p Mobile No.
+                                        .col-xs-6
+                                            p {{ userData.mob_no }}
+                                    template(v-if='userData.type === "driver"')
+                                        .col-md-12
+                                            .col-xs-6
+                                                p CNIC No.
+                                            .col-xs-6
+                                                p {{ userData.cnic_no }}
+                                        .col-md-12
+                                            .col-xs-6
+                                                p Driver License
+                                            .col-xs-6
+                                                p {{ userData.driving_license }}
+                                        .col-md-12
+                                            h4  Vehicle Information
+                                            .col-xs-6
+                                                p Vehicle Type
+                                            .col-xs-6
+                                                p {{ userData.vehicle }}
+                                        .col-md-12
+                                            .col-xs-6
+                                                p Model Year
+                                            .col-xs-6
+                                                p {{ userData.v_model_year }}
+                                        .col-md-12
+                                            .col-xs-6
+                                                p Vehicle Number
+                                            .col-xs-6
+                                                p {{ userData.v_number }}
+                                        .col-md-12
+                                            .col-xs-6
+                                                p Vehicle Make
+                                            .col-xs-6
+                                                p {{ userData.v_make }}
+                                        .col-md-12
+                                            .col-xs-6
+                                                p Owner Of Vehicle
+                                            .col-xs-6
+                                                p {{ userData.v_owner }}
+                                        .col-md-12
+                                            h4 Documents
+                                            .col-xs-6
+                                                p Profile Image
+                                            .col-xs-6
+                                                a(href='/' target='_blank') asdfasdf
+                                        .col-md-12
+                                            .col-xs-6
+                                                p Scanned CNIC
+                                            .col-xs-6
+                                                a(href='/' target='_blank') asdfasdf
+                                        .col-md-12
+                                            .col-xs-6
+                                                p Scanned License
+                                            .col-xs-6
+                                                a(href='/' target='_blank') asdfasdf
+                                        .col-md-12
+                                            .col-xs-6
+                                                p Scanned Registration Letter
+                                            .col-xs-6
+                                                a(href='/' target='_blank') asdfasdf
+
+    section.content
+        h2 Requests History
+        .row
+            .tab-content
+                ul.nav.nav-tabs(role='tablist')
+                    li.active(role='tablist')
+                        a(href='#pending' aria-controls='pending' role='tab' data-toggle='tab') Pending
+                    li(role='tablist')
+                        a(href='#completed' aria-controls='completed' role='tab' data-toggle='tab') Completed
+            .tab-content
+                div.tab-pane.active#pending(role='tabpanel')
+                    .col-xs-12
+                        div.table-responsive
+                            div.text-center(v-if='dataLoad2')
+                                i.fa.fa-refresh.fa-spin.fa-3x.fa-fw
+                            h3.text-center(style='margin: 15px 0;' v-if='!dataLoad2 && Object.keys(pendingReqData).length === 0')
+                                | No Data Found!
+                            table.table.table-hover#example2(v-if='!dataLoad2 && Object.keys(pendingReqData).length > 0')
+                                thead
+                                    tr
+                                        th S.No#
+                                        th Driver Name
+                                        th Client Name
+                                        th Origin
+                                        th Destination
+                                        th Distance
+                                        th Duration
+                                        th Parcel
+                                        th Created At
+                                        th Vehicle Type
+                                        th Amount
+                                        th Status
+                                tbody
+                                    tr(v-for="(row, key, ind) in pendingReqData")
+                                        td {{ ind+1 }}
+                                        td {{ row.driver_data.first_name + ' ' + row.driver_data.last_name }}
+                                        td {{ row.client_data.first_name + ' ' + row.client_data.last_name }}
+                                        td {{ row.request_data.orgText }}
+                                        td {{ row.request_data.desText }}
+                                        td {{ row.request_data.disText }}
+                                        td {{ row.request_data.durText }}
+                                        td
+                                            a.btn.btn-info.btn-sm(v-bind:href="row.request_data.parcelUri" target='_blank')
+                                                i.fa.fa-eye
+                                        td {{ row.request_data.createdAt }}
+                                        td {{ row.driver_data.vehicle }}
+                                        td {{ row.bid_data.amount }}
+                                        td {{ row.active_req_data.status }}
+                                tfoot
+                                    tr
+                                        td.text-right(colspan='10') Total
+                                        td(colspan='2') Rs.{{ pendingReqDataTotal }}
+                div.tab-pane#completed(role='tabpanel')
+                    .col-xs-12
+                        div.table-responsive
+                            div.text-center(v-if='dataLoad1')
+                                i.fa.fa-refresh.fa-spin.fa-3x.fa-fw
+                            h3.text-center(style='margin: 15px 0;' v-if='!dataLoad1 && Object.keys(completeReqData).length === 0')
+                                | No Data Found!
+                            table.table.table-hover#example3(v-if='!dataLoad1 && Object.keys(completeReqData).length > 0')
+                                thead
+                                    tr
+                                        th S.No#
+                                        th Driver Name
+                                        th Client Name
+                                        th Origin
+                                        th Destination
+                                        th Distance
+                                        th Duration
+                                        th Parcel
+                                        th Created At
+                                        th Vehicle Type
+                                        th Amount
+                                tbody
+                                    tr(v-for="(row, key, ind) in completeReqData")
+                                        td {{ ind+1 }}
+                                        td {{ row.driver_data.first_name + ' ' + row.driver_data.last_name }}
+                                        td {{ row.client_data.first_name + ' ' + row.client_data.last_name }}
+                                        td {{ row.request_data.orgText }}
+                                        td {{ row.request_data.desText }}
+                                        td {{ row.request_data.disText }}
+                                        td {{ row.request_data.durText }}
+                                        td
+                                            a.btn.btn-info.btn-sm(v-bind:href="row.request_data.parcelUri" target='_blank')
+                                                i.fa.fa-eye
+                                        td {{ row.request_data.createdAt }}
+                                        td {{ row.driver_data.vehicle }}
+                                        td {{ row.bid_data.amount }}
+                                tfoot
+                                    tr
+                                        td.text-right(colspan='10') Total
+                                        td Rs.{{ completeReqDataTotal }}
+    section.content
+        div.text-center(v-if='dataLoad')
+            i.fa.fa-refresh.fa-spin.fa-3x.fa-fw
+        template(v-if='!dataLoad')
+            h2 Earnings Summary
+            .row
+                .tab-content
+                    ul.nav.nav-tabs(role='tablist')
+                        li.active(role='tablist')
+                            a(href='#income' aria-controls='income' role='tab' data-toggle='tab') Earnings
+                        li(role='tablist')
+                            a(href='#commission' aria-controls='commission' role='tab' data-toggle='tab') Commission
+                .tab-content
+                    div.tab-pane.active#income(role='tabpanel')
+                        .col-xs-12
+                            div.table-responsive
+                                table.table.table-hover#example4
+                                    thead
+                                        tr
+                                            th S.No#
+                                            th Date
+                                            th Details
+                                            th Invoice Number
+                                            th Payable
+                                            th Paid
+                                            th Balance
+                                    tbody
+                                        tr
+                                            td 1
+                                            td 23.05.2017
+                                            td From(jauhar) To(gulshan) User(ahmed) Driver(nabeel) Order#(34234234)
+                                            td
+                                                a(href='/admin/drivers/pdf_generator') 234234
+                                            td 345334
+                                            td 0
+                                            td 345334
+                                        tr
+                                            td 1
+                                            td 23.05.2017
+                                            td From(jauhar) To(gulshan) User(ahmed) Driver(nabeel) Order#(34234234)
+                                            td
+                                                a(href='/admin/drivers/pdf_generator') 234234
+                                            td 0
+                                            td 100000
+                                            td 245334
+                    div.tab-pane#commission(role='tabpanel')
+                        .col-xs-12
+                            div.table-responsive
+                                table.table.table-hover#example5
+                                    thead
+                                        tr
+                                            th S.No#
+                                            th Date
+                                            th Details
+                                            th Invoice Number
+                                            th Payable
+                                            th Paid
+                                            th Balance
+                                    tbody
+                                        tr
+                                            td 1
+                                            td 23.05.2017
+                                            td From(jauhar) To(gulshan) User(ahmed) Driver(nabeel) Order#(34234234)
+                                            td 234234
+                                            td 345334
+                                            td 45565
+                                            td 343

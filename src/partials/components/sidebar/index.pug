@@ -1,0 +1,132 @@
+#sidebar.sidebar.app-aside
+    .sidebar-container.perfect-scrollbar
+        nav
+            .search-form.ng-scope
+                a.s-open(href='#')
+                    i.ti-search
+                form.navbar-form.ng-pristine.ng-valid(role='search')
+                    a.s-remove(href='#', target='.navbar-form')
+                        i.ti-close
+                    .form-group
+                        input.form-control(type='text', placeholder='Search...')
+                        button.btn.search-button(type='submit')
+                            i.ti-search
+            .navbar-title
+                span Main Navigation
+            ul.main-navigation-menu
+                li.active
+                    a(href='index.html')
+                        .item-content
+                            .item-media
+                                i.ti-home
+                            .item-inner
+                                span.title Dashboard
+                li
+                    a(href='javascript:void(0)')
+                        .item-content
+                            .item-media
+                                i.ti-folder
+                            .item-inner
+                                span.title Master Files
+                                i.icon-arrow
+                    ul.sub-menu
+                        li
+                            a(href='javascript:;')
+                                span Chart of Accounts
+                                i.icon-arrow
+                            ul.sub-menu
+                                li
+                                    a(href='control.html') Control
+                                li
+                                    a(href='sub-control.html') Sub Control
+                                li
+                                    a(href='subsidiary.html') Subsidiary
+                        li
+                            a(href='master_detail.html')
+                                span Master Detail
+                li
+                    a(href='javascript:void(0)')
+                        .item-content
+                            .item-media
+                                i.ti-folder
+                            .item-inner
+                                span.title Master Listing
+                                i.icon-arrow
+                    ul.sub-menu
+                        li
+                            a(href='javascript:;')
+                                span List: Chart of Accounts
+                                i.icon-arrow
+                            ul.sub-menu
+                                li
+                                    a(href='master_listing_control.html') Control
+                                li
+                                    a(href='master_listing_subcontrol.html') Sub Control
+                                li
+                                    a(href='master_listing_subsidiary.html') Subsidiary
+                li
+                    a(href='javascript:void(0)')
+                        .item-content
+                            .item-media
+                                i.ti-folder
+                            .item-inner
+                                span.title Transaction Files
+                                i.icon-arrow
+                    ul.sub-menu
+                        li
+                            a(href='journalvoucher.html')
+                                span Journal Voucher
+                li
+                    a(href='javascript:void(0)')
+                        .item-content
+                            .item-media
+                                i.ti-folder
+                            .item-inner
+                                span.title Process
+                                i.icon-arrow
+                    ul.sub-menu
+                        li
+                            a(href='post-unpost.html')
+                                span Post/Unpost
+                li
+                    a(href='javascript:void(0)')
+                        .item-content
+                            .item-media
+                                i.ti-folder
+                            .item-inner
+                                span.title M.I.S Reports
+                                i.icon-arrow
+                    ul.sub-menu
+                        li
+                            a(href='javascript:;')
+                                span Details Ledger
+                                i.icon-arrow
+                            ul.sub-menu
+                                li
+                                    a(href='#') Control
+                                li
+                                    a(href='#') Sub Control
+                                li
+                                    a(href='#') Subsidiary
+                        li
+                            a(href='javascript:;')
+                                span.ng-scope(translate='sidebar.nav.reports.file2.MAIN') Balance Sheet
+                li
+                    a(href='javascript:void(0)')
+                        .item-content
+                            .item-media
+                                i.ti-folder
+                            .item-inner
+                                span.title User Control
+                                i.icon-arrow
+                    ul.sub-menu
+                        li
+                            a(href='create_user.html')
+                                span Create New User
+                li
+                    a(href='javascript:void(0)')
+                        .item-content
+                            .item-media
+                                i.ti-folder
+                            .item-inner
+                                span.title.ng-scope(translate='sidebar.nav.logout.MAIN') Logout
