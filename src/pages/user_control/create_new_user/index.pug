@@ -1,0 +1,164 @@
+#container.wrap-content.container
+    section#page-title
+        .row
+            .col-sm-8
+                h1.mainTitle User Control
+                span.mainDescription Profile
+            ol.breadcrumb
+                li
+                    span User Control
+                li.active
+                    span Profile
+    .container-fluid.container-fullw.bg-white.create-user
+        form#form(action='#', role='form')
+            fieldset
+                legend(style=' left: 3%; ')
+                    | Account Info
+                .row
+                    .col-md-6
+                        .form-group
+                            label.control-label
+                                | First Name
+                            input#firstname.form-control(type='text', placeholder='Peter', name='firstname')
+                        .form-group
+                            label.control-label
+                                | Last Name
+                            input#lastname.form-control(type='text', placeholder='Clark', name='lastname')
+                        .form-group
+                            label.control-label
+                                | Email Address
+                            input#email.form-control(type='email', placeholder='peter@example.com', name='email')
+                        .form-group
+                            label.control-label
+                                | Phone
+                            input#form-field-mask-2.form-control.input-mask-phone(type='text', name='phone')
+                        .form-group
+                            label.control-label
+                                | Password
+                            input#password.form-control(type='password', placeholder='password', name='password')
+                        .form-group
+                            label.control-label
+                                | Confirm Password
+                            input#password_again.form-control(type='password', placeholder='password', name='password_again')
+                    .col-md-6
+                        .form-group
+                            label.control-label
+                                | Gender
+                            .clip-radio.radio-primary
+                                input#us-female(type='radio', value='female', name='gender')
+                                label(for='us-female')
+                                    | Female
+                                input#us-male(type='radio', value='male', name='gender', checked='')
+                                label(for='us-male')
+                                    | Male
+                        .form-group
+                            label
+                                | Project
+                            select.form-control
+                                option(value='0') Project 1
+                                option(value='1') Project 2
+                        .row
+                            .col-md-4
+                                .form-group
+                                    label.control-label
+                                        | Zip Code
+                                    input#zipcode.form-control(placeholder='12345', type='text', name='zipcode')
+                            .col-md-8
+                                .form-group
+                                    label.control-label
+                                        | City
+                                    input#city.form-control.tooltips(placeholder='London (UK)', type='text', data-original-title="We'll display it when you write reviews", data-rel='tooltip', title='', data-placement='top', name='city')
+                        .form-group
+                            label
+                                | Image Upload
+                            .fileinput.fileinput-new(data-provides='fileinput')
+                                .fileinput-new.thumbnail
+                                    img(src='assets/images/avatar-1-xl.jpg', alt='')
+                                .user-edit-image-buttons
+                                    span.btn.btn-azure.btn-file
+                                        span.fileinput-new
+                                            i.fa.fa-picture
+                                            |  Select image
+                                        input(type='file')
+            .row
+                .col-md-8
+                .col-md-4
+                    button.btn.btn-primary.pull-right(type='submit')
+                        | Submit
+                        i.fa.fa-arrow-circle-right
+        hr
+        .container-fluid.container-fullw.create-user
+            .row
+                .col-md-12
+                    .table-responsive
+                        table#sample_2.table.table-striped.table-hover
+                            thead
+                                tr
+                                    th Full Name
+                                    th Email
+                                    th Project
+                                    th City
+                                    th Phone
+                                    th Edit
+                                    th Delete
+                            tbody
+                                tr
+                                    td Peter Clark
+                                    td abc@abc.com
+                                    td Project 1
+                                    td karachi
+                                    td (641)-734-4763
+                                    td
+                                        a.edit-row(href='#')
+                                            | Edit
+                                    td
+                                        a.delete-row(href='#')
+                                            | Delete
+                                tr
+                                    td Nicole Bell
+                                    td abc@abc.com
+                                    td Project 2
+                                    td karachi
+                                    td (741)-034-4573
+                                    td
+                                        a.edit-row(href='#')
+                                            | Edit
+                                    td
+                                        a.delete-row(href='#')
+                                            | Delete
+                                tr
+                                    td Steven Thompson
+                                    td abc@abc.com
+                                    td Project 2
+                                    td karachi
+                                    td (471)-543-4073
+                                    td
+                                        a.edit-row(href='#')
+                                            | Edit
+                                    td
+                                        a.delete-row(href='#')
+                                            | Delete
+                                tr
+                                    td Ella Patterson
+                                    td abc@abc.com
+                                    td Project 3
+                                    td karachi
+                                    td (799)-994-9999
+                                    td
+                                        a.edit-row(href='#')
+                                            | Edit
+                                    td
+                                        a.delete-row(href='#')
+                                            | Delete
+                                tr
+                                    td Kenneth Ross
+                                    td abc@abc.com
+                                    td Project 5
+                                    td karachi
+                                    td (111)-114-1173
+                                    td
+                                        a.edit-row(href='#')
+                                            | Edit
+                                    td
+                                        a.delete-row(href='#')
+                                            | Delete

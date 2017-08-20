@@ -18,13 +18,12 @@
                 p
                     | Create one control.
                 hr
-                form#form(action='sub-control.html', role='form', novalidate='novalidate')
+                form#form(v-on:submit.prevent="")
                     .row
                         .col-md-12
                             .errorHandler.alert.alert-danger.no-display
                                 i.fa.fa-times-sign
-                                |  You have some form errors. Please check
-                                |                                             below.
+                                |  You have some form errors. Please check below.
                             .successHandler.alert.alert-success.no-display
                                 i.fa.fa-ok
                                 |  Your form validation is successful!
@@ -34,45 +33,48 @@
                                     | Project
                                     span.symbol.required(aria-required='true')
                                 .row
-                                    .col-md-3
-                                        input#Project_id.form-control(type='text', placeholder='ID of project', name='project_id', disabled='')
-                                    .col-md-7
-                                        select.form-control(name='project')
-                                            option(value='01') Elegent Residency
-                                            option(value='02') Elegent Homes
+                                    .col-md-10(v-if='dataLoad1')
+                                        div.text-center
+                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                    template(v-if='!dataLoad1')
+                                        .col-md-3
+                                            input.form-control(type='text' placeholder='ID of project' disabled='disabled' v-bind:value='getObjId(sel_project, proData)')
+                                        .col-md-7
+                                            select.form-control(v-model='sel_project')
+                                                option(value='') Select Project
+                                                option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
-                                                a.add-project(href='#', data-toggle='modal', data-target='.add-project')
+                                                a(href='#', data-toggle='modal', data-target='#add_project')
                                                     i.ti-plus
                                             li
                                                 a.edit-project(href='#', data-toggle='modal', data-target='.edit-project')
                                                     i.ti-pencil-alt
-                                            li
-                                                a.Control-link(href='#delete')
-                                                    i.ti-close
                             .form-group
                                 label.control-label
                                     | Control
                                     span.symbol.required(aria-required='true')
                                 .row
-                                    .col-md-3
-                                        input#Control_id.form-control(type='text', placeholder='ID of Control number', name='control_id', disabled='')
-                                    .col-md-7
-                                        select.form-control(name='project')
-                                            option(value='01') Control 1
-                                            option(value='02') Control 2
+                                    .col-md-10(v-if='dataLoad2')
+                                        div.text-center
+                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                    template(v-if='!dataLoad2')
+                                        .col-md-3
+                                            input.form-control(type='text' placeholder='ID of Control number' disabled='disabled' v-bind:value='getObjId(sel_control, controlData)')
+                                        .col-md-7
+                                            select.form-control(v-model='sel_control')
+                                                option(value='') Select Control
+                                                option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
-                                                a.add-project(href='#', data-toggle='modal', data-target='.add-control')
+                                                a(href='#', data-toggle='modal', data-target='#add_control')
                                                     i.ti-plus
                                             li
                                                 a.edit-project(href='#', data-toggle='modal', data-target='.edit-control')
                                                     i.ti-pencil-alt
-                                            li
-                                                a.Control-link(href='#delete-control')
-                                                    i.ti-close
                     .row
                         .col-md-3
                             .form-group
@@ -92,3 +94,5 @@
                             button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
                                 | Submit
                                 i.fa.fa-arrow-circle-right
+    add-project-modal
+    add-control-modal

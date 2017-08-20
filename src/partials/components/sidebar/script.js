@@ -1,3 +1,5 @@
+import firebase from 'firebase'
+
 export default {
     created: function(){
         jQuery(function(){
@@ -12,6 +14,14 @@ export default {
         }
     },
     methods: {
-
+        logout: function () {
+            firebase.auth().signOut().then(function () {
+                $("#app").removeAttr("class");
+            },function (err) {
+                if(err){
+                    console.log(err);
+                }
+            });
+        }
     }
 }

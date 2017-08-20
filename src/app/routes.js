@@ -13,6 +13,14 @@ import subControl from '../pages/master_files/chart_of_accounts/sub_control/sub_
 import subsidiary from '../pages/master_files/chart_of_accounts/subsidiary/subsidiary.vue'
 
 import listingControl from '../pages/master_listing/list_chart_of_accounts/list_control/list_control.vue'
+import listingSubControl from '../pages/master_listing/list_chart_of_accounts/list_sub_control/list_sub_control.vue'
+import listingSubsidiary from '../pages/master_listing/list_chart_of_accounts/list_subsidiary/list_subsidiary.vue'
+
+import journalVoucher from '../pages/transaction_files/journal_voucher/journal_voucher.vue'
+
+import postUnPost from '../pages/process/post_unpost/post_unpost.vue'
+
+import createNewUser from '../pages/user_control/create_new_user/create_new_user.vue'
 
 const routes = [
     {
@@ -49,6 +57,26 @@ const routes = [
                     {
                         path: '/listing_control',
                         component: listingControl
+                    },
+                    {
+                        path: '/listing_sub_control',
+                        component: listingSubControl
+                    },
+                    {
+                        path: '/listing_subsidiary',
+                        component: listingSubsidiary
+                    },
+                    {
+                        path: '/journal_voucher',
+                        component: journalVoucher
+                    },
+                    {
+                        path: '/post_unpost',
+                        component: postUnPost
+                    },
+                    {
+                        path: '/create_new_user',
+                        component: createNewUser
                     }
                 ]
             },

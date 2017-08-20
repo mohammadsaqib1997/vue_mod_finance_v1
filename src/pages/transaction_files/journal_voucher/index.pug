@@ -1,0 +1,203 @@
+#container.wrap-content.container
+    section#page-title
+        .row
+            .col-sm-8
+                h1.mainTitle Transaction Files
+                span.mainDescription Journal Voucher
+            ol.breadcrumb
+                li
+                    span Master Files
+                li.active
+                    span Master Detail
+    .container-fluid.container-fullw.bg-white
+        .row
+            .col-md-12
+                h2 Journal Voucher
+                .row
+                    .col-md-12
+                        .form-group
+                            .row
+                                .col-md-4
+                                    select#control_name.form-control(name='control')
+                                        option(value='01') Journal Voucher 1
+                                        option(value='02') Journal Voucher 2
+                                .col-md-1.icon-container
+                                    ul.ul-action
+                                        li
+                                            a.edit-project(href='journalvoucher.html', data-toggle='modal', data-target='.edit-control')
+                                                i.ti-pencil-alt
+                                        li
+                                            a.Control-link(href='#delete-control')
+                                                i.ti-close
+                hr
+                p
+                    | Create one Journal Voucher.
+                form#form(action='#', role='form', novalidate='novalidate')
+                    .row
+                        .col-md-12
+                            .errorHandler.alert.alert-danger.no-display
+                                i.fa.fa-times-sign
+                                |  You have some form errors. Please check
+                                |                                             below.
+                            .successHandler.alert.alert-success.no-display
+                                i.fa.fa-ok
+                                |  Your form validation is successful!
+                            .row
+                                .col-md-6
+                                    .form-group
+                                        label
+                                            | Voucher ID
+                                        input.form-control(type='number', name='vo_id', placeholder='Enter your Voucher ID', disabled='')
+                                    .form-group
+                                        label
+                                            | Voucher Type
+                                        input.form-control(type='number', name='vo_type', placeholder='Enter your Voucher Type')
+                                    .form-group
+                                        label
+                                            | NBR
+                                        input.form-control(type='text', name='vo_nbr', placeholder='Enter your NBR')
+                                    .form-group
+                                        label
+                                            | Voucher Year
+                                        input.form-control.yearpicker(type='number', name='vo_year', placeholder='Enter your Voucher Year')
+                                .col-md-6
+                                    .form-group
+                                        label
+                                            | Reference Number
+                                        input.form-control(type='text', name='vo_reference', placeholder='Enter your Reference Number')
+                                    .form-group
+                                        label
+                                            | Project
+                                        input.form-control(type='hidden', name='vo_companyid', disabled='')
+                                        input.form-control(type='text', name='vo_company', placeholder='Enter your Project Name')
+                                    .form-group
+                                        label
+                                            | Voucher Date
+                                        #datetimepicker1.input-group.date
+                                            input.form-control.datepicker(type='text', name='vo_date', placeholder='Enter your Voucher Date')
+                                    .form-group
+                                        label
+                                            | Posted Y/N
+                                        select.form-control
+                                            option(value='0') No
+                                            option(value='1') Yes
+                            .row
+                                .col-md-12
+                                    .form-group
+                                        label
+                                            | Remark
+                                        .form-group
+                                            textarea#form-field-23.form-control.limited(maxlength='50')
+                            h2 Account Detail
+                            .row.detail-heading
+                                .col-md-1 Account Code
+                                .col-md-2 Account Description
+                                .col-md-4 Remark
+                                .col-md-1 Quantity
+                                .col-md-2 Debit
+                                .col-md-2 Credit
+                            .detail-Content.form-group
+                                .row.row1
+                                    .col-md-1.padding-right-0
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-1.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number')
+                                .row.row2
+                                    .col-md-1.padding-right-0
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-1.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number')
+                                .row.row3
+                                    .col-md-1.padding-right-0
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-1.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number')
+                                .row.row4
+                                    .col-md-1.padding-right-0
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-1.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number')
+                                .row.row5
+                                    .col-md-1.padding-right-0
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-1.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number')
+                                .row.row6
+                                    .col-md-1.padding-right-0
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-4.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-1.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number')
+                                .row.Total
+                                    .col-md-2.padding-right-0
+                                        p.margin-bottom-0(style='line-height: 33px;')
+                                            | JV Difference
+                                            | < Debit / Credit >
+                                    .col-md-2.padding-none
+                                        input.form-control(type='text')
+                                    .col-md-2.padding-none
+                                    .col-md-2.padding-none
+                                        h3.margin-bottom-0(style='line-height: 33px;') Total
+                                    .col-md-2.padding-none
+                                        input.form-control(type='number', name='total_debit', placeholder='Total Debit')
+                                    .col-md-2.padding-left-0
+                                        input.form-control(type='number', name='total_credit', placeholder='Total Credit')
+                                .row.Total
+                                    .col-md-2.padding-right-0
+                                    .col-md-4.padding-none
+                                    .col-md-2.padding-none
+                                        h3.margin-bottom-0(style='line-height: 33px;') Balance
+                                    .col-md-4.col-md-4.padding-left-0
+                                        input.form-control(type='number', name='Balance')
+                    .row
+                        .col-md-4.pull-right
+                            button.btn.btn-primary.btn-wide.pull-right(type='submit')
+                                | Submit
+                                i.fa.fa-arrow-circle-right

@@ -51,5 +51,28 @@ new Vue({
     },
     beforeMount: function () {
         this.csrf = this.$el.attributes.csrf.value;
+    },
+    methods: {
+        isNumber: function (val, maxLength) {
+            if (val !== "") {
+                if (isNaN(val)) {
+                    return val.substr(0, val.toString().length-1);
+                } else {
+                    if (val > maxLength) {
+                        return val.substr(0, val.toString().length-1);
+                    } else {
+                        return val * 1;
+                    }
+                }
+            } else {
+                return 0;
+            }
+        },
+        trim: function (val) {
+            if(val.charAt(0) === " "){
+                val = val.substr(1, val.length);
+            }
+            return val.replace(/\s{2,}/g, ' ');
+        }
     }
 }).$mount("#app");

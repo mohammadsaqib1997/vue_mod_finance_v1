@@ -61,9 +61,9 @@
                                 li
                                     router-link(to='/listing_control') Control
                                 li
-                                    router-link(to='/create_sub_control') Sub Control
+                                    router-link(to='/listing_sub_control') Sub Control
                                 li
-                                    router-link(to='/create_sub_control') Subsidiary
+                                    router-link(to='/listing_subsidiary') Subsidiary
                 li
                     a(href='javascript:void(0)')
                         .item-content
@@ -74,7 +74,7 @@
                                 i.icon-arrow
                     ul.sub-menu
                         li
-                            router-link(to='/create_sub_control')
+                            router-link(to='/journal_voucher')
                                 span Journal Voucher
                 li
                     a(href='javascript:void(0)')
@@ -86,7 +86,7 @@
                                 i.icon-arrow
                     ul.sub-menu
                         li
-                            router-link(to='/create_sub_control')
+                            router-link(to='/post_unpost')
                                 span Post/Unpost
                 li
                     a(href='javascript:void(0)')
@@ -98,7 +98,7 @@
                                 i.icon-arrow
                     ul.sub-menu
                         li
-                            a(href='javascript:;')
+                            a(href='javascript:void(0)')
                                 span Details Ledger
                                 i.icon-arrow
                             ul.sub-menu
@@ -109,8 +109,8 @@
                                 li
                                     a(href='#') Subsidiary
                         li
-                            a(href='javascript:;')
-                                span.ng-scope(translate='sidebar.nav.reports.file2.MAIN') Balance Sheet
+                            a(href='javascript:void(0)')
+                                span Balance Sheet
                 li
                     a(href='javascript:void(0)')
                         .item-content
@@ -121,7 +121,7 @@
                                 i.icon-arrow
                     ul.sub-menu
                         li
-                            router-link(to='/create_sub_control')
+                            router-link(to='/create_new_user')
                                 span Create New User
                 li
                     a(href='javascript:void(0)')
@@ -129,4 +129,4 @@
                             .item-media
                                 i.ti-folder
                             .item-inner
-                                span.title.ng-scope(translate='sidebar.nav.logout.MAIN') Logout
+                                span.title(v-on:click.prevent="logout") Logout

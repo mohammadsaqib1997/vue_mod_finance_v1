@@ -1,0 +1,76 @@
+#container.wrap-content.container
+    section#page-title
+        .row
+            .col-sm-8
+                h1.mainTitle Master Listing
+                span.mainDescription List: Chart Of Account
+            ol.breadcrumb
+                li
+                    span Master Listing
+                li
+                    span List: Chart Of Account
+                li.active
+                    span Subsidiary
+    .container-fluid.container-fullw.bg-white
+        .row
+            .col-md-12
+                h2 Master Listing / List: Chart Of Account / Subsidiary
+                .row
+                    .col-md-12
+                        .form-group
+                            .row
+                                .col-md-6
+                                    label Project
+                                    select#control_name.form-control(name='project')
+                                        option(value='01') Project 1
+                                        option(value='02') Project 2
+                .row
+                    .col-md-12
+                        .form-group
+                            .row
+                                .col-md-6
+                                    label Starting Subsidiary
+                                    select#control_name.form-control(name='start_subsidiary')
+                                        option(value='01') 001 Subsidiary
+                                        option(value='02') 002 Subsidiary
+                .row
+                    .col-md-12
+                        .form-group
+                            .row
+                                .col-md-6
+                                    label Ending Subsidiary
+                                    select#control_name.form-control(name='end_subsidiary')
+                                        option(value='01') 01 Subsidiary
+                                        option(value='02') 02 Subsidiary
+                .row
+                    .col-md-12
+                        .form-group
+                            .row
+                                .col-md-6
+                                    label
+                                        | Start Date
+                                    #datetimepicker1.input-group.date
+                                        input#startdate.form-control.datepicker(type='text', name='start_date', placeholder='Enter your Starting Date')
+                .row
+                    .col-md-12
+                        .form-group
+                            .row
+                                .col-md-6
+                                    label
+                                        | End Date
+                                    #datetimepicker1.input-group.date
+                                        input#enddate.form-control.datepicker(type='text', name='start_date', placeholder='Enter your Ending Date')
+                .row
+                    .col-md-12
+                        .form-group
+                            .row
+                                .col-md-6
+                                    label Destination
+                                    select#control_name.form-control(name='saveaction')
+                                        option(value='01') Screen
+                                        option(value='02') File
+                .row
+                    .col-md-4.pull-right
+                        button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
+                            | Submit
+                            i.fa.fa-arrow-circle-right

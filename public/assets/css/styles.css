@@ -11730,3 +11730,8 @@ div#control-list .the-icons .col-md-12.col-sm-12 > .row > .col-md-12.col-sm-12 >
 	}
 	
 }
+
+/* Custom css */
+.mar-lf-10{
+  margin-left: 10px;
+}
