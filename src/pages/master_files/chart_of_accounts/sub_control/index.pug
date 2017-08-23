@@ -18,13 +18,12 @@
                 p
                     | Create one Sub control.
                 hr
-                form#form(action='subsidiary.html', role='form', novalidate='novalidate')
+                form()
                     .row
                         .col-md-12
                             .errorHandler.alert.alert-danger.no-display
                                 i.fa.fa-times-sign
-                                |  You have some form errors. Please check
-                                |                                             below.
+                                |  You have some form errors. Please check below.
                             .successHandler.alert.alert-success.no-display
                                 i.fa.fa-ok
                                 |  Your form validation is successful!
@@ -34,45 +33,49 @@
                                     | Project
                                     span.symbol.required(aria-required='true')
                                 .row
-                                    .col-md-3
-                                        input#Company_id.form-control(type='text', placeholder='ID of Project', name='company_id', disabled='')
-                                    .col-md-7
-                                        select#Company_name.form-control(name='com_name')
-                                            option(value='01') Project 1
-                                            option(value='02') Project 2
+                                    .col-md-10(v-if='dataLoad1')
+                                        div.text-center
+                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                    template(v-if='!dataLoad1')
+                                        .col-md-3
+                                            input.form-control(type='text' placeholder='ID of project' disabled='disabled' v-bind:value='getObjId(sel_project, proData)')
+                                        .col-md-7
+                                            select.form-control(v-model='sel_project')
+                                                option(value='') Select Project
+                                                option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
-                                                a.add-project(href='#', data-toggle='modal', data-target='.add-project')
+                                                a(href='#' data-toggle='modal' data-target='#add_project')
                                                     i.ti-plus
                                             li
-                                                a.edit-project(href='#', data-toggle='modal', data-target='.edit-project')
+                                                a(href='#', data-toggle='modal', data-target='#add_project')
                                                     i.ti-pencil-alt
-                                            li
-                                                a.Control-link(href='#delete')
-                                                    i.ti-close
                             .form-group
                                 label.control-label
                                     | Control
                                     span.symbol.required(aria-required='true')
                                 .row
-                                    .col-md-3
-                                        input#Control_id.form-control(type='text', placeholder='ID of Control', name='control_id', disabled='')
-                                    .col-md-7
-                                        select#control_name.form-control(name='control')
-                                            option(value='01') Control 1
-                                            option(value='02') Control 2
+                                    .col-md-10(v-if='dataLoad2')
+                                        div.text-center
+                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                    template(v-if='!dataLoad2')
+                                        .col-md-3
+                                            input.form-control(type='text' placeholder='ID of Control number' disabled='disabled' v-bind:value='getObjId(sel_control, controlData)')
+                                        .col-md-7
+                                            select.form-control(v-model='sel_control')
+                                                option(value='') Select Control
+                                                option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
-                                                a.add-project(href='#', data-toggle='modal', data-target='.add-control')
+                                                a(href='#' data-toggle='modal' data-target='#add_control')
                                                     i.ti-plus
                                             li
-                                                a.edit-project(href='#', data-toggle='modal', data-target='.edit-control')
+                                                a(href='#' data-toggle='modal' data-target='#add_control')
                                                     i.ti-pencil-alt
-                                            li
-                                                a.Control-link(href='#delete-control')
-                                                    i.ti-close
                             .form-group
                                 label.control-label
                                     | Sub Control
@@ -87,14 +90,11 @@
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
-                                                a.add-project(href='#', data-toggle='modal', data-target='.add-subcontrol')
+                                                a(href='#', data-toggle='modal', data-target='#add_sub_control')
                                                     i.ti-plus
                                             li
-                                                a.edit-project(href='#', data-toggle='modal', data-target='.edit-subcontrol')
+                                                a(href='#', data-toggle='modal', data-target='#add_sub_control')
                                                     i.ti-pencil-alt
-                                            li
-                                                a.Control-link(href='#delete-control')
-                                                    i.ti-close
                     .row
                         .col-md-3
                             .form-group
@@ -114,133 +114,6 @@
                             button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
                                 | Submit
                                 i.fa.fa-arrow-circle-right
-    .modal.fade.modal-aside.horizontal.right.edit-subcontrol(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
-        .modal-dialog.modal-dialog.modal-sm
-            .modal-content
-                .modal-header
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        span(aria-hidden='true') ×
-                    h4#myModalLabel.modal-title Add Sub Control
-                .modal-body
-                    .form-group
-                        label.control-label
-                            | Sub Control
-                            span.symbol.required(aria-required='true')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                select#Edit_subcontrol_proname.form-control(name='Edit_subcontrol_proname')
-                                    option(value='01') Project 1
-                                    option(value='02') Project 2
-                        .row.margin-bottom-10
-                            .col-md-12
-                                select#Edit_subcontrol_conname.form-control(name='Edit_subcontrol_conname')
-                                    option(value='01') Control 1
-                                    option(value='02') Control 2
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_subcontrol_name.form-control(type='text', placeholder='Sub Control Name', name='edit_subcontrol_name')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_subcontrol_opendebit.form-control(type='text', placeholder='Sub Control Open Debit', name='edit_subcontrol_opendebit', disabled='')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_subcontrol_opencredit.form-control(type='text', placeholder='Sub Control Open Credit', name='edit_subcontrol_opencredit', disabled='')
-                    button.btn.btn-primary.btn-o(type='button', data-dismiss='modal')
-                        | Close
-                    button.btn.btn-primary(type='button')
-                        | Save changes
-    .modal.fade.modal-aside.horizontal.right.add-subcontrol(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
-        .modal-dialog.modal-dialog.modal-sm
-            .modal-content
-                .modal-header
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        span(aria-hidden='true') ×
-                    h4#myModalLabel.modal-title Add Sub Control
-                .modal-body
-                    .form-group
-                        label.control-label
-                            | Sub Control
-                            span.symbol.required(aria-required='true')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                select#Edit_subcontrol_proname.form-control(name='Edit_subcontrol_proname')
-                                    option(value='01') Project 1
-                                    option(value='02') Project 2
-                        .row.margin-bottom-10
-                            .col-md-12
-                                select#Edit_subcontrol_conname.form-control(name='Edit_subcontrol_conname')
-                                    option(value='01') Control 1
-                                    option(value='02') Control 2
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_Subcontrol_name.form-control(type='text', placeholder='Sub Control Name', name='edit_subcontrol_name')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_subcontrol_opendebit.form-control(type='text', placeholder='Sub Control Open Debit', name='edit_subcontrol_opendebit')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_subcontrol_opencredit.form-control(type='text', placeholder='Sub Control Open Credit', name='edit_subcontrol_opencredit')
-                    button.btn.btn-primary.btn-o(type='button', data-dismiss='modal')
-                        | Close
-                    button.btn.btn-primary(type='button')
-                        | Save changes
-    .modal.fade.modal-aside.horizontal.right.edit-control(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
-        .modal-dialog.modal-dialog.modal-sm
-            .modal-content
-                .modal-header
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        span(aria-hidden='true') ×
-                    h4#myModalLabel.modal-title Add Control
-                .modal-body
-                    .form-group
-                        label.control-label
-                            | Control
-                            span.symbol.required(aria-required='true')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                select#Edit_subcontrol_proname.form-control(name='Edit_subcontrol_proname')
-                                    option(value='01') Project 1
-                                    option(value='02') Project 2
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_control_name.form-control(type='text', placeholder='Control Name', name='edit_control_name')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_control_opendebit.form-control(type='text', placeholder='Control Open Debit', name='edit_control_opendebit')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_control_opencredit.form-control(type='text', placeholder='Control Open Credit', name='edit_control_opencredit')
-                    button.btn.btn-primary.btn-o(type='button', data-dismiss='modal')
-                        | Close
-                    button.btn.btn-primary(type='button')
-                        | Save changes
-    .modal.fade.modal-aside.horizontal.right.add-control(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
-        .modal-dialog.modal-dialog.modal-sm
-            .modal-content
-                .modal-header
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        span(aria-hidden='true') ×
-                    h4#myModalLabel.modal-title Add Control
-                .modal-body
-                    .form-group
-                        label.control-label
-                            | Control
-                            span.symbol.required(aria-required='true')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                select#Edit_subcontrol_proname.form-control(name='Edit_subcontrol_proname')
-                                    option(value='01') Project 1
-                                    option(value='02') Project 2
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_control_name.form-control(type='text', placeholder='Control Name', name='edit_control_name')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_control_opendebit.form-control(type='text', placeholder='Control Open Debit', name='edit_control_opendebit')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input#Edit_control_opencredit.form-control(type='text', placeholder='Control Open Credit', name='edit_control_opencredit')
-                    button.btn.btn-primary.btn-o(type='button', data-dismiss='modal')
-                        | Close
-                    button.btn.btn-primary(type='button')
-                        | Save changes
+    add-project-modal
+    add-control-modal
+    add-sub-control-modal

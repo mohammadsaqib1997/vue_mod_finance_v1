@@ -67,6 +67,7 @@
                                             select.form-control(v-model='sel_control')
                                                 option(value='') Select Control
                                                 option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
@@ -81,14 +82,14 @@
                                 label.control-label
                                     | Open Debit
                                     span.symbol.required(aria-required='true')
-                                input.form-control(type='number', name='open_debit', disabled='')
+                                input.form-control(type='text' v-bind:value="getObjKeyVal(sel_control, controlData, 'debit')" disabled='disabled')
                     .row
                         .col-md-3
                             .form-group
                                 label.control-label
                                     | Open Credit
                                     span.symbol.required(aria-required='true')
-                                input.form-control(type='number', name='open_credit', disabled='')
+                                input.form-control(type='text' v-bind:value="getObjKeyVal(sel_control, controlData, 'credit')" disabled='disabled')
                     .row
                         .col-md-4.pull-right
                             button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')

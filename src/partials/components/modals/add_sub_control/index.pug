@@ -1,0 +1,49 @@
+.modal.fade.modal-aside.horizontal.right.add-control(tabindex='-1' id="add_sub_control" role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+    .modal-dialog.modal-dialog.modal-sm
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                h4#myModalLabel.modal-title Add Sub Control
+            .modal-body
+                form(v-on:submit.prevent='')
+                    .form-group
+                        p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
+                        p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
+                        label.control-label
+                            | Sub Control
+                            span.symbol.required(aria-required='true')
+                        .row.margin-bottom-10
+                            .col-md-12
+                                div.text-center(v-if='dataLoad1')
+                                    i.fa.fa-refresh.fa-spin.fa-1x.fa-fw
+                                select.form-control(v-else v-model='sel_project')
+                                    option(value='') Select Project
+                                    option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
+                                p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
+                        .row.margin-bottom-10
+                            .col-md-12
+                                div.text-center(v-if='dataLoad2')
+                                    i.fa.fa-refresh.fa-spin.fa-1x.fa-fw
+                                select.form-control(v-else v-model='sel_control')
+                                    option(value='') Select Control
+                                    option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
+                                p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
+                        .row.margin-bottom-10
+                            .col-md-12
+                                input.form-control(type='text', placeholder='Sub Control Name' v-model="sub_cont_name")
+                                p.text-danger.text-right(v-if='validation.hasError("sub_cont_name")') {{ validation.firstError('sub_cont_name') }}
+                        .row.margin-bottom-10
+                            .col-md-12
+                                input.form-control(type='text', placeholder='Sub Control Open Debit' v-model='debit')
+                                p.text-danger.text-right(v-if='validation.hasError("debit")') {{ validation.firstError('debit') }}
+                        .row.margin-bottom-10
+                            .col-md-12
+                                input.form-control(type='text', placeholder='Sub Control Open Credit' v-model='credit')
+                                p.text-danger.text-right(v-if='validation.hasError("credit")') {{ validation.firstError('credit') }}
+                    button.btn.btn-primary.btn-o(type='button', data-dismiss='modal')
+                        | Close
+                    button.btn.btn-primary.mar-lf-10(type='submit' v-if="!inProcess")
+                        | Save changes
+                    button.btn.btn-primary.mar-lf-10(type='button' disabled='disabled' v-if="inProcess")
+                        i.fa.fa-refresh.fa-spin.fa-fw

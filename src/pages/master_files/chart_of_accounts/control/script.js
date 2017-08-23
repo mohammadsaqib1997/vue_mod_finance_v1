@@ -53,12 +53,23 @@ export default {
             this.projectControlLoad(value);
             return Validator.value(value).required().lengthBetween(20, 36);
         },
+        sel_control: function (value) {
+            return Validator.value(value).required().lengthBetween(20, 36);
+        },
     },
     methods: {
         getObjId: function (sel_key, obj) {
             if(sel_key !== ""){
                 if(typeof obj[sel_key] !== "undefined"){
                     return (typeof obj[sel_key].id !== "undefined") ? obj[sel_key].id:"";
+                }
+            }
+            return "";
+        },
+        getObjKeyVal: function (sel_key, obj, key) {
+            if(sel_key !== ""){
+                if(typeof obj[sel_key] !== "undefined"){
+                    return (typeof obj[sel_key][key] !== "undefined") ? obj[sel_key][key]:"";
                 }
             }
             return "";
@@ -78,23 +89,23 @@ export default {
                         self.sel_control = "";
                         self.dataLoad2 = false;
                     });
-                });
+                }, 500);
             }else{
                 self.dbLoadMet(function () {
                     self.sel_control = "";
                     self.controlData = {};
                     self.dataLoad2 = false;
-                });
+                }, 0);
             }
         },
-        dbLoadMet: function (func) {
+        dbLoadMet: function (func, time) {
             let self = this;
             if(self.dbLoad !== null){
                 clearTimeout(self.dbLoad);
                 self.dbLoad = null;
-                self.dbLoadMet(func);
+                self.dbLoadMet(func, time);
             }else{
-                self.dbLoad = setTimeout(func, 500);
+                self.dbLoad = setTimeout(func, time);
             }
         }
     },
