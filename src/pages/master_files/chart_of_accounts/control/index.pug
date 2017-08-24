@@ -12,21 +12,17 @@
                 li.active
                     span Control
     .container-fluid.container-fullw.bg-white
-        .row
-            .col-md-12
-                h2 Control
-                p
-                    | Create one control.
-                hr
-                form#form(v-on:submit.prevent="")
+        form#form(v-on:submit.prevent="addContEntry")
+            .row
+                .col-md-12
+                    h2 Control
+                    p
+                        | Create one control.
+                    hr
                     .row
                         .col-md-12
-                            .errorHandler.alert.alert-danger.no-display
-                                i.fa.fa-times-sign
-                                |  You have some form errors. Please check below.
-                            .successHandler.alert.alert-success.no-display
-                                i.fa.fa-ok
-                                |  Your form validation is successful!
+                            p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
+                            p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
                         .col-md-12
                             .form-group
                                 label.control-label
@@ -50,7 +46,7 @@
                                                 a(href='#', data-toggle='modal', data-target='#add_project')
                                                     i.ti-plus
                                             li
-                                                a.edit-project(href='#', data-toggle='modal', data-target='.edit-project')
+                                                a(href='#', data-toggle='modal', data-target='#add_project')
                                                     i.ti-pencil-alt
                             .form-group
                                 label.control-label
@@ -74,26 +70,36 @@
                                                 a(href='#', data-toggle='modal', data-target='#add_control')
                                                     i.ti-plus
                                             li
-                                                a.edit-project(href='#', data-toggle='modal', data-target='.edit-control')
+                                                a(href='#', data-toggle='modal', data-target='#add_control')
                                                     i.ti-pencil-alt
-                    .row
-                        .col-md-3
-                            .form-group
-                                label.control-label
-                                    | Open Debit
-                                    span.symbol.required(aria-required='true')
-                                input.form-control(type='text' v-bind:value="getObjKeyVal(sel_control, controlData, 'debit')" disabled='disabled')
-                    .row
-                        .col-md-3
-                            .form-group
-                                label.control-label
-                                    | Open Credit
-                                    span.symbol.required(aria-required='true')
-                                input.form-control(type='text' v-bind:value="getObjKeyVal(sel_control, controlData, 'credit')" disabled='disabled')
+                    template(v-if='dataLoad3')
+                        .row
+                            .col-md-3
+                                div.text-center
+                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                    template(v-if='!dataLoad3')
+                        .row
+                            .col-md-3
+                                .form-group
+                                    label.control-label
+                                        | Open Debit
+                                        span.symbol.required(aria-required='true')
+                                    input.form-control(type='text' v-model='debit')
+                                    p.text-danger.text-right(v-if='validation.hasError("debit")') {{ validation.firstError('debit') }}
+                        .row
+                            .col-md-3
+                                .form-group
+                                    label.control-label
+                                        | Open Credit
+                                        span.symbol.required(aria-required='true')
+                                    input.form-control(type='text' v-model='credit')
+                                    p.text-danger.text-right(v-if='validation.hasError("credit")') {{ validation.firstError('credit') }}
                     .row
                         .col-md-4.pull-right
-                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
-                                | Submit
+                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit' v-if="!inProcess && !dataLoad3")
+                                | Submit&nbsp;
                                 i.fa.fa-arrow-circle-right
+                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='button' disabled='disabled' v-if="inProcess || dataLoad3")
+                                i.fa.fa-refresh.fa-spin.fa-fw
     add-project-modal
     add-control-modal

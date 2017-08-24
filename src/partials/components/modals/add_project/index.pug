@@ -10,9 +10,6 @@
                     .form-group
                         p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
                         p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
-                        label.control-label
-                            | Project
-                            span.symbol.required(aria-required='true')
                         .row.margin-bottom-10
                             .col-md-12
                                 input.form-control(type='text', placeholder='Project Name' v-model='name')

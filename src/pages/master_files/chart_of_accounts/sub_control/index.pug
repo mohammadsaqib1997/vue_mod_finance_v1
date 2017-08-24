@@ -18,7 +18,7 @@
                 p
                     | Create one Sub control.
                 hr
-                form()
+                form(v-on:submit.prevent="")
                     .row
                         .col-md-12
                             .errorHandler.alert.alert-danger.no-display
@@ -43,7 +43,6 @@
                                             select.form-control(v-model='sel_project')
                                                 option(value='') Select Project
                                                 option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
@@ -67,7 +66,6 @@
                                             select.form-control(v-model='sel_control')
                                                 option(value='') Select Control
                                                 option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
@@ -81,12 +79,16 @@
                                     | Sub Control
                                     span.symbol.required(aria-required='true')
                                 .row
-                                    .col-md-3
-                                        input#subcon_id.form-control(type='text', placeholder='ID of Sub Control number', name='subcon_id', disabled='')
-                                    .col-md-7
-                                        select#project.form-control(name='project')
-                                            option(value='01') Sub Control 1
-                                            option(value='02') Sub Control 2
+                                    .col-md-10(v-if='dataLoad3')
+                                        div.text-center
+                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                    template(v-if='!dataLoad3')
+                                        .col-md-3
+                                            input#subcon_id.form-control(type='text', placeholder='ID of Sub Control number', disabled='' v-bind:value='getObjId(sel_sub_control, subControlData)')
+                                        .col-md-7
+                                            select.form-control(v-model='sel_sub_control')
+                                                option(value='') Select Sub Control
+                                                option(v-for='(row, key, ind) in subControlData' v-bind:value='key') {{ row.name }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
@@ -101,19 +103,21 @@
                                 label.control-label
                                     | Open Debit
                                     span.symbol.required(aria-required='true')
-                                input.form-control(type='number', name='open_debit', disabled='')
+                                input.form-control(type='text' v-bind:value="getObjKeyVal(sel_sub_control, subControlData, 'debit')" disabled='disabled')
                     .row
                         .col-md-3
                             .form-group
                                 label.control-label
                                     | Open Credit
                                     span.symbol.required(aria-required='true')
-                                input.form-control(type='number', name='open_credit', disabled='')
+                                input.form-control(type='text' v-bind:value="getObjKeyVal(sel_sub_control, subControlData, 'credit')" disabled='disabled')
                     .row
                         .col-md-4.pull-right
-                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
-                                | Submit
+                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit' v-if="!inProcess && !dataLoad3")
+                                | Submit&nbsp;
                                 i.fa.fa-arrow-circle-right
+                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='button' disabled='disabled' v-if="inProcess || dataLoad3")
+                                i.fa.fa-refresh.fa-spin.fa-fw
     add-project-modal
     add-control-modal
     add-sub-control-modal

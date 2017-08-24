@@ -1,11 +1,8 @@
 import firebase from 'firebase'
-import SimpleVueValidation from 'simple-vue-validator'
 
 import addProjectModal from '../../../../partials/components/modals/add_project/add_project.vue'
 import addControlModal from '../../../../partials/components/modals/add_control/add_control.vue'
 import addSubControlModal from '../../../../partials/components/modals/add_sub_control/add_sub_control.vue'
-
-const Validator = SimpleVueValidation.Validator;
 
 export default {
     created: function () {
@@ -14,6 +11,7 @@ export default {
         const db = firebase.database();
         self.projectsRef = db.ref('/projects');
         self.controlsRef = db.ref('/controls');
+        self.subControlsRef = db.ref('/sub_controls');
 
         self.projectsRef.on('value', function (proSnap) {
             let renderData = proSnap.val();
@@ -24,6 +22,16 @@ export default {
             }
             self.dataLoad1 = false;
         });
+
+        self.controlsRef.on('value', function (proSnap) {
+            let renderData = proSnap.val();
+            if (renderData !== null) {
+                self.controlData = renderData;
+            }else{
+                self.controlData = {};
+            }
+            self.dataLoad2 = false;
+        });
     },
     data: function(){
         return {
@@ -31,31 +39,34 @@ export default {
 
             //loaders
             dataLoad1: true,
-            dataLoad2: false,
+            dataLoad2: true,
+            dataLoad3: false,
             inProcess: false,
 
             // data save
             proData: {},
             controlData: {},
+            subControlData: {},
 
             // references
+            subControlsRef: null,
             controlsRef: null,
             projectsRef: null,
 
             // form fields
             sel_project: "",
             sel_control: "",
+            sel_sub_control: "",
             errMain: "",
             sucMain: "",
         }
     },
-    validators: {
+    watch: {
         sel_project: function (value) {
-            this.projectControlLoad(value);
-            return Validator.value(value).required().lengthBetween(20, 36);
+            //this.projectControlLoad(value);
         },
         sel_control: function (value) {
-            return Validator.value(value).required().lengthBetween(20, 36);
+            this.controlSubControlLoad(value);
         },
     },
     methods: {
@@ -75,27 +86,27 @@ export default {
             }
             return "";
         },
-        projectControlLoad: function(pro_key){
+        controlSubControlLoad: function(cont_key){
             let self = this;
-            if(pro_key !== ""){
-                self.dataLoad2 = true;
+            if(cont_key !== ""){
+                self.dataLoad3 = true;
                 self.dbLoadMet(function () {
-                    self.controlsRef.child(pro_key).on('value', function (controlsSnap) {
-                        let controlsData = controlsSnap.val();
-                        if(controlsData !== null){
-                            self.controlData = controlsData;
+                    self.subControlsRef.child(cont_key).on('value', function (subControlsSnap) {
+                        let subControlsData = subControlsSnap.val();
+                        if(subControlsData !== null){
+                            self.subControlData = subControlsData;
                         }else{
-                            self.controlData = {};
+                            self.subControlData = {};
                         }
-                        self.sel_control = "";
-                        self.dataLoad2 = false;
+                        self.sel_sub_control = "";
+                        self.dataLoad3 = false;
                     });
                 }, 500);
             }else{
                 self.dbLoadMet(function () {
-                    self.sel_control = "";
-                    self.controlData = {};
-                    self.dataLoad2 = false;
+                    self.sel_sub_control = "";
+                    self.subControlData = {};
+                    self.dataLoad3 = false;
                 }, 0);
             }
         },

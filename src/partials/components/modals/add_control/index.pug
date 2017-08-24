@@ -10,29 +10,12 @@
                     .form-group
                         p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
                         p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
-                        label.control-label
-                            | Control
-                            span.symbol.required(aria-required='true')
-                        .row.margin-bottom-10
-                            .col-md-12
-                                div.text-center(v-if='dataLoad1')
-                                    i.fa.fa-refresh.fa-spin.fa-1x.fa-fw
-                                select.form-control(v-else v-model='sel_project')
-                                    option(value='') Select Project
-                                    option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
-                                p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                         .row.margin-bottom-10
                             .col-md-12
                                 input.form-control(type='text', placeholder='Control Name' v-model="cont_name")
                                 p.text-danger.text-right(v-if='validation.hasError("cont_name")') {{ validation.firstError('cont_name') }}
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input.form-control(type='text', placeholder='Control Open Debit' v-model='debit')
-                                p.text-danger.text-right(v-if='validation.hasError("debit")') {{ validation.firstError('debit') }}
-                        .row.margin-bottom-10
-                            .col-md-12
-                                input.form-control(type='text', placeholder='Control Open Credit' v-model='credit')
-                                p.text-danger.text-right(v-if='validation.hasError("credit")') {{ validation.firstError('credit') }}
+                                .text-right(v-if='validation.isValidating("cont_name")')
+                                    i.fa.fa-spinner.fa-spin
                     button.btn.btn-primary.btn-o(type='button', data-dismiss='modal')
                         | Close
                     button.btn.btn-primary.mar-lf-10(type='submit' v-if="!inProcess")
