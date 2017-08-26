@@ -1,11 +1,19 @@
 import firebase from 'firebase'
-
+import func from '../../../../../custom_libs/func'
+import Promise from 'bluebird'
 import SimpleVueValidation from 'simple-vue-validator'
 const Validator = SimpleVueValidation.Validator;
 
 export default {
     created: function () {
         let self = this;
+
+        self.$watch('name', function (val, oldVal) {
+            self.name = func.trim(val);
+        });
+        self.$watch('address', function (val, oldVal) {
+            self.address = func.trim(val);
+        });
 
         const db = firebase.database();
         self.projectsRef = db.ref('/projects');
@@ -46,18 +54,22 @@ export default {
     validators: {
         name: function (value) {
             let self = this;
-            return Validator.custom(function (){
-                self.name = self.$root.trim(value);
-            }).value(value).required().lengthBetween(6, 40);
+            return Validator.value(value).required().lengthBetween(6, 40).custom(function () {
+                return Promise.delay(1000).then(function () {
+                    return self.projectsRef.orderByChild('name').equalTo(value).once('value').then(function (proSnap) {
+                        let proData = proSnap.val();
+                        if(proData !== null){
+                            return "Already taken!";
+                        }
+                    });
+                });
+            });
         },
         type: function (value) {
             return Validator.value(value).required().digit().maxLength(11);
         },
         address: function (value) {
-            let self = this;
-            return Validator.custom(function () {
-                self.address = self.$root.trim(value);
-            }).value(value).required().maxLength(100);
+            return Validator.value(value).required().maxLength(100);
         },
         contactNo: function (value) {
             return Validator.value(value).required().digit().lengthBetween(11, 11, "Invalid Number!");
@@ -82,6 +94,7 @@ export default {
                             pro_type_id: self.type,
                             address: self.address,
                             contactNo: self.contactNo,
+                            createdAt: firebase.database.ServerValue.TIMESTAMP
                         }, function (err) {
                             if(err){
                                 self.errMain = err.message;

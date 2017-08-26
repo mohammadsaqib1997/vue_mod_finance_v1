@@ -14,6 +14,8 @@
                             .col-md-12
                                 input.form-control(type='text', placeholder='Project Name' v-model='name')
                                 p.text-danger.text-right(v-if='validation.hasError("name")') {{ validation.firstError('name') }}
+                                .text-right(v-if='validation.isValidating("name")')
+                                    i.fa.fa-spinner.fa-spin
                         .row.margin-bottom-10
                             .col-md-12
                                 div.text-center(v-if='dataLoad1')

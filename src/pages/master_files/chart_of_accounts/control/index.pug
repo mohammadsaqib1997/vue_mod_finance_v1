@@ -15,6 +15,10 @@
         form#form(v-on:submit.prevent="addContEntry")
             .row
                 .col-md-12
+                    .text-right
+                        a.btn.btn-primary(href='#', data-toggle='modal', data-target='#add_control') Add New Control
+                        a.btn.btn-primary.mar-lf-10(href='#', data-toggle='modal', data-target='#add_sub_control') Add New Sub Control
+                        a.btn.btn-primary.mar-lf-10(href='#', data-toggle='modal', data-target='#add_subsidiary') Add New Subsidiary
                     h2 Control
                     p
                         | Create one control.
@@ -67,11 +71,8 @@
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
-                                                a(href='#', data-toggle='modal', data-target='#add_control')
+                                                a(href='#', data-toggle='modal', data-target='#proj_sel_control')
                                                     i.ti-plus
-                                            li
-                                                a(href='#', data-toggle='modal', data-target='#add_control')
-                                                    i.ti-pencil-alt
                     template(v-if='dataLoad3')
                         .row
                             .col-md-3
@@ -102,4 +103,7 @@
                             button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='button' disabled='disabled' v-if="inProcess || dataLoad3")
                                 i.fa.fa-refresh.fa-spin.fa-fw
     add-project-modal
+    pro-sel-control-modal
     add-control-modal
+    add-sub-control-modal
+    add-subsidiary-modal

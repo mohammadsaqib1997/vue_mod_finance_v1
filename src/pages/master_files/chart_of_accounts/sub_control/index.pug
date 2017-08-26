@@ -14,19 +14,19 @@
     .container-fluid.container-fullw.bg-white
         .row
             .col-md-12
+                .text-right
+                    a.btn.btn-primary(href='#', data-toggle='modal', data-target='#add_control') Add New Control
+                    a.btn.btn-primary.mar-lf-10(href='#', data-toggle='modal', data-target='#add_sub_control') Add New Sub Control
+                    a.btn.btn-primary.mar-lf-10(href='#', data-toggle='modal', data-target='#add_subsidiary') Add New Subsidiary
                 h2 Sub Control
                 p
                     | Create one Sub control.
                 hr
-                form(v-on:submit.prevent="")
+                form(v-on:submit.prevent="addSubContEntry")
                     .row
                         .col-md-12
-                            .errorHandler.alert.alert-danger.no-display
-                                i.fa.fa-times-sign
-                                |  You have some form errors. Please check below.
-                            .successHandler.alert.alert-success.no-display
-                                i.fa.fa-ok
-                                |  Your form validation is successful!
+                            p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
+                            p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
                         .col-md-12
                             .form-group
                                 label.control-label
@@ -43,6 +43,7 @@
                                             select.form-control(v-model='sel_project')
                                                 option(value='') Select Project
                                                 option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
@@ -66,14 +67,12 @@
                                             select.form-control(v-model='sel_control')
                                                 option(value='') Select Control
                                                 option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
-                                                a(href='#' data-toggle='modal' data-target='#add_control')
+                                                a(href='#' data-toggle='modal' data-target='#proj_sel_control')
                                                     i.ti-plus
-                                            li
-                                                a(href='#' data-toggle='modal' data-target='#add_control')
-                                                    i.ti-pencil-alt
                             .form-group
                                 label.control-label
                                     | Sub Control
@@ -89,35 +88,44 @@
                                             select.form-control(v-model='sel_sub_control')
                                                 option(value='') Select Sub Control
                                                 option(v-for='(row, key, ind) in subControlData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_sub_control")') {{ validation.firstError('sel_sub_control') }}
                                     .col-md-2.icon-container
                                         ul.ul-action
                                             li
-                                                a(href='#', data-toggle='modal', data-target='#add_sub_control')
+                                                a(href='#', data-toggle='modal', data-target='#proj_sel_sub_control')
                                                     i.ti-plus
-                                            li
-                                                a(href='#', data-toggle='modal', data-target='#add_sub_control')
-                                                    i.ti-pencil-alt
-                    .row
-                        .col-md-3
-                            .form-group
-                                label.control-label
-                                    | Open Debit
-                                    span.symbol.required(aria-required='true')
-                                input.form-control(type='text' v-bind:value="getObjKeyVal(sel_sub_control, subControlData, 'debit')" disabled='disabled')
-                    .row
-                        .col-md-3
-                            .form-group
-                                label.control-label
-                                    | Open Credit
-                                    span.symbol.required(aria-required='true')
-                                input.form-control(type='text' v-bind:value="getObjKeyVal(sel_sub_control, subControlData, 'credit')" disabled='disabled')
+                    template(v-if='dataLoad4')
+                        .row
+                            .col-md-3
+                                div.text-center
+                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                    template(v-if='!dataLoad4')
+                        .row
+                            .col-md-3
+                                .form-group
+                                    label.control-label
+                                        | Open Debit
+                                        span.symbol.required(aria-required='true')
+                                    input.form-control(type='text' v-model='debit')
+                                    p.text-danger.text-right(v-if='validation.hasError("debit")') {{ validation.firstError('debit') }}
+                        .row
+                            .col-md-3
+                                .form-group
+                                    label.control-label
+                                        | Open Credit
+                                        span.symbol.required(aria-required='true')
+                                    input.form-control(type='text' v-model='credit')
+                                    p.text-danger.text-right(v-if='validation.hasError("credit")') {{ validation.firstError('credit') }}
                     .row
                         .col-md-4.pull-right
-                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit' v-if="!inProcess && !dataLoad3")
+                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit' v-if="!inProcess && !dataLoad4")
                                 | Submit&nbsp;
                                 i.fa.fa-arrow-circle-right
-                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='button' disabled='disabled' v-if="inProcess || dataLoad3")
+                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='button' disabled='disabled' v-if="inProcess || dataLoad4")
                                 i.fa.fa-refresh.fa-spin.fa-fw
     add-project-modal
+    pro-sel-control-modal
+    pro-sel-sub-control-modal
     add-control-modal
     add-sub-control-modal
+    add-subsidiary-modal
