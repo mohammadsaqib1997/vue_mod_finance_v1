@@ -11,6 +11,7 @@ var fileUpload = require("express-fileupload");
 var history = require("connect-history-api-fallback");
 
 var admin = require('./routes/admin');
+var pdf = require('./routes/pdf');
 
 var app = express();
 
@@ -69,6 +70,8 @@ app.use(session({secret: "This is Finance Secret!", resave: false, saveUninitial
 //app.use(csrf());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+
+app.use('/pdf', pdf);
 
 app.use(history({
     logger: console.log.bind(console),
