@@ -31,10 +31,15 @@ module.exports  = {
         }
         return sorted;
     },
-    genInvoiceNo: function (num) {
+    sortObjByVal: function sortObject(o, key) {
+        return o.sort(function(a, b){
+            return (a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0);
+        });
+    },
+    genInvoiceNo: function (num, append, length) {
         num = num.toString();
-        if(num.length < 3){
-            num = ('00'+num).slice(-3);
+        if(num.length < length){
+            num = (append+num).slice(-length);
         }
         return num;
     },

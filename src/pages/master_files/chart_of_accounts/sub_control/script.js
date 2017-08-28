@@ -146,7 +146,7 @@ export default {
             self.subControlData = {};
             if(cont_key !== ""){
                 func.dbLoadMet(function () {
-                    self.proSelContRef.child(self.sel_project+"/"+cont_key).on('value', function (proSelSubContSnap) {
+                    self.proSelContRef.child(self.sel_project+"/"+cont_key).once('value', function (proSelSubContSnap) {
                         let data = proSelSubContSnap.val();
                         if(data !== null){
                             let keys = Object.keys(data);

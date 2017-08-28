@@ -7,8 +7,15 @@ var bodyParser = require('body-parser');
 var exp_validator = require('express-validator');
 var session = require('express-session');
 var fileUpload = require("express-fileupload");
-//var csrf = require('csurf');
 var history = require("connect-history-api-fallback");
+
+var admin_firebase = require("firebase-admin");
+var serviceAccount = require("./config/serviceAccountKey.json");
+var config_fireBase = require("./config/private.json");
+admin_firebase.initializeApp({
+    credential: admin_firebase.credential.cert(serviceAccount),
+    databaseURL: config_fireBase.config_fb.databaseURL
+});
 
 var admin = require('./routes/admin');
 var pdf = require('./routes/pdf');

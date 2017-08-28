@@ -14,45 +14,58 @@
     .container-fluid.container-fullw.bg-white
         .row
             .col-md-12
-                h2 Master Listing / List: Chart Of Account / Sub Control
-                .row
-                    .col-md-12
-                        .form-group
-                            .row
-                                .col-md-6
-                                    label Project
-                                    select#control_name.form-control(name='project')
-                                        option(value='01') Project 1
-                                        option(value='02') Project 2
-                .row
-                    .col-md-12
-                        .form-group
-                            .row
-                                .col-md-6
-                                    label Starting Sub Control
-                                    select#control_name.form-control(name='start_subcontrol')
-                                        option(value='01') 0001 Sub Control
-                                        option(value='02') 0002 Sub Control
-                .row
-                    .col-md-12
-                        .form-group
-                            .row
-                                .col-md-6
-                                    label Ending Sub Control
-                                    select#control_name.form-control(name='end_subcontrol')
-                                        option(value='01') 0001 Sub Control
-                                        option(value='02') 0002 Sub Control
-                .row
-                    .col-md-12
-                        .form-group
-                            .row
-                                .col-md-6
-                                    label Destination
-                                    select#control_name.form-control(name='saveaction')
-                                        option(value='01') Screen
-                                        option(value='02') File
-                .row
-                    .col-md-4.pull-right
-                        button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
-                            | Submit
-                            i.fa.fa-arrow-circle-right
+                form(v-on:submit.prevent="showSheet")
+                    h2 Master Listing / List: Chart Of Account / Sub Control
+                    .row
+                        .col-md-12
+                            .form-group
+                                .row
+                                    .col-md-6
+                                        div.text-center(v-if='dataLoad1')
+                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                        template(v-else)
+                                            label Project
+                                            select.form-control(name='sel_project' v-model='sel_project')
+                                                option(value='') Select Project
+                                                option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
+                    .row(v-if='dataLoad2')
+                        .col-md-6
+                            div.text-center
+                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                    template(v-else)
+                        .row
+                            .col-md-12
+                                .form-group
+                                    .row
+                                        .col-md-6
+                                            label Starting Sub Control
+                                            select.form-control(name='sel_subCont_start' v-model='sel_subCont_start')
+                                                option(value='') Select Sub Control
+                                                option(v-for='(row, ind) in subContData' v-bind:value='row.key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_subCont_start")') {{ validation.firstError('sel_subCont_start') }}
+                        .row
+                            .col-md-12
+                                .form-group
+                                    .row
+                                        .col-md-6
+                                            label Ending Sub Control
+                                            select.form-control(name='sel_subCont_end' v-model='sel_subCont_end')
+                                                option(value='') Select Sub Control
+                                                option(v-for='(row, ind) in subContData' v-bind:value='row.key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_subCont_end")') {{ validation.firstError('sel_subCont_end') }}
+                    .row
+                        .col-md-12
+                            .form-group
+                                .row
+                                    .col-md-6
+                                        label Destination
+                                        select.form-control(v-model='sel_show_type')
+                                            option(value='Screen') Screen
+                                            option(value='File') File
+                                        p.text-danger.text-right(v-if='validation.hasError("sel_show_type")') {{ validation.firstError('sel_show_type') }}
+                    .row
+                        .col-md-4.pull-right
+                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
+                                | Submit&nbsp;
+                                i.fa.fa-arrow-circle-right

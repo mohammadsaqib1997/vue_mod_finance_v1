@@ -14,45 +14,58 @@
     .container-fluid.container-fullw.bg-white
         .row
             .col-md-12
-                h2 Master Listing / List: Chart Of Account / Control
-                .row
-                    .col-md-12
-                        .form-group
-                            .row
-                                .col-md-6
-                                    label Project
-                                    select#control_name.form-control(name='project')
-                                        option(value='01') Project 1
-                                        option(value='02') Project 2
-                .row
-                    .col-md-12
-                        .form-group
-                            .row
-                                .col-md-6
-                                    label Starting Control
-                                    select#control_name.form-control(name='end_control')
-                                        option(value='01') 001 Control
-                                        option(value='02') 002 Control
-                .row
-                    .col-md-12
-                        .form-group
-                            .row
-                                .col-md-6
-                                    label Ending Control
-                                    select#control_name.form-control(name='start_control')
-                                        option(value='01') 001 Control
-                                        option(value='02') 002 Control
-                .row
-                    .col-md-12
-                        .form-group
-                            .row
-                                .col-md-6
-                                    label Destination
-                                    select#control_name.form-control(name='saveaction')
-                                        option(value='01') Screen
-                                        option(value='02') File
-                .row
-                    .col-md-4.pull-right
-                        button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
-                            | Submit
-                            i.fa.fa-arrow-circle-right
+                form(v-on:submit.prevent="showSheet")
+                    h2 Master Listing / List: Chart Of Account / Control
+                    .row
+                        .col-md-12
+                            .form-group
+                                .row
+                                    .col-md-6
+                                        div.text-center(v-if='dataLoad1')
+                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                        template(v-else)
+                                            label Project
+                                            select.form-control(name='sel_project' v-model='sel_project')
+                                                option(value='') Select Project
+                                                option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
+                    .row(v-if='dataLoad2')
+                        .col-md-6
+                            div.text-center
+                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                    template(v-else)
+                        .row
+                            .col-md-12
+                                .form-group
+                                    .row
+                                        .col-md-6
+                                            label Starting Control
+                                            select.form-control(name='sel_control_start' v-model='sel_control_start')
+                                                option(value='') Select Control
+                                                option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_control_start")') {{ validation.firstError('sel_control_start') }}
+                        .row
+                            .col-md-12
+                                .form-group
+                                    .row
+                                        .col-md-6
+                                            label Ending Control
+                                            select.form-control(name='sel_control_end' v-model='sel_control_end')
+                                                option(value='') Select Control
+                                                option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_control_end")') {{ validation.firstError('sel_control_end') }}
+                    .row
+                        .col-md-12
+                            .form-group
+                                .row
+                                    .col-md-6
+                                        label Destination
+                                        select.form-control(v-model='sel_show_type')
+                                            option(value='Screen') Screen
+                                            option(value='File') File
+                                        p.text-danger.text-right(v-if='validation.hasError("sel_show_type")') {{ validation.firstError('sel_show_type') }}
+                    .row
+                        .col-md-4.pull-right
+                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
+                                | Submit&nbsp;
+                                i.fa.fa-arrow-circle-right

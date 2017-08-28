@@ -1,0 +1,32 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset="UTF-8")
+        title FocusMedia360° - Management | Controls Listing
+
+    body
+        table(style='width:100%;padding:15px;')
+            tbody
+                tr
+                    td(colspan='2' style="text-align:left;")
+                        h2(style="margin:0;") #{proName}
+                    td(style="text-align:right;") #{date}
+                tr
+                    td(colspan="3" style="border-top:2px solid black;")
+                tr
+                    td(style='width:25%;') Account Code
+                    td(style='text-align:center;width:50%;') Account Description
+                    td(style='text-align:right;width:25%;') Reference Code
+                tr
+                    td(colspan="3" style="border-top:2px solid black;")
+                tr
+                    td(colspan='3')
+                        table(cellpadding='5' style='width:100%;')
+                            tr
+                                td(style="width:40px;") #{contData.id}
+                                td(colspan='2') #{contData.name}
+                            each item in data
+                                tr
+                                    td
+                                    td(style="width:40px;") #{item.id}
+                                    td #{item.name}
