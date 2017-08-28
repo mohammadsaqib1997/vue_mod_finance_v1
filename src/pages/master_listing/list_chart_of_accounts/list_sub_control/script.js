@@ -9,7 +9,7 @@ export default {
         let self = this;
 
         self.$watch('sel_project', function (val, oldVal) {
-            self.proSelSubContGet(val);
+            self.regSubContGet(val);
         });
 
 
@@ -63,57 +63,46 @@ export default {
             return Validator.value(value).required().lengthBetween(20, 36);
         },
         sel_subCont_start: function (value) {
-            return Validator.value(value).required().lengthBetween(20, 36);
+            return Validator.value(value).required().lengthBetween(3, 11, "Invalid Register Sub Control Id!");
         },
         sel_subCont_end: function (value) {
-            return Validator.value(value).required().lengthBetween(20, 36);
+            return Validator.value(value).required().lengthBetween(3, 11, "Invalid Register Sub Control Id!");
         },
         sel_show_type: function (value) {
             return Validator.value(value).required();
         }
     },
     methods: {
-        proSelSubContGet: function (pro_key) {
+        regSubContGet: function (pro_key) {
             let self = this;
             self.dataLoad2 = true;
             self.sel_subCont_start = "";
             self.sel_subCont_end = "";
-            self.subContData = [];
+            self.subContData = {};
             if (pro_key !== "") {
                 func.dbLoadMet(function () {
                     self.regSubContRef.child(pro_key).on('value', function (proSelContSnap) {
                         let data = proSelContSnap.val();
                         if (data !== null) {
-                            let keys = Object.keys(data);
-                            let keys_length = keys.length;
-                            if(keys_length > 0){
-                                let process_item = 0;
-                                self.sel_subCont_start = "";
-                                self.sel_subCont_end = "";
-                                self.subContData = [];
-                                keys.forEach(function (row) {
-                                    self.subContRef.child(row).once('value').then(function (subContSnap) {
-                                        let subContData = subContSnap.val();
-                                        self.contRef.child(subContData.cont_key).once('value').then(function (contSnap) {
-                                            let contData = contSnap.val();
-
-                                            subContData['key'] = row;
-                                            subContData['mixin_id'] = func.genInvoiceNo(contData.id, '00', 3)+func.genInvoiceNo(subContData.id, '000', 4);
-                                            subContData['name'] = subContData.mixin_id + " " + subContData.name;
-
-                                            self.subContData.push(subContData);
-
-                                            process_item++;
-                                            if (process_item === keys_length) {
-                                                self.subContData = func.sortObjByVal(self.subContData, 'mixin_id');
-                                                self.dataLoad2 = false;
-                                            }
-                                        });
-                                    });
+                            let ids = Object.keys(data);
+                            let ids_length = ids.length;
+                            let process_item = 0;
+                            self.sel_subCont_start = "";
+                            self.sel_subCont_end = "";
+                            self.subContData = {};
+                            ids.forEach(function (id) {
+                                let item = data[id];
+                                self.subContRef.child(item.key).once('value').then(function (subContSnap) {
+                                    let subContData = subContSnap.val();
+                                    subContData['name'] = id + " " + subContData.name;
+                                    self.subContData[id] = subContData;
+                                    process_item++;
+                                    if (process_item === ids_length) {
+                                        self.subContData = func.sortObj(self.subContData, false);
+                                        self.dataLoad2 = false;
+                                    }
                                 });
-                            }else{
-                                self.dataLoad2 = false;
-                            }
+                            });
                         } else {
                             self.dataLoad2 = false;
                         }

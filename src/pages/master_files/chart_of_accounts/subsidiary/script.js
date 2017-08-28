@@ -181,7 +181,7 @@ export default {
             self.subControlData = {};
             if(cont_key !== ""){
                 func.dbLoadMet(function () {
-                    self.proSelContRef.child(self.sel_project+"/"+cont_key).on('value', function (proSelSubContSnap) {
+                    self.proSelContRef.child(self.sel_project+"/"+cont_key).once('value', function (proSelSubContSnap) {
                         let data = proSelSubContSnap.val();
                         if(data !== null){
                             let keys = Object.keys(data);
@@ -219,7 +219,7 @@ export default {
             self.subsData = {};
             if(sub_cont_key !== ""){
                 func.dbLoadMet(function () {
-                    self.proSelContRef.child(self.sel_project+"/"+self.sel_control+"/"+sub_cont_key).on('value', function (proSubsSnap) {
+                    self.proSelContRef.child(self.sel_project+"/"+self.sel_control+"/"+sub_cont_key).once('value', function (proSubsSnap) {
                         let data = proSubsSnap.val();
                         if(data !== null){
                             let keys = Object.keys(data);
@@ -258,13 +258,14 @@ export default {
             self.debit = 0;
             self.credit = 0;
             if(pro_key !== "" && subs_key !== ""){
-                self.regSubsRef.child(pro_key+"/"+subs_key).once('value').then(function (regSubsSnap) {
+                self.regSubsRef.child(pro_key).orderByChild('key').equalTo(subs_key).once('value').then(function (regSubsSnap) {
                     let data = regSubsSnap.val();
                     if(data !== null){
-                        self.party_id = (data.party_key !== false)? data.party_key: "";
-                        self.bill_type = data.bill_type_key;
-                        self.debit = data.debit;
-                        self.credit = data.credit;
+                        let keys = Object.keys(data);
+                        self.party_id = (data[keys[0]].party_key !== false)? data[keys[0]].party_key: "";
+                        self.bill_type = data[keys[0]].bill_type_key;
+                        self.debit = data[keys[0]].debit;
+                        self.credit = data[keys[0]].credit;
                     }
                     self.dataLoad5 = false;
                 });
@@ -277,7 +278,11 @@ export default {
             self.$validate().then(function (success) {
                 if (success) {
                     self.inProcess = true;
-                    self.regSubsRef.child(self.sel_project+"/"+self.sel_subsidiary).set({
+                    let id_gen = func.genInvoiceNo(self.controlData[self.sel_control].id, '00', 3)
+                        +func.genInvoiceNo(self.subControlData[self.sel_sub_control].id, '000', 4)
+                        +func.genInvoiceNo(self.subsData[self.sel_subsidiary].id, '00', 3);
+                    self.regSubsRef.child(self.sel_project+"/"+id_gen).set({
+                        'key': self.sel_subsidiary,
                         'debit': self.debit,
                         'credit': self.credit,
                         'party_key': (self.party_id !== "")? self.party_id: false,

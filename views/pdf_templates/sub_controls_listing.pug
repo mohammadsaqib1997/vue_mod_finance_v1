@@ -22,11 +22,13 @@ html(lang='en')
                 tr
                     td(colspan='3')
                         table(cellpadding='5' style='width:100%;')
-                            tr
-                                td(style="width:40px;") #{contData.id}
-                                td(colspan='2') #{contData.name}
-                            each item in data
+                            each cont_item in data.cont_data
                                 tr
-                                    td
-                                    td(style="width:40px;") #{item.id}
-                                    td #{item.name}
+                                    td(style="width:40px;") #{cont_item.id}
+                                    td(colspan='2') #{cont_item.name}
+                                each sCont_item in data.sub_cont_data
+                                    if sCont_item.cont_id === cont_item.id
+                                        tr
+                                            td
+                                            td(style="width:40px;") #{sCont_item.id}
+                                            td #{sCont_item.name}

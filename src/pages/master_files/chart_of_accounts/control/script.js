@@ -127,11 +127,12 @@ export default {
             let self = this;
             if(pro_key !== "" && cont_key !== ""){
                 self.dataLoad3 = true;
-                self.regControlsRef.child(pro_key+"/"+cont_key).once('value').then(function (regContSnap) {
+                self.regControlsRef.child(pro_key).orderByChild('key').equalTo(cont_key).once('value').then(function (regContSnap) {
                     let regContData = regContSnap.val();
                     if(regContData !== null){
-                        self.debit = regContData.debit;
-                        self.credit = regContData.credit;
+                        let keys = Object.keys(regContData);
+                        self.debit = regContData[keys[0]].debit;
+                        self.credit = regContData[keys[0]].credit;
                     }else{
                         self.debit = 0;
                         self.credit = 0;
@@ -148,7 +149,9 @@ export default {
             self.$validate().then(function (success) {
                 if (success) {
                     self.inProcess = true;
-                    self.regControlsRef.child(self.sel_project+"/"+self.sel_control).set({
+                    let id_gen = func.genInvoiceNo(self.controlData[self.sel_control].id, '00', 3);
+                    self.regControlsRef.child(self.sel_project+"/"+id_gen).set({
+                        'key': self.sel_control,
                         'debit': self.debit,
                         'credit': self.credit,
                         'createdAt': firebase.database.ServerValue.TIMESTAMP

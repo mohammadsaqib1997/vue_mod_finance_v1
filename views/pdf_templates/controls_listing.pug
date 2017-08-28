@@ -14,11 +14,17 @@ html(lang='en')
                 tr
                     td(colspan="3" style="border-top:2px solid black;")
                 tr
+                    td(style='width:25%;') Account Code
+                    td(style='text-align:center;width:50%;') Account Description
+                    td(style='text-align:right;width:25%;') Reference Code
+                tr
+                    td(colspan="3" style="border-top:2px solid black;")
+                tr
                     td(colspan='3')
                         table(cellpadding='5' style='width:100%;')
-                            each item in data
+                            each item, id in data
                                 tr
-                                    td(style="width:40px;") #{item.id}
+                                    td(style="width:40px;") #{id}
                                     td #{item.name}
 
 

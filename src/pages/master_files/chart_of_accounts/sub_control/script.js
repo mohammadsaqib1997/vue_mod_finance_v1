@@ -183,11 +183,12 @@ export default {
             self.debit = 0;
             self.credit = 0;
             if(pro_key !== "" && sub_cont_key !== ""){
-                self.regSubControlsRef.child(pro_key+"/"+sub_cont_key).once('value').then(function (regSubContSnap) {
+                self.regSubControlsRef.child(pro_key).orderByChild('key').equalTo(sub_cont_key).once('value').then(function (regSubContSnap) {
                     let data = regSubContSnap.val();
                     if(data !== null){
-                        self.debit = data.debit;
-                        self.credit = data.credit;
+                        let keys = Object.keys(data);
+                        self.debit = data[keys[0]].debit;
+                        self.credit = data[keys[0]].credit;
                     }
                     self.dataLoad4 = false;
                 });
@@ -200,7 +201,9 @@ export default {
             self.$validate().then(function (success) {
                 if (success) {
                     self.inProcess = true;
-                    self.regSubControlsRef.child(self.sel_project+"/"+self.sel_sub_control).set({
+                    let id_gen = func.genInvoiceNo(self.controlData[self.sel_control].id, '00', 3)+func.genInvoiceNo(self.subControlData[self.sel_sub_control].id, '000', 4);
+                    self.regSubControlsRef.child(self.sel_project+"/"+id_gen).set({
+                        'key': self.sel_sub_control,
                         'debit': self.debit,
                         'credit': self.credit,
                         'createdAt': firebase.database.ServerValue.TIMESTAMP

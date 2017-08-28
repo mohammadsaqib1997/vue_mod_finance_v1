@@ -58,10 +58,10 @@ export default {
             return Validator.value(value).required().lengthBetween(20, 36);
         },
         sel_control_start: function (value) {
-            return Validator.value(value).required().lengthBetween(20, 36);
+            return Validator.value(value).required().lengthBetween(3, 11, "Invalid Register Control Id!");
         },
         sel_control_end: function (value) {
-            return Validator.value(value).required().lengthBetween(20, 36);
+            return Validator.value(value).required().lengthBetween(3, 11, "Invalid Register Control Id!");
         },
         sel_show_type: function (value) {
             return Validator.value(value).required();
@@ -76,8 +76,8 @@ export default {
             self.controlData = {};
             if (pro_key !== "") {
                 func.dbLoadMet(function () {
-                    self.proSelContRef.child(pro_key).on('value', function (proSelContSnap) {
-                        let data = proSelContSnap.val();
+                    self.regControlsRef.child(pro_key).on('value', function (regContSnap) {
+                        let data = regContSnap.val();
                         if (data !== null) {
                             let keys = Object.keys(data);
                             let keys_length = keys.length;
@@ -86,9 +86,10 @@ export default {
                             self.sel_control_end = "";
                             self.controlData = {};
                             keys.forEach(function (row) {
-                                self.controlsRef.child(row).once('value').then(function (conSnap) {
-                                    let contData = conSnap.val();
-                                    contData['name'] = func.genInvoiceNo(contData.id, '00', 3) + " " + contData.name;
+                                let item = data[row];
+                                self.controlsRef.child(item.key).once('value').then(function (contSnap) {
+                                    let contData = contSnap.val();
+                                    contData['name'] = row + " " + contData.name;
                                     self.controlData[row] = contData;
                                     process_item++;
                                     if (process_item === keys_length) {

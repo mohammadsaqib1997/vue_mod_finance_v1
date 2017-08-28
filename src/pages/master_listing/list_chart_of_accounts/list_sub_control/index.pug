@@ -42,7 +42,7 @@
                                             label Starting Sub Control
                                             select.form-control(name='sel_subCont_start' v-model='sel_subCont_start')
                                                 option(value='') Select Sub Control
-                                                option(v-for='(row, ind) in subContData' v-bind:value='row.key') {{ row.name }}
+                                                option(v-for='(row, key, ind) in subContData' v-bind:value='key') {{ row.name }}
                                             p.text-danger.text-right(v-if='validation.hasError("sel_subCont_start")') {{ validation.firstError('sel_subCont_start') }}
                         .row
                             .col-md-12
@@ -52,7 +52,7 @@
                                             label Ending Sub Control
                                             select.form-control(name='sel_subCont_end' v-model='sel_subCont_end')
                                                 option(value='') Select Sub Control
-                                                option(v-for='(row, ind) in subContData' v-bind:value='row.key') {{ row.name }}
+                                                option(v-for='(row, key, ind) in subContData' v-bind:value='key') {{ row.name }}
                                             p.text-danger.text-right(v-if='validation.hasError("sel_subCont_end")') {{ validation.firstError('sel_subCont_end') }}
                     .row
                         .col-md-12
