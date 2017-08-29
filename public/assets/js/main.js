@@ -9,11 +9,7 @@ var Main = function() {
 		mobile : 480
 	};
 	$(".current-year").text((new Date()).getFullYear());
-	
-	
-	var datepicker = function() {
-		$(".datepicker").datepicker();
-	};
+
 	//sidebar
 	var sidebarHandler = function() {
 		var eventObject = isTouch() ? 'click' : 'mouseenter', elem = $('#sidebar'), ul = "", menuTitle, _this, sidebarMobileToggler = $('.sidebar-mobile-toggler'), $winOffsetTop = 0, $winScrollTop = 0, $appWidth;
@@ -468,7 +464,6 @@ var Main = function() {
 		init : function() {
 			settingsHandler();
 			sidebarHandler();
-			datepicker();
 			toggleClassOnElement();
 			navbarHandler();
 			searchHandler();

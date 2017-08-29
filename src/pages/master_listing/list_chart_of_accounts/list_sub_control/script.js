@@ -12,7 +12,6 @@ export default {
             self.regSubContGet(val);
         });
 
-
         const db = firebase.database();
         self.projectsRef = db.ref('/projects');
         self.contRef = db.ref('/controls');

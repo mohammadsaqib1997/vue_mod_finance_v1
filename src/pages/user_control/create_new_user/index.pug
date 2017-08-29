@@ -10,7 +10,7 @@
                 li.active
                     span Profile
     .container-fluid.container-fullw.bg-white.create-user
-        form#form(action='#', role='form')
+        form#form(v-on:submit.prevent='')
             fieldset
                 legend(style=' left: 3%; ')
                     | Account Info
@@ -19,27 +19,27 @@
                         .form-group
                             label.control-label
                                 | First Name
-                            input#firstname.form-control(type='text', placeholder='Peter', name='firstname')
+                            input.form-control(type='text', placeholder='Peter', name='firstname')
                         .form-group
                             label.control-label
                                 | Last Name
-                            input#lastname.form-control(type='text', placeholder='Clark', name='lastname')
+                            input.form-control(type='text', placeholder='Clark', name='lastname')
                         .form-group
                             label.control-label
                                 | Email Address
-                            input#email.form-control(type='email', placeholder='peter@example.com', name='email')
+                            input.form-control(type='email', placeholder='peter@example.com', name='email')
                         .form-group
                             label.control-label
                                 | Phone
-                            input#form-field-mask-2.form-control.input-mask-phone(type='text', name='phone')
+                            input.form-control.input-mask-phone(type='text', name='phone')
                         .form-group
                             label.control-label
                                 | Password
-                            input#password.form-control(type='password', placeholder='password', name='password')
+                            input.form-control(type='password', placeholder='password', name='password')
                         .form-group
                             label.control-label
                                 | Confirm Password
-                            input#password_again.form-control(type='password', placeholder='password', name='password_again')
+                            input.form-control(type='password', placeholder='password', name='password_again')
                     .col-md-6
                         .form-group
                             label.control-label
