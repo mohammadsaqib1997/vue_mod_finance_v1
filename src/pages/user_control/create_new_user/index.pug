@@ -10,7 +10,7 @@
                 li.active
                     span Profile
     .container-fluid.container-fullw.bg-white.create-user
-        form#form(v-on:submit.prevent='')
+        form
             fieldset
                 legend(style=' left: 3%; ')
                     | Account Info
@@ -19,61 +19,69 @@
                         .form-group
                             label.control-label
                                 | First Name
-                            input.form-control(type='text', placeholder='Peter')
+                            input.form-control(type='text', placeholder='Peter' v-model='first_name')
+                            p.text-danger.text-right(v-if='validation.hasError("first_name")') {{ validation.firstError('first_name') }}
                         .form-group
                             label.control-label
                                 | Last Name
-                            input.form-control(type='text', placeholder='Clark')
+                            input.form-control(type='text', placeholder='Clark' v-model='last_name')
+                            p.text-danger.text-right(v-if='validation.hasError("last_name")') {{ validation.firstError('last_name') }}
                         .form-group
                             label.control-label
                                 | Email Address
-                            input.form-control(type='email', placeholder='peter@example.com')
+                            input.form-control(type='email', placeholder='peter@example.com' v-model='email')
+                            p.text-danger.text-right(v-if='validation.hasError("email")') {{ validation.firstError('email') }}
                         .form-group
                             label.control-label
                                 | Phone/Mobile
-                            input.form-control.input-mask-phone(type='text', placeholder='Phone/Mobile')
+                            input.form-control.input-mask-phone(type='text', placeholder='Phone/Mobile' v-model='mob_num')
+                            p.text-danger.text-right(v-if='validation.hasError("mob_num")') {{ validation.firstError('mob_num') }}
                         .form-group
                             label.control-label
                                 | Password
-                            input.form-control(type='password', placeholder='Password')
+                            input.form-control(type='password', placeholder='Password' v-model='password')
+                            p.text-danger.text-right(v-if='validation.hasError("password")') {{ validation.firstError('password') }}
                         .form-group
                             label.control-label
                                 | Confirm Password
-                            input.form-control(type='password', placeholder='Re-Type Password')
+                            input.form-control(type='password', placeholder='Re-Type Password' v-model='retype_password')
+                            p.text-danger.text-right(v-if='validation.hasError("retype_password")') {{ validation.firstError('retype_password') }}
                     .col-md-6
                         .form-group
                             label.control-label
                                 | Gender
                             .clip-radio.radio-primary
-                                input#us-female(type='radio', value='female', name='gender')
+                                input#us-female(type='radio', value='Female', v-model='gender')
                                 label(for='us-female')
                                     | Female
-                                input#us-male(type='radio', value='male', name='gender', checked='')
+                                input#us-male(type='radio', value='Male', v-model='gender')
                                 label(for='us-male')
                                     | Male
+                                p.text-danger.text-right(v-if='validation.hasError("gender")') {{ validation.firstError('gender') }}
                         .form-group
                             label
                                 | Project
-                            select.form-control
-                                option(value='0') Project 1
-                                option(value='1') Project 2
+                            div.text-center(v-if='dataLoad1')
+                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                            template(v-else)
+                                select.form-control(v-model='sel_project')
+                                    option(value='') Select Project
+                                    option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
+                                p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                         .row
                             .col-md-4
                                 .form-group
                                     label.control-label
                                         | Zip Code
-                                    input#zipcode.form-control(placeholder='12345', type='text', name='zipcode')
+                                    input.form-control(placeholder='12345', type='text', v-model='zipcode')
                             .col-md-8
-                                .form-group
-                                    label.control-label
-                                        | City
-                                    input#city.form-control.tooltips(placeholder='London (UK)', type='text', data-original-title="We'll display it when you write reviews", data-rel='tooltip', title='', data-placement='top', name='city')
+                                com_cities(ref='sel_city')
                         .form-group
                             label
                                 | Image Upload
                             .fileinput.fileinput-new(data-provides='fileinput')
                                 .fileinput-new.thumbnail
-                                    img(src='assets/images/avatar-1-xl.jpg', alt='')
+                                    img(src='/assets/images/default-user.png', alt='')
                                 .user-edit-image-buttons
                                     span.btn.btn-azure.btn-file
                                         span.fileinput-new
@@ -83,7 +91,7 @@
             .row
                 .col-md-8
                 .col-md-4
-                    button.btn.btn-primary.pull-right(type='submit')
+                    button.btn.btn-primary.pull-right(type='button' v-on:click.prevent='createUser')
                         | Submit&nbsp;
                         i.fa.fa-arrow-circle-right
         hr

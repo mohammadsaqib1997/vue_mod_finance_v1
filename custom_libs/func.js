@@ -89,5 +89,10 @@ module.exports  = {
         }else{
             load = setTimeout(func, time);
         }
+    },
+    compareArr: function (arr1, arr2) {
+        return (arr1.length === arr2.length) && arr1.every(function (elm, ind) {
+                return elm === arr2[ind];
+            });
     }
 };
