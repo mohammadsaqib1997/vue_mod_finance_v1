@@ -80,6 +80,8 @@ app.use(session({secret: "This is Finance Secret!", resave: false, saveUninitial
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
+require('./routes/firebase_jobs');
+
 app.use('/api', api);
 app.use('/gapi', gapi);
 app.use('/pdf', pdf);

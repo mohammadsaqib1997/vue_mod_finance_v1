@@ -27,6 +27,7 @@
     "cors": "^2.8.4",
     "csurf": "^1.9.0",
     "debug": "~2.6.0",
+    "elasticsearchclient": "^0.5.3",
     "express": "~4.14.1",
     "express-fileupload": "^0.1.4",
     "express-session": "^1.15.2",

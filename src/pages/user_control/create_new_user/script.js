@@ -143,7 +143,8 @@ export default {
                                     projects: (self.sel_project.length > 0) ? self.sel_project: true,
                                     zipcode: self.zipcode,
                                     city: self.$refs.sel_city.query,
-                                    act_status: true
+                                    act_status: true,
+                                    createdAt: firebase.database.ServerValue.TIMESTAMP
                                 }, function (err) {
                                     if (err) {
                                         self.errMain = err.message;

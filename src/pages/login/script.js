@@ -28,6 +28,7 @@ export default {
             self.$validate().then(function (success) {
                 if(success){
                     self.isProcess = true;
+                    self.mainErr = "";
                     if(self.email === admin_email){
                         firebase.auth().signInWithEmailAndPassword(self.email, self.password).then(function(){
                             self.isProcess = false;
@@ -41,8 +42,19 @@ export default {
                             email: self.email,
                             password: self.password,
                         }).then(function (res) {
-                            self.isProcess = false;
-                            console.log(res);
+                            let body = res.body;
+                            if(body.status === "ok"){
+                                firebase.auth().signInWithCustomToken(body.token).then(function () {
+                                    self.isProcess = false;
+                                    self.$router.push('/');
+                                }, function (err) {
+                                    self.mainErr = err.message;
+                                    self.isProcess = false;
+                                });
+                            }else{
+                                self.isProcess = false;
+                                self.mainErr = body.message;
+                            }
                         }, function (err) {
                             self.isProcess = false;
                             console.log(err);
