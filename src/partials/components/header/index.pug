@@ -25,7 +25,7 @@ header.navbar.navbar-default.navbar-static-top
                         a(href='login_lockscreen.html')
                             | Lock Screen
                     li
-                        a(href='login_signin.html')
+                        a(v-on:click.prevent='logout')
                             | Log Out
         .close-handle.visible-xs-block.menu-toggler(data-toggle='collapse', href='.navbar-collapse')
             .arrow-left

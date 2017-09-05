@@ -15,6 +15,9 @@
                 legend(style=' left: 3%; ')
                     | Account Info
                 .row
+                    .col-md-12(v-if='errMain !== "" || sucMain !== ""')
+                        p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
+                        p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
                     .col-md-6
                         .form-group
                             label.control-label
@@ -31,6 +34,8 @@
                                 | Email Address
                             input.form-control(type='email', placeholder='peter@example.com' v-model='email')
                             p.text-danger.text-right(v-if='validation.hasError("email")') {{ validation.firstError('email') }}
+                            .text-right(v-if='validation.isValidating("email")')
+                                i.fa.fa-spinner.fa-spin
                         .form-group
                             label.control-label
                                 | Phone/Mobile
@@ -61,19 +66,27 @@
                         .form-group
                             label
                                 | Project
-                            div.text-center(v-if='dataLoad1')
-                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                            template(v-else)
-                                select.form-control(v-model='sel_project')
-                                    option(value='') Select Project
-                                    option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
-                                p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
+                            .clip-radio.radio-primary
+                                input#pro_sel(type='radio', value='Select', v-model='pro_sel_type')
+                                label(for='pro_sel')
+                                    | Select Project
+                                input#pro_all(type='radio', value='All', v-model='pro_sel_type')
+                                label(for='pro_all')
+                                    | All Project
+                            template(v-if='pro_sel_type === "Select"')
+                                div.text-center(v-if='dataLoad1')
+                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                template(v-else)
+                                    select.form-control(v-model='sel_project' multiple)
+                                        option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
+                                    p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                         .row
                             .col-md-4
                                 .form-group
                                     label.control-label
                                         | Zip Code
-                                    input.form-control(placeholder='12345', type='text', v-model='zipcode')
+                                    input.form-control(placeholder='123456', type='text', v-model='zipcode')
+                                    p.text-danger.text-right(v-if='validation.hasError("zipcode")') {{ validation.firstError('zipcode') }}
                             .col-md-8
                                 com_cities(ref='sel_city')
                         .form-group
@@ -91,7 +104,9 @@
             .row
                 .col-md-8
                 .col-md-4
-                    button.btn.btn-primary.pull-right(type='button' v-on:click.prevent='createUser')
+                    button.btn.btn-primary.pull-right(v-if="inProcess" type='button' disabled='disabled')
+                        i.fa.fa-refresh.fa-spin.fa-fw
+                    button.btn.btn-primary.pull-right(v-else type='button' v-on:click.prevent='createUser')
                         | Submit&nbsp;
                         i.fa.fa-arrow-circle-right
         hr
@@ -99,74 +114,29 @@
             .row
                 .col-md-12
                     .table-responsive
-                        table#sample_2.table.table-striped.table-hover
+                        div.text-center(v-if='dataLoad2')
+                            i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
+                        table#sample_2.table.table-striped.table-hover(v-else)
                             thead
                                 tr
                                     th Full Name
                                     th Email
-                                    th Project
                                     th City
                                     th Phone
                                     th Edit
-                                    th Delete
+                                    th Action
                             tbody
-                                tr
-                                    td Peter Clark
-                                    td abc@abc.com
-                                    td Project 1
-                                    td karachi
-                                    td (641)-734-4763
+                                tr(v-for='(row, key, ind) in userData')
+                                    td {{ row.first_name }} {{ row.last_name }}
+                                    td {{ row.email }}
+                                    td {{ row.city }}
+                                    td {{ row.mob_num }}
                                     td
                                         a.edit-row(href='#')
                                             | Edit
                                     td
-                                        a.delete-row(href='#')
-                                            | Delete
-                                tr
-                                    td Nicole Bell
-                                    td abc@abc.com
-                                    td Project 2
-                                    td karachi
-                                    td (741)-034-4573
-                                    td
-                                        a.edit-row(href='#')
-                                            | Edit
-                                    td
-                                        a.delete-row(href='#')
-                                            | Delete
-                                tr
-                                    td Steven Thompson
-                                    td abc@abc.com
-                                    td Project 2
-                                    td karachi
-                                    td (471)-543-4073
-                                    td
-                                        a.edit-row(href='#')
-                                            | Edit
-                                    td
-                                        a.delete-row(href='#')
-                                            | Delete
-                                tr
-                                    td Ella Patterson
-                                    td abc@abc.com
-                                    td Project 3
-                                    td karachi
-                                    td (799)-994-9999
-                                    td
-                                        a.edit-row(href='#')
-                                            | Edit
-                                    td
-                                        a.delete-row(href='#')
-                                            | Delete
-                                tr
-                                    td Kenneth Ross
-                                    td abc@abc.com
-                                    td Project 5
-                                    td karachi
-                                    td (111)-114-1173
-                                    td
-                                        a.edit-row(href='#')
-                                            | Edit
-                                    td
-                                        a.delete-row(href='#')
-                                            | Delete
+                                        button.btn.btn-small.btn-success(v-if='!row.act_status' v-on:click='active(key)')
+                                            | Activate
+                                        button.btn.btn-small.btn-danger(v-else v-on:click='deactive(key)')
+                                            | Deactivate
+

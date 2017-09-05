@@ -19,6 +19,8 @@ admin_firebase.initializeApp({
 
 var admin = require('./routes/admin');
 var pdf = require('./routes/pdf');
+var gapi = require('./routes/gapi');
+var api = require('./routes/api');
 
 var app = express();
 
@@ -78,6 +80,8 @@ app.use(session({secret: "This is Finance Secret!", resave: false, saveUninitial
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
+app.use('/api', api);
+app.use('/gapi', gapi);
 app.use('/pdf', pdf);
 
 app.use(history({

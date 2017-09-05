@@ -2,7 +2,6 @@ import VueTypeahead from 'vue-typeahead'
 import func from '../../../../custom_libs/func'
 import SimpleVueValidation from 'simple-vue-validator'
 
-const gplace_key = require("../../../../config/private.json").g_webservice_key;
 const Validator = SimpleVueValidation.Validator;
 
 export default {
@@ -13,7 +12,7 @@ export default {
     },
     data: function(){
         return {
-            src: "https://maps.googleapis.com/maps/api/place/autocomplete/json?types=(cities)&components=country:pk&key="+gplace_key,
+            src: "/gapi",
             queryParamName: 'input'
         }
     },
