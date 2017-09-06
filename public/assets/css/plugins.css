@@ -554,20 +554,21 @@ img-crop {
 }
 
 .mini-pie {
-  height: 150px;
+  height: 200px;
   position: relative;
-  width: 100px;
+  width: 150px;
   display: inline-block;
 }
 .mini-pie canvas {
-  height: 150px;
+  height: 200px;
   left: 0;
   position: absolute;
   top: 0;
-  width: 100px;
+  width: 150px;
 }
 .mini-pie span {
-  line-height: 150px;
+  line-height: 200px;
+      font-size: 20px;
 }
 
 /* ---------------------------------------------------------------------- */

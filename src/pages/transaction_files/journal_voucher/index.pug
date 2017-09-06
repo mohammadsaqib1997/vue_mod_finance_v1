@@ -101,9 +101,9 @@
                                 template(v-for='n in 6')
                                     .row(v-bind:class='"row-"+n')
                                         .col-md-1.padding-right-0
-                                            get-codes(v-bind:project='sel_project')
+                                            get-codes(v-bind:project='sel_project' v-on:name_change="changeCode($event, n-1)")
                                         .col-md-2.padding-none
-                                            input.form-control(type='text')
+                                            input.form-control(type='text' v-bind:value="rows[n-1].code_name" disabled='disabled')
                                         .col-md-4.padding-none
                                             input.form-control(type='text')
                                         .col-md-1.padding-none

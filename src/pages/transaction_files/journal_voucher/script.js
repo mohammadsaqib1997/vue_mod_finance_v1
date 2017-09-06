@@ -51,6 +51,32 @@ export default {
             vouchersRef: null,
 
             // form fields
+            rows: [
+                {
+                    code: '',
+                    code_name: ''
+                },
+                {
+                    code: '',
+                    code_name: ''
+                },
+                {
+                    code: '',
+                    code_name: ''
+                },
+                {
+                    code: '',
+                    code_name: ''
+                },
+                {
+                    code: '',
+                    code_name: ''
+                },
+                {
+                    code: '',
+                    code_name: ''
+                },
+            ],
             voucher_id: "",
             nbr_number: "",
             v_remarks: "",
@@ -149,9 +175,11 @@ export default {
                 }
             });
         },
-        changeCode: function (e) {
-            let value = e.target.value;
-            console.log(value);
+        changeCode: function (e, ind) {
+            if(e !== ""){
+                this.rows[ind].code = e;
+                this.rows[ind].code_name = e.sub_name;
+            }
         }
     },
     components: {

@@ -1,9 +1,12 @@
 var admin_firebase = require("firebase-admin");
 var db = admin_firebase.database();
 var regSubsRef = db.ref('reg_subsidiary');
+var subsRef = db.ref('subsidiary');
 
-var ElasticClient = require('elasticsearchclient');
-var client = new ElasticClient({ host: 'localhost', port: 9200 });
+var elasticSearch = require('elasticsearch');
+var client = elasticSearch.Client({
+    host: 'localhost:9200'
+});
 
 
 regSubsRef.on("child_added", function (snap) {
@@ -16,19 +19,38 @@ regSubsRef.on("child_removed", function (snap) {
     removeIndex(snap, 'reg_subs', 'id');
 });
 
-
+subsRef.on("child_added", function (snap) {
+    createOrUpdateIndex(snap, 'subs', 'id');
+});
+subsRef.on("child_changed", function (snap) {
+    createOrUpdateIndex(snap, 'subs', 'id');
+});
+subsRef.on("child_removed", function (snap) {
+    removeIndex(snap, 'subs', 'id');
+});
 
 
 function createOrUpdateIndex(snap, ref, type) {
-    client.index(ref, type, snap.val(), snap.key)
-        .on('data', function(data) { console.log('Added Key', snap.key); })
-        .on('error', function(err) { console.log(err) })
-        .exec();
+    client.index({
+        index: ref,
+        type: type,
+        id: snap.key,
+        body: snap.val()
+    }, function (err, res) {
+        if(err){
+            console.log(err);
+        }
+    });
 }
 
 function removeIndex(snap, ref, type) {
-    client.deleteDocument(ref, type, snap.key, function(error, data) {
-        if( error ) console.error('failed to delete', snap.key, error);
-        else console.log('deleted', snap.key);
+    client.delete({
+        index: ref,
+        type: type,
+        id: snap.key
+    }, function (error, response) {
+        if(error){
+            console.log(error);
+        }
     });
 }

@@ -1,2 +1,103 @@
-div
-    | Check
+#container.wrap-content.container
+    section#page-title.padding-top-15.padding-bottom-15
+        .row
+            .col-sm-7
+                h1.mainTitle Dashboard
+                span.mainDescription Status & Reports
+            .col-sm-5
+    .container-fluid.container-fullw.bg-white
+    .container-fluid.container-fullw.bg-white
+        .row
+            .col-sm-6
+                .panel.panel-white.no-radius
+                    .panel-heading.border-bottom
+                        h4.panel-title Details Chart
+                    .panel-body
+                        .text-center
+                            span.mini-pie
+                                canvas#chart3.full-width
+                                span 450
+                        .margin-top-20.text-center.legend-xs.inline
+                            #chart3Legend.chart-legend
+                    .panel-footer
+                        .clearfix.padding-5.space5
+                            .col-xs-4.text-center.no-padding
+                                .border-right.border-dark
+                                    span.text-bold.block.text-extra-large 90%
+                                    span.text-light Satisfied
+                            .col-xs-4.text-center.no-padding
+                                .border-right.border-dark
+                                    span.text-bold.block.text-extra-large 2%
+                                    span.text-light Unsatisfied
+                            .col-xs-4.text-center.no-padding
+                                span.text-bold.block.text-extra-large 8%
+                                span.text-light NA
+            .col-sm-6
+                .panel.panel-white.no-radius
+                    .panel-heading.border-bottom
+                        h4.panel-title Recent Reports
+                    .panel-body
+                        .margin-top-20.text-left.legend-xs.inline
+                            table.table.no-margin
+                                tbody
+                                    tr
+                                        td
+                                            span.text-small.block.text-light Control Reports
+                                            span Monthly
+                                        td.text-right
+                                            .cl-effect-13
+                                                a(href='')
+                                                    | view more
+                                    tr
+                                        td
+                                            span.text-small.block.text-light Sub Control Reports
+                                            span Yearly
+                                        td.text-right
+                                            .cl-effect-13
+                                                a(href='')
+                                                    | view more
+                                    tr
+                                        td
+                                            span.text-small.block.text-light Sub Control Reports
+                                            span Monthly
+                                        td.text-right
+                                            .cl-effect-13
+                                                a(href='')
+                                                    | view more
+                                    tr
+                                        td
+                                            span.text-small.block.text-light Control Reports
+                                            span Yearly
+                                        td.text-right
+                                            .cl-effect-13
+                                                a(href='')
+                                                    | view more
+                                    tr
+                                        td
+                                            span.text-small.block.text-light Subsidiary Reports
+                                            span Monthly
+                                        td.text-right
+                                            .cl-effect-13
+                                                a(href='')
+                                                    | view more
+                                    tr
+                                        td
+                                            span.text-small.block.text-light Senior Designer
+                                            span Kenneth Ross
+                                        td.text-right
+                                            .cl-effect-13
+                                                a(href='')
+                                                    | view more
+    .container-fluid.container-fullw.bg-white
+        .row
+            .col-sm-6
+                .panel.panel-white.no-radius
+                    .panel-heading.border-bottom
+                        h4.panel-title Calander
+                    .panel-body
+                        #full-calendar
+            .col-sm-6
+                .panel.panel-white.no-radius
+                    .panel-heading.border-bottom
+                        h4.panel-title Calculator
+                    .panel-body

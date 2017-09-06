@@ -9,8 +9,10 @@ var db = admin_firebase.database();
 var usersRef = db.ref('users');
 var regSubsRef = db.ref('reg_subsidiary');
 
-var ElasticClient = require('elasticsearchclient');
-var client = new ElasticClient({ host: 'localhost', port: 9200 });
+var elasticSearch = require('elasticsearch');
+var client = elasticSearch.Client({
+    host: 'localhost:9200'
+});
 
 router.post('/check_user', cors(), function (req, res, next) {
     req.assert('email', 'Email is required!').notEmpty();
@@ -49,11 +51,52 @@ router.post('/check_user', cors(), function (req, res, next) {
 router.get('/get_codes', function (req, res, next) {
     let project = req.query.project;
     let input = req.query.input;
-    let mySearchCall = client.search('reg_subs', 'id', {
+    client.search({
+        index: 'reg_subs',
+        type: 'id',
+        body: {
+            _source: input+"*",
+            query: {
+                match: {
+                    _id: project
+                }
+            }
+        }
+    }, function (err, response) {
+        if(err){
+            res.json(null);
+        }else{
+            let hits = response.hits.hits[0];
+            let source = hits._source;
+            let codes = Object.keys(source);
+            let process_item = 0;
 
-    });
-    mySearchCall.exec(function(err, data){
-        res.json(JSON.parse(data));
+            if(codes.length > 0){
+                codes.forEach(function (code) {
+                    let row = source[code];
+                    client.search({
+                        index: 'subs',
+                        type: 'id',
+                        body: {
+                            query: {
+                                match: {
+                                    _id: row.key
+                                }
+                            }
+                        }
+                    }, function (err, response2) {
+                        response.hits.hits[0]._source[code].sub_name = response2.hits.hits[0]._source.name;
+                        process_item++;
+                        if(process_item === codes.length){
+                            res.json(response);
+                        }
+                    });
+
+                });
+            }else{
+                res.json(null);
+            }
+        }
     });
 });
 
