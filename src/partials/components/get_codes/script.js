@@ -10,7 +10,7 @@ export default {
     watch: {
         project: function (val) {
             this.src = "/api/get_codes?project="+val;
-            this.$emit('name_change', "");
+            this.$emit('name_change', {code: "", sub_name: ""});
             this.selected = "";
             this.reset_items();
         }

@@ -11,9 +11,30 @@ export default {
     created: function () {
         let self = this;
 
+        self.rows.forEach(function (row, ind) {
+            self.$watch(function () {
+                return self.rows[ind].quantity;
+            }, function (val) {
+                self.rows[ind].quantity = func.isNumber(val);
+            });
+            self.$watch(function () {
+                return self.rows[ind].credit;
+            }, function (val) {
+                self.rows[ind].credit = func.isNumber(val);
+                self.totalCredit();
+            });
+            self.$watch(function () {
+                return self.rows[ind].debit;
+            }, function (val) {
+                self.rows[ind].debit = func.isNumber(val);
+                self.totalDebit();
+            });
+        });
+
         const db = firebase.database();
         self.projectsRef = db.ref('/projects');
         self.vouchersRef = db.ref('/vouchers');
+        self.vouchersEntriesRef = db.ref('/vouchers_entries');
 
         self.projectsRef.on('value', function (proSnap) {
             let renderData = proSnap.val();
@@ -23,6 +44,16 @@ export default {
                 self.proData = {};
             }
             self.dataLoad1 = false;
+        });
+
+        self.vouchersRef.on('value', function (vouchersSnap) {
+            let renderData = vouchersSnap.val();
+            if (renderData !== null) {
+                self.vouchersData = renderData;
+            } else {
+                self.vouchersData = {};
+            }
+            self.dataLoad2 = false;
         });
 
         setTimeout(function () {
@@ -42,41 +73,70 @@ export default {
             //loaders
             inProcess: false,
             dataLoad1: true,
+            dataLoad2: true,
 
             // data save
             proData: {},
+            vouchersData: {},
 
             // references
             projectsRef: null,
             vouchersRef: null,
+            vouchersEntriesRef: null,
 
             // form fields
             rows: [
                 {
                     code: '',
-                    code_name: ''
+                    code_name: '',
+                    remarks: '',
+                    quantity: 0,
+                    debit: 0,
+                    credit: 0
                 },
                 {
                     code: '',
-                    code_name: ''
+                    code_name: '',
+                    remarks: '',
+                    quantity: 0,
+                    debit: 0,
+                    credit: 0
                 },
                 {
                     code: '',
-                    code_name: ''
+                    code_name: '',
+                    remarks: '',
+                    quantity: 0,
+                    debit: 0,
+                    credit: 0
                 },
                 {
                     code: '',
-                    code_name: ''
+                    code_name: '',
+                    remarks: '',
+                    quantity: 0,
+                    debit: 0,
+                    credit: 0
                 },
                 {
                     code: '',
-                    code_name: ''
+                    code_name: '',
+                    remarks: '',
+                    quantity: 0,
+                    debit: 0,
+                    credit: 0
                 },
                 {
                     code: '',
-                    code_name: ''
+                    code_name: '',
+                    remarks: '',
+                    quantity: 0,
+                    debit: 0,
+                    credit: 0
                 },
             ],
+            total_debit: 0,
+            total_credit: 0,
             voucher_id: "",
             nbr_number: "",
             v_remarks: "",
@@ -141,45 +201,95 @@ export default {
                                     next_id = parseInt(renderData[keys[0]].id) + 1;
                                 }
                             }
-                            /*self.vouchersRef.push({
+
+                            let voucher_push_gen = self.vouchersRef.push();
+                            voucher_push_gen.set({
                                 id: next_id,
                                 nbr_number: self.nbr_number,
                                 v_remarks: self.v_remarks,
                                 posted_status: self.posted_status,
                                 sel_project: self.sel_project,
                                 voucher_date: self.voucher_date,
+                                uid: firebase.auth().currentUser.uid,
                                 createdAt: firebase.database.ServerValue.TIMESTAMP
                             }, function (err) {
-                                if (err) {
+                                if(err){
                                     self.errMain = err.message;
-                                } else {
-                                    self.errMain = "";
-                                    self.sucMain = "Successfully Inserted Voucher!";
+                                }else{
+                                    let rows = self.rows;
+                                    let subLength = 0;
+                                    let process_item = 0;
+                                    rows.forEach(function (row) {
+                                        if(row.code !== ""){
+                                            subLength++;
+                                        }
+                                    });
+                                    rows.forEach(function (row, ind) {
+                                        if(row.code !== ""){
+                                            row['v_key'] = voucher_push_gen.key;
+                                            row['v_data'] = self.voucher_date;
+                                            row['createdAt'] = firebase.database.ServerValue.TIMESTAMP;
 
-                                    self.voucher_id = "";
-                                    self.nbr_number = "";
-                                    self.v_remarks = "";
-                                    self.posted_status = "Yes";
-                                    self.sel_project = "";
-                                    $(".datepicker.voucher_date").val('');
-                                    self.voucher_date = "";
+                                            self.vouchersEntriesRef.push(row, function (err) {
+                                                if(err){
+                                                    console.log(err);
+                                                }
 
-                                    self.validation.reset();
-                                    setTimeout(function () {
-                                        self.sucMain = "";
-                                    }, 1500);
+                                                process_item++;
+                                                if(process_item === subLength){
+                                                    self.errMain = "";
+                                                    self.sucMain = "Successfully Inserted Voucher!";
+
+                                                    self.voucher_id = "";
+                                                    self.nbr_number = "";
+                                                    self.v_remarks = "";
+                                                    self.posted_status = "Yes";
+                                                    self.sel_project = "";
+                                                    $(".datepicker.voucher_date").val('');
+                                                    self.voucher_date = "";
+                                                    self.rows.forEach(function (row, ind) {
+                                                        self.rows[ind].code = '';
+                                                        self.rows[ind].code_name = '';
+                                                        self.rows[ind].remarks = '';
+                                                        self.rows[ind].quantity = 0;
+                                                        self.rows[ind].debit = 0;
+                                                        self.rows[ind].credit = 0;
+                                                    });
+
+                                                    self.validation.reset();
+                                                    self.inProcess = false;
+                                                    setTimeout(function () {
+                                                        self.sucMain = "";
+                                                    }, 1500);
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
-                                self.inProcess = false;
-                            });*/
+                            });
                         });
                 }
             });
         },
         changeCode: function (e, ind) {
             if(e !== ""){
-                this.rows[ind].code = e;
+                this.rows[ind].code = e.code;
                 this.rows[ind].code_name = e.sub_name;
             }
+        },
+        totalCredit: function () {
+            let self = this;
+            self.total_credit = 0;
+            self.rows.forEach(function (row) {
+                self.total_credit += row.credit;
+            });
+        },
+        totalDebit: function () {
+            let self = this;
+            self.total_debit = 0;
+            self.rows.forEach(function (row) {
+                self.total_debit += row.debit;
+            });
         }
     },
     components: {

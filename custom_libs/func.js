@@ -54,11 +54,12 @@ module.exports  = {
             if (isNaN(val)) {
                 return val.substr(0, val.toString().length-1);
             } else {
-                if (val > maxLength) {
-                    return val.substr(0, val.toString().length-1);
-                } else {
-                    return val * 1;
+                if(maxLength){
+                    if (val > maxLength) {
+                        return parseInt(val);
+                    }
                 }
+                return parseInt(val);
             }
         } else {
             return 0;

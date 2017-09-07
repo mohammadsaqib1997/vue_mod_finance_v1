@@ -1,11 +1,19 @@
 var admin_firebase = require("firebase-admin");
+var serviceAccount = require("../config/serviceAccountKey.json");
+var config_fireBase = require("../config/private.json");
+admin_firebase.initializeApp({
+    credential: admin_firebase.credential.cert(serviceAccount),
+    databaseURL: config_fireBase.config_fb.databaseURL
+});
+
 var db = admin_firebase.database();
 var regSubsRef = db.ref('reg_subsidiary');
 var subsRef = db.ref('subsidiary');
 
 var elasticSearch = require('elasticsearch');
 var client = elasticSearch.Client({
-    host: 'localhost:9200'
+    host: 'localhost:9200',
+    log:'trace'
 });
 
 

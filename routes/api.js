@@ -66,33 +66,37 @@ router.get('/get_codes', function (req, res, next) {
         if(err){
             res.json(null);
         }else{
-            let hits = response.hits.hits[0];
-            let source = hits._source;
-            let codes = Object.keys(source);
-            let process_item = 0;
+            if(response.hits.hits.length > 0){
+                let hits = response.hits.hits[0];
+                let source = hits._source;
+                let codes = Object.keys(source);
+                let process_item = 0;
 
-            if(codes.length > 0){
-                codes.forEach(function (code) {
-                    let row = source[code];
-                    client.search({
-                        index: 'subs',
-                        type: 'id',
-                        body: {
-                            query: {
-                                match: {
-                                    _id: row.key
+                if(codes.length > 0){
+                    codes.forEach(function (code) {
+                        let row = source[code];
+                        client.search({
+                            index: 'subs',
+                            type: 'id',
+                            body: {
+                                query: {
+                                    match: {
+                                        _id: row.key
+                                    }
                                 }
                             }
-                        }
-                    }, function (err, response2) {
-                        response.hits.hits[0]._source[code].sub_name = response2.hits.hits[0]._source.name;
-                        process_item++;
-                        if(process_item === codes.length){
-                            res.json(response);
-                        }
-                    });
+                        }, function (err, response2) {
+                            response.hits.hits[0]._source[code].sub_name = response2.hits.hits[0]._source.name;
+                            process_item++;
+                            if(process_item === codes.length){
+                                res.json(response);
+                            }
+                        });
 
-                });
+                    });
+                }else{
+                    res.json(null);
+                }
             }else{
                 res.json(null);
             }
