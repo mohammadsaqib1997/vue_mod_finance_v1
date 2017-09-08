@@ -10,6 +10,9 @@ export default {
                     $.getScript('/assets/js/calender.js', function (data, textStatus, jqxhr) {
                         Calendar.init();
                     });
+                    $.getScript('/assets/js/dashboard.js', function (data, textStatus, jqxhr) {
+                        Dashboard.init();
+                    });
                 });
             });
 

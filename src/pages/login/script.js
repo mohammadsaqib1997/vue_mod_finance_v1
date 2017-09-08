@@ -11,7 +11,7 @@ export default {
             mainErr: '',
             email: '',
             password: '',
-            isProcess: false
+            isProcess: false			
         }
     },
     validators: {
@@ -62,6 +62,23 @@ export default {
                     }
                 }
             });
-        }
+        },
+		backtologin: function(){
+		 $('.main-login .box-login, .main-login .box-forgot').toggle();
+		}
     }
 }
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+
+jQuery.fn.center = function (e) {
+	
+				var devtop = ($(window).height() - $(this).outerHeight()) / 2;
+				
+                var devleft = ($(window).width() - $(this).outerWidth()) / 2;
+				
+                jQuery(this).css({position:'absolute', margin:0, top: (devtop > 0 ? devtop : 0)+'px', left: (devleft > 0 ? devleft : 0)+'px'});
+				
+			}
+			jQuery('.box-login').center();

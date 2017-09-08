@@ -1,36 +1,60 @@
 .row
-    .main-login.col-xs-10.col-xs-offset-1.col-sm-8.col-sm-offset-2.col-md-4.col-md-offset-4
-        //.logo.margin-top-30
-        //    img(src='/assets/images/logo.png', alt='FocusMedia360°')
-        .box-login
-            fieldset
-                legend
-                    | Sign in to your account
-                p
-                    | Please enter your name and password to log in.
-                p.alert.alert-danger(v-if='mainErr != ""') {{ mainErr }}
-                .form-group
-                    span.input-icon
-                        input.form-control(type='text' v-model='email' v-on:keyup.enter='login' placeholder='Email')
-                        i.fa.fa-user
-                    p.alert.alert-danger(v-if='validation.hasError("email")') {{ validation.firstError('email') }}
-                .form-group.form-actions.margin-top-0
-                    span.input-icon
-                        input.form-control.password(type='password' v-model='password' v-on:keyup.enter='login' placeholder='Password')
-                        i.fa.fa-lock
-                        a.forgot(href='#')
-                            i.fa.fa-question
-                    p.alert.alert-danger(v-if='validation.hasError("password")') {{ validation.firstError('password') }}
-                .form-actions
-                    button.btn.btn-lg.btn-primary.pull-right(v-on:click='login' v-if="!isProcess")
-                        | Login&nbsp;
-                        i.fa.fa-arrow-circle-right
-                    button.btn.btn-lg.btn-primary.pull-right(v-if="isProcess" disabled='disabled')
-                        i.fa.fa-refresh.fa-spin.fa-fw
-            .copyright
-                | ©
-                span.current-year
-                a(href='http://focusme360.com')
-                    span.text-bold.text-uppercase  FocusMedia360°
-                | .
-                span All rights reserved
+  .main-login.col-xs-10.col-xs-offset-1.col-sm-8.col-sm-offset-2.col-md-4.col-md-offset-4
+    .box-login
+      fieldset
+        legend
+          img(src='/assets/images/fms.png', alt='FocusMedia360°', style='width:300px;')
+        p.subheading Sign in to your account
+        p Please enter your name and password to log in.
+        p.alert.alert-danger(v-if='mainErr != ""') {{ mainErr }}
+        .form-group
+          span.input-icon
+            input.form-control(type='text', v-model='email', v-on:keyup.enter='login', placeholder='Email')
+            i.fa.fa-user
+          p.alert.alert-danger(v-if='validation.hasError("email")') {{ validation.firstError('email') }}
+        .form-group.form-actions.margin-top-0
+          span.input-icon
+            input.form-control.password(type='password', v-model='password', v-on:keyup.enter='login', placeholder='Password')
+            i.fa.fa-lock
+            a.forgot(href='#', title='Forgot Password?', data-toggle='tooltip' v-on:click='backtologin', v-if='!isProcess')
+              i.fa.fa-question
+          p.alert.alert-danger(v-if='validation.hasError("password")') {{ validation.firstError('password') }}
+        .form-actions
+          button.btn.btn-lg.btn-primary.pull-right(v-on:click='login', v-if='!isProcess')
+            | Login 
+            i.fa.fa-arrow-circle-right
+          button.btn.btn-lg.btn-primary.pull-right(v-if='isProcess', disabled='disabled')
+            i.fa.fa-refresh.fa-spin.fa-fw
+    .box-forgot(style='display:none;')
+      form.form-forgot
+        fieldset
+          legend
+            | Forget Password?
+          p
+            | Enter your e-mail address below to reset your password.
+          .form-group
+            span.input-icon
+              input.form-control(type='email', name='email', placeholder='Email')
+              i.fa.fa-envelope-o
+          .form-actions
+            a.btn.btn-primary.btn-lg.btn-o.backlogin(href='#' v-on:click='backtologin', v-if='!isProcess')
+              i.fa.fa-chevron-circle-left
+              |  Log-In
+            button.btn.btn-lg.btn-primary(type='submit')
+              | Submit 
+              i.fa.fa-arrow-circle-right
+      // start: COPYRIGHT
+      .copyright
+        | © 
+        span.current-year 2017
+        span.text-bold.text-uppercase   FocusMedia360°
+        | . 
+        span All rights reserved
+      // end: COPYRIGHT
+    .copyright
+      | Copyright © 
+      span.current-year 2017
+      | .
+      span  All rights reserved by
+      a(href='http://focusme360.com')
+        span.text-bold.text-uppercase  FocusMedia360°
