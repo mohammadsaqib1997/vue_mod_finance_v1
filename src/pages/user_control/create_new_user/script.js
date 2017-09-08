@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-import func from '../../../../custom_libs/func'
 import bcrypt from 'bcrypt-nodejs'
 
 import SimpleVueValidation from 'simple-vue-validator'

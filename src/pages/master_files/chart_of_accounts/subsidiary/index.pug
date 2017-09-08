@@ -24,7 +24,7 @@
                         p
                             | Create one Subsidiary.
                     .col-md-6
-                        button.btn.btn-primary.btn-o.pull-right(onclick="window.location.href='partyinformation.html'")
+                        router-link.btn.btn-primary.btn-o.pull-right(to='/add_party')
                             | Add Party Information
                 hr
                 form(v-on:submit.prevent="addSubsEntry")

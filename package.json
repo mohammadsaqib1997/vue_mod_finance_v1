@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
+    "jobs": "node ./routes/firebase_jobs.js",
     "watchify": "watchify -vd -e src/app/main.js -o public/vue_frameworks/app/build.js",
     "build": "cross-env NODE_ENV=production browserify -g envify -e src/app/main.js | uglifyjs -c warnings=false -m > public/vue_frameworks/app/build.js"
   },

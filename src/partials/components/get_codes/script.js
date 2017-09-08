@@ -6,8 +6,14 @@ export default {
 
     created: function () {
         let self = this;
+
+        self.src = "/api/get_codes?project="+self.project;
+        self.query = self.selected;
     },
     watch: {
+        selected: function (val) {
+            this.query = val;
+        },
         project: function (val) {
             this.src = "/api/get_codes?project="+val;
             this.$emit('name_change', {code: "", sub_name: ""});
@@ -15,12 +21,12 @@ export default {
             this.reset_items();
         }
     },
-    props: ['project'],
+    props: ['project', 'code'],
     data: function(){
         return {
             src: "/api/get_codes",
             queryParamName: 'input',
-            selected: ""
+            selected: this.code
         }
     },
     methods: {

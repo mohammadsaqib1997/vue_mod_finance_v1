@@ -20,7 +20,7 @@
                                 .col-md-4
                                     div.text-center(v-if='dataLoad2')
                                         i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                    select.form-control(v-else)
+                                    select.form-control(v-else v-model='sel_voucher')
                                         option(value='') Select Voucher
                                         option(v-for='(row, key, ind) in vouchersData' v-bind:value='key') {{ row.id }} | {{ row.v_remarks }}
                 hr
@@ -83,47 +83,54 @@
                                             | Voucher Date
                                         input.form-control.datepicker.voucher_date(type='text' placeholder='Enter your Voucher Date')
                                         p.text-danger.text-right(v-if='validation.hasError("voucher_date")') {{ validation.firstError('voucher_date') }}
-                            h2 Account Detail
-                            .row.detail-heading
-                                .col-md-1 Account Code
-                                .col-md-2 Account Description
-                                .col-md-4 Remark
-                                .col-md-1 Quantity
-                                .col-md-2 Debit
-                                .col-md-2 Credit
-                            .detail-Content.form-group
-                                template(v-for='n in 6')
-                                    .row(v-bind:class='"row-"+n')
-                                        .col-md-1.padding-right-0
-                                            get-codes(v-bind:project='sel_project' v-on:name_change="changeCode($event, n-1)")
+                            div.text-center(v-if='dataLoad3')
+                                i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
+                            template(v-else)
+                                h2 Account Detail
+                                .row.detail-heading
+                                    .col-md-1 Account Code
+                                    .col-md-2 Account Description
+                                    .col-md-4 Remark
+                                    .col-md-1 Quantity
+                                    .col-md-2 Debit
+                                    .col-md-2 Credit
+                                .detail-Content.form-group
+                                    template(v-for='row, ind in rows')
+                                        .row(v-bind:class='"row-"+ind')
+                                            .col-md-1.padding-right-0
+                                                get-codes(v-bind:project='sel_project' v-bind:code='row.code' v-on:name_change="changeCode($event, ind)")
+                                            .col-md-2.padding-none
+                                                input.form-control(type='text' v-bind:value="row.code_name" disabled='disabled')
+                                            .col-md-4.padding-none
+                                                input.form-control(type='text' v-model='row.remarks')
+                                            .col-md-1.padding-none
+                                                input.form-control(type='text' v-model='row.quantity')
+                                            .col-md-2.padding-none
+                                                input.form-control(type='text' v-model='row.debit')
+                                            .col-md-2.padding-left-0
+                                                input.form-control(type='text' v-model='row.credit')
+                                    .row.Total
+                                        .col-md-2.padding-right-0
+                                            p.margin-bottom-0(style='line-height: 33px;')
+                                                | JV Difference
+                                                | < Debit / Credit >
                                         .col-md-2.padding-none
-                                            input.form-control(type='text' v-bind:value="rows[n-1].code_name" disabled='disabled')
-                                        .col-md-4.padding-none
-                                            input.form-control(type='text' v-model='rows[n-1].remarks')
-                                        .col-md-1.padding-none
-                                            input.form-control(type='text' v-model='rows[n-1].quantity')
+                                            input.form-control(type='text' disabled='disabled' v-bind:value='total_debit - total_credit')
                                         .col-md-2.padding-none
-                                            input.form-control(type='text' v-model='rows[n-1].debit')
+                                        .col-md-2.padding-none
+                                            h3.margin-bottom-0(style='line-height: 33px;') Total
+                                        .col-md-2.padding-none
+                                            input.form-control(type='text' v-bind:value='total_debit' disabled='disabled')
                                         .col-md-2.padding-left-0
-                                            input.form-control(type='text' v-model='rows[n-1].credit')
-                                .row.Total
-                                    .col-md-2.padding-right-0
-                                        p.margin-bottom-0(style='line-height: 33px;')
-                                            | JV Difference
-                                            | < Debit / Credit >
-                                    .col-md-2.padding-none
-                                        input.form-control(type='text' disabled='disabled' v-bind:value='total_debit - total_credit')
-                                    .col-md-2.padding-none
-                                    .col-md-2.padding-none
-                                        h3.margin-bottom-0(style='line-height: 33px;') Total
-                                    .col-md-2.padding-none
-                                        input.form-control(type='text' v-bind:value='total_debit' disabled='disabled')
-                                    .col-md-2.padding-left-0
-                                        input.form-control(type='text' v-bind:value='total_credit' disabled='disabled')
+                                            input.form-control(type='text' v-bind:value='total_credit' disabled='disabled')
                     .row
                         .col-md-4.pull-right
                             button.btn.btn-primary.btn-wide.pull-right(v-if="inProcess" type='button' disabled='disabled')
                                 i.fa.fa-refresh.fa-spin.fa-fw
-                            button.btn.btn-primary.btn-wide.pull-right(v-else type='button' v-on:click.prevent='addVoucher')
-                                | Submit&nbsp;
-                                i.fa.fa-arrow-circle-right
+                            template(v-else)
+                                button.btn.btn-primary.btn-wide.pull-right(v-if='updateV' type='button' v-on:click.prevent='updateVoucher')
+                                    | Update&nbsp;
+                                    i.fa.fa-arrow-circle-right
+                                button.btn.btn-primary.btn-wide.pull-right(v-else type='button' v-on:click.prevent='addVoucher')
+                                    | Submit&nbsp;
+                                    i.fa.fa-arrow-circle-right

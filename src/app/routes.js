@@ -22,6 +22,8 @@ import postUnPost from '../pages/process/post_unpost/post_unpost.vue'
 
 import createNewUser from '../pages/user_control/create_new_user/create_new_user.vue'
 
+import partyInformation from '../pages/party_information/party_information.vue'
+
 const routes = [
     {
         path: '/',
@@ -77,6 +79,10 @@ const routes = [
                     {
                         path: '/create_new_user',
                         component: createNewUser
+                    },
+                    {
+                        path: '/add_party',
+                        component: partyInformation
                     }
                 ]
             },

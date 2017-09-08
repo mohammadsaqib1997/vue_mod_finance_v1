@@ -11,6 +11,10 @@ export default {
     created: function () {
         let self = this;
 
+        self.$watch("sel_voucher", function (val, oldVal) {
+            self.updateVoucherVal(val);
+        });
+
         self.rows.forEach(function (row, ind) {
             self.$watch(function () {
                 return self.rows[ind].quantity;
@@ -57,10 +61,10 @@ export default {
         });
 
         setTimeout(function () {
-            $(function(){
-                $(".datepicker").datepicker().on('change', function(e) {
+            $(function () {
+                $(".datepicker").datepicker().on('change', function (e) {
                     let grabField = $(e.target);
-                    if(grabField.hasClass('voucher_date')){
+                    if (grabField.hasClass('voucher_date')) {
                         let date = new Date(grabField.val());
                         self.voucher_date = date.getTime();
                     }
@@ -68,12 +72,14 @@ export default {
             });
         }, 100);
     },
-    data: function(){
+    data: function () {
         return {
             //loaders
             inProcess: false,
             dataLoad1: true,
             dataLoad2: true,
+            dataLoad3: false,
+            updateV: false,
 
             // data save
             proData: {},
@@ -85,54 +91,74 @@ export default {
             vouchersEntriesRef: null,
 
             // form fields
+            sel_voucher: "",
             rows: [
                 {
+                    key: '',
                     code: '',
                     code_name: '',
                     remarks: '',
                     quantity: 0,
                     debit: 0,
-                    credit: 0
-                },
-                {
+                    credit: 0,
+                    v_key: '',
+                    v_data: 0,
+                    createdAt: 0,
+                }, {
+                    key: '',
                     code: '',
                     code_name: '',
                     remarks: '',
                     quantity: 0,
                     debit: 0,
-                    credit: 0
-                },
-                {
+                    credit: 0,
+                    v_key: '',
+                    v_data: 0,
+                    createdAt: 0,
+                }, {
+                    key: '',
                     code: '',
                     code_name: '',
                     remarks: '',
                     quantity: 0,
                     debit: 0,
-                    credit: 0
-                },
-                {
+                    credit: 0,
+                    v_key: '',
+                    v_data: 0,
+                    createdAt: 0,
+                }, {
+                    key: '',
                     code: '',
                     code_name: '',
                     remarks: '',
                     quantity: 0,
                     debit: 0,
-                    credit: 0
-                },
-                {
+                    credit: 0,
+                    v_key: '',
+                    v_data: 0,
+                    createdAt: 0,
+                }, {
+                    key: '',
                     code: '',
                     code_name: '',
                     remarks: '',
                     quantity: 0,
                     debit: 0,
-                    credit: 0
-                },
-                {
+                    credit: 0,
+                    v_key: '',
+                    v_data: 0,
+                    createdAt: 0,
+                }, {
+                    key: '',
                     code: '',
                     code_name: '',
                     remarks: '',
                     quantity: 0,
                     debit: 0,
-                    credit: 0
+                    credit: 0,
+                    v_key: '',
+                    v_data: 0,
+                    createdAt: 0,
                 },
             ],
             total_debit: 0,
@@ -150,14 +176,25 @@ export default {
     validators: {
         voucher_id: function (value) {
             let self = this;
-            return Validator.value(value).digit().maxLength(20).custom(function(){
+            let setValidator = Validator.value(value);
+            if (self.updateV) {
+                setValidator.required();
+            }
+            return setValidator.digit().maxLength(20).custom(function () {
                 value = parseInt(value);
-                if(value !== "" && !isNaN(value)){
+                if (value !== "" && !isNaN(value)) {
                     return Promise.delay(1000).then(function () {
                         return self.vouchersRef.orderByChild('id').equalTo(value).once('value').then(function (voucherSnap) {
                             let renderData = voucherSnap.val();
-                            if(renderData !== null){
-                                return "Already taken!";
+                            if (renderData !== null) {
+                                if (self.updateV) {
+                                    let keys = Object.keys(renderData);
+                                    if (keys[0] !== self.sel_voucher) {
+                                        return "Already taken!";
+                                    }
+                                } else {
+                                    return "Already taken!";
+                                }
                             }
                         });
                     });
@@ -181,11 +218,11 @@ export default {
         },
     },
     methods: {
-        addVoucher: function(){
+        addVoucher: function () {
             let self = this;
+            self.inProcess = true;
             self.$validate().then(function (success) {
-                if(success){
-                    self.inProcess = true;
+                if (success) {
                     self.vouchersRef
                         .orderByChild('id')
                         .limitToLast(1)
@@ -193,9 +230,9 @@ export default {
                         .then(function (voucherSnap) {
                             let renderData = voucherSnap.val();
                             let next_id = 1;
-                            if(self.voucher_id !== ""){
+                            if (self.voucher_id !== "") {
                                 next_id = parseInt(self.voucher_id);
-                            }else{
+                            } else {
                                 if (renderData !== null) {
                                     let keys = Object.keys(renderData);
                                     next_id = parseInt(renderData[keys[0]].id) + 1;
@@ -213,66 +250,122 @@ export default {
                                 uid: firebase.auth().currentUser.uid,
                                 createdAt: firebase.database.ServerValue.TIMESTAMP
                             }, function (err) {
-                                if(err){
+                                if (err) {
                                     self.errMain = err.message;
-                                }else{
+                                    self.inProcess = false;
+                                } else {
                                     let rows = self.rows;
                                     let subLength = 0;
                                     let process_item = 0;
                                     rows.forEach(function (row) {
-                                        if(row.code !== ""){
+                                        if (row.code !== "") {
                                             subLength++;
                                         }
                                     });
-                                    rows.forEach(function (row, ind) {
-                                        if(row.code !== ""){
-                                            row['v_key'] = voucher_push_gen.key;
-                                            row['v_data'] = self.voucher_date;
-                                            row['createdAt'] = firebase.database.ServerValue.TIMESTAMP;
+                                    if (subLength > 0) {
+                                        rows.forEach(function (row, ind) {
+                                            if (row.code !== "") {
+                                                delete row['key'];
+                                                row.v_key = voucher_push_gen.key;
+                                                row.v_data = self.voucher_date;
+                                                row.createdAt = firebase.database.ServerValue.TIMESTAMP;
 
-                                            self.vouchersEntriesRef.push(row, function (err) {
-                                                if(err){
+                                                self.vouchersEntriesRef.push(row, function (err) {
+                                                    if (err) {
+                                                        console.log(err);
+                                                    }
+
+                                                    process_item++;
+                                                    if (process_item === subLength) {
+                                                        self.voucherMsg(self, "Successfully Inserted Voucher!");
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    } else {
+                                        self.voucherMsg(self, "Successfully Inserted Voucher!");
+                                    }
+                                }
+                            });
+                        });
+                } else {
+                    self.inProcess = false;
+                }
+            });
+        },
+        updateVoucher: function () {
+            let self = this;
+            self.inProcess = true;
+            self.$validate().then(function (success) {
+                if (success) {
+                    self.vouchersRef.child(self.sel_voucher).update({
+                        id: self.voucher_id,
+                        nbr_number: self.nbr_number,
+                        v_remarks: self.v_remarks,
+                        posted_status: self.posted_status,
+                        sel_project: self.sel_project,
+                        voucher_date: self.voucher_date,
+                        uid: firebase.auth().currentUser.uid,
+                        createdAt: firebase.database.ServerValue.TIMESTAMP
+                    }, function (err) {
+                        if (err) {
+                            self.errMain = err.message;
+                            self.inProcess = false;
+                        } else {
+                            let rows = self.rows;
+                            let subLength = 0;
+                            let process_item = 0;
+                            rows.forEach(function (row) {
+                                if (row.code !== "") {
+                                    subLength++;
+                                }
+                            });
+                            if (subLength > 0) {
+                                rows.forEach(function (row, ind) {
+                                    let key_save = row.key;
+                                    if (row.code !== "") {
+                                        delete row['key'];
+                                        row.v_key = self.sel_voucher;
+                                        row.v_data = self.voucher_date;
+                                        row.createdAt = firebase.database.ServerValue.TIMESTAMP;
+
+                                        if(key_save !== ""){
+                                            self.vouchersEntriesRef.child(key_save).update(row, function (err) {
+                                                if (err) {
                                                     console.log(err);
                                                 }
 
                                                 process_item++;
-                                                if(process_item === subLength){
-                                                    self.errMain = "";
-                                                    self.sucMain = "Successfully Inserted Voucher!";
+                                                if (process_item === subLength) {
+                                                    self.voucherMsg(self, "Successfully Updated Voucher!");
+                                                }
+                                            });
+                                        }else{
+                                            self.vouchersEntriesRef.push(row, function (err) {
+                                                if (err) {
+                                                    console.log(err);
+                                                }
 
-                                                    self.voucher_id = "";
-                                                    self.nbr_number = "";
-                                                    self.v_remarks = "";
-                                                    self.posted_status = "Yes";
-                                                    self.sel_project = "";
-                                                    $(".datepicker.voucher_date").val('');
-                                                    self.voucher_date = "";
-                                                    self.rows.forEach(function (row, ind) {
-                                                        self.rows[ind].code = '';
-                                                        self.rows[ind].code_name = '';
-                                                        self.rows[ind].remarks = '';
-                                                        self.rows[ind].quantity = 0;
-                                                        self.rows[ind].debit = 0;
-                                                        self.rows[ind].credit = 0;
-                                                    });
-
-                                                    self.validation.reset();
-                                                    self.inProcess = false;
-                                                    setTimeout(function () {
-                                                        self.sucMain = "";
-                                                    }, 1500);
+                                                process_item++;
+                                                if (process_item === subLength) {
+                                                    self.voucherMsg(self, "Successfully Updated Voucher!");
                                                 }
                                             });
                                         }
-                                    });
-                                }
-                            });
-                        });
+                                    }
+                                });
+                            } else {
+                                self.voucherMsg(self, "Successfully Updated Voucher!");
+                            }
+                        }
+                    });
+                } else {
+                    self.inProcess = false;
                 }
             });
         },
         changeCode: function (e, ind) {
-            if(e !== ""){
+            if (e !== "") {
                 this.rows[ind].code = e.code;
                 this.rows[ind].code_name = e.sub_name;
             }
@@ -290,6 +383,87 @@ export default {
             self.rows.forEach(function (row) {
                 self.total_debit += row.debit;
             });
+        },
+        updateVoucherVal: function (key) {
+            let self = this;
+            if (key !== "") {
+                self.updateV = true;
+                let sel_voucher = self.vouchersData[key];
+                self.voucher_id = sel_voucher.id;
+                self.nbr_number = sel_voucher.nbr_number;
+                self.v_remarks = sel_voucher.v_remarks;
+                self.posted_status = sel_voucher.posted_status;
+                self.sel_project = sel_voucher.sel_project;
+                self.voucher_date = sel_voucher.voucher_date;
+                $(".datepicker.voucher_date").datepicker("setDate", new Date(sel_voucher.voucher_date));
+                self.voucherEntriesGet(self);
+
+            } else {
+                self.updateV = false;
+                self.fullVoucherReset(self);
+            }
+        },
+        fullVoucherReset: function (self) {
+            self.sel_voucher = "";
+            self.voucher_id = "";
+            self.nbr_number = "";
+            self.v_remarks = "";
+            self.posted_status = "Yes";
+            self.sel_project = "";
+            $(".datepicker.voucher_date").val('');
+            self.voucher_date = "";
+            self.rows.forEach(function (row, ind) {
+                self.rows[ind].key = '';
+                self.rows[ind].code = '';
+                self.rows[ind].code_name = '';
+                self.rows[ind].remarks = '';
+                self.rows[ind].quantity = 0;
+                self.rows[ind].debit = 0;
+                self.rows[ind].credit = 0;
+                self.rows[ind].v_key = '';
+                self.rows[ind].v_data = 0;
+                self.rows[ind].createdAt = 0;
+            });
+            self.validation.reset();
+        },
+        voucherMsg: function (self, msg) {
+            self.errMain = "";
+            self.sucMain = msg;
+
+            self.fullVoucherReset(self);
+
+            self.inProcess = false;
+            setTimeout(function () {
+                self.sucMain = "";
+            }, 1500);
+        },
+        voucherEntriesGet: function (self) {
+            self.dataLoad3 = true;
+            self.vouchersEntriesRef
+                .orderByChild("v_key")
+                .equalTo(self.sel_voucher)
+                .once('value', function (entSnap) {
+                    let entData = entSnap.val();
+                    if(entData !== null){
+                        let keys = Object.keys(entData);
+                        self.rows.forEach(function (row, ind) {
+                            if(keys.length >= (ind+1)){
+                                let item = entData[keys[ind]];
+                                self.rows[ind].key = keys[ind];
+                                self.rows[ind].code = item.code;
+                                self.rows[ind].code_name = item.code_name;
+                                self.rows[ind].createdAt = item.createdAt;
+                                self.rows[ind].credit = item.credit;
+                                self.rows[ind].debit = item.debit;
+                                self.rows[ind].quantity = item.quantity;
+                                self.rows[ind].remarks = item.remarks;
+                                self.rows[ind].v_data = item.v_data;
+                                self.rows[ind].v_key = item.v_key;
+                            }
+                        });
+                    }
+                    self.dataLoad3 = false;
+                });
         }
     },
     components: {
