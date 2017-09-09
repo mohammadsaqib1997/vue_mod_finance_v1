@@ -48,6 +48,7 @@ export default {
         self.proSelContRef = db.ref('/pro_sel_control');
         self.regSubsRef = db.ref('/reg_subsidiary');
         self.billTypesRef = db.ref('/bill_types');
+        self.partyInformationRef = db.ref('/party_information');
 
         self.projectsRef.on('value', function (proSnap) {
             let renderData = proSnap.val();
@@ -57,6 +58,16 @@ export default {
                 self.proData = {};
             }
             self.dataLoad1 = false;
+        });
+
+        self.partyInformationRef.on('value', function (snap) {
+            let renderData = snap.val();
+            if (renderData !== null) {
+                self.partyData = renderData;
+            } else {
+                self.partyData = {};
+            }
+            self.dataLoad7 = false;
         });
 
         self.billTypesRef.on('value', function (billTypesSnap) {
@@ -80,6 +91,7 @@ export default {
             dataLoad4: false,
             dataLoad5: false,
             dataLoad6: true,
+            dataLoad7: true,
             inProcess: false,
 
             // data save
@@ -88,6 +100,7 @@ export default {
             subControlData: {},
             subsData: {},
             billTypesData: {},
+            partyData: {},
 
             // references
             subsRef: null,
@@ -97,6 +110,7 @@ export default {
             proSelContRef: null,
             regSubsRef: null,
             billTypesRef: null,
+            partyInformationRef: null,
 
             // form fields
             sel_project: "",

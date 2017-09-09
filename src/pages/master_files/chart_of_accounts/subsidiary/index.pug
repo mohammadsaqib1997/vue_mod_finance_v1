@@ -131,8 +131,13 @@
                                     label.control-label
                                         | Party Select
                                         span.symbol.required(aria-required='true')
-                                    select#control_name.form-control(name='party_id')
-                                        option(value='') Select Party
+                                    div.text-center(v-if='dataLoad7')
+                                        i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                    template(v-else)
+                                        select.form-control(v-model='party_id')
+                                            option(value='') Select Party Information
+                                            option(v-for='(row, key, ind) in partyData' v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
+                                        p.text-danger.text-right(v-if='validation.hasError("party_id")') {{ validation.firstError('party_id') }}
                             .col-md-3
                                 .form-group
                                     label.control-label

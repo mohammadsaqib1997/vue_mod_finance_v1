@@ -138,8 +138,13 @@
                                 p.text-danger.text-right(v-if='validation.hasError("cr_limit")') {{ validation.firstError('cr_limit') }}
                     .row
                         .col-md-4.pull-right
-                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='button' v-if="!inProcess" v-on:click.prevent='createParty')
-                                | Submit&nbsp;
-                                i.fa.fa-arrow-circle-right
                             button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='button' disabled='disabled' v-if="inProcess")
                                 i.fa.fa-refresh.fa-spin.fa-fw
+                            template(v-else)
+                                button.btn.btn-lg.btn-primary.btn-wide.pull-right(v-if="updateP" type='button' v-on:click.prevent='updateParty')
+                                    | Update&nbsp;
+                                    i.fa.fa-arrow-circle-right
+                                button.btn.btn-lg.btn-primary.btn-wide.pull-right(v-else type='button' v-on:click.prevent='createParty')
+                                    | Submit&nbsp;
+                                    i.fa.fa-arrow-circle-right
+
