@@ -21,6 +21,7 @@ import journalVoucher from '../pages/transaction_files/journal_voucher/journal_v
 import postUnPost from '../pages/process/post_unpost/post_unpost.vue'
 
 import createNewUser from '../pages/user_control/create_new_user/create_new_user.vue'
+import editUser from '../pages/user_control/edit_user/edit_user.vue'
 
 import partyInformation from '../pages/party_information/party_information.vue'
 
@@ -79,6 +80,10 @@ const routes = [
                     {
                         path: '/create_new_user',
                         component: createNewUser
+                    },
+                    {
+                        path: '/edit_user/:id',
+                        component: editUser
                     },
                     {
                         path: '/add_party',
