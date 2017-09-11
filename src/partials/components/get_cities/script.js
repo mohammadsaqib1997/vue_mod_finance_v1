@@ -9,7 +9,9 @@ export default {
 
     created: function () {
         let self = this;
+        console.log(self.label_con);
     },
+    props: ["label_con"],
     data: function(){
         return {
             src: "/gapi",

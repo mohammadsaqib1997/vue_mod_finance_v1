@@ -13,40 +13,20 @@ export default {
     created: function () {
         let self = this;
 
+        setTimeout(function () {
+            if(self.$root.loginUID !== ""){
+                self.loadData(self.$root.loginUID);
+            }
+            self.$watch(function () {
+                return self.$root.loginUID;
+            }, function (val, oldVal) {
+                self.loadData(val);
+            });
+        }, 100);
+
         const db = firebase.database();
         self.usersRef = db.ref('/users');
         self.projectsRef = db.ref('/projects');
-
-        self.projectsRef.on('value', function (proSnap) {
-            let renderData = proSnap.val();
-            if (renderData !== null) {
-                self.proData = renderData;
-            } else {
-                self.proData = {};
-            }
-            self.dataLoad1 = false;
-        });
-
-        self.usersRef.child(self.$route.params.id).once('value', function (userSnap) {
-            let renderData = userSnap.val();
-            if (renderData !== null) {
-                self.dataLoad2 = false;
-                self.first_name = renderData.first_name;
-                self.last_name = renderData.last_name;
-                self.email = renderData.email;
-                self.mob_num = renderData.mob_num;
-                self.gender = renderData.gender;
-                self.sel_project = (renderData.projects === true) ? []: renderData.projects;
-                self.zipcode = renderData.zipcode;
-                self.pro_sel_type = (renderData.projects === true) ? "All": "Select";
-                setTimeout(function () {
-                    self.$refs.sel_city.query = renderData.city;
-                }, 100);
-                self.load_img();
-            } else {
-                self.$router.push('/create_new_user');
-            }
-        });
 
         $(function () {
             $('body').on('change', "#profile_img", function (e) {
@@ -58,24 +38,38 @@ export default {
         return {
             //loaders
             inProcess: false,
-            dataLoad1: true,
+            dataLoad1: false,
             dataLoad2: true,
             fileLoader: false,
             loadImg: true,
 
             // data save
-            proData: {},
-            userData: {},
+            proData: [],
 
             // references
             projectsRef: null,
             usersRef: null,
 
+            //edit data conditions
+            edit: {
+                first_name: false,
+                last_name: false,
+                mob_num: false,
+                gender: false,
+                city: false,
+            },
+            edit_val: {
+                first_name: "",
+                last_name: "",
+                mob_num: "",
+                gender: "",
+                city: "",
+            },
+
             // form fields
             load_src: "",
             profile_img_src: "/assets/images/default-user.png",
             profile_img: null,
-            pro_sel_type: "Select",
             first_name: "",
             last_name: "",
             email: "",
@@ -84,6 +78,7 @@ export default {
             retype_password: "",
             gender: "Male",
             sel_project: [],
+            city: "",
             zipcode: "",
             errMain: "",
             sucMain: "",
@@ -105,35 +100,42 @@ export default {
             if(val !== ""){
                 this.profile_img_src = val;
             }
+        },
+        sel_project: function (val) {
+            if(val.length > 0){
+                this.loadProjects(val);
+            }
         }
     },
     validators: {
-        first_name: function (value) {
-            return Validator.value(value).required().lengthBetween(3, 35);
+        "edit_val.first_name": function (value) {
+            if(this.edit.first_name){
+                return Validator.value(value).required().lengthBetween(3, 35);
+            }
         },
-        last_name: function (value) {
-            return Validator.value(value).required().lengthBetween(3, 35);
+        "edit_val.last_name": function (value) {
+            if(this.edit.last_name){
+                return Validator.value(value).required().lengthBetween(3, 35);
+            }
         },
-        email: function (value) {
-            let self = this;
-            return Validator.value(value).required().maxLength(50).email().custom(function () {
-                return Promise.delay(1000).then(function () {
-                    return self.usersRef.orderByChild('email').equalTo(value).once('value').then(function (userSnap) {
-                        let userData = userSnap.val();
-                        if (userData !== null) {
-                            let keys = Object.keys(userData);
-                            if(keys[0] !== self.$route.params.id){
-                                return "Already taken!";
-                            }
-                        }
-                    });
-                });
-            });
+        "edit_val.mob_num": function (value) {
+            if(this.edit.mob_num) {
+                let msg = 'Invalid Phone/Mobile Number!';
+                return Validator.value(value).required().digit(msg).lengthBetween(11, 11, msg);
+            }
         },
-        mob_num: function (value) {
-            let msg = 'Invalid Phone/Mobile Number!';
-            return Validator.value(value).required().digit(msg).lengthBetween(11, 11, msg);
+        "edit_val.gender": function (value) {
+            if(this.edit.gender) {
+                return Validator.value(value).required().in(['Male', 'Female'], "Invalid Gender!");
+            }
         },
+        "edit_val.city": function (value) {
+            /*if(this.edit.gender) {
+                return Validator.value(value).required().in(['Male', 'Female'], "Invalid Gender!");
+            }*/
+        },
+
+        /*
         password: function (value) {
             return Validator.value(value).lengthBetween(6, 35);
         },
@@ -142,73 +144,12 @@ export default {
                 return Validator.value(repeat).required().match(password);
             }
         },
-        gender: function (value) {
-            return Validator.value(value).required().in(['Male', 'Female'], "Invalid Gender!");
-        },
-        sel_project: function (value) {
-            let self = this;
-            if (self.pro_sel_type === "Select") {
-                return Validator.value(value).required();
-            }
-        },
         zipcode: function (value) {
             let msg = 'Invalid Zip code!';
             return Validator.value(value).required().digit(msg).lengthBetween(6, 6, msg);
-        },
+        },*/
     },
     methods: {
-        updateUser: function () {
-            let self = this;
-            self.inProcess = true;
-            self.$validate().then(function (success_form) {
-                self.$refs.sel_city.validate(function (success_city) {
-                    if (success_form && success_city) {
-
-                        let updateData = {
-                            first_name: self.first_name,
-                            last_name: self.last_name,
-                            email: self.email,
-                            mob_num: self.mob_num,
-                            gender: self.gender,
-                            projects: (self.pro_sel_type === "Select") ? self.sel_project : true,
-                            zipcode: self.zipcode,
-                            city: self.$refs.sel_city.query,
-                            createdAt: firebase.database.ServerValue.TIMESTAMP
-                        };
-
-                        if(self.password !== ""){
-                            let salt = bcrypt.genSaltSync(saltRounds);
-                            updateData['password'] = bcrypt.hashSync(self.password, salt);
-                        }
-
-                        self.usersRef.child(self.$route.params.id).update(updateData, function (err) {
-                            if (err) {
-                                self.errMain = err.message;
-                                self.inProcess = false;
-                            } else {
-                                if (self.profile_img !== null) {
-                                    self.upload_img(self.$route.params.id, function () {
-                                        self.succMsg(self);
-                                    });
-                                }else{
-                                    self.succMsg(self);
-                                }
-                            }
-                        });
-                    }else{
-                        self.inProcess = false;
-                    }
-                });
-            });
-        },
-        active: function (key) {
-            let self = this;
-            self.usersRef.child(key).update({act_status: true});
-        },
-        deactive: function (key) {
-            let self = this;
-            self.usersRef.child(key).update({act_status: false});
-        },
         fileChange: function (event) {
             let self = this;
             self.profile_img = null;
@@ -256,15 +197,102 @@ export default {
                 });
             }
         },
-        succMsg: function (self) {
+        succMsg: function (self, field) {
             self.inProcess = false;
             self.errMain = "";
             self.sucMain = "Successfully Update User!";
 
+            self.edit[field] = false;
+            self.edit_val[field] = "";
+
             setTimeout(function () {
                 self.sucMain = "";
-                self.$router.push('/create_new_user');
             }, 1500);
+        },
+        simEdit: function(field){
+            let self = this;
+            self.edit[field] = true;
+            self.edit_val[field] = self[field];
+        },
+        cancel: function (field) {
+            let self = this;
+            self.edit[field] = false;
+        },
+        submit: function (field) {
+            let self = this;
+            self.inProcess = true;
+            self.$validate().then(function(valid){
+                if(valid){
+                    let insert = {};
+                    insert[field] = self.edit_val[field];
+                    self.usersRef.child(self.$root.loginUID).update(insert, function (err) {
+                        if (err) {
+                            self.errMain = err.message;
+                            self.inProcess = false;
+                        } else {
+                            self.succMsg(self, field);
+                        }
+                    });
+                }else{
+                    self.inProcess = false;
+                }
+            });
+        },
+        loadData: function (uid) {
+            let self = this;
+            self.usersRef.child(uid).on('value', function (userSnap) {
+                let renderData = userSnap.val();
+                if (renderData !== null) {
+                    self.first_name = renderData.first_name;
+                    self.last_name = renderData.last_name;
+                    self.email = renderData.email;
+                    self.mob_num = (renderData.mob_num) ? renderData.mob_num: "";
+                    self.gender = (renderData.gender) ? renderData.gender: "";
+                    self.sel_project = (!renderData.projects) ? [] : (renderData.projects === true) ? [] : renderData.projects;
+                    self.zipcode = renderData.zipcode;
+                    self.city = (renderData.city) ? renderData.city: "";
+                    /*setTimeout(function () {
+                        self.$refs.sel_city.query = renderData.city;
+                    }, 100);
+                    self.load_img();*/
+                    self.dataLoad2 = false;
+                } else {
+                    self.$router.push('/create_new_user');
+                }
+            });
+        },
+        loadProjects: function (keys) {
+            let self = this;
+            self.dataLoad1 = true;
+            self.proData = [];
+            let process_item = 0;
+            keys.forEach(function (key) {
+                self.projectsRef.child(key).once('value', function (proSnap) {
+                    let renderData = proSnap.val();
+                    if (renderData !== null) {
+                        renderData["key"] = key;
+                        self.proData.push(renderData);
+                    }
+                    process_item++;
+                    if(keys.length === process_item){
+                        self.dataLoad1 = false;
+                    }
+                });
+            });
+        },
+        getPro: function () {
+            let self = this;
+            let names = [];
+            if(self.proData.length > 0){
+                self.proData.forEach(function (row) {
+                    names.push(row.name);
+                });
+            }
+            if(names.length > 0){
+                return names.join(", ");
+            }else{
+                return "All Projects";
+            }
         }
     },
     components: {
