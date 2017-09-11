@@ -10,7 +10,9 @@
                 li.active
                     span Profile
     .container-fluid.container-fullw.bg-white.create-user
-        form
+        div.text-center(v-if='dataLoad2')
+            i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
+        form(v-else)
             fieldset
                 legend(style=' left: 3%; ')
                     | Account Info
@@ -112,34 +114,4 @@
                     button.btn.btn-primary.pull-right(v-else type='button' v-on:click.prevent='createUser')
                         | Submit&nbsp;
                         i.fa.fa-arrow-circle-right
-        hr
-        .container-fluid.container-fullw.create-user
-            .row
-                .col-md-12
-                    .table-responsive
-                        div.text-center(v-if='dataLoad2')
-                            i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
-                        table#sample_2.table.table-striped.table-hover(v-else)
-                            thead
-                                tr
-                                    th Full Name
-                                    th Email
-                                    th City
-                                    th Phone
-                                    th Edit
-                                    th Action
-                            tbody
-                                tr(v-for='(row, key, ind) in userData')
-                                    td {{ row.first_name }} {{ row.last_name }}
-                                    td {{ row.email }}
-                                    td {{ row.city }}
-                                    td {{ row.mob_num }}
-                                    td
-                                        router-link.edit-row(v-bind:to='"/edit_user/"+key')
-                                            | Edit
-                                    td
-                                        button.btn.btn-small.btn-success(v-if='!row.act_status' v-on:click='active(key)')
-                                            | Activate
-                                        button.btn.btn-small.btn-danger(v-else v-on:click='deactive(key)')
-                                            | Deactivate
 

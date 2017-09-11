@@ -27,14 +27,27 @@ export default {
             self.dataLoad1 = false;
         });
 
-        self.usersRef.on('value', function (userSnap) {
+        self.usersRef.child(self.$route.params.id).once('value', function (userSnap) {
             let renderData = userSnap.val();
             if (renderData !== null) {
-                self.userData = renderData;
+                self.dataLoad2 = false;
+                self.first_name = renderData.first_name;
+                self.last_name = renderData.last_name;
+                self.email = renderData.email;
+                self.mob_num = renderData.mob_num;
+                self.gender = renderData.gender;
+                self.sel_project = (renderData.projects === true) ? []: renderData.projects;
+                self.zipcode = renderData.zipcode;
+                self.pro_sel_type = (renderData.projects === true) ? "All": "Select";
+                setTimeout(function () {
+                    self.$refs.sel_city.query = renderData.city;
+                }, 100);
+
+
+
             } else {
-                self.userData = {};
+                self.$router.push('/create_new_user');
             }
-            self.dataLoad2 = false;
         });
 
         $(function () {
