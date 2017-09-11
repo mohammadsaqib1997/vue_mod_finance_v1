@@ -13,6 +13,14 @@ export default {
     created: function () {
         let self = this;
 
+        self.$watch("edit.city", function (val, oldVal) {
+            if(val){
+                setTimeout(function () {
+                    self.$refs.sel_city.query = self.city;
+                }, 100);
+            }
+        });
+
         setTimeout(function () {
             if(self.$root.loginUID !== ""){
                 self.loadData(self.$root.loginUID);
@@ -57,13 +65,17 @@ export default {
                 mob_num: false,
                 gender: false,
                 city: false,
+                zipcode: false,
+                password: false,
             },
             edit_val: {
                 first_name: "",
                 last_name: "",
                 mob_num: "",
                 gender: "",
-                city: "",
+                zipcode: "",
+                password: "",
+                re_password: "",
             },
 
             // form fields
@@ -74,8 +86,6 @@ export default {
             last_name: "",
             email: "",
             mob_num: "",
-            password: "",
-            retype_password: "",
             gender: "Male",
             sel_project: [],
             city: "",
@@ -105,7 +115,7 @@ export default {
             if(val.length > 0){
                 this.loadProjects(val);
             }
-        }
+        },
     },
     validators: {
         "edit_val.first_name": function (value) {
@@ -129,25 +139,23 @@ export default {
                 return Validator.value(value).required().in(['Male', 'Female'], "Invalid Gender!");
             }
         },
-        "edit_val.city": function (value) {
-            /*if(this.edit.gender) {
-                return Validator.value(value).required().in(['Male', 'Female'], "Invalid Gender!");
-            }*/
-        },
-
-        /*
-        password: function (value) {
-            return Validator.value(value).lengthBetween(6, 35);
-        },
-        'retype_password, password': function (repeat, password) {
-            if(password !== ""){
-                return Validator.value(repeat).required().match(password);
+        "edit_val.zipcode": function (value) {
+            if(this.edit.zipcode){
+                let msg = 'Invalid Zip code!';
+                return Validator.value(value).required().digit(msg).lengthBetween(6, 6, msg);
             }
         },
-        zipcode: function (value) {
-            let msg = 'Invalid Zip code!';
-            return Validator.value(value).required().digit(msg).lengthBetween(6, 6, msg);
-        },*/
+        "edit_val.password": function (value) {
+            if(this.edit.password){
+                return Validator.value(value).required().lengthBetween(6, 35);
+            }
+
+        },
+        'edit_val.re_password, edit_val.password': function (repeat, password) {
+            if(this.edit.password){
+                return Validator.value(repeat).required().match(password);
+            }
+        }
     },
     methods: {
         fileChange: function (event) {
@@ -204,6 +212,9 @@ export default {
 
             self.edit[field] = false;
             self.edit_val[field] = "";
+            if(field === "password"){
+                self.edit_val['re_password'] = "";
+            }
 
             setTimeout(function () {
                 self.sucMain = "";
@@ -212,7 +223,7 @@ export default {
         simEdit: function(field){
             let self = this;
             self.edit[field] = true;
-            self.edit_val[field] = self[field];
+            self.edit_val[field] = (self[field]) ? self[field]: "";
         },
         cancel: function (field) {
             let self = this;
@@ -221,22 +232,47 @@ export default {
         submit: function (field) {
             let self = this;
             self.inProcess = true;
-            self.$validate().then(function(valid){
-                if(valid){
-                    let insert = {};
-                    insert[field] = self.edit_val[field];
-                    self.usersRef.child(self.$root.loginUID).update(insert, function (err) {
-                        if (err) {
-                            self.errMain = err.message;
-                            self.inProcess = false;
-                        } else {
-                            self.succMsg(self, field);
+            if(field === "city"){
+                self.$refs.sel_city.validate(function (success_city){
+                    if(success_city){
+                        let insert = {};
+                        insert[field] = self.$refs.sel_city.query;
+                        self.usersRef.child(self.$root.loginUID).update(insert, function (err) {
+                            if (err) {
+                                self.errMain = err.message;
+                                self.inProcess = false;
+                            } else {
+                                self.succMsg(self, field);
+                            }
+                        });
+                    }else{
+                        self.inProcess = false;
+                    }
+                });
+            }else{
+                self.$validate().then(function(valid){
+                    if(valid){
+                        let insert = {};
+                        if(field === "password"){
+                            let salt = bcrypt.genSaltSync(saltRounds);
+                            insert[field] = bcrypt.hashSync(self.edit_val[field], salt);
+                        }else{
+                            insert[field] = self.edit_val[field];
                         }
-                    });
-                }else{
-                    self.inProcess = false;
-                }
-            });
+
+                        self.usersRef.child(self.$root.loginUID).update(insert, function (err) {
+                            if (err) {
+                                self.errMain = err.message;
+                                self.inProcess = false;
+                            } else {
+                                self.succMsg(self, field);
+                            }
+                        });
+                    }else{
+                        self.inProcess = false;
+                    }
+                });
+            }
         },
         loadData: function (uid) {
             let self = this;
@@ -251,10 +287,6 @@ export default {
                     self.sel_project = (!renderData.projects) ? [] : (renderData.projects === true) ? [] : renderData.projects;
                     self.zipcode = renderData.zipcode;
                     self.city = (renderData.city) ? renderData.city: "";
-                    /*setTimeout(function () {
-                        self.$refs.sel_city.query = renderData.city;
-                    }, 100);
-                    self.load_img();*/
                     self.dataLoad2 = false;
                 } else {
                     self.$router.push('/create_new_user');

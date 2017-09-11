@@ -1,5 +1,5 @@
 div.form-group
-    label.control-label
+    label.control-label(v-if="typeof label_con === 'undefined' || label_con")
         | City
     input.form-control.tooltips.typeahead(
         type='text'

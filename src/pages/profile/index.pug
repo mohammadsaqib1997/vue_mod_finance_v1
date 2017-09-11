@@ -129,7 +129,7 @@
                             td City
                             td(v-if='!edit["city"]') {{ city }}
                             td(v-else)
-                                com_cities(ref='sel_city')
+                                com_cities(ref='sel_city' v-bind:label_con="false")
                             td(v-if='!edit["city"]')
                                 a.show-tab(v-on:click.prevent="simEdit('city')")
                                     i.fa.fa-pencil.edit-user-info
@@ -143,7 +143,39 @@
                                         i.fa.fa-times
                         tr
                             td Zipcode
-                            td {{ zipcode }}
-                            td
-                                a.show-tab(href='#panel_edit_account')
+                            td(v-if='!edit["zipcode"]') {{ zipcode }}
+                            td(v-else)
+                                input.form-control(v-model="edit_val.zipcode")
+                                p.text-danger.text-right(v-if='validation.hasError("edit_val.zipcode")') {{ validation.firstError('edit_val.zipcode') }}
+                            td(v-if='!edit["zipcode"]')
+                                a.show-tab(v-on:click.prevent="simEdit('zipcode')")
                                     i.fa.fa-pencil.edit-user-info
+                            td(v-else)
+                                div(v-if="inProcess")
+                                    i.fa.fa-refresh.fa-spin.fa-fw
+                                template(v-else)
+                                    a.show-tab(v-on:click.prevent="submit('zipcode')")
+                                        i.fa.fa-check
+                                    a.show-tab(v-on:click.prevent="cancel('zipcode')")
+                                        i.fa.fa-times
+                        tr
+                            td Change Password
+                            td(v-if='!edit["password"]') ********
+                            td(v-else)
+                                .form-group
+                                    input.form-control(type="password" v-model="edit_val.password" placeholder="Enter New Password")
+                                    p.text-danger.text-right(v-if='validation.hasError("edit_val.password")') {{ validation.firstError('edit_val.password') }}
+                                .form-group
+                                    input.form-control(type="password" v-model="edit_val.re_password" placeholder="Re-Type Password")
+                                    p.text-danger.text-right(v-if='validation.hasError("edit_val.re_password")') {{ validation.firstError('edit_val.re_password') }}
+                            td(v-if='!edit["password"]')
+                                a.show-tab(v-on:click.prevent="simEdit('password')")
+                                    i.fa.fa-pencil.edit-user-info
+                            td(v-else)
+                                div(v-if="inProcess")
+                                    i.fa.fa-refresh.fa-spin.fa-fw
+                                template(v-else)
+                                    a.show-tab(v-on:click.prevent="submit('password')")
+                                        i.fa.fa-check
+                                    a.show-tab(v-on:click.prevent="cancel('password')")
+                                        i.fa.fa-times
