@@ -35,19 +35,34 @@ new Vue({
         firebase.auth().onAuthStateChanged(function (user) {
             self.compileProc = false;
             if (user) {
+                self.loginUID = user.uid;
                 if (checkRouteAuth) {
                     self.$router.push(route);
                 } else {
                     self.$router.push('/');
                 }
             } else {
+                self.loginUID = "";
                 self.$router.push('/login');
             }
         });
     },
+    created: function () {
+        let self = this;
+        const db = firebase.database();
+        self.usersRef = db.ref('/users');
+    },
     data: {
         csrf: '',
+        loginUID: "",
+        loginUData: {},
+        usersRef: null,
         compileProc: true
+    },
+    watch: {
+        loginUID: function (val) {
+            this.loginUserLoad(val);
+        }
     },
     beforeMount: function () {
         this.csrf = this.$el.attributes.csrf.value;
@@ -73,6 +88,20 @@ new Vue({
                 val = val.substr(1, val.length);
             }
             return val.replace(/\s{2,}/g, ' ');
+        },
+        loginUserLoad: function (uid) {
+            let self = this;
+            if(uid !== ""){
+                self.usersRef.orderByKey().equalTo(uid).on("value", function (snap) {
+                    let data = snap.val();
+                    let keys = Object.keys(data);
+                    let item = data[keys[0]];
+                    item["uid"] = keys[0];
+                    self.loginUData = item;
+                });
+            }else{
+                self.loginUData = {};
+            }
         }
     }
 }).$mount("#app");

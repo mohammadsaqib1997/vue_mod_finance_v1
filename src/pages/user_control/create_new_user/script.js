@@ -27,7 +27,7 @@ export default {
             self.dataLoad1 = false;
         });
 
-        self.usersRef.on('value', function (userSnap) {
+        self.usersRef.orderByChild("type").equalTo("accountant").on('value', function (userSnap) {
             let renderData = userSnap.val();
             if (renderData !== null) {
                 self.userData = renderData;
@@ -162,10 +162,11 @@ export default {
                                     mob_num: self.mob_num,
                                     password: newHash,
                                     gender: self.gender,
-                                    projects: (self.sel_project.length > 0) ? self.sel_project : true,
+                                    projects: (self.pro_sel_type === "Select") ? self.sel_project : true,
                                     zipcode: self.zipcode,
                                     city: self.$refs.sel_city.query,
                                     act_status: true,
+                                    type: "accountant",
                                     createdAt: firebase.database.ServerValue.TIMESTAMP
                                 }, function (err) {
                                     if (err) {

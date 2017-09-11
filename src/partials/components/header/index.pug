@@ -13,13 +13,16 @@ header.navbar.navbar-default.navbar-static-top
         ul.nav.navbar-right
             li.dropdown.current-user
                 a.dropdown-toggle(href='', data-toggle='dropdown')
-                    img(src='/assets/images/avatar-1.jpg', alt='Peter')
-                    span.username
-                        | Keen Developments
-                        i.ti-angle-down
+                    div.text-center(v-if='loadImg')
+                        i.fa.fa-refresh.fa-spin.fa-fw
+                    template(v-else)
+                        img(v-bind:src='pro_img_src', alt='Peter')
+                        span.username
+                            | {{ s_name }}
+                            i.ti-angle-down
                 ul.dropdown-menu.dropdown-dark
                     li
-                        a(href='profile.html')
+                        router-link(to='/profile')
                             | My Profile
                     li
                         a(href='login_lockscreen.html')

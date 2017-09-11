@@ -1,9 +1,20 @@
 import firebase from 'firebase'
 
 export default {
+    created: function(){
+        let self = this;
+        self.$watch(function () {
+            return self.$root.loginUData;
+        }, function (val, oldVal) {
+            self.s_name = val.first_name+" "+val. last_name;
+            self.imageLoad(val.uid);
+        });
+    },
     data: function(){
         return {
-
+            loadImg: true,
+            s_name: "",
+            pro_img_src: "/assets/images/avatar-1.jpg"
         }
     },
     methods: {
@@ -14,6 +25,18 @@ export default {
                 if(err){
                     console.log(err);
                 }
+            });
+        },
+        imageLoad: function (uid) {
+            let self = this;
+            const storage = firebase.storage();
+            let ref = storage.ref('profile_images/' + uid + '.jpg');
+            ref.getDownloadURL().then(function (url) {
+                self.pro_img_src = url;
+                self.loadImg = false;
+            }, function (err) {
+                self.pro_img_src = "/assets/images/avatar-1.jpg";
+                self.loadImg = false;
             });
         }
     }

@@ -45,8 +45,8 @@
                             p.text-danger.text-right(v-if='validation.hasError("mob_num")') {{ validation.firstError('mob_num') }}
                         .form-group
                             label.control-label
-                                | Password
-                            input.form-control(type='password', placeholder='Password' v-model='password')
+                                | New Password
+                            input.form-control(type='password', placeholder='New Password' v-model='password')
                             p.text-danger.text-right(v-if='validation.hasError("password")') {{ validation.firstError('password') }}
                         .form-group
                             label.control-label
@@ -94,7 +94,9 @@
                         .form-group
                             label
                                 | Image Upload
-                            .fileinput.fileinput-new(data-provides='fileinput')
+                            div.text-center(v-if='loadImg')
+                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                            .fileinput.fileinput-new(v-else data-provides='fileinput')
                                 .fileinput-new.thumbnail
                                     img(v-bind:src='profile_img_src', alt='Profile Image')
                                 button.btn.btn-primary(v-if="fileLoader" type='button' disabled='disabled')
@@ -111,7 +113,7 @@
                 .col-md-4
                     button.btn.btn-primary.pull-right(v-if="inProcess" type='button' disabled='disabled')
                         i.fa.fa-refresh.fa-spin.fa-fw
-                    button.btn.btn-primary.pull-right(v-else type='button' v-on:click.prevent='createUser')
-                        | Submit&nbsp;
+                    button.btn.btn-primary.pull-right(v-else type='button' v-on:click.prevent='updateUser')
+                        | Update&nbsp;
                         i.fa.fa-arrow-circle-right
 

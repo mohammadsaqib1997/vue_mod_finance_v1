@@ -3,6 +3,11 @@ import footer from '../../components/footer/footer.vue'
 import sidebar from '../../components/sidebar/sidebar.vue'
 
 export default {
+    created: function () {
+        $.getScript('/assets/js/dashboard.js', function (data, textStatus, jqxhr) {
+            Dashboard.init();
+        });
+    },
     data: function(){
         return {
 

@@ -1,0 +1,74 @@
+#container.wrap-content.container
+    section#page-title
+        .row
+            .col-sm-8
+                h1.mainTitle User Control
+                span.mainDescription Profile
+            ol.breadcrumb
+                li
+                    span User Control
+                li.active
+                    span Profile
+    .container-fluid.container-fullw.bg-white
+        .row
+            .col-sm-5.col-md-4
+                .user-left
+                    .center
+                        h4 Peter Clark
+                        .fileinput.fileinput-new(data-provides='fileinput')
+                            .user-image
+                                .fileinput-new.thumbnail
+                                    img(src='assets/images/avatar-1-xl.jpg', alt='')
+                                .user-image-buttons
+                                    span.btn.btn-azure.btn-file.btn-sm
+                                        span.fileinput-exists
+                                            i.fa.fa-pencil
+                                        input(type='file')
+                                    a.btn.fileinput-exists.btn-red.btn-sm(href='#', data-dismiss='fileinput')
+                                        i.fa.fa-times
+                        hr
+            .col-sm-7.col-md-8
+                table.table.table-condensed
+                    thead
+                        tr
+                            th(colspan='3') Contact Information
+                    tbody
+                        tr
+                            td email:
+                            td
+                                a(href='')
+                                    | peter@example.com
+                            td
+                                a.show-tab(href='#panel_edit_account')
+                                    i.fa.fa-pencil.edit-user-info
+                        tr
+                            td phone:
+                            td
+                                a.show-tab(href='call:6417344763;') (641)-734-4763
+                            td
+                                a.show-tab(href='#panel_edit_account')
+                                    i.fa.fa-pencil.edit-user-info
+                        tr
+                            td Gender
+                            td Male
+                            td
+                                a.show-tab(href='#panel_edit_account')
+                                    i.fa.fa-pencil.edit-user-info
+                        tr
+                            td Project
+                            td Project 1
+                            td
+                                a.show-tab(href='#panel_edit_account')
+                                    i.fa.fa-pencil.edit-user-info
+                        tr
+                            td City
+                            td Karachi
+                            td
+                                a.show-tab(href='#panel_edit_account')
+                                    i.fa.fa-pencil.edit-user-info
+                        tr
+                            td Zipcode
+                            td 73500
+                            td
+                                a.show-tab(href='#panel_edit_account')
+                                    i.fa.fa-pencil.edit-user-info
