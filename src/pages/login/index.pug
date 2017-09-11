@@ -10,19 +10,19 @@
         .form-group
           span.input-icon
             input.form-control(type='text', v-model='email', v-on:keyup.enter='login', placeholder='Email')
-            i.fa.fa-user
+            img(src='/assets/images/username-icon.png', alt='User-icon')
           p.alert.alert-danger(v-if='validation.hasError("email")') {{ validation.firstError('email') }}
         .form-group.form-actions.margin-top-0
           span.input-icon
             input.form-control.password(type='password', v-model='password', v-on:keyup.enter='login', placeholder='Password')
-            i.fa.fa-lock
+            img(src='/assets/images/key-icon.png', alt='Password-icon°')
             a.forgot(href='#', title='Forgot Password?', data-toggle='tooltip' v-on:click='backtologin', v-if='!isProcess')
-              i.fa.fa-question
+              i.fa.fa-key
           p.alert.alert-danger(v-if='validation.hasError("password")') {{ validation.firstError('password') }}
         .form-actions
           button.btn.btn-lg.btn-primary.pull-right(v-on:click='login', v-if='!isProcess')
             | Login 
-            i.fa.fa-arrow-circle-right
+            img(src='/assets/images/login-icon.png', alt='FocusMedia360°')
           button.btn.btn-lg.btn-primary.pull-right(v-if='isProcess', disabled='disabled')
             i.fa.fa-refresh.fa-spin.fa-fw
     .box-forgot(style='display:none;')
@@ -43,14 +43,6 @@
             button.btn.btn-lg.btn-primary(type='submit')
               | Submit 
               i.fa.fa-arrow-circle-right
-      // start: COPYRIGHT
-      .copyright
-        | © 
-        span.current-year 2017
-        span.text-bold.text-uppercase   FocusMedia360°
-        | . 
-        span All rights reserved
-      // end: COPYRIGHT
     .copyright
       | Copyright © 
       span.current-year 2017

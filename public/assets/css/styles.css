@@ -4730,10 +4730,10 @@ a.text-light:hover {
 /* ---------------------------------------------------------------------- */
 fieldset {
   background: #ffffff;
-  border: 1px solid #e6e8e8;
+  border: 0px solid #e6e8e8;
   border-radius: 5px;
   margin: 20px 0 20px 0;
-  padding: 25px;
+  padding: 0;
   position: relative;
   text-align: center;
 }
@@ -4750,15 +4750,15 @@ fieldset legend {
   font-family: "Lato", sans-serif;
   color: #e8534f;
   font-size: 21px;
-  left: 25%;
+  left: 0;
   padding: 0 10px;
-  position: absolute;
-  top: -12px;
+  position: relative;
+  top: 0;
   font-weight: 400;
   width: auto !important;
   border: none !important;
   right: auto;
-  /* margin-bottom: 30px; */
+  margin-bottom: 30px;
 }
 
 .create-user fieldset {
@@ -4794,7 +4794,7 @@ fieldset legend {
   /* margin-bottom: 30px; */
 }
 .create-user .input-icon > input {
-    padding-left: 40px !important;
+    padding-left: 50px !important;
     padding-right: 6px;
     padding: 5px 10px;
 }
@@ -4995,13 +4995,17 @@ span.input-icon, span.input-help {
   position: relative;
 }
 span.input-icon {
-    width: 300px;
+    width: 370px;
     margin: 0 auto;
 }
 .input-icon > input {
-  padding-left: 40px !important;
-  padding-right: 6px;
-  padding: 25px 10px;
+    padding-left: 50px !important;
+    padding-right: 6px;
+    padding: 25px 10px;
+    border-radius: 3px !important;
+    border-color: #dedede;
+    color: #c3c3c3;
+    font-size: 16px;
 }
 
 .input-icon.input-icon-right > input {
@@ -5016,7 +5020,7 @@ span.input-help > input {
 
 .input-icon > [class*="fa-"], .input-icon > [class*="ti-"] {
   bottom: 0;
-  color: #9096b2;
+  color: #c3c3c3;
   display: inline-block;
   left: 5px;
   line-height: 35px;
@@ -5025,7 +5029,7 @@ span.input-help > input {
   top: -1px;
   z-index: 2;
   padding: 9px 10px;
-  font-size: 16px;
+  font-size: 22px;
 }
 
 .input-icon.input-icon-right > [class*="fa-"], .input-icon.input-icon-right > [class*="ti-"] {
@@ -9602,7 +9606,10 @@ nav.links a {
   border-radius: 5px;
   overflow: hidden;
   padding: 15px;
-  margin: 20% 0 65px 0;
+  margin: 20% auto 65px auto;
+  border-top: 10px solid #e85450;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.17);
+  max-width: 455px;
 }
 .main-login .form fieldset {
   border: none;
@@ -11671,10 +11678,10 @@ form.form-login .input-icon > input {
     font-size: 20px;
     padding: 11px 20px;
 }
-
+/*
 form.form-forgot input.form-control {
     font-size: 18px;
-}
+}*/
 ul.ul-action {
     float: left;
     padding: 0;
@@ -11749,7 +11756,7 @@ body .ui-tooltip {
     border-color: #000;
 }
 .box-login .form-group p.alert.alert-danger {
-    width: 300px;
+    width: 370px;
     margin: 0 auto;
     text-align: left;
     padding: 0;
@@ -11758,7 +11765,35 @@ body .ui-tooltip {
     color: #d45252;
     border-radius: 3px 3px 3px 3px;
     font-size: 11px;
-}/*
+}
+.box-login fieldset > p.alert-danger {
+    font-size: 16px;
+    background-image: url(/assets/images/warning.png);
+    background-position: top left;
+	background-color: #bd362f;
+    position: relative;
+    pointer-events: auto;
+    overflow: hidden;
+    margin: 0 0 6px;
+    padding: 15px 15px 15px 50px;
+    width: 100%;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background-position: 15px center;
+    background-repeat: no-repeat;
+    -moz-box-shadow: 0 0 12px #999;
+    -webkit-box-shadow: 0 0 12px #999;
+    box-shadow: 0 0 12px #999;
+    color: #fff;
+    opacity: .8;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+    filter: alpha(opacity=80);
+    max-width: 370px;
+    margin: 0 auto;
+    text-align: left;
+}
+/*
 .box-login p.alert.alert-danger {
     width: 300px;
     margin: 0 auto;
@@ -11782,14 +11817,35 @@ body .ui-tooltip {
     border-radius: .25rem;
 }
 .box-login p.subheading {
-    margin-top: 85px;
+    margin-top: 0;
     font-family: "Lato", sans-serif;
-    color: #e8534f;
-    font-size: 21px;
+    color: #e85450;
+    font-size: 26px;
+    font-weight: normal;
 }
 .main-login .form-actions a {
     margin: 0 5px;
 }
 .mar-lf-10{
   margin-left: 10px;
+}
+
+.box-login p {
+    font-size: 16px;
+}
+.box-login span.input-icon img {
+    position: absolute;
+    top: 13px;
+    left: 10px;
+}
+.main-login .form-actions button.btn.btn-lg.btn-primary.pull-right {
+    padding: 20px 40px;
+    box-shadow: inset 0 -5px 0px rgba(0, 0, 0, 0.26) !important;
+    text-transform: uppercase;
+    font-size: 21px;
+	    line-height: normal;
+}
+
+.main-login .copyright a span:hover {
+    color: #fff;
 }
