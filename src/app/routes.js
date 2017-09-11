@@ -22,6 +22,7 @@ import postUnPost from '../pages/process/post_unpost/post_unpost.vue'
 
 import createNewUser from '../pages/user_control/create_new_user/create_new_user.vue'
 import editUser from '../pages/user_control/edit_user/edit_user.vue'
+import profile from '../pages/profile/profile.vue'
 
 import partyInformation from '../pages/party_information/party_information.vue'
 
@@ -84,6 +85,10 @@ const routes = [
                     {
                         path: '/edit_user/:id',
                         component: editUser
+                    },
+                    {
+                        path: '/profile',
+                        component: profile
                     },
                     {
                         path: '/add_party',
