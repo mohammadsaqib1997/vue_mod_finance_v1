@@ -55,7 +55,8 @@ new Vue({
     data: {
         csrf: '',
         loginUID: "",
-        loginUData: {},
+        loginUData: null,
+        loadImgSrc: "",
         usersRef: null,
         compileProc: true
     },
@@ -100,7 +101,7 @@ new Vue({
                     self.loginUData = item;
                 });
             }else{
-                self.loginUData = {};
+                self.loginUData = null;
             }
         }
     }

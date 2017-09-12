@@ -6,8 +6,17 @@ export default {
         self.$watch(function () {
             return self.$root.loginUData;
         }, function (val, oldVal) {
-            self.s_name = val.first_name+" "+val. last_name;
-            self.imageLoad(val.uid);
+            if(val !== null){
+                self.s_name = val.first_name+" "+val. last_name;
+                self.imageLoad(val.uid);
+            }
+        });
+        self.$watch(function () {
+            return self.$root.loadImgSrc;
+        }, function (val, oldVal) {
+            if(val !== ""){
+                self.pro_img_src = val;
+            }
         });
     },
     data: function(){

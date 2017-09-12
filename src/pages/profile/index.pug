@@ -22,17 +22,22 @@
                 .user-left
                     .center
                         h4 {{ first_name+" "+last_name }}
-                        .fileinput.fileinput-new(data-provides='fileinput')
+                        div.text-center(v-if='loadImg')
+                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                        .fileinput.fileinput-new(v-else data-provides='fileinput')
                             .user-image
                                 .fileinput-new.thumbnail
-                                    img(src='/assets/images/avatar-1-xl.jpg', alt='')
-                                .user-image-buttons
+                                    img(v-bind:src='profile_img_src', alt='Profile Image')
+                                .user-image-buttons(v-if="!fileLoader")
                                     span.btn.btn-azure.btn-file.btn-sm
                                         span.fileinput-exists
                                             i.fa.fa-pencil
-                                        input(type='file')
-                                    a.btn.fileinput-exists.btn-red.btn-sm(href='#', data-dismiss='fileinput')
-                                        i.fa.fa-times
+                                        input(type='file' id="profile_img")
+                        template(v-if="profile_img !== null && !fileLoader")
+                            button.btn.btn-azure.btn-file(v-on:click.prevent="upload_img") Upload
+                            button.btn.btn-azure.btn-file.mar-lf-10(v-on:click.prevent="reset_file_input") Cancel
+                        button.btn.btn-azure.btn-file(v-if="fileLoader" disabled="disabled")
+                            i.fa.fa-refresh.fa-spin.fa-fw
                         hr
             .col-sm-7.col-md-8
                 table.table.table-condensed

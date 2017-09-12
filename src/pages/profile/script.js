@@ -90,6 +90,7 @@ export default {
             sel_project: [],
             city: "",
             zipcode: "",
+            type: "",
             errMain: "",
             sucMain: "",
         }
@@ -97,7 +98,7 @@ export default {
     watch: {
         profile_img: function (val) {
             let self = this;
-            self.profile_img_src = "/assets/images/default-user.png";
+            self.profile_img_src = (self.load_src !== "") ? self.load_src:"/assets/images/default-user.png";
             if (val !== null) {
                 let reader = new FileReader();
                 reader.onload = function (e) {
@@ -173,30 +174,36 @@ export default {
                 }
             }
         },
-        upload_img: function (id, callback) {
-            let self = this;
-            let storage = firebase.storage();
-            let uploadTask = storage.ref("profile_images/" + id + ".jpg")
-                .put(self.profile_img);
-            self.fileLoader = true;
-            uploadTask.then(function (snap) {
-                self.fileLoader = false;
-                self.profile_img = null;
-                $("#profile_img").replaceWith($("#profile_img").val("").clone(true));
-                callback();
-            }, function (err) {
-                console.log(err.message_);
-                self.fileLoader = false;
-                self.profile_img = null;
-                $("#profile_img").replaceWith($("#profile_img").val("").clone(true));
-                callback();
-            });
+        reset_file_input: function () {
+            this.profile_img = null;
+            $("#profile_img").replaceWith($("#profile_img").val("").clone(true));
         },
-        load_img: function () {
+        upload_img: function () {
+            let self = this;
+            if(self.profile_img !== null){
+                let storage = firebase.storage();
+                let uploadTask = storage.ref("profile_images/" + self.$root.loginUID + ".jpg")
+                    .put(self.profile_img);
+                self.fileLoader = true;
+                uploadTask.then(function (snap) {
+                    self.fileLoader = false;
+                    self.profile_img = null;
+                    self.load_src = snap.downloadURL;
+                    self.$root.loadImgSrc = snap.downloadURL;
+                    $("#profile_img").replaceWith($("#profile_img").val("").clone(true));
+                }, function (err) {
+                    console.log(err.message_);
+                    self.fileLoader = false;
+                    self.profile_img = null;
+                    $("#profile_img").replaceWith($("#profile_img").val("").clone(true));
+                });
+            }
+        },
+        load_img: function (uid) {
             let self = this;
             if (self.loadImg) {
                 const storage = firebase.storage();
-                let ref = storage.ref('profile_images/' + self.$route.params.id + '.jpg');
+                let ref = storage.ref('profile_images/' + uid + '.jpg');
                 ref.getDownloadURL().then(function (url) {
                     self.load_src = url;
                     self.loadImg = false;
@@ -252,22 +259,31 @@ export default {
             }else{
                 self.$validate().then(function(valid){
                     if(valid){
-                        let insert = {};
-                        if(field === "password"){
-                            let salt = bcrypt.genSaltSync(saltRounds);
-                            insert[field] = bcrypt.hashSync(self.edit_val[field], salt);
-                        }else{
-                            insert[field] = self.edit_val[field];
-                        }
-
-                        self.usersRef.child(self.$root.loginUID).update(insert, function (err) {
-                            if (err) {
+                        if(self.type === "admin" && field === "password"){
+                            firebase.auth().currentUser.updatePassword(self.edit_val[field]).then(function () {
+                                self.succMsg(self, field);
+                            }).catch(function (err) {
                                 self.errMain = err.message;
                                 self.inProcess = false;
-                            } else {
-                                self.succMsg(self, field);
+                            });
+                        }else{
+                            let insert = {};
+                            if(field === "password"){
+                                let salt = bcrypt.genSaltSync(saltRounds);
+                                insert[field] = bcrypt.hashSync(self.edit_val[field], salt);
+                            }else{
+                                insert[field] = self.edit_val[field];
                             }
-                        });
+
+                            self.usersRef.child(self.$root.loginUID).update(insert, function (err) {
+                                if (err) {
+                                    self.errMain = err.message;
+                                    self.inProcess = false;
+                                } else {
+                                    self.succMsg(self, field);
+                                }
+                            });
+                        }
                     }else{
                         self.inProcess = false;
                     }
@@ -287,6 +303,8 @@ export default {
                     self.sel_project = (!renderData.projects) ? [] : (renderData.projects === true) ? [] : renderData.projects;
                     self.zipcode = renderData.zipcode;
                     self.city = (renderData.city) ? renderData.city: "";
+                    self.type = renderData.type;
+                    self.load_img(uid);
                     self.dataLoad2 = false;
                 } else {
                     self.$router.push('/create_new_user');
