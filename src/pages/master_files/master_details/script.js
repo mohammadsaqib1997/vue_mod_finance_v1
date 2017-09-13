@@ -5,6 +5,7 @@ import func from '../../../../custom_libs/func'
 
 import getCodes from '../../../partials/components/get_codes/get_codes.vue'
 import addBrokerModel from '../../../partials/components/modals/add_broker/add_broker.vue';
+import addTypeItemsModel from '../../../partials/components/modals/add_type_items/add_type_items.vue';
 
 const Validator = SimpleVueValidation.Validator;
 
@@ -12,7 +13,16 @@ export default {
     created: function () {
         let self = this;
 
-        self.$watch("sel_voucher", function (val, oldVal) {
+        //numeric wathcer
+        let arr = ["selling_price", "booking_amount", "payment_installment"];
+        arr.forEach(function (row) {
+            self.$watch(row, function (val, oldVal) {
+                self[row] = func.isNumber(val, 8, "");
+                self.showPaymentPlan();
+            });
+        });
+
+        self.$watch("sel_master_det", function (val, oldVal) {
             self.updateVoucherVal(val);
         });
 
@@ -40,7 +50,19 @@ export default {
         self.projectsRef = db.ref('/projects');
         self.brokersRef = db.ref('/brokers');
         self.projectTypesRef = db.ref('/project_types');
+        self.projectTypeItemsRef = db.ref('/project_type_items');
+        self.masterDetailsRef = db.ref('/master_details');
         self.vouchersEntriesRef = db.ref('/vouchers_entries');
+
+        self.masterDetailsRef.on('value', function (snap) {
+            let renderData = snap.val();
+            if (renderData !== null) {
+                self.masterDetailsData = renderData;
+            } else {
+                self.masterDetailsData = {};
+            }
+            self.dataLoad5 = false;
+        });
 
         self.projectsRef.on('value', function (proSnap) {
             let renderData = proSnap.val();
@@ -74,11 +96,24 @@ export default {
 
         setTimeout(function () {
             $(function () {
-                $(".datepicker").datepicker().on('change', function (e) {
+                $(".datepicker").datepicker({
+                    format: 'mm/dd/yyyy',
+                }).on('change', function (e) {
                     let grabField = $(e.target);
-                    if (grabField.hasClass('voucher_date')) {
+                    if (grabField.hasClass('booking_date')) {
                         let date = new Date(grabField.val());
-                        self.voucher_date = date.getTime();
+                        self.booking_date = date.getTime();
+                    }
+                });
+                $(".yearpicker").datepicker({
+                    format: 'yyyy',
+                    viewMode: "years",
+                    minViewMode: "years"
+                }).on('change', function (e) {
+                    let grabField = $(e.target);
+                    if (grabField.hasClass('doc_year')) {
+                        let date = new Date(grabField.val());
+                        self.doc_year = date.getTime();
                     }
                 });
             });
@@ -92,23 +127,28 @@ export default {
             dataLoad2: true,
             dataLoad3: true,
             dataLoad4: false,
+            dataLoad5: true,
+            dataLoad6: false,
             updateV: false,
 
             // data save
             proData: {},
             brokersData: {},
             proTypesData: {},
-            vouchersData: {},
+            proTypesSubData: {},
+            masterDetailsData: {},
 
             // references
             projectsRef: null,
             brokersRef: null,
             projectTypesRef: null,
-            vouchersRef: null,
+            projectTypeItemsRef: null,
+            masterDetailsRef: null,
             vouchersEntriesRef: null,
 
             // form fields
             sel_master_det: "",
+
             sel_project: "",
             allotee_code: "",
             allotee_name: "",
@@ -117,6 +157,12 @@ export default {
             sel_broker: "",
             sel_type: "",
             sel_pro_type_no: "",
+            doc_year: "",
+            booking_date: "",
+            selling_price: "",
+            booking_amount: "",
+            payment_installment: "",
+            payment_plan: "",
 
             rows: [
                 {
@@ -128,7 +174,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 }, {
                     key: '',
@@ -139,7 +185,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 }, {
                     key: '',
@@ -150,7 +196,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 }, {
                     key: '',
@@ -161,7 +207,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 }, {
                     key: '',
@@ -172,7 +218,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 }, {
                     key: '',
@@ -183,41 +229,43 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 },
             ],
             total_debit: 0,
             total_credit: 0,
-            voucher_id: "",
-            nbr_number: "",
-            v_remarks: "",
-            posted_status: "Yes",
-            voucher_date: "",
+
             errMain: "",
             sucMain: "",
         }
     },
+    watch: {
+        sel_project: function (val) {
+            this.loadTypesData();
+        },
+        sel_type: function (val) {
+            this.loadTypesData();
+        }
+    },
     validators: {
-        voucher_id: function (value) {
+        sel_project: function (value) {
+            return Validator.value(value).required().lengthBetween(20, 36);
+        },
+        allotee_code: function (value) {
             let self = this;
-            let setValidator = Validator.value(value);
-            if (self.updateV) {
-                setValidator.required();
-            }
-            return setValidator.digit().maxLength(20).custom(function () {
-                value = parseInt(value);
-                if (value !== "" && !isNaN(value)) {
+            return Validator.value(value).required().digit().lengthBetween(1, 11).custom(function () {
+                if(value !== ""){
                     return Promise.delay(1000).then(function () {
-                        return self.vouchersRef.orderByChild('id').equalTo(value).once('value').then(function (voucherSnap) {
+                        return self.masterDetailsRef.orderByChild('allotee_code').equalTo(self.allotee_code).once('value').then(function (voucherSnap) {
                             let renderData = voucherSnap.val();
                             if (renderData !== null) {
-                                if (self.updateV) {
+                                if(self.updateV){
                                     let keys = Object.keys(renderData);
-                                    if (keys[0] !== self.sel_voucher) {
+                                    if(keys[0] !== self.sel_master_det){
                                         return "Already taken!";
                                     }
-                                } else {
+                                }else{
                                     return "Already taken!";
                                 }
                             }
@@ -226,20 +274,58 @@ export default {
                 }
             });
         },
-        nbr_number: function (value) {
-            return Validator.value(value).required().digit().maxLength(11, "Invalid NBR Number!");
+        allotee_name: function (value) {
+            return Validator.value(value).required().lengthBetween(3, 50);
         },
-        v_remarks: function (value) {
-            return Validator.value(value).required().lengthBetween(6, 35);
+        contact_no: function (value) {
+            let msg = "Invalid Contact Number!";
+            return Validator.value(value).required().digit(msg).lengthBetween(11, 11, msg);
         },
-        posted_status: function (value) {
-            return Validator.value(value).required().in(['Yes', 'No'], "Invalid Status!");
+        allotee_email: function (value) {
+            return Validator.value(value).required().email().maxLength(150);
         },
-        sel_project: function (value) {
+        sel_broker: function (value) {
             return Validator.value(value).required().lengthBetween(20, 36);
         },
-        voucher_date: function (value) {
+        sel_type: function (value) {
+            return Validator.value(value).required().lengthBetween(1, 11);
+        },
+        sel_pro_type_no: function (value) {
+            let self = this;
+            return Validator.value(value).required().lengthBetween(20, 36).custom(function () {
+                if(value !== ""){
+                    return Promise.delay(1000).then(function () {
+                        return self.masterDetailsRef.orderByChild('sel_pro_type_no').equalTo(self.sel_pro_type_no).once('value').then(function (voucherSnap) {
+                            let renderData = voucherSnap.val();
+                            if (renderData !== null) {
+                                if(self.updateV){
+                                    let keys = Object.keys(renderData);
+                                    if(keys[0] !== self.sel_master_det){
+                                        return "Already booked!";
+                                    }
+                                }else{
+                                    return "Already booked!";
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+        },
+        doc_year: function (value) {
             return Validator.value(value).required().digit().maxLength(20);
+        },
+        booking_date: function (value) {
+            return Validator.value(value).required().digit().maxLength(20);
+        },
+        selling_price: function (value) {
+            return Validator.value(value).required().digit().maxLength(8);
+        },
+        booking_amount: function (value) {
+            return Validator.value(value).required().digit().maxLength(8);
+        },
+        payment_installment: function (value) {
+            return Validator.value(value).required().digit().maxLength(8);
         },
     },
     methods: {
@@ -248,30 +334,36 @@ export default {
             self.inProcess = true;
             self.$validate().then(function (success) {
                 if (success) {
-                    self.vouchersRef
+                    self.masterDetailsRef
                         .orderByChild('id')
                         .limitToLast(1)
                         .once('value')
                         .then(function (voucherSnap) {
                             let renderData = voucherSnap.val();
                             let next_id = 1;
-                            if (self.voucher_id !== "") {
-                                next_id = parseInt(self.voucher_id);
-                            } else {
-                                if (renderData !== null) {
-                                    let keys = Object.keys(renderData);
-                                    next_id = parseInt(renderData[keys[0]].id) + 1;
-                                }
+
+                            if (renderData !== null) {
+                                let keys = Object.keys(renderData);
+                                next_id = parseInt(renderData[keys[0]].id) + 1;
                             }
 
-                            let voucher_push_gen = self.vouchersRef.push();
+                            let voucher_push_gen = self.masterDetailsRef.push();
                             voucher_push_gen.set({
                                 id: next_id,
-                                nbr_number: self.nbr_number,
-                                v_remarks: self.v_remarks,
-                                posted_status: self.posted_status,
                                 sel_project: self.sel_project,
-                                voucher_date: self.voucher_date,
+                                allotee_code: self.allotee_code,
+                                allotee_name: self.allotee_name,
+                                contact_no: self.contact_no,
+                                allotee_email: self.allotee_email,
+                                sel_broker: self.sel_broker,
+                                sel_type: self.sel_type,
+                                sel_pro_type_no: self.sel_pro_type_no,
+                                doc_year: self.doc_year,
+                                booking_date: self.booking_date,
+                                selling_price: self.selling_price,
+                                booking_amount: self.booking_amount,
+                                payment_installment: self.payment_installment,
+                                payment_plan: self.payment_plan,
                                 uid: firebase.auth().currentUser.uid,
                                 createdAt: firebase.database.ServerValue.TIMESTAMP
                             }, function (err) {
@@ -292,8 +384,9 @@ export default {
                                             if (row.code !== "") {
                                                 delete row['key'];
                                                 row.v_key = voucher_push_gen.key;
-                                                row.v_data = self.voucher_date;
+                                                row.v_date = self.booking_date;
                                                 row.createdAt = firebase.database.ServerValue.TIMESTAMP;
+                                                row['type'] = "md";
 
                                                 self.vouchersEntriesRef.push(row, function (err) {
                                                     if (err) {
@@ -302,13 +395,13 @@ export default {
 
                                                     process_item++;
                                                     if (process_item === subLength) {
-                                                        self.voucherMsg(self, "Successfully Inserted Voucher!");
+                                                        self.voucherMsg(self, "Successfully Inserted Master Detail Voucher!");
                                                     }
                                                 });
                                             }
                                         });
                                     } else {
-                                        self.voucherMsg(self, "Successfully Inserted Voucher!");
+                                        self.voucherMsg(self, "Successfully Inserted Master Detail Voucher!");
                                     }
                                 }
                             });
@@ -413,14 +506,32 @@ export default {
             let self = this;
             if (key !== "") {
                 self.updateV = true;
-                let sel_voucher = self.vouchersData[key];
+                let sel_voucher = self.masterDetailsData[key];
                 self.voucher_id = sel_voucher.id;
                 self.nbr_number = sel_voucher.nbr_number;
                 self.v_remarks = sel_voucher.v_remarks;
                 self.posted_status = sel_voucher.posted_status;
                 self.sel_project = sel_voucher.sel_project;
                 self.voucher_date = sel_voucher.voucher_date;
-                $(".datepicker.voucher_date").datepicker("setDate", new Date(sel_voucher.voucher_date));
+
+                self.sel_project = sel_voucher.sel_project;
+                self.allotee_code = sel_voucher.allotee_code;
+                self.allotee_name = sel_voucher.allotee_name;
+                self.contact_no = sel_voucher.contact_no;
+                self.allotee_email = sel_voucher.allotee_email;
+                self.sel_broker = sel_voucher.sel_broker;
+                self.sel_type = sel_voucher.sel_type;
+                self.sel_pro_type_no = sel_voucher.sel_pro_type_no;
+                self.doc_year = sel_voucher.doc_year;
+                self.booking_date = sel_voucher.booking_date;
+                self.selling_price = sel_voucher.selling_price;
+                self.booking_amount = sel_voucher.booking_amount;
+                self.payment_installment = sel_voucher.payment_installment;
+                self.payment_plan = sel_voucher.payment_plan;
+
+                console.log(sel_voucher.doc_year);
+                $(".datepicker.doc_year").datepicker("setDate", new Date(sel_voucher.doc_year));
+                $(".datepicker.booking_date").datepicker("setDate", new Date(sel_voucher.booking_date));
                 self.voucherEntriesGet(self);
 
             } else {
@@ -429,14 +540,25 @@ export default {
             }
         },
         fullVoucherReset: function (self) {
-            self.sel_voucher = "";
-            self.voucher_id = "";
-            self.nbr_number = "";
-            self.v_remarks = "";
-            self.posted_status = "Yes";
+            self.sel_master_det = "";
             self.sel_project = "";
-            $(".datepicker.voucher_date").val('');
-            self.voucher_date = "";
+            self.allotee_code = "";
+            self.allotee_name = "";
+            self.contact_no = "";
+            self.allotee_email = "";
+            self.sel_broker = "";
+            self.sel_type = "";
+            self.sel_pro_type_no = "";
+            self.doc_year = "";
+            self.booking_date = "";
+            self.selling_price = "";
+            self.booking_amount = "";
+            self.payment_installment = "";
+            self.payment_plan = "";
+
+            $(".datepicker.booking_date").val('');
+            $(".yearpicker.doc_year").val('');
+
             self.rows.forEach(function (row, ind) {
                 self.rows[ind].key = '';
                 self.rows[ind].code = '';
@@ -447,6 +569,7 @@ export default {
                 self.rows[ind].credit = 0;
                 self.rows[ind].v_key = '';
                 self.rows[ind].v_data = 0;
+                self.rows[ind].type = '';
                 self.rows[ind].createdAt = 0;
             });
             self.validation.reset();
@@ -463,10 +586,10 @@ export default {
             }, 1500);
         },
         voucherEntriesGet: function (self) {
-            self.dataLoad3 = true;
+            self.dataLoad6 = true;
             self.vouchersEntriesRef
                 .orderByChild("v_key")
-                .equalTo(self.sel_voucher)
+                .equalTo(self.sel_master_det)
                 .once('value', function (entSnap) {
                     let entData = entSnap.val();
                     if(entData !== null){
@@ -487,12 +610,53 @@ export default {
                             }
                         });
                     }
-                    self.dataLoad3 = false;
+                    self.dataLoad6 = false;
                 });
+        },
+        loadTypesData: function () {
+            let self = this;
+            self.dataLoad4 = true;
+            if(self.sel_project !== "" && self.sel_type !== ""){
+                self.projectTypeItemsRef.orderByChild("pro_key").equalTo(self.sel_project).on("value", function (snap) {
+                    let data = snap.val();
+                    if(data !== null){
+                        let keys = Object.keys(data);
+                        let grabData = {};
+                        keys.forEach(function (key) {
+                            let item = data[key];
+                            if(item.type_key === self.sel_type){
+                                grabData[key] = item;
+                            }
+                        });
+                        if(!self.updateV){
+                            self.sel_pro_type_no = "";
+                        }
+                        self.proTypesSubData = grabData;
+                    }else{
+                        if(!self.updateV){
+                            self.sel_pro_type_no = "";
+                        }
+                        self.proTypesSubData = {};
+                    }
+                    self.dataLoad4 = false;
+                });
+            }else{
+                self.sel_pro_type_no = "";
+                self.proTypesSubData = {};
+                self.dataLoad4 = false;
+            }
+        },
+        showPaymentPlan: function () {
+            let self = this;
+            self.payment_plan = "";
+            if(self.selling_price !== "" && self.booking_amount !== "" && self.payment_installment !== ""){
+                self.payment_plan = (self.selling_price-self.booking_amount)/self.payment_installment;
+            }
         }
     },
     components: {
         getCodes,
-        addBrokerModel
+        addBrokerModel,
+        addTypeItemsModel
     }
 }

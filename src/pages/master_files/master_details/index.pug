@@ -18,17 +18,11 @@
                         .form-group
                             .row
                                 .col-md-4
-                                    select#control_name.form-control(name='control')
-                                        option(value='01') Master Detail 1
-                                        option(value='02') Master Detail 2
-                                .col-md-1.icon-container
-                                    ul.ul-action
-                                        li
-                                            a.edit-project(href='master_detail.html', data-toggle='modal', data-target='.edit-control')
-                                                i.ti-pencil-alt
-                                        li
-                                            a.Control-link(href='#delete-control')
-                                                i.ti-close
+                                    div.text-center(v-if='dataLoad5')
+                                        i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                    select.form-control(v-else v-model='sel_master_det')
+                                        option(value='') Select Master Detail
+                                        option(v-for='(row, key, ind) in masterDetailsData' v-bind:value='key') {{ row.allotee_code }} | {{ row.allotee_name }}
                 hr
                 p
                     | Create one Master Detail.
@@ -51,22 +45,24 @@
                                         label
                                             | Allotee Code
                                         input.form-control(type='text', v-model='allotee_code', placeholder='Enter your Allotee Code')
-                                        //p.text-danger.text-right(v-if='validation.hasError("allotee_code")') {{ validation.firstError('allotee_code') }}
+                                        p.text-danger.text-right(v-if='validation.hasError("allotee_code")') {{ validation.firstError('allotee_code') }}
+                                        .text-right(v-if='validation.isValidating("allotee_code")')
+                                            i.fa.fa-spinner.fa-spin
                                     .form-group
                                         label
                                             | Allotee Name
                                         input.form-control(type='text', v-model='allotee_name', placeholder='Enter your Allotee Name')
-                                        //p.text-danger.text-right(v-if='validation.hasError("allotee_name")') {{ validation.firstError('allotee_name') }}
+                                        p.text-danger.text-right(v-if='validation.hasError("allotee_name")') {{ validation.firstError('allotee_name') }}
                                     .form-group
                                         label
                                             | Contact No.
                                         input.form-control(type='text', v-model='contact_no', placeholder='Enter your Contact Number')
-                                        //p.text-danger.text-right(v-if='validation.hasError("contact_no")') {{ validation.firstError('contact_no') }}
+                                        p.text-danger.text-right(v-if='validation.hasError("contact_no")') {{ validation.firstError('contact_no') }}
                                     .form-group
                                         label
                                             | E-Mail
                                         input.form-control(type='text', v-model='allotee_email', placeholder='Enter your E-Mail')
-                                        //p.text-danger.text-right(v-if='validation.hasError("allotee_email")') {{ validation.firstError('allotee_email') }}
+                                        p.text-danger.text-right(v-if='validation.hasError("allotee_email")') {{ validation.firstError('allotee_email') }}
                                 .col-md-4
                                     .form-group
                                         label
@@ -95,11 +91,6 @@
                                                 option(value='') Select Type
                                                 option(v-for='(row, key, ind) in proTypesData' v-bind:value='key') {{ row.name }}
                                             p.text-danger.text-right(v-if='validation.hasError("sel_type")') {{ validation.firstError('sel_type') }}
-                                    .form-group
-                                        label
-                                            | Document Year
-                                        input.form-control.yearpicker(type='text', placeholder='Enter Document Year')
-                                        p.text-danger.text-right(v-if='validation.hasError("doc_year")') {{ validation.firstError('doc_year') }}
                                     template(v-if="sel_type !== ''")
                                         .form-group
                                             label
@@ -111,158 +102,92 @@
                                                     template(v-else)
                                                         select.form-control(v-model='sel_pro_type_no')
                                                             option(value='') Select {{ proTypesData[sel_type].name }} No.
-                                                            option(v-for='(row, key, ind) in brokersData' v-bind:value='key') {{ row.name }} | {{ row.contact_num }}
+                                                            option(v-for='(row, key, ind) in proTypesSubData' v-bind:value='key') {{ row.name }}
                                                         p.text-danger.text-right(v-if='validation.hasError("sel_pro_type_no")') {{ validation.firstError('sel_pro_type_no') }}
+                                                        .text-right(v-if='validation.isValidating("sel_pro_type_no")')
+                                                            i.fa.fa-spinner.fa-spin
                                                 .col-md-2.icon-container
                                                     ul.ul-action
                                                         li
-                                                            a(href='#', data-toggle='modal', data-target='#add_broker')
+                                                            a(href='#', data-toggle='modal', data-target='#add_type_items')
                                                                 i.ti-plus
                                     .form-group
                                         label
+                                            | Document Year
+                                        input.form-control.yearpicker.doc_year(type='text', placeholder='Enter Document Year')
+                                        p.text-danger.text-right(v-if='validation.hasError("doc_year")') {{ validation.firstError('doc_year') }}
+                                    .form-group
+                                        label
                                             | Booking Date
-                                        .input-group.date
-                                            input.form-control.datepicker(type='text', name='booking_date', placeholder='Enter your Booking Date')
+                                        input.form-control.datepicker.booking_date(type='text', placeholder='Enter your Booking Date')
+                                        p.text-danger.text-right(v-if='validation.hasError("booking_date")') {{ validation.firstError('booking_date') }}
                                 .col-md-4
                                     .form-group
                                         label
                                             | Selling Price
-                                        input.form-control(type='number', name='selling_price', placeholder='Enter your Selling Price')
+                                        input.form-control(type='text', v-model='selling_price', placeholder='Enter your Selling Price')
+                                        p.text-danger.text-right(v-if='validation.hasError("selling_price")') {{ validation.firstError('selling_price') }}
                                     .form-group
                                         label
                                             | Booking Amount
-                                        input.form-control(type='number', name='booking_amount', placeholder='Enter your Booking Amount')
+                                        input.form-control(type='text', v-model='booking_amount', placeholder='Enter your Booking Amount')
+                                        p.text-danger.text-right(v-if='validation.hasError("booking_amount")') {{ validation.firstError('booking_amount') }}
                                     .form-group
                                         label
                                             | Installment
-                                        input.form-control(type='text', name='Payment_installment', placeholder='Enter your Installment')
+                                        input.form-control(type='text', v-model='payment_installment', placeholder='Enter your Installment')
+                                        p.text-danger.text-right(v-if='validation.hasError("payment_installment")') {{ validation.firstError('payment_installment') }}
                                     .form-group
                                         label
                                             | Payment Plan
-                                        input.form-control(type='text', name='payment_plan', placeholder='Enter your Payment Plan')
-                            h2 Detail
+                                        input.form-control(type='text', v-bind:value='payment_plan', placeholder='Enter your Payment Plan' disabled="disabled")
+                            h2 Account Detail
                             .row.detail-heading
-                                .col-md-2 Date
-                                .col-md-2 Recipt Number
-                                .col-md-4 Particulars
+                                .col-md-1 Account Code
+                                .col-md-2 Account Description
+                                .col-md-4 Remark
+                                .col-md-1 Quantity
                                 .col-md-2 Debit
                                 .col-md-2 Credit
                             .detail-Content.form-group
-                                .row.row1
-                                    .col-md-2.padding-right-0
-                                        .input-group.date
-                                            input.form-control.datepicker(type='text')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
-                                    .col-md-4.padding-none
-                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
-                                    .col-md-2.padding-left-0
-                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
-                                .row.row2
-                                    .col-md-2.padding-right-0
-                                        .input-group.date
-                                            input.form-control.datepicker(type='text')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
-                                    .col-md-4.padding-none
-                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
-                                    .col-md-2.padding-left-0
-                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
-                                .row.row3
-                                    .col-md-2.padding-right-0
-                                        .input-group.date
-                                            input.form-control.datepicker(type='text')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
-                                    .col-md-4.padding-none
-                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
-                                    .col-md-2.padding-left-0
-                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
-                                .row.row4
-                                    .col-md-2.padding-right-0
-                                        .input-group.date
-                                            input.form-control.datepicker(type='text')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
-                                    .col-md-4.padding-none
-                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
-                                    .col-md-2.padding-left-0
-                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
-                                .row.row5
-                                    .col-md-2.padding-right-0
-                                        .input-group.date
-                                            input.form-control.datepicker(type='text')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
-                                    .col-md-4.padding-none
-                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
-                                    .col-md-2.padding-left-0
-                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
-                                .row.row6
-                                    .col-md-2.padding-right-0
-                                        .input-group.date
-                                            input.form-control.datepicker(type='text')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
-                                    .col-md-4.padding-none
-                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
-                                    .col-md-2.padding-left-0
-                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
-                                .row.row7
-                                    .col-md-2.padding-right-0
-                                        .input-group.date
-                                            input.form-control.datepicker(type='text')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
-                                    .col-md-4.padding-none
-                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
-                                    .col-md-2.padding-left-0
-                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
-                                .row.row8
-                                    .col-md-2.padding-right-0
-                                        .input-group.date
-                                            input.form-control.datepicker(type='text')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='recipt_number', placeholder='Recipt Number')
-                                    .col-md-4.padding-none
-                                        input.form-control(type='text', name='particulars', placeholder='Enter your Particulars')
-                                    .col-md-2.padding-none
-                                        input.form-control(type='number', name='debit', placeholder='Enter your Debit')
-                                    .col-md-2.padding-left-0
-                                        input.form-control(type='number', name='credit', placeholder='Enter your Credit')
+                                template(v-for='row, ind in rows')
+                                    .row(v-bind:class='"row-"+ind')
+                                        .col-md-1.padding-right-0
+                                            get-codes(v-bind:project='sel_project' v-bind:code='row.code' v-on:name_change="changeCode($event, ind)")
+                                        .col-md-2.padding-none
+                                            input.form-control(type='text' v-bind:value="row.code_name" disabled='disabled')
+                                        .col-md-4.padding-none
+                                            input.form-control(type='text' v-model='row.remarks')
+                                        .col-md-1.padding-none
+                                            input.form-control(type='text' v-model='row.quantity')
+                                        .col-md-2.padding-none
+                                            input.form-control(type='text' v-model='row.debit')
+                                        .col-md-2.padding-left-0
+                                            input.form-control(type='text' v-model='row.credit')
                                 .row.Total
                                     .col-md-2.padding-right-0
-                                    .col-md-4.padding-none
+                                        p.margin-bottom-0(style='line-height: 33px;')
+                                            | JV Difference
+                                            | < Debit / Credit >
+                                    .col-md-2.padding-none
+                                        input.form-control(type='text' disabled='disabled' v-bind:value='total_debit - total_credit')
+                                    .col-md-2.padding-none
                                     .col-md-2.padding-none
                                         h3.margin-bottom-0(style='line-height: 33px;') Total
                                     .col-md-2.padding-none
-                                        input.form-control(type='number', name='total_debit', placeholder='Total Debit')
+                                        input.form-control(type='text' v-bind:value='total_debit' disabled='disabled')
                                     .col-md-2.padding-left-0
-                                        input.form-control(type='number', name='total_credit', placeholder='Total Credit')
-                                .row.Total
-                                    .col-md-2.padding-right-0
-                                    .col-md-4.padding-none
-                                    .col-md-2.padding-none
-                                        h3.margin-bottom-0(style='line-height: 33px;') Balance
-                                    .col-md-4.col-md-4.padding-left-0
-                                        input.form-control(type='number', name='Balance')
+                                        input.form-control(type='text' v-bind:value='total_credit' disabled='disabled')
                     .row
                         .col-md-4.pull-right
-                            button.btn.btn-primary.btn-wide.pull-right(type='submit')
-                                | Submit
-                                i.fa.fa-arrow-circle-right
+                            button.btn.btn-primary.btn-wide.pull-right(v-if="inProcess" type='button' disabled='disabled')
+                                i.fa.fa-refresh.fa-spin.fa-fw
+                            template(v-else)
+                                button.btn.btn-primary.btn-wide.pull-right(v-if='updateV' type='button' v-on:click.prevent='updateVoucher')
+                                    | Update&nbsp;
+                                    i.fa.fa-arrow-circle-right
+                                button.btn.btn-primary.btn-wide.pull-right(v-else type='button' v-on:click.prevent='addVoucher')
+                                    | Submit&nbsp;
+                                    i.fa.fa-arrow-circle-right
     add-broker-model
+    add-type-items-model

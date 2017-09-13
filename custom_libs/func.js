@@ -49,19 +49,22 @@ module.exports  = {
         }
         return val.replace(/\s{2,}/g, ' ');
     },
-    isNumber: function (val, maxLength) {
+    isNumber: function (val, maxLength, def) {
         if (val !== "") {
             if (isNaN(val)) {
-                return val.substr(0, val.toString().length-1);
+                return (val === "NaN") ? "":val.substr(0, val.toString().length-1);
             } else {
                 if(maxLength){
-                    if (val > maxLength) {
-                        return parseInt(val);
+                    if (val.length > maxLength) {
+                        return val.substr(0, val.toString().length-1);
                     }
                 }
                 return parseInt(val);
             }
         } else {
+            if(typeof def !== "undefined"){
+                return def;
+            }
             return 0;
         }
     },

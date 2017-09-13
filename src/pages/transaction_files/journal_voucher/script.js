@@ -102,7 +102,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 }, {
                     key: '',
@@ -113,7 +113,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 }, {
                     key: '',
@@ -124,7 +124,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 }, {
                     key: '',
@@ -135,7 +135,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 }, {
                     key: '',
@@ -146,7 +146,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 }, {
                     key: '',
@@ -157,7 +157,7 @@ export default {
                     debit: 0,
                     credit: 0,
                     v_key: '',
-                    v_data: 0,
+                    v_date: 0,
                     createdAt: 0,
                 },
             ],
@@ -267,8 +267,9 @@ export default {
                                             if (row.code !== "") {
                                                 delete row['key'];
                                                 row.v_key = voucher_push_gen.key;
-                                                row.v_data = self.voucher_date;
+                                                row.v_date = self.voucher_date;
                                                 row.createdAt = firebase.database.ServerValue.TIMESTAMP;
+                                                row['type'] = "jv";
 
                                                 self.vouchersEntriesRef.push(row, function (err) {
                                                     if (err) {
@@ -326,8 +327,9 @@ export default {
                                     if (row.code !== "") {
                                         delete row['key'];
                                         row.v_key = self.sel_voucher;
-                                        row.v_data = self.voucher_date;
+                                        row.v_date = self.voucher_date;
                                         row.createdAt = firebase.database.ServerValue.TIMESTAMP;
+                                        row['type'] = "jv";
 
                                         if(key_save !== ""){
                                             self.vouchersEntriesRef.child(key_save).update(row, function (err) {
@@ -421,7 +423,7 @@ export default {
                 self.rows[ind].debit = 0;
                 self.rows[ind].credit = 0;
                 self.rows[ind].v_key = '';
-                self.rows[ind].v_data = 0;
+                self.rows[ind].v_date = 0;
                 self.rows[ind].createdAt = 0;
             });
             self.validation.reset();
@@ -457,7 +459,7 @@ export default {
                                 self.rows[ind].debit = item.debit;
                                 self.rows[ind].quantity = item.quantity;
                                 self.rows[ind].remarks = item.remarks;
-                                self.rows[ind].v_data = item.v_data;
+                                self.rows[ind].v_date = item.v_date;
                                 self.rows[ind].v_key = item.v_key;
                             }
                         });
