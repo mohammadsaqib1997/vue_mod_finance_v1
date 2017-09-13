@@ -547,28 +547,29 @@ img-crop {
   display: inline-block;
   float: none;
   padding: 10px;
+  font-size: 14px;
+  text-transform: uppercase;
 }
-
 .full-width {
   max-width: 100% !important;
 }
 
 .mini-pie {
-  height: 200px;
+  height: 300px;
   position: relative;
-  width: 150px;
+  width: 250px;
   display: inline-block;
 }
 .mini-pie canvas {
-  height: 200px;
+  height: 300px;
   left: 0;
   position: absolute;
   top: 0;
-  width: 150px;
+  width: 250px;
 }
 .mini-pie span {
-  line-height: 200px;
-      font-size: 20px;
+  line-height: 300px;
+  font-size: 32px;
 }
 
 /* ---------------------------------------------------------------------- */

@@ -5,99 +5,130 @@
                 h1.mainTitle Dashboard
                 span.mainDescription Status & Reports
             .col-sm-5
-    .container-fluid.container-fullw.bg-white
-    .container-fluid.container-fullw.bg-white
+                .search-form.ng-scope
+                    a.s-open(href='#')
+                        i.ti-search
+                    form.navbar-form.ng-pristine.ng-valid(role='search')
+                        a.s-remove(href='#', target='.navbar-form')
+                            i.ti-close
+                        .form-group
+                            input.form-control(type='text', placeholder='Search...')
+                            button.btn.search-button(type='submit')
+                                i.ti-search
+    .container-fluid.container-fullw.bg-offwhite
         .row
             .col-sm-6
                 .panel.panel-white.no-radius
-                    .panel-heading.border-bottom
-                        h4.panel-title Details Chart
-                    .panel-body
-                        .text-center
-                            span.mini-pie
-                                canvas#chart3.full-width
-                                span 450
-                        .margin-top-20.text-center.legend-xs.inline
-                            #chart3Legend.chart-legend
-                    .panel-footer
-                        .clearfix.padding-5.space5
-                            .col-xs-4.text-center.no-padding
-                                .border-right.border-dark
-                                    span.text-bold.block.text-extra-large 100%
-                                    span.text-light Income
-                            .col-xs-4.text-center.no-padding
-                                .border-right.border-dark
-                                    span.text-bold.block.text-extra-large 100%
-                                    span.text-light Expense
-                            .col-xs-4.text-center.no-padding
-                                span.text-bold.block.text-extra-large 100%
-                                span.text-light Total
+                    .panel-heading.border-bottom.border-left.border-yellow
+                        h4.panel-title Daily Reports
+                    .row
+                        .col-md-6
+                            .panel-body
+                                .text-center
+                                    span.mini-pie
+                                        canvas#chart3.full-width
+                                        span 680
+                                .margin-top-20.text-center.legend-xs.inline
+                                    #chart3Legend.chart-legend
+                        .col-md-6
+                            .panel-footer
+                                .clearfix.padding-0.space0
+                                    .col-xs-12.text-center.background-f8f8f8(style='padding-left: 70px; padding-top: 19px; padding-bottom: 19px;')
+                                        .row
+                                            span.text-bold.block.text-font-62.col-xs-6 100%
+                                            span.text-light.text-left.text-font-21.col-xs-6 Income
+                                    .col-xs-12.text-center.background-efefef(style='padding-left: 70px; padding-top: 19px; padding-bottom: 19px;')
+                                        .row
+                                            span.text-bold.block.text-font-62.col-xs-6 100%
+                                            span.text-light.text-left.text-font-21.col-xs-6 Expense
+                                    .col-xs-12.text-center.background-e6e6e6(style='padding-left: 70px; padding-top: 19px; padding-bottom: 19px;')
+                                        .row
+                                            span.text-bold.block.text-font-62.col-xs-6 100%
+                                            span.text-light.text-left.text-font-21.col-xs-6 Total
             .col-sm-6
                 .panel.panel-white.no-radius
-                    .panel-heading.border-bottom
+                    .panel-heading.border-bottom.border-green
                         h4.panel-title Recent Reports
-                    .panel-body
+                    .panel-body.no-padding
                         .margin-top-20.text-left.legend-xs.inline
-                            table.table.no-margin
+                            table.table.no-margin.table-striped
                                 tbody
                                     tr
+                                        td(style='text-align: left;width: 30px;')
+                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
                                         td
-                                            span.text-small.block.text-light Control Reports
-                                            span Monthly
+                                            span.text-small.block.text-light(style=' float: left; font-size: 21px !important; color: #545454 !important; ') Control Reports
+                                            span(style=' padding-left: 20px; float: left; line-height: 30px; font-size: 14px; color: #939393 !important; ') Monthly
                                         td.text-right
                                             .cl-effect-13
-                                                a(href='')
-                                                    | view more
+                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
                                     tr
+                                        td(style='text-align: left;width: 30px;')
+                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
                                         td
-                                            span.text-small.block.text-light Sub Control Reports
-                                            span Yearly
+                                            span.text-small.block.text-light(style=' float: left; font-size: 21px !important; color: #545454 !important; ') Control Reports
+                                            span(style=' padding-left: 20px; float: left; line-height: 30px; font-size: 14px; color: #939393 !important; ') Monthly
                                         td.text-right
                                             .cl-effect-13
-                                                a(href='')
-                                                    | view more
+                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
                                     tr
+                                        td(style='text-align: left;width: 30px;')
+                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
                                         td
-                                            span.text-small.block.text-light Sub Control Reports
-                                            span Monthly
+                                            span.text-small.block.text-light(style=' float: left; font-size: 21px !important; color: #545454 !important; ') Control Reports
+                                            span(style=' padding-left: 20px; float: left; line-height: 30px; font-size: 14px; color: #939393 !important; ') Monthly
                                         td.text-right
                                             .cl-effect-13
-                                                a(href='')
-                                                    | view more
+                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
                                     tr
+                                        td(style='text-align: left;width: 30px;')
+                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
                                         td
-                                            span.text-small.block.text-light Control Reports
-                                            span Yearly
+                                            span.text-small.block.text-light(style=' float: left; font-size: 21px !important; color: #545454 !important; ') Control Reports
+                                            span(style=' padding-left: 20px; float: left; line-height: 30px; font-size: 14px; color: #939393 !important; ') Monthly
                                         td.text-right
                                             .cl-effect-13
-                                                a(href='')
-                                                    | view more
+                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
                                     tr
+                                        td(style='text-align: left;width: 30px;')
+                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
                                         td
-                                            span.text-small.block.text-light Subsidiary Reports
-                                            span Monthly
+                                            span.text-small.block.text-light(style=' float: left; font-size: 21px !important; color: #545454 !important; ') Control Reports
+                                            span(style=' padding-left: 20px; float: left; line-height: 30px; font-size: 14px; color: #939393 !important; ') Monthly
                                         td.text-right
                                             .cl-effect-13
-                                                a(href='')
-                                                    | view more
+                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
                                     tr
+                                        td(style='text-align: left;width: 30px;')
+                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
                                         td
-                                            span.text-small.block.text-light Senior Designer
-                                            span Kenneth Ross
+                                            span.text-small.block.text-light(style=' float: left; font-size: 21px !important; color: #545454 !important; ') Control Reports
+                                            span(style=' padding-left: 20px; float: left; line-height: 30px; font-size: 14px; color: #939393 !important; ') Monthly
                                         td.text-right
                                             .cl-effect-13
-                                                a(href='')
-                                                    | view more
-    .container-fluid.container-fullw.bg-white
+                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
+    .container-fluid.container-fullw.bg-offwhite
         .row
             .col-sm-6
                 .panel.panel-white.no-radius
-                    .panel-heading.border-bottom
+                    .panel-heading.border-bottom.border-blue
                         h4.panel-title Calander
-                    .panel-body
+                    .panel-body.no-padding
                         #full-calendar
+                    .panel-footer.padding-10.partition-white
+                        .list-inline
+                            li
+                                i.circle-20(style="background: #f5b620; float: left; margin-right: 5px;")
+                                h5(style="float: left;line-height: 22px;margin-bottom: 0px;text-transform: uppercase;color: #b3b3b3;font-size: 12px;") Meeting
+                            li
+                                i.circle-20(style="background: #a6c367; float: left; margin-right: 5px;")
+                                h5(style="float: left;line-height: 22px;margin-bottom: 0px;text-transform: uppercase;color: #b3b3b3;font-size: 12px;") Reminder
+                            li(style="float: left; margin-right: 5px;")
+                                i.circle-20(style="background: #e8534f; float: left; margin-right: 5px;")
+                                h5(style="float: left;line-height: 22px;margin-bottom: 0px;text-transform: uppercase;color: #b3b3b3;font-size: 12px;") Event
             .col-sm-6
                 .panel.panel-white.no-radius
-                    .panel-heading.border-bottom
+                    .panel-heading.border-bottom.border-green
                         h4.panel-title Calculator
                     .panel-body
+                        img(src="/assets/images/calculator.png")
