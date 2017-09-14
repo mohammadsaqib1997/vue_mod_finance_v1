@@ -105,17 +105,6 @@ export default {
                         self.booking_date = date.getTime();
                     }
                 });
-                $(".yearpicker").datepicker({
-                    format: 'yyyy',
-                    viewMode: "years",
-                    minViewMode: "years"
-                }).on('change', function (e) {
-                    let grabField = $(e.target);
-                    if (grabField.hasClass('doc_year')) {
-                        let date = new Date(grabField.val());
-                        self.doc_year = date.getTime();
-                    }
-                });
             });
         }, 100);
     },
@@ -313,7 +302,7 @@ export default {
             });
         },
         doc_year: function (value) {
-            return Validator.value(value).required().digit().maxLength(20);
+            return Validator.value(value).required().digit().lengthBetween(4, 4, "Invalid Year!");
         },
         booking_date: function (value) {
             return Validator.value(value).required().digit().maxLength(20);
@@ -416,13 +405,20 @@ export default {
             self.inProcess = true;
             self.$validate().then(function (success) {
                 if (success) {
-                    self.vouchersRef.child(self.sel_voucher).update({
-                        id: self.voucher_id,
-                        nbr_number: self.nbr_number,
-                        v_remarks: self.v_remarks,
-                        posted_status: self.posted_status,
-                        sel_project: self.sel_project,
-                        voucher_date: self.voucher_date,
+                    self.masterDetailsRef.child(self.sel_master_det).update({
+                        allotee_code: self.allotee_code,
+                        allotee_name: self.allotee_name,
+                        contact_no: self.contact_no,
+                        allotee_email: self.allotee_email,
+                        sel_broker: self.sel_broker,
+                        sel_type: self.sel_type,
+                        sel_pro_type_no: self.sel_pro_type_no,
+                        doc_year: self.doc_year,
+                        booking_date: self.booking_date,
+                        selling_price: self.selling_price,
+                        booking_amount: self.booking_amount,
+                        payment_installment: self.payment_installment,
+                        payment_plan: self.payment_plan,
                         uid: firebase.auth().currentUser.uid,
                         createdAt: firebase.database.ServerValue.TIMESTAMP
                     }, function (err) {
@@ -443,9 +439,10 @@ export default {
                                     let key_save = row.key;
                                     if (row.code !== "") {
                                         delete row['key'];
-                                        row.v_key = self.sel_voucher;
-                                        row.v_data = self.voucher_date;
+                                        row.v_key = self.sel_master_det;
+                                        row.v_data = self.booking_date;
                                         row.createdAt = firebase.database.ServerValue.TIMESTAMP;
+                                        row['type'] = "md";
 
                                         if(key_save !== ""){
                                             self.vouchersEntriesRef.child(key_save).update(row, function (err) {
@@ -455,7 +452,8 @@ export default {
 
                                                 process_item++;
                                                 if (process_item === subLength) {
-                                                    self.voucherMsg(self, "Successfully Updated Voucher!");
+                                                    self.sel_master_det = "";
+                                                    self.voucherMsg(self, "Successfully Updated Master Detail Voucher!");
                                                 }
                                             });
                                         }else{
@@ -466,14 +464,16 @@ export default {
 
                                                 process_item++;
                                                 if (process_item === subLength) {
-                                                    self.voucherMsg(self, "Successfully Updated Voucher!");
+                                                    self.sel_master_det = "";
+                                                    self.voucherMsg(self, "Successfully Updated Master Detail Voucher!");
                                                 }
                                             });
                                         }
                                     }
                                 });
                             } else {
-                                self.voucherMsg(self, "Successfully Updated Voucher!");
+                                self.sel_master_det = "";
+                                self.voucherMsg(self, "Successfully Updated Master Detail Voucher!");
                             }
                         }
                     });
@@ -506,6 +506,7 @@ export default {
             let self = this;
             if (key !== "") {
                 self.updateV = true;
+                self.fullVoucherReset(self);
                 let sel_voucher = self.masterDetailsData[key];
                 self.voucher_id = sel_voucher.id;
                 self.nbr_number = sel_voucher.nbr_number;
@@ -529,9 +530,7 @@ export default {
                 self.payment_installment = sel_voucher.payment_installment;
                 self.payment_plan = sel_voucher.payment_plan;
 
-                console.log(sel_voucher.doc_year);
-                $(".datepicker.doc_year").datepicker("setDate", new Date(sel_voucher.doc_year));
-                $(".datepicker.booking_date").datepicker("setDate", new Date(sel_voucher.booking_date));
+                $(".datepicker.booking_date").datepicker("update", new Date(sel_voucher.booking_date));
                 self.voucherEntriesGet(self);
 
             } else {
@@ -540,7 +539,6 @@ export default {
             }
         },
         fullVoucherReset: function (self) {
-            self.sel_master_det = "";
             self.sel_project = "";
             self.allotee_code = "";
             self.allotee_name = "";
@@ -557,7 +555,6 @@ export default {
             self.payment_plan = "";
 
             $(".datepicker.booking_date").val('');
-            $(".yearpicker.doc_year").val('');
 
             self.rows.forEach(function (row, ind) {
                 self.rows[ind].key = '';

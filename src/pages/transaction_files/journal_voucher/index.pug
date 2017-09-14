@@ -71,13 +71,16 @@
                                     .form-group
                                         label
                                             | Project
-                                        div.text-center(v-if='dataLoad1')
-                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                        template(v-if="updateV")
+                                            input.form-control(type='text', v-bind:value='proData[sel_project].name' disabled="disabled")
                                         template(v-else)
-                                            select.form-control(v-model='sel_project')
-                                                option(value='') Select Project
-                                                option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
+                                            div.text-center(v-if='dataLoad1')
+                                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                            template(v-else)
+                                                select.form-control(v-model='sel_project')
+                                                    option(value='') Select Project
+                                                    option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
+                                                p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                                     .form-group
                                         label
                                             | Voucher Date

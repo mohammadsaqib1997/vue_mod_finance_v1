@@ -34,13 +34,16 @@
                                     .form-group
                                         label
                                             | Project
-                                        div.text-center(v-if='dataLoad1')
-                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                        template(v-if="updateV")
+                                            input.form-control(type='text', v-bind:value='proData[sel_project].name' disabled="disabled")
                                         template(v-else)
-                                            select.form-control(v-model='sel_project')
-                                                option(value='') Select Project
-                                                option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
+                                            div.text-center(v-if='dataLoad1')
+                                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                            template(v-else)
+                                                select.form-control(v-model='sel_project')
+                                                    option(value='') Select Project
+                                                    option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
+                                                p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                                     .form-group
                                         label
                                             | Allotee Code
@@ -114,7 +117,9 @@
                                     .form-group
                                         label
                                             | Document Year
-                                        input.form-control.yearpicker.doc_year(type='text', placeholder='Enter Document Year')
+                                        select.form-control(v-model='doc_year')
+                                            option(value='') Select Document Year
+                                            option(v-for='n in 50' v-bind:value='"20"+("0"+n).slice(-2)') {{ "20"+("0"+n).slice(-2) }}
                                         p.text-danger.text-right(v-if='validation.hasError("doc_year")') {{ validation.firstError('doc_year') }}
                                     .form-group
                                         label
@@ -141,43 +146,46 @@
                                         label
                                             | Payment Plan
                                         input.form-control(type='text', v-bind:value='payment_plan', placeholder='Enter your Payment Plan' disabled="disabled")
-                            h2 Account Detail
-                            .row.detail-heading
-                                .col-md-1 Account Code
-                                .col-md-2 Account Description
-                                .col-md-4 Remark
-                                .col-md-1 Quantity
-                                .col-md-2 Debit
-                                .col-md-2 Credit
-                            .detail-Content.form-group
-                                template(v-for='row, ind in rows')
-                                    .row(v-bind:class='"row-"+ind')
-                                        .col-md-1.padding-right-0
-                                            get-codes(v-bind:project='sel_project' v-bind:code='row.code' v-on:name_change="changeCode($event, ind)")
+                            div.text-center(v-if='dataLoad6')
+                                i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
+                            template(v-else)
+                                h2 Account Detail
+                                .row.detail-heading
+                                    .col-md-1 Account Code
+                                    .col-md-2 Account Description
+                                    .col-md-4 Remark
+                                    .col-md-1 Quantity
+                                    .col-md-2 Debit
+                                    .col-md-2 Credit
+                                .detail-Content.form-group
+                                    template(v-for='row, ind in rows')
+                                        .row(v-bind:class='"row-"+ind')
+                                            .col-md-1.padding-right-0
+                                                get-codes(v-bind:project='sel_project' v-bind:code='row.code' v-on:name_change="changeCode($event, ind)")
+                                            .col-md-2.padding-none
+                                                input.form-control(type='text' v-bind:value="row.code_name" disabled='disabled')
+                                            .col-md-4.padding-none
+                                                input.form-control(type='text' v-model='row.remarks')
+                                            .col-md-1.padding-none
+                                                input.form-control(type='text' v-model='row.quantity')
+                                            .col-md-2.padding-none
+                                                input.form-control(type='text' v-model='row.debit')
+                                            .col-md-2.padding-left-0
+                                                input.form-control(type='text' v-model='row.credit')
+                                    .row.Total
+                                        .col-md-2.padding-right-0
+                                            p.margin-bottom-0(style='line-height: 33px;')
+                                                | JV Difference
+                                                | < Debit / Credit >
                                         .col-md-2.padding-none
-                                            input.form-control(type='text' v-bind:value="row.code_name" disabled='disabled')
-                                        .col-md-4.padding-none
-                                            input.form-control(type='text' v-model='row.remarks')
-                                        .col-md-1.padding-none
-                                            input.form-control(type='text' v-model='row.quantity')
+                                            input.form-control(type='text' disabled='disabled' v-bind:value='total_debit - total_credit')
                                         .col-md-2.padding-none
-                                            input.form-control(type='text' v-model='row.debit')
+                                        .col-md-2.padding-none
+                                            h3.margin-bottom-0(style='line-height: 33px;') Total
+                                        .col-md-2.padding-none
+                                            input.form-control(type='text' v-bind:value='total_debit' disabled='disabled')
                                         .col-md-2.padding-left-0
-                                            input.form-control(type='text' v-model='row.credit')
-                                .row.Total
-                                    .col-md-2.padding-right-0
-                                        p.margin-bottom-0(style='line-height: 33px;')
-                                            | JV Difference
-                                            | < Debit / Credit >
-                                    .col-md-2.padding-none
-                                        input.form-control(type='text' disabled='disabled' v-bind:value='total_debit - total_credit')
-                                    .col-md-2.padding-none
-                                    .col-md-2.padding-none
-                                        h3.margin-bottom-0(style='line-height: 33px;') Total
-                                    .col-md-2.padding-none
-                                        input.form-control(type='text' v-bind:value='total_debit' disabled='disabled')
-                                    .col-md-2.padding-left-0
-                                        input.form-control(type='text' v-bind:value='total_credit' disabled='disabled')
+                                            input.form-control(type='text' v-bind:value='total_credit' disabled='disabled')
                     .row
                         .col-md-4.pull-right
                             button.btn.btn-primary.btn-wide.pull-right(v-if="inProcess" type='button' disabled='disabled')

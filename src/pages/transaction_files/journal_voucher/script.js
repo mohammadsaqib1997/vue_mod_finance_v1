@@ -304,7 +304,6 @@ export default {
                         nbr_number: self.nbr_number,
                         v_remarks: self.v_remarks,
                         posted_status: self.posted_status,
-                        sel_project: self.sel_project,
                         voucher_date: self.voucher_date,
                         uid: firebase.auth().currentUser.uid,
                         createdAt: firebase.database.ServerValue.TIMESTAMP
@@ -339,6 +338,7 @@ export default {
 
                                                 process_item++;
                                                 if (process_item === subLength) {
+                                                    self.sel_voucher = "";
                                                     self.voucherMsg(self, "Successfully Updated Voucher!");
                                                 }
                                             });
@@ -350,6 +350,7 @@ export default {
 
                                                 process_item++;
                                                 if (process_item === subLength) {
+                                                    self.sel_voucher = "";
                                                     self.voucherMsg(self, "Successfully Updated Voucher!");
                                                 }
                                             });
@@ -357,6 +358,7 @@ export default {
                                     }
                                 });
                             } else {
+                                self.sel_voucher = "";
                                 self.voucherMsg(self, "Successfully Updated Voucher!");
                             }
                         }
@@ -390,6 +392,7 @@ export default {
             let self = this;
             if (key !== "") {
                 self.updateV = true;
+                self.fullVoucherReset(self);
                 let sel_voucher = self.vouchersData[key];
                 self.voucher_id = sel_voucher.id;
                 self.nbr_number = sel_voucher.nbr_number;
@@ -406,7 +409,6 @@ export default {
             }
         },
         fullVoucherReset: function (self) {
-            self.sel_voucher = "";
             self.voucher_id = "";
             self.nbr_number = "";
             self.v_remarks = "";
@@ -424,6 +426,7 @@ export default {
                 self.rows[ind].credit = 0;
                 self.rows[ind].v_key = '';
                 self.rows[ind].v_date = 0;
+                self.rows[ind].type = "";
                 self.rows[ind].createdAt = 0;
             });
             self.validation.reset();
