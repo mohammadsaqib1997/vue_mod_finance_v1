@@ -11986,29 +11986,47 @@ body #sidebar nav > ul > li.open {
     color: rgb(147, 147, 147) !important;
   }
 }
-@media (min-width:1060px) {
-  .text-font-62 {
+@media (min-width:1260px) {
+  body .mini-pie canvas {
+    height: 200px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 150px;
+  }
+  body .mini-pie span {
+    line-height: 200px;
     font-size: 32px;
-    line-height: 58px;
+  }
+  body .mini-pie {
+    height: 200px;
+    position: relative;
+    width: 150px;
+    display: inline-block;
+  }
+  body .inline .chart-legend > ul li {
+    font-size: 11px;
+  }
+  body .text-font-62 {
+    font-size: 52px;
+    line-height: 88px;
   }
 
-  .text-font-21 {
-    font-size: 14px;
-    line-height: 58px;
+  body .text-font-21 {
+    font-size: 16px;
+    line-height: 88px;
   }
-  body table.table.no-margin td {
-    padding: 7px 8px;
+  html body table.table.no-margin td {
+    padding: 14px 8px;
   }
-  body .fc .fc-toolbar button {
+  body .fc-button {
     height: 30px !important;
     line-height: 30px;
     font-size: 10px;
-    padding: 0 8px;
   }
   html body .fc-toolbar .fc-center h2 {
     display: inline-block;
     font-size: 14px;
-    line-height: 30px;
     color: #545454;
   }
 }
