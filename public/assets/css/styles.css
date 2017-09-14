@@ -11931,19 +11931,164 @@ body #sidebar nav > ul > li.open {
   float: right;
   min-width: 320px;
 }
+@media (min-width:1024px) {
 
+  body .mini-pie canvas {
+    height: 200px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 150px;
+  }
+  body .mini-pie span {
+    line-height: 200px;
+    font-size: 32px;
+  }
+  body .mini-pie {
+    height: 200px;
+    position: relative;
+    width: 150px;
+    display: inline-block;
+  }
+  body .inline .chart-legend > ul li {
+    font-size: 11px;
+  }
+  .text-font-62 {
+    font-size:38px;
+    line-height: 54px;
+  }
+  body table.table.no-margin td {
+    padding: 6px 8px;
+  }
+  html body .panel-title{
+    font-size: 18px;
+  }
+  .text-font-21 {
+    font-size: 12px;
+    line-height: 54px;
+  }
+  body .chart-heading {
+    padding-left: 10%;
+    padding-top: 19px;
+    padding-bottom: 19px;
+  }
+  .table-heading{
+    float: left;
+    font-size: 18px !important;
+    color: #545454 !important;
+    line-height: 33px;
+  }
+  .table-subheading{
+    padding-left: 20px;
+    float: left;
+    line-height: 30px;
+    font-size: 14px;
+    color: rgb(147, 147, 147) !important;
+  }
+}
+@media (min-width:1060px) {
+  .text-font-62 {
+    font-size: 32px;
+    line-height: 58px;
+  }
+
+  .text-font-21 {
+    font-size: 14px;
+    line-height: 58px;
+  }
+  body table.table.no-margin td {
+    padding: 7px 8px;
+  }
+  body .fc .fc-toolbar button {
+    height: 30px !important;
+    line-height: 30px;
+    font-size: 10px;
+    padding: 0 8px;
+  }
+  html body .fc-toolbar .fc-center h2 {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 30px;
+    color: #545454;
+  }
+}
+@media (min-width:1360px){
+  body table.table.no-margin td {
+    padding: 16px 8px;
+  }
+  body .mini-pie canvas {
+    height: 300px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 250px;
+  }
+  body .mini-pie span {
+    line-height: 300px;
+    font-size: 32px;
+  }
+  body .mini-pie {
+    height: 300px;
+    position: relative;
+    width: 250px;
+    display: inline-block;
+  }
+  body .cl-effect-13 a {
+    -webkit-transition: color 0.3s;
+    -moz-transition: color 0.3s;
+    transition: color 0.3s;
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+  .table-heading{
+    float: left;
+    font-size: 18px !important;
+    color: #545454 !important;
+    line-height: 33px;
+  }
+  .table-subheading{
+    padding-left: 20px;
+    float: left;
+    line-height: 30px;
+    font-size: 14px;
+    color: rgb(147, 147, 147) !important;
+  }
 .text-font-62 {
   font-size:58px;
-  font-weight: normal !important;
-  color: #909090;
   line-height: 88px;
 }
 .text-font-21 {
   font-size: 18px;
+  line-height: 88px;
+}
+}
+
+.text-font-62 {
   font-weight: normal !important;
   color: #909090;
-  line-height: 88px;
+}
+.text-font-21 {
+  font-weight: normal !important;
+  color: #909090;
   text-transform: uppercase;
+}
+.chart-heading{
+	padding-left: 70px; 
+	padding-top: 19px; 
+	padding-bottom: 19px;
+}
+@media (min-width:1024px){
+
+}
+@media (max-width:767px){
+	.text-font-62 {
+  font-size:58px;
+  line-height: 88px;
+}
+.text-font-21 {
+  font-size: 18px;
+  line-height: 88px;
+}
 }
 body .panel-title {
   margin-top: 0;
