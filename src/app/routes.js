@@ -76,15 +76,24 @@ const routes = [
                     },
                     {
                         path: '/post_unpost',
-                        component: postUnPost
+                        component: postUnPost,
+                        meta: {
+                            admin: true
+                        }
                     },
                     {
                         path: '/create_new_user',
-                        component: createNewUser
+                        component: createNewUser,
+                        meta: {
+                            admin: true
+                        }
                     },
                     {
                         path: '/edit_user/:id',
-                        component: editUser
+                        component: editUser,
+                        meta: {
+                            admin: true
+                        }
                     },
                     {
                         path: '/profile',

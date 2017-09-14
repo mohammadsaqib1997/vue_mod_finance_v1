@@ -9,6 +9,9 @@ module.exports  = {
         }
         return timestamp;
     },
+    getDate: function (date) {
+        return (date.getMonth()+1)+"/"+date.getDate()+"/"+date.getFullYear();
+    },
     set_date_ser: function (date) {
         var h_obj = this.get_12_hours(date.getHours());
         return h_obj.hour+":"+("0"+date.getMinutes()).slice(-2)+" "+h_obj.ap+" "+date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();

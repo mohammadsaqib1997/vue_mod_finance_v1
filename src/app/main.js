@@ -18,11 +18,20 @@ const router = new VueRouter({
     routes
 });
 
-/*const fromReq = '';
- router.beforeEach(function (to, from, next) {
- console.log(to.path);
- next();
- });*/
+//const fromReq = '';
+/*router.beforeEach(function (to, from, next) {
+    let checkCond = to.matched.some(function (result) {
+        return result.meta.admin;
+    });
+    if(checkCond){
+        if(){
+
+        }
+        next();
+    }else{
+        next();
+    }
+});*/
 
 new Vue({
     router,
