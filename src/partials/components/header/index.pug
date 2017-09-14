@@ -19,12 +19,9 @@ header.navbar.navbar-default.navbar-static-top
                         i.fa.fa-refresh.fa-spin.fa-fw
                     template(v-else='v-else')
                         img(v-bind:src='pro_img_src', alt='Peter')
-                        span.username
-                            | {{ s_name }}
-                            i.ti-angle-down
                 ul.dropdown-menu.dropdown-dark
-                    li
-                        router-link(to='/profile') My Profile
+                    li.highlight
+                        router-link(to='/profile') {{ s_name }}
                     li
                         a(href='login_lockscreen.html') Lock Screen
                     li
