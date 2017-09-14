@@ -14,7 +14,7 @@
             .navbar-title
                 span Main Navigation
             ul.main-navigation-menu
-                li.active
+                li(v-bind:class="(this.$route.path === '/') ? 'active': ''")
                     router-link(to='/')
                         .item-content
                             .item-media
@@ -64,7 +64,7 @@
                                     router-link(to='/listing_sub_control') Sub Control
                                 li
                                     router-link(to='/listing_subsidiary') Subsidiary
-                li
+                li(v-bind:class="(this.$route.path === '/journal_voucher') ? 'active': ''")
                     a(href='javascript:void(0)')
                         .item-content
                             .item-media
@@ -73,7 +73,7 @@
                                 span.title Transaction Files
                                 i.icon-arrow
                     ul.sub-menu
-                        li
+                        li(v-bind:class="(this.$route.path === '/journal_voucher') ? 'active': ''")
                             router-link(to='/journal_voucher')
                                 span Journal Voucher
                 li
