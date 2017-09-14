@@ -11735,8 +11735,8 @@ ul.ul-action li a {
 }
 
 body #sidebar nav > ul > li > .sub-menu > li > .sub-menu > li.active a {
-  background: #eee !important;
-  color: #9E9E9E;
+  background: #555555 !important;
+  color: #ffffff;
 }
 
 
@@ -11909,7 +11909,7 @@ body #sidebar nav > ul .sub-menu {
   background: #404040;
 }
 body #sidebar nav > ul > li.open {
-  background: #2e2e2e !important;
+  background: #e8534f !important;
 }
 
 .main-content > .container .navbar-form {
@@ -12361,4 +12361,8 @@ body #sidebar nav > ul .sub-menu .sub-menu li:before {
   left: 40px;
   top: 8px;
   font-size: 17px;
+}
+body #sidebar nav > ul > li .sub-menu > li.active > a {
+  background: #555 !important;
+  color: #ffffff;
 }

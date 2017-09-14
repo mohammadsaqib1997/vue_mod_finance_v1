@@ -193,19 +193,19 @@ header .dropdown-off-sidebar {
 #sidebar nav > ul > li.active > a .item-media .fa-stack .fa-square {
   color: #e8534f !important;
 }
-#sidebar nav > ul > li.active .sub-menu {
-  background: #f7f7f7;
+#sidebar nav > ul > li.active > .sub-menu {
+  background: #404040;
 }
 #sidebar nav > ul .sub-menu {
-  background: #f7f7f7;
+  background: #404040;
 }
 #sidebar nav > ul .sub-menu > li.open {
-  background: #f2f2f2 !important;
+  background: #2e2e2e !important;
 }
-#sidebar nav > ul .sub-menu > li a {
+#sidebar nav > ul .sub-menu > li > a {
   color: #777;
 }
-#sidebar nav > ul .sub-menu > li.active a {
+#sidebar nav > ul .sub-menu > li.active > a {
   background: #e0e0e0 !important;
 }
 #sidebar nav ul > li.hover {
