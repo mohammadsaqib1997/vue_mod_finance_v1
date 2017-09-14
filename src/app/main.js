@@ -37,20 +37,27 @@ new Vue({
     router,
     beforeCreate: function () {
         let self = this;
-        let checkRouteAuth = self.$route.matched.some(function (record) {
-            return record.meta.requiresAuth;
+        self.$router.beforeEach(function (to, from, next) {
+            if(self.loginUData !== null){
+                if(to.matched.some((rec)=> rec.meta.admin)){
+                    if(self.loginUData.type === "admin"){
+                        next();
+                    }else{
+                        self.$router.push("/");
+                    }
+                }else{
+                    next();
+                }
+            }else{
+                self.$router.push("/");
+            }
         });
-        let route = self.$route.path;
+
         firebase.auth().onAuthStateChanged(function (user) {
-            self.compileProc = false;
             if (user) {
                 self.loginUID = user.uid;
-                if (checkRouteAuth) {
-                    self.$router.push(route);
-                } else {
-                    self.$router.push('/');
-                }
             } else {
+                self.compileProc = false;
                 self.loginUID = "";
                 self.$router.push('/login');
             }
@@ -72,6 +79,32 @@ new Vue({
     watch: {
         loginUID: function (val) {
             this.loginUserLoad(val);
+        },
+        loginUData: function (val) {
+            let self = this;
+            let checkRouteAuth = self.$route.matched.some(function (record) {
+                return record.meta.requiresAuth;
+            });
+            let checkRouteAdmin = self.$route.matched.some(function (record) {
+                return record.meta.admin;
+            });
+            let route = self.$route.path;
+            if(val !== null){
+                self.compileProc = false;
+                if(checkRouteAuth){
+                    if(checkRouteAdmin){
+                        if(val.type === "admin"){
+                            self.$router.push(route);
+                        }else{
+                            self.$router.push("/");
+                        }
+                    }else{
+                        self.$router.push("/");
+                    }
+                }else{
+                    self.$router.push("/");
+                }
+            }
         }
     },
     beforeMount: function () {
@@ -102,6 +135,7 @@ new Vue({
         loginUserLoad: function (uid) {
             let self = this;
             if(uid !== ""){
+                self.compileProc = true;
                 self.usersRef.orderByKey().equalTo(uid).on("value", function (snap) {
                     let data = snap.val();
                     let keys = Object.keys(data);

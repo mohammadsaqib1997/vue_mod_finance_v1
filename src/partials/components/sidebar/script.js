@@ -2,6 +2,9 @@ import firebase from 'firebase'
 
 export default {
     created: function(){
+        let self = this;
+        self.admin = (self.$root.loginUData.type === "admin");
+
         jQuery(function(){
             setTimeout(function () {
                 jQuery.getScript( "/assets/js/main.js", function( data, textStatus, jqxhr ) {});
@@ -10,7 +13,7 @@ export default {
     },
     data: function(){
         return {
-
+            admin: false
         }
     },
     methods: {

@@ -76,7 +76,7 @@
                         li(v-bind:class="(this.$route.path === '/journal_voucher') ? 'active': ''")
                             router-link(to='/journal_voucher')
                                 span Journal Voucher
-                li(v-bind:class="(this.$route.path === '/post_unpost') ? 'active': ''")
+                li(v-if="admin" v-bind:class="(this.$route.path === '/post_unpost') ? 'active': ''")
                     a(href='javascript:void(0)')
                         .item-content
                             .item-media
@@ -111,7 +111,7 @@
                         li
                             a(href='javascript:void(0)')
                                 span Balance Sheet
-                li(v-bind:class="(this.$route.path === '/create_new_user') ? 'active': ''")
+                li(v-if="admin" v-bind:class="(this.$route.path === '/create_new_user') ? 'active': ''")
                     a(href='javascript:void(0)')
                         .item-content
                             .item-media

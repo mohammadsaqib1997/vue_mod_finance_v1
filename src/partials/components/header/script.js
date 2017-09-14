@@ -3,14 +3,10 @@ import firebase from 'firebase'
 export default {
     created: function(){
         let self = this;
-        self.$watch(function () {
-            return self.$root.loginUData;
-        }, function (val, oldVal) {
-            if(val !== null){
-                self.s_name = val.first_name+" "+val. last_name;
-                self.imageLoad(val.uid);
-            }
-        });
+
+        self.s_name = self.$root.loginUData.first_name+" "+self.$root.loginUData.last_name;
+        self.imageLoad(self.$root.loginUData.uid);
+
         self.$watch(function () {
             return self.$root.loadImgSrc;
         }, function (val, oldVal) {

@@ -7,7 +7,7 @@ export default {
         $.getScript('/assets/js/dashboard.js', function (data, textStatus, jqxhr) {
             Dashboard.init();
         });
-        console.log(this.$root.loginUData);
+        //console.log(this.$root.loginUData);
         let self = this;
         self.$watch(function () {
             return self.$root.loginUData;
