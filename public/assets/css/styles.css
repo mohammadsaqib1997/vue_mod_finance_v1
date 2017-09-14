@@ -1258,7 +1258,7 @@ h5.over-title {
   font-size: 12px;
 }
 #sidebar > div nav > ul li a .icon-arrow:before {
-  content: "\e64a";
+  content: "\e649";
   font-family: themify;
 }
 #sidebar > div nav > ul li.open {
@@ -12354,4 +12354,11 @@ body #sidebar nav > ul .sub-menu > li a {
   padding-left: 52px !important;
   padding-right: 15px;
   padding-top: 10px;
+}
+body #sidebar nav > ul .sub-menu .sub-menu li:before {
+  content: "-";
+  position: absolute;
+  left: 40px;
+  top: 8px;
+  font-size: 17px;
 }
