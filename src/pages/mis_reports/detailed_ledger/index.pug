@@ -37,6 +37,22 @@
                                         option(v-for='(row, key, ind) in regSubsData' v-bind:value='key') {{ row.name }}
                                     p.text-danger.text-right(v-if='validation.hasError("sel_subsidiary")') {{ validation.firstError('sel_subsidiary') }}
                     .row
+                        .col-md-6
+                            .form-group
+                                label
+                                    | Start Date
+                                .input-group.date
+                                    input.form-control.datepicker.start_date(type='text', name="start_date" placeholder='Enter your Starting Date')
+                                    p.text-danger.text-right(v-if='validation.hasError("start_date")') {{ validation.firstError('start_date') }}
+                    .row
+                        .col-md-6
+                            .form-group
+                                label
+                                    | End Date
+                                .input-group.date
+                                    input.form-control.datepicker.end_date(type='text', name="end_date" placeholder='Enter your Ending Date')
+                                    p.text-danger.text-right(v-if='validation.hasError("end_date")') {{ validation.firstError('end_date') }}
+                    .row
                         .col-md-12
                             .form-group
                                 .row

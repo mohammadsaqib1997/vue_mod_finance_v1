@@ -120,7 +120,13 @@ const routes = [
             },
             {
                 path: '*',
-                component: PageNotFound
+                component: dashboardLayout,
+                children: [
+                    {
+                        path: '',
+                        component: PageNotFound
+                    },
+                ]
             }
         ]
     }

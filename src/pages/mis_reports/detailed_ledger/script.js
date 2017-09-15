@@ -26,6 +26,20 @@ export default {
             }
             self.dataLoad1 = false;
         });
+
+        setTimeout(function () {
+            $(function(){
+                $(".datepicker").datepicker().on('change', function(e) {
+                    let grabField = $(e.target);
+                    if(grabField.hasClass('start_date')){
+                        self.start_date = grabField.val();
+                    }
+                    if(grabField.hasClass('end_date')){
+                        self.end_date = grabField.val();
+                    }
+                });
+            });
+        }, 100);
     },
     data: function () {
         return {
@@ -47,6 +61,8 @@ export default {
             // form fields
             sel_project: "",
             sel_subsidiary: "",
+            start_date: "",
+            end_date: "",
             sel_show_type: "Screen",
         }
     },
@@ -54,15 +70,15 @@ export default {
         sel_project: function (value) {
             return Validator.value(value).required().lengthBetween(20, 36);
         },
+        start_date: function (value) {
+            return Validator.value(value).required().lengthBetween(10, 10, "Invalid Date!");
+        },
+        end_date: function (value) {
+            return Validator.value(value).required().lengthBetween(10, 10, "Invalid Date!");
+        },
         sel_subsidiary: function (value) {
             return Validator.value(value).required().lengthBetween(1, 20, "Invalid Id!");
         },
-        /*sel_control_start: function (value) {
-            return Validator.value(value).required().lengthBetween(3, 11, "Invalid Register Control Id!");
-        },
-        sel_control_end: function (value) {
-            return Validator.value(value).required().lengthBetween(3, 11, "Invalid Register Control Id!");
-        },*/
         sel_show_type: function (value) {
             return Validator.value(value).required();
         }
