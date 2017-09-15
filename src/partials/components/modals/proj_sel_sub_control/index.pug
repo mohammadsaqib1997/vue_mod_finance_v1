@@ -36,9 +36,9 @@
                                 p.text-danger.text-right(v-if='validation.hasError("sel_sub_control")') {{ validation.firstError('sel_sub_control') }}
                                 .text-right(v-if='validation.isValidating("sel_sub_control")')
                                     i.fa.fa-spinner.fa-spin
-                    button.btn.btn-primary.btn-o(type='button', data-dismiss='modal')
-                        | Close
-                    button.btn.btn-primary.mar-lf-10(type='submit' v-if="!inProcess")
+                    button.btn.btn-primary(type='submit' v-if="!inProcess")
                         | Add Control
+                    button.btn.btn-primary.btn-o.pull-right(type='button', data-dismiss='modal')
+                        | Cancel
                     button.btn.btn-primary.mar-lf-10(type='button' disabled='disabled' v-if="inProcess")
                         i.fa.fa-refresh.fa-spin.fa-fw

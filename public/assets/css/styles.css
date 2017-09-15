@@ -11714,7 +11714,8 @@ form.form-forgot input.form-control {
 ul.ul-action {
   float: left;
   padding: 0;
-  margin-top: 5px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 .icon-container [class^="ti-"].active, .icon-container [class*=" ti-"].active{color: #e8534f;}
 ul.ul-action li {
@@ -11723,15 +11724,27 @@ ul.ul-action li {
   list-style: none;
 }
 
-ul.ul-action li a {
-  padding-right: 0 !important;
+
+a.btn.btn-nobackground {
+  color: #545454;
+  font-size: 16px;
+  border: 1px solid #dedede;
+  color: #5b5b60;
+  height: auto;
+  padding: 20px;
+  border-radius: 5px !important;
+  line-height: normal;
 }
+
 .row.Total {
   margin-top: 5px;
 }
 .list-nostyled {
   list-style: none;
   padding-left: 15px;
+}
+a.btn.btn-nobackground i.ti-pencil {
+  margin-left: 5px;
 }
 
 body #sidebar nav > ul > li > .sub-menu > li > .sub-menu > li.active a {
@@ -12380,4 +12393,196 @@ body #sidebar nav > ul > li .sub-menu > li.active > a {
   font-size: 34px;
   height: 38px;
   width: 38px;
+}
+
+.no-line-height{
+  line-height: normal !important;
+}
+.no-min-height{
+  min-height: 0 !important;
+}
+
+
+a.btn.btn-tabbutton {
+  font-size: 14px;
+  font-weight: 400;
+  color: #545454;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: rgba(0, 0, 0, 0.07);
+  border-radius: 0;
+  padding: 15px;
+  line-height: 24px;
+}
+
+img.tab-icon {
+  float: left;
+  margin-top: 4px;
+  margin-right: 8px;
+}
+
+a.btn.btn-tabbutton:hover{
+  background-color:#e7e0e0;
+}
+
+body textarea[disabled], body input[disabled], body select[disabled] {
+  background: #f1f1f1 !important;
+  border-color: #dedede !important;
+}
+body .panel select.form-control {
+  color:#c3c3c3;
+  font-size:16px;
+  border: 1px solid #dedede;
+  color: #5b5b60;
+  height: auto;
+  padding: 20px;
+  border-radius: 5px !important;
+  line-height: normal;
+}
+body .panel textarea, body .panel select,
+body .panel input[type="text"],
+body .panel input[type="password"],
+body .panel input[type="datetime"],
+body .panel input[type="datetime-local"],
+body .panel input[type="date"],
+body .panel input[type="month"],
+body .panel input[type="time"],
+body .panel input[type="week"],
+body .panel input[type="number"],
+body .panel input[type="email"],
+body .panel input[type="url"],
+body .panel input[type="search"],
+body .panel input[type="tel"],
+body .panel input[type="color"]{
+  color:#c3c3c3 !important;
+  font-size:16px;
+  border: 1px solid #dedede;
+  height: auto;
+  padding: 20px;
+  border-radius: 5px !important;
+  line-height: normal;
+}
+body .panel,
+.panel-body,
+.panel-heading {
+  float: left;
+  width: 100%;
+}
+body .panel-white {
+  margin-bottom: 0;
+  display: block;
+  float: left;
+  width: 100%;
+}
+body .panel label {
+  font-weight: normal;
+  color: #858585;
+  font-size: 16px;
+  width: 100%;
+  text-transform: capitalize;
+}
+
+a.btn.btn-tabbutton i.ti-plus:before {
+  content: "+";
+  font-size: 21px;
+  float: left;
+  line-height: normal;
+  margin-right: 5px;
+  font-family: sans-serif;
+  color: #e95450;
+  text-shadow: 0.5px 0.5px 0px #e95450;
+}
+a.btn.btn-nobackground i.ti-pencil {
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+.modal-header {
+  padding: 20px;
+  border-color: #b5b5b5;
+  background: #404040;
+  border-bottom: 3px solid #e85450;
+}
+h4.modal-title {
+  color: #fff;
+}
+
+
+.modal-header .close {
+  float: right;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #e85450;
+  text-shadow: none;
+  filter: none;
+  opacity: 1;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #e85450 !important;
+  border-radius: 26px;
+}
+
+body .modal-header .close:hover {
+  color: #fff;
+  border-color: #fff !important;
+}
+
+.modal-content {
+  background: #f1f1f1;
+}
+.modal-body {
+  padding: 20px;
+}
+.modal-aside.horizontal .modal-dialog .modal-content label {
+  font-weight: normal;
+  color: #545454;
+  font-size: 16px;
+}
+
+.modal-aside.horizontal .modal-dialog .modal-content textarea,
+.modal-aside.horizontal .modal-dialog .modal-content select,
+.modal-aside.horizontal .modal-dialog .modal-content input[type="text"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="password"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="datetime"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="datetime-local"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="date"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="month"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="time"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="week"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="number"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="email"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="url"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="search"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="tel"],
+.modal-aside.horizontal .modal-dialog .modal-content input[type="color"]{
+  color: #c3c3c3;
+  font-size: 16px;
+  border-color: #dedede;
+  padding: 15px;
+  line-height: normal;
+  height: auto;
+  border-radius: 5px !important;
+}
+
+.modal-aside.horizontal .modal-dialog .modal-content button.btn {
+  font-size: 16px;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+.modal-aside.horizontal .modal-dialog .modal-content button.btn.btn-o {
+  background-color: #eaeaec !important;
+  border-color: #939393 !important;
+  color: #939393 !important;
+}
+h3.p_subheading {
+  font-size: 16px;
+  margin: 15px auto 30px;
+  padding: 15px 0 5px;
+  font-weight: bold;
+  border-bottom: 1px solid #a6c367;
+  text-transform: uppercase;
+}
+a.btn.btn-primary.backtotop {
+  margin-top: 12px;
 }

@@ -16,9 +16,9 @@
                                 p.text-danger.text-right(v-if='validation.hasError("cont_name")') {{ validation.firstError('cont_name') }}
                                 .text-right(v-if='validation.isValidating("cont_name")')
                                     i.fa.fa-spinner.fa-spin
-                    button.btn.btn-primary.btn-o(type='button', data-dismiss='modal')
-                        | Close
-                    button.btn.btn-primary.mar-lf-10(type='submit' v-if="!inProcess")
-                        | Save changes
+                    button.btn.btn-primary(type='submit' v-if="!inProcess")
+                        | Save
+                    button.btn.btn-primary.pull-right.btn-o(type='button', data-dismiss='modal')
+                        | Cancel
                     button.btn.btn-primary.mar-lf-10(type='button' disabled='disabled' v-if="inProcess")
                         i.fa.fa-refresh.fa-spin.fa-fw

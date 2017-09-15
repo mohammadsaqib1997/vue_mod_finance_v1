@@ -4,7 +4,7 @@
             .modal-header
                 button.close(type='button', data-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') ×
-                h4#myModalLabel.modal-title Add Sub Controls
+                h4#myModalLabel.modal-title Add Subsibiary
             .modal-body
                 form(v-on:submit.prevent='selContPro')
                     .form-group
@@ -44,9 +44,9 @@
                                 p.text-danger.text-right(v-if='validation.hasError("sel_subsidiary")') {{ validation.firstError('sel_subsidiary') }}
                                 .text-right(v-if='validation.isValidating("sel_subsidiary")')
                                     i.fa.fa-spinner.fa-spin
-                    button.btn.btn-primary.btn-o(type='button', data-dismiss='modal')
-                        | Close
-                    button.btn.btn-primary.mar-lf-10(type='submit' v-if="!inProcess")
+                    button.btn.btn-primary(type='submit' v-if="!inProcess")
                         | Add Control
+                    button.btn.btn-primary.btn-o.pull-right(type='button', data-dismiss='modal')
+                        | Cancel
                     button.btn.btn-primary.mar-lf-10(type='button' disabled='disabled' v-if="inProcess")
                         i.fa.fa-refresh.fa-spin.fa-fw

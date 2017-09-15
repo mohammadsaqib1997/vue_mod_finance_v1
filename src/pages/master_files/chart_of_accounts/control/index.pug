@@ -11,97 +11,96 @@
                     span Chart of Accounts
                 li.active
                     span Control
-    .container-fluid.container-fullw.bg-white
-        form#form(v-on:submit.prevent="addContEntry")
+    .container-fluid.container-fullw.bg-offwhite
+        form#form(v-on:submit.prevent='addContEntry')
             .row
                 .col-md-12
-                    .text-right
-                        a.btn.btn-primary(href='#', data-toggle='modal', data-target='#add_control') Add New Control
-                        a.btn.btn-primary.mar-lf-10(href='#', data-toggle='modal', data-target='#add_sub_control') Add New Sub Control
-                        a.btn.btn-primary.mar-lf-10(href='#', data-toggle='modal', data-target='#add_subsidiary') Add New Subsidiary
-                    h2 Control
-                    p
-                        | Create one control.
-                    hr
-                    .row
-                        .col-md-12
-                            p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
-                            p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
-                        .col-md-12
-                            .form-group
-                                label.control-label
-                                    | Project
-                                    span.symbol.required(aria-required='true')
+                    .panel.panel-white.no-radius
+                        .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
+                            h4.panel-title.pull-left.padding-15 Daily Reports
+                            .text-right
+                                a.btn.btn-tabbutton(href='#', data-toggle='modal', data-target='#add_control')
+                                    img.tab-icon(src='assets/images/icons/tabicon1.png')
+                                    | Add New Control
+                                a.btn.btn-tabbutton(href='#', data-toggle='modal', data-target='#add_sub_control')
+                                    img.tab-icon(src='assets/images/icons/tabicon2.png')
+                                    | Add New Sub Control
+                                a.btn.btn-tabbutton(href='#', data-toggle='modal', data-target='#add_subsidiary')
+                                    img.tab-icon(src='assets/images/icons/tabicon3.png')
+                                    | Add New Subsidiary
+                        .panel-body
+                            .row
+                                .col-md-12
+                                    p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
+                                    p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
+                                .col-md-12
+                                    .form-group
+                                        .row
+                                            .col-md-10(v-if='dataLoad1')
+                                                .text-center
+                                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                            template(v-if='!dataLoad1')
+                                                .col-md-3
+                                                    input.form-control(type='text', placeholder='ID of project', disabled='disabled', v-bind:value='getObjId(sel_project, proData)')
+                                                .col-md-7
+                                                    select.form-control(v-model='sel_project')
+                                                        option(value='') Select Project
+                                                        option(v-for='(row, key, ind) in proData', v-bind:value='key') {{ row.name }}
+                                                    p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
+                                            .col-md-2.icon-container
+                                                ul.ul-action
+                                                    li
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_project')
+                                                            i.ti-plus
+                                                    li
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_project')
+                                                            span(style='color:#545454;margin-right:5px;') Edit
+                                                            i.ti-pencil
+                                    .form-group
+                                        .row
+                                            .col-md-10(v-if='dataLoad2')
+                                                .text-center
+                                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                            template(v-if='!dataLoad2')
+                                                .col-md-3
+                                                    input.form-control(type='text', placeholder='ID of Control number', disabled='disabled', v-bind:value='getObjId(sel_control, controlData)')
+                                                .col-md-7
+                                                    select.form-control(v-model='sel_control')
+                                                        option(value='') Select Control
+                                                        option(v-for='(row, key, ind) in controlData', v-bind:value='key') {{ row.name }}
+                                                    p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
+                                            .col-md-2.icon-container
+                                                ul.ul-action
+                                                    li
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#proj_sel_control')
+                                                            i.ti-plus
+                            template(v-if='dataLoad3')
                                 .row
-                                    .col-md-10(v-if='dataLoad1')
-                                        div.text-center
+                                    .col-md-3
+                                        .text-center
                                             i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                    template(v-if='!dataLoad1')
-                                        .col-md-3
-                                            input.form-control(type='text' placeholder='ID of project' disabled='disabled' v-bind:value='getObjId(sel_project, proData)')
-                                        .col-md-7
-                                            select.form-control(v-model='sel_project')
-                                                option(value='') Select Project
-                                                option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
-                                    .col-md-2.icon-container
-                                        ul.ul-action
-                                            li
-                                                a(href='#', data-toggle='modal', data-target='#add_project')
-                                                    i.ti-plus
-                                            li
-                                                a(href='#', data-toggle='modal', data-target='#add_project')
-                                                    i.ti-pencil-alt
-                            .form-group
-                                label.control-label
-                                    | Control
-                                    span.symbol.required(aria-required='true')
+                            template(v-if='!dataLoad3')
                                 .row
-                                    .col-md-10(v-if='dataLoad2')
-                                        div.text-center
-                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                    template(v-if='!dataLoad2')
-                                        .col-md-3
-                                            input.form-control(type='text' placeholder='ID of Control number' disabled='disabled' v-bind:value='getObjId(sel_control, controlData)')
-                                        .col-md-7
-                                            select.form-control(v-model='sel_control')
-                                                option(value='') Select Control
-                                                option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
-                                    .col-md-2.icon-container
-                                        ul.ul-action
-                                            li
-                                                a(href='#', data-toggle='modal', data-target='#proj_sel_control')
-                                                    i.ti-plus
-                    template(v-if='dataLoad3')
-                        .row
-                            .col-md-3
-                                div.text-center
-                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                    template(v-if='!dataLoad3')
-                        .row
-                            .col-md-3
-                                .form-group
-                                    label.control-label
-                                        | Open Debit
-                                        span.symbol.required(aria-required='true')
-                                    input.form-control(type='text' v-model='debit')
-                                    p.text-danger.text-right(v-if='validation.hasError("debit")') {{ validation.firstError('debit') }}
-                        .row
-                            .col-md-3
-                                .form-group
-                                    label.control-label
-                                        | Open Credit
-                                        span.symbol.required(aria-required='true')
-                                    input.form-control(type='text' v-model='credit')
-                                    p.text-danger.text-right(v-if='validation.hasError("credit")') {{ validation.firstError('credit') }}
-                    .row
-                        .col-md-4.pull-right
-                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit' v-if="!inProcess && !dataLoad3")
-                                | Submit&nbsp;
-                                i.fa.fa-arrow-circle-right
-                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='button' disabled='disabled' v-if="inProcess || dataLoad3")
-                                i.fa.fa-refresh.fa-spin.fa-fw
+                                    .col-md-3
+                                        .form-group
+                                            label.control-label
+                                                | Open Debit
+                                                span.symbol.required(aria-required='true')
+                                            input.form-control(type='text', v-model='debit')
+                                            p.text-danger.text-right(v-if='validation.hasError("debit")') {{ validation.firstError('debit') }}
+                                .row
+                                    .col-md-3
+                                        .form-group
+                                            label.control-label
+                                                | Open Credit
+                                                span.symbol.required(aria-required='true')
+                                            input.form-control(type='text', v-model='credit')
+                                            p.text-danger.text-right(v-if='validation.hasError("credit")') {{ validation.firstError('credit') }}
+                            .row
+                                .col-md-4.pull-left
+                                    button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='submit', v-if='!inProcess && !dataLoad3') Create
+                                    button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='button', disabled='disabled', v-if='inProcess || dataLoad3')
+                                        i.fa.fa-refresh.fa-spin.fa-fw
     add-project-modal
     pro-sel-control-modal
     add-control-modal

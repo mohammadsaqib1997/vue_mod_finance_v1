@@ -11,171 +11,163 @@
                     span Chart of Accounts
                 li.active
                     span Subsidiary
-    .container-fluid.container-fullw.bg-white
-        .row
-            .col-md-12
-                .text-right.margin-bottom-15
-                    a.btn.btn-primary(href='#', data-toggle='modal', data-target='#add_control') Add New Control
-                    a.btn.btn-primary.mar-lf-10(href='#', data-toggle='modal', data-target='#add_sub_control') Add New Sub Control
-                    a.btn.btn-primary.mar-lf-10(href='#', data-toggle='modal', data-target='#add_subsidiary') Add New Subsidiary
-                .row
-                    .col-md-6
-                        h2 Subsidiary
-                        p
-                            | Create one Subsidiary.
-                    .col-md-6
-                        router-link.btn.btn-primary.btn-o.pull-right(to='/add_party')
-                            | Add Party Information
-                hr
-                form(v-on:submit.prevent="addSubsEntry")
-                    .row
-                        .col-md-12
-                            p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
-                            p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
-                        .col-md-12
-                            .form-group
-                                label.control-label
-                                    | Project
-                                    span.symbol.required(aria-required='true')
-                                .row
-                                    .col-md-10(v-if='dataLoad1')
-                                        div.text-center
-                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                    template(v-if='!dataLoad1')
-                                        .col-md-3
-                                            input.form-control(type='text' placeholder='ID of project' disabled='disabled' v-bind:value='getObjId(sel_project, proData)')
-                                        .col-md-7
-                                            select.form-control(v-model='sel_project')
-                                                option(value='') Select Project
-                                                option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
-                                    .col-md-2.icon-container
-                                        ul.ul-action
-                                            li
-                                                a(href='#' data-toggle='modal' data-target='#add_project')
-                                                    i.ti-plus
-                                            li
-                                                a(href='#', data-toggle='modal', data-target='#add_project')
-                                                    i.ti-pencil-alt
-                            .form-group
-                                label.control-label
-                                    | Control
-                                    span.symbol.required(aria-required='true')
-                                .row
-                                    .col-md-10(v-if='dataLoad2')
-                                        div.text-center
-                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                    template(v-if='!dataLoad2')
-                                        .col-md-3
-                                            input.form-control(type='text' placeholder='ID of Control number' disabled='disabled' v-bind:value='getObjId(sel_control, controlData)')
-                                        .col-md-7
-                                            select.form-control(v-model='sel_control')
-                                                option(value='') Select Control
-                                                option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
-                                    .col-md-2.icon-container
-                                        ul.ul-action
-                                            li
-                                                a(href='#' data-toggle='modal' data-target='#proj_sel_control')
-                                                    i.ti-plus
-                            .form-group
-                                label.control-label
-                                    | Sub Control
-                                    span.symbol.required(aria-required='true')
-                                .row
-                                    .col-md-10(v-if='dataLoad3')
-                                        div.text-center
-                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                    template(v-if='!dataLoad3')
-                                        .col-md-3
-                                            input.form-control(type='text', placeholder='ID of Sub Control number', disabled='' v-bind:value='getObjId(sel_sub_control, subControlData)')
-                                        .col-md-7
-                                            select.form-control(v-model='sel_sub_control')
-                                                option(value='') Select Sub Control
-                                                option(v-for='(row, key, ind) in subControlData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_sub_control")') {{ validation.firstError('sel_sub_control') }}
-                                    .col-md-2.icon-container
-                                        ul.ul-action
-                                            li
-                                                a(href='#', data-toggle='modal', data-target='#proj_sel_sub_control')
-                                                    i.ti-plus
-                            .form-group
-                                label.control-label
-                                    | Subsidiary
-                                    span.symbol.required(aria-required='true')
-                                .row
-                                    .col-md-10(v-if='dataLoad4')
-                                        div.text-center
-                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                    template(v-if='!dataLoad4')
-                                        .col-md-3
-                                            input.form-control(type='text', placeholder='ID of Subsidiary number', disabled='' v-bind:value='getObjId(sel_subsidiary, subsData)')
-                                        .col-md-7
-                                            select.form-control(v-model='sel_subsidiary')
-                                                option(value='') Select Subsidiary
-                                                option(v-for='(row, key, ind) in subsData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_subsidiary")') {{ validation.firstError('sel_subsidiary') }}
-                                    .col-md-2.icon-container
-                                        ul.ul-action
-                                            li
-                                                a(href='#', data-toggle='modal', data-target='#proj_sel_subs')
-                                                    i.ti-plus
-                    .row(v-if='dataLoad5')
-                        .col-md-6
-                            div.text-center
-                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                    template(v-else)
-                        .row
-                            .col-md-3
-                                .form-group
-                                    label.control-label
-                                        | Party Select
-                                        span.symbol.required(aria-required='true')
-                                    div.text-center(v-if='dataLoad7')
+    .container-fluid.container-fullw.bg-offwhite
+        form#form(v-on:submit.prevent='addContEntry')
+            .row
+                .col-md-12
+                    .panel.panel-white.no-radius
+                        .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
+                            h4.panel-title.pull-left.padding-15 Create Subsidiary
+                            .text-right
+                                a.btn.btn-tabbutton(href='#', data-toggle='modal', data-target='#add_control')
+                                    img.tab-icon(src='assets/images/icons/tabicon1.png')
+                                    | Add New Control
+                                a.btn.btn-tabbutton(href='#', data-toggle='modal', data-target='#add_sub_control')
+                                    img.tab-icon(src='assets/images/icons/tabicon2.png')
+                                    | Add New Sub Control
+                                a.btn.btn-tabbutton(href='#', data-toggle='modal', data-target='#add_subsidiary')
+                                    img.tab-icon(src='assets/images/icons/tabicon3.png')
+                                    | Add New Subsidiary
+                                <router-link to="/add_party" class="btn btn-tabbutton pull-right"><i class="ti-plus"></i> Add Party Information</router-link>
+                        .panel-body
+                            .row
+                                .col-md-12
+                                    p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
+                                    p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
+                                .col-md-12
+                                    .form-group
+                                        .row
+                                            .col-md-10(v-if='dataLoad1')
+                                                .text-center
+                                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                            template(v-if='!dataLoad1')
+                                                .col-md-3
+                                                    input.form-control(type='text', placeholder='ID of project', disabled='disabled', v-bind:value='getObjId(sel_project, proData)')
+                                                .col-md-7
+                                                    select.form-control(v-model='sel_project')
+                                                        option(value='') Select Project
+                                                        option(v-for='(row, key, ind) in proData', v-bind:value='key') {{ row.name }}
+                                                    p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
+                                            .col-md-2.icon-container
+                                                ul.ul-action
+                                                    li
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_project')
+                                                            i.ti-plus
+                                                    li
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_project')
+                                                            span(style='color:#545454;margin-right:5px;') Edit
+                                                                i.ti-pencil
+                                    .form-group
+                                        .row
+                                            .col-md-10(v-if='dataLoad2')
+                                                .text-center
+                                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                            template(v-if='!dataLoad2')
+                                                .col-md-3
+                                                    input.form-control(type='text', placeholder='ID of Control number', disabled='disabled', v-bind:value='getObjId(sel_control, controlData)')
+                                                .col-md-7
+                                                    select.form-control(v-model='sel_control')
+                                                        option(value='') Select Control
+                                                        option(v-for='(row, key, ind) in controlData', v-bind:value='key') {{ row.name }}
+                                                    p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
+                                            .col-md-2.icon-container
+                                                ul.ul-action
+                                                    li
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#proj_sel_control')
+                                                            i.ti-plus
+                                    .form-group
+                                        .row
+                                            .col-md-10(v-if='dataLoad3')
+                                                .text-center
+                                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                            template(v-if='!dataLoad3')
+                                                .col-md-3
+                                                    input.form-control(type='text', placeholder='ID of Sub Control number', disabled='', v-bind:value='getObjId(sel_sub_control, subControlData)')
+                                                .col-md-7
+                                                    select.form-control(v-model='sel_sub_control')
+                                                        option(value='') Select Sub Control
+                                                        option(v-for='(row, key, ind) in subControlData', v-bind:value='key') {{ row.name }}
+                                                    p.text-danger.text-right(v-if='validation.hasError("sel_sub_control")') {{ validation.firstError('sel_sub_control') }}
+                                            .col-md-2.icon-container
+                                                ul.ul-action
+                                                    li
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#proj_sel_sub_control')
+                                                            i.ti-plus
+                                    .form-group
+                                        .row
+                                            .col-md-10(v-if='dataLoad4')
+                                                .text-center
+                                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                            template(v-if='!dataLoad4')
+                                                .col-md-3
+                                                    input.form-control(type='text', placeholder='ID of Subsidiary number', disabled='', v-bind:value='getObjId(sel_subsidiary, subsData)')
+                                                .col-md-7
+                                                    select.form-control(v-model='sel_subsidiary')
+                                                        option(value='') Select Subsidiary
+                                                        option(v-for='(row, key, ind) in subsData', v-bind:value='key') {{ row.name }}
+                                                    p.text-danger.text-right(v-if='validation.hasError("sel_subsidiary")') {{ validation.firstError('sel_subsidiary') }}
+                                            .col-md-2.icon-container
+                                                ul.ul-action
+                                                    li
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#proj_sel_subs')
+                                                            i.ti-plus
+                            .row(v-if='dataLoad5')
+                                .col-md-6
+                                    .text-center
                                         i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                    template(v-else)
-                                        select.form-control(v-model='party_id')
-                                            option(value='') Select Party Information
-                                            option(v-for='(row, key, ind) in partyData' v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
-                                        p.text-danger.text-right(v-if='validation.hasError("party_id")') {{ validation.firstError('party_id') }}
-                            .col-md-3
-                                .form-group
-                                    label.control-label
-                                        | Bill Type
-                                        span.symbol.required(aria-required='true')
-                                    div.text-center(v-if='dataLoad6')
-                                        i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                    template(v-else)
-                                        select.form-control(v-model='bill_type')
-                                            option(value='') Select Bill Type
-                                            option(v-for='(row, key, ind) in billTypesData' v-bind:value='key') {{ row.name }}
-                                        p.text-danger.text-right(v-if='validation.hasError("bill_type")') {{ validation.firstError('bill_type') }}
-                        .row
-                            .col-md-3
-                                .form-group
-                                    label.control-label
-                                        | Open Debit
-                                        span.symbol.required(aria-required='true')
-                                    input.form-control(type='text' v-model='debit')
-                                    p.text-danger.text-right(v-if='validation.hasError("debit")') {{ validation.firstError('debit') }}
-                            .col-md-3
-                                .form-group
-                                    label.control-label
-                                        | Open Credit
-                                        span.symbol.required(aria-required='true')
-                                    input.form-control(type='text' v-model='credit')
-                                    p.text-danger.text-right(v-if='validation.hasError("credit")') {{ validation.firstError('credit') }}
-                    .row
-                        .col-md-4.pull-right
-                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit' v-if="!inProcess && !dataLoad5")
-                                | Submit&nbsp;
-                                i.fa.fa-arrow-circle-right
-                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='button' disabled='disabled' v-if="inProcess || dataLoad5")
-                                i.fa.fa-refresh.fa-spin.fa-fw
-    add-project-modal
-    pro-sel-control-modal
-    pro-sel-sub-control-modal
-    pro-sel-subs-modal
-    add-control-modal
-    add-sub-control-modal
-    add-subsidiary-modal
+                            template(v-else='v-else')
+                                .row
+                                    .col-md-3
+                                        .form-group
+                                            label.control-label
+                                                | Select Party
+                                                a.pull-right
+                                                    | + Add
+                                                span.symbol.required(aria-required='true')
+                                            .text-center(v-if='dataLoad7')
+                                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                            template(v-else='v-else')
+                                                select.form-control(v-model='party_id')
+                                                    option(value='') Select Party Information
+                                                    option(v-for='(row, key, ind) in partyData', v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
+                                                p.text-danger.text-right(v-if='validation.hasError("party_id")') {{ validation.firstError('party_id') }}
+                                    .col-md-3
+                                        .form-group
+                                            label.control-label
+                                                | Bill Type
+                                                span.symbol.required(aria-required='true')
+                                            .text-center(v-if='dataLoad6')
+                                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                            template(v-else='v-else')
+                                                select.form-control(v-model='bill_type')
+                                                    option(value='') Select Bill Type
+                                                    option(v-for='(row, key, ind) in billTypesData', v-bind:value='key') {{ row.name }}
+                                                p.text-danger.text-right(v-if='validation.hasError("bill_type")') {{ validation.firstError('bill_type') }}
+                                .row
+                                    .col-md-3
+                                        .form-group
+                                            label.control-label
+                                                | Open Debit
+                                                span.symbol.required(aria-required='true')
+                                            input.form-control(type='text', v-model='debit')
+                                            p.text-danger.text-right(v-if='validation.hasError("debit")') {{ validation.firstError('debit') }}
+                                    .col-md-3
+                                        .form-group
+                                            label.control-label
+                                                | Open Credit
+                                                span.symbol.required(aria-required='true')
+                                            input.form-control(type='text', v-model='credit')
+                                            p.text-danger.text-right(v-if='validation.hasError("credit")') {{ validation.firstError('credit') }}
+                            .row
+                                .col-md-4.pull-left
+                                    button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='submit', v-if='!inProcess && !dataLoad5')
+                                        | Create Subsidiary
+                                    button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='button', disabled='disabled', v-if='inProcess || dataLoad5')
+                                        i.fa.fa-refresh.fa-spin.fa-fw
+        add-project-modal
+        pro-sel-control-modal
+        pro-sel-sub-control-modal
+        pro-sel-subs-modal
+        add-control-modal
+        add-sub-control-modal
+        add-subsidiary-modal
