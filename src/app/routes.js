@@ -26,6 +26,8 @@ import profile from '../pages/profile/profile.vue'
 
 import partyInformation from '../pages/party_information/party_information.vue'
 
+import detailedLedger from '../pages/mis_reports/detailed_ledger/detailed_ledger.vue'
+
 const routes = [
     {
         path: '/',
@@ -69,6 +71,10 @@ const routes = [
                     {
                         path: '/listing_subsidiary',
                         component: listingSubsidiary
+                    },
+                    {
+                        path: '/detailed_ledger',
+                        component: detailedLedger
                     },
                     {
                         path: '/journal_voucher',

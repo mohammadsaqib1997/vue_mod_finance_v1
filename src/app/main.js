@@ -18,40 +18,44 @@ const router = new VueRouter({
     routes
 });
 
-//const fromReq = '';
-/*router.beforeEach(function (to, from, next) {
-    let checkCond = to.matched.some(function (result) {
-        return result.meta.admin;
-    });
-    if(checkCond){
-        if(){
-
-        }
-        next();
-    }else{
-        next();
-    }
-});*/
-
 new Vue({
     router,
-    beforeCreate: function () {
+    created: function () {
         let self = this;
-        self.$router.beforeEach(function (to, from, next) {
-            if(self.loginUData !== null){
-                if(to.matched.some((rec)=> rec.meta.admin)){
-                    if(self.loginUData.type === "admin"){
-                        next();
+        const db = firebase.database();
+        self.usersRef = db.ref('/users');
+
+        if(!self.routeCond){
+            self.routeCond = true;
+            self.$router.beforeEach(function (to, from, next) {
+                let route = to.path;
+                if(to.matched.some((rec)=>rec.meta.requiresAuth)){
+                    if(self.loginUData !== null){
+                        if(to.matched.some((rec)=>rec.meta.admin)){
+                            if(self.loginUData.type === "admin"){
+                                next();
+                            }else{
+                                self.$router.push('/');
+                            }
+                        }else{
+                            next();
+                        }
                     }else{
-                        self.$router.push("/");
+                        self.$router.push('/login');
                     }
                 }else{
-                    next();
+                    if(route === "/login"){
+                        if(self.loginUData === null){
+                            next();
+                        }else{
+                            self.$router.push('/');
+                        }
+                    }else{
+                        next();
+                    }
                 }
-            }else{
-                self.$router.push("/");
-            }
-        });
+            });
+        }
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
@@ -59,14 +63,10 @@ new Vue({
             } else {
                 self.compileProc = false;
                 self.loginUID = "";
+                self.loginUData = null;
                 self.$router.push('/login');
             }
         });
-    },
-    created: function () {
-        let self = this;
-        const db = firebase.database();
-        self.usersRef = db.ref('/users');
     },
     data: {
         csrf: '',
@@ -74,7 +74,8 @@ new Vue({
         loginUData: null,
         loadImgSrc: "",
         usersRef: null,
-        compileProc: true
+        compileProc: true,
+        routeCond: false,
     },
     watch: {
         loginUID: function (val) {
@@ -82,6 +83,7 @@ new Vue({
         },
         loginUData: function (val) {
             let self = this;
+
             let checkRouteAuth = self.$route.matched.some(function (record) {
                 return record.meta.requiresAuth;
             });
@@ -89,20 +91,22 @@ new Vue({
                 return record.meta.admin;
             });
             let route = self.$route.path;
-            if(val !== null){
-                self.compileProc = false;
-                if(checkRouteAuth){
-                    if(checkRouteAdmin){
-                        if(val.type === "admin"){
-                            self.$router.push(route);
-                        }else{
-                            self.$router.push("/");
-                        }
-                    }else{
-                        self.$router.push("/");
-                    }
+            self.compileProc = false;
+            if(checkRouteAuth){
+                if(val === null){
+                    self.$router.push('/login');
                 }else{
-                    self.$router.push("/");
+                    if(checkRouteAdmin){
+                        if(val.type !== "admin"){
+                            self.$router.push('/');
+                        }
+                    }
+                }
+            }else{
+                if(route === "/login"){
+                    if(val !== null){
+                        self.$router.push('/');
+                    }
                 }
             }
         }

@@ -1,0 +1,51 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset="UTF-8")
+        title FocusMedia360° - Management | Detailed Ledger
+
+    body
+        table(style='width:100%;padding:15px;')
+            tbody
+                tr
+                    td(colspan='2' style="text-align:left;")
+                        h2(style="margin:0;") #{proName}
+                    td(style="text-align:right;") #{date}
+                tr
+                    td(colspan="3" style="border-top:2px solid black;")
+                tr
+                    td(style='width:25%;') Account Code
+                    td(style='text-align:center;width:50%;') Account Description
+                    td(style='text-align:right;width:25%;') Reference Code
+                tr
+                    td(colspan="3" style="border-top:2px solid black;")
+                tr
+                    td(colspan='3')
+                        table(cellpadding='5' style='width:100%;' border=1)
+                            tr
+                                td Date
+                                td(colspan=3)
+                                td Debit
+                                td Credit
+                                td Balance
+                                td
+                            - var bal = 0
+                            each item in data
+                                tr
+                                    td(style="width:40px;") #{item.date}
+                                    td #{item.type.toUpperCase()}
+                                    td #{item.v_id}
+                                    td #{item.remarks}
+                                    td #{item.debit}
+                                    td #{item.credit}
+                                    td #{bal += item.debit-item.credit}
+                                    td #{(bal >= 0) ? "Dr": "Cr"}
+                            tr
+                                td(colspan=4)
+                                td #{totDr}
+                                td #{totCr}
+                                td(colspan=2)
+
+
+
+
