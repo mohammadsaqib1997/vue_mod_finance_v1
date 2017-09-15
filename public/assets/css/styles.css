@@ -12586,3 +12586,54 @@ h3.p_subheading {
 a.btn.btn-primary.backtotop {
   margin-top: 12px;
 }
+
+.misreport{
+  background: #ffffff;
+
+}
+
+.background-e2e8f0 th{
+  background: #e2e8f0;
+  color:#545454;
+  border:none;
+
+}
+.misreport{
+  font-size: 14px;
+  color: #545454 !important;
+  font-weight: 400;
+  border-spacing: 0;
+  border-collapse: collapse;
+  border: 0px;
+}
+
+.table tr.background-e3e3e3 td {
+  background: #e3e3e3;
+  font-size: 14px;
+  color: #545454;
+  font-weight: 600;
+  border-collapse: collapse;
+}
+.btn-dark-Red{
+  background:#e85450;
+  color: #fff;
+  font-size:21px;
+}
+
+.btn-dark-black{
+  background:#404040;
+  color: #fff;
+  font-size:21px;
+}
+
+.background-e6e6e6{
+  background:#e6e6e6;
+}
+
+.no-border{
+  border:0px;
+}
+
+.no-border td {
+  border: 0px !important;
+}
