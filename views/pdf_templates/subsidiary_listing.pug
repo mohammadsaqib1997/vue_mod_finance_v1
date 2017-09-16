@@ -4,38 +4,102 @@ html(lang='en')
         meta(charset="UTF-8")
         title FocusMedia360° - Management | Subsidiary Listing
 
+        link(rel='apple-touch-icon', sizes='57x57', href='/assets/images/favicon/apple-icon-57x57.png')
+        link(rel='apple-touch-icon', sizes='60x60', href='/assets/images/favicon/apple-icon-60x60.png')
+        link(rel='apple-touch-icon', sizes='72x72', href='/assets/images/favicon/apple-icon-72x72.png')
+        link(rel='apple-touch-icon', sizes='76x76', href='/assets/images/favicon/apple-icon-76x76.png')
+        link(rel='apple-touch-icon', sizes='114x114', href='/assets/images/favicon/apple-icon-114x114.png')
+        link(rel='apple-touch-icon', sizes='120x120', href='/assets/images/favicon/apple-icon-120x120.png')
+        link(rel='apple-touch-icon', sizes='144x144', href='/assets/images/favicon/apple-icon-144x144.png')
+        link(rel='apple-touch-icon', sizes='152x152', href='/assets/images/favicon/apple-icon-152x152.png')
+        link(rel='apple-touch-icon', sizes='180x180', href='/assets/images/favicon/apple-icon-180x180.png')
+        link(rel='icon', type='image/png', sizes='192x192', href='/assets/images/favicon/android-icon-192x192.png')
+        link(rel='icon', type='image/png', sizes='32x32', href='/assets/images/favicon/favicon-32x32.png')
+        link(rel='icon', type='image/png', sizes='96x96', href='/assets/images/favicon/favicon-96x96.png')
+        link(rel='icon', type='image/png', sizes='16x16', href='/assets/images/favicon/favicon-16x16.png')
+        link(rel='manifest', href='/manifest.json')
+        meta(name='msapplication-TileColor', content='#ffffff')
+        meta(name='msapplication-TileImage', content='/assets/images/favicon/ms-icon-144x144.png')
+        meta(name='theme-color', content='#ffffff')
+
+        meta(http-equiv='X-UA-Compatible', content='IE=edge,IE=9,IE=8,chrome=1')
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        meta(name='apple-mobile-web-app-status-bar-style', content='black')
+        meta(content='', name='description')
+        meta(content='', name='author')
+
+        link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/vendor/fontawesome/css/font-awesome.min.css')
+        link(rel='stylesheet', href='/vendor/themify-icons/themify-icons.min.css')
+        link(href='/vendor/animate.css/animate.min.css', rel='stylesheet', media='screen')
+        link(href='/vendor/perfect-scrollbar/perfect-scrollbar.min.css', rel='stylesheet', media='screen')
+        link(href='/vendor/switchery/switchery.min.css', rel='stylesheet', media='screen')
+
+        link(rel='stylesheet', href='/assets/css/styles.css')
+        link(rel='stylesheet', href='/assets/css/plugins.css')
+        link#skin_color(rel='stylesheet', href='/assets/css/themes/theme-1.css')
+        link(href='/vendor/jquery-ui/jquery-ui-1.10.1.custom.min.css', rel='stylesheet', media='screen')
+        link(href='/assets/css/bootstrap-datepicker.min.css', rel='stylesheet', media='screen')
+
     body
-        table(style='width:100%;padding:15px;')
-            tbody
-                tr
-                    td(colspan='2' style="text-align:left;")
-                        h2(style="margin:0;") #{proName}
-                    td(style="text-align:right;") #{date}
-                tr
-                    td(colspan="3" style="border-top:2px solid black;")
-                tr
-                    td(style='width:25%;') Account Code
-                    td(style='text-align:center;width:50%;') Account Description
-                    td(style='text-align:right;width:25%;') Reference Code
-                tr
-                    td(colspan="3" style="border-top:2px solid black;")
-                tr
-                    td(colspan='3')
-                        table(cellpadding='5' style='width:100%;')
-                            each cont_item in data.cont_data
-                                tr
-                                    td(style="width:40px;") #{cont_item.id}
-                                    td(colspan='3') #{cont_item.name}
-                                each sCont_item in data.sub_cont_data
-                                    if sCont_item.cont_id === cont_item.id
-                                        tr
-                                            td
-                                            td(style="width:40px;") #{sCont_item.id}
-                                            td(colspan='2') #{sCont_item.name}
-                                        each subs_item in data.subs_data
-                                            if subs_item.cont_id === cont_item.id && subs_item.sub_cont_id === sCont_item.id
-                                                tr
-                                                    td
-                                                    td
-                                                    td(style="width:40px;") #{subs_item.id}
-                                                    td #{subs_item.name}
+        .bg-offwhite
+            #container.wrap-content.container-fluid
+                section#page-title
+                    .row
+                        .col-md-2.border-right(style='border-color: #aeaeae;')
+                            img(src='http://localhost:3000/assets/images/logo.png', style='width: 100%;max-width:230px;')
+                        .col-sm-8
+                            h1.mainTitle(style='font-size: 38.02px;') Balance Sheet
+                            span.mainDescription(style='font-size: 19px;color: #ec5d58;') Subsibiary
+            .row.padding-30
+                .col-md-12
+                    .panel.panel-white.no-radius
+                        .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
+                            h4.panel-title.pull-left.padding-15 Project Name: #{proName}
+                            h6.pull-right.text-right.padding-15 Create Date: #{date}
+                        .panel-body.padding-30
+                            table.table.table-striped.misreport(cellpadding='5' style='width:100%;' border=1)
+                                tbody
+                                    tr.background-e2e8f0.no-border
+                                        th(style='width:25%;') Account Code
+                                        th(style='text-align:center;width:50%;') Account Description
+                                        th(style='text-align:right;width:25%;') Reference Code
+                                    tr
+                                        td(colspan='3')
+                                            table(cellpadding='5' style='width:100%;')
+                                                each cont_item in data.cont_data
+                                                    tr
+                                                        td(style="width:40px;") #{cont_item.id}
+                                                        td(colspan='3') #{cont_item.name}
+                                                    each sCont_item in data.sub_cont_data
+                                                        if sCont_item.cont_id === cont_item.id
+                                                            tr
+                                                                td
+                                                                td(style="width:40px;") #{sCont_item.id}
+                                                                td(colspan='2') #{sCont_item.name}
+                                                            each subs_item in data.subs_data
+                                                                if subs_item.cont_id === cont_item.id && subs_item.sub_cont_id === sCont_item.id
+                                                                    tr
+                                                                        td
+                                                                        td
+                                                                        td(style="width:40px;") #{subs_item.id}
+                                                                        td #{subs_item.name}
+                            button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;") Save
+                            button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
+
+
+
+
+
+    script(src='/vendor/jquery/jquery.min.js')
+    script(src='/vendor/bootstrap/js/bootstrap.min.js')
+    script(src='/vendor/moment/moment.min.js')
+    script(src='/vendor/jquery-ui/jquery-ui-1.10.1.custom.min.js')
+    script(src='/assets/js/bootstrap-datepicker.min.js')
+    script(src='/vendor/modernizr/modernizr.js')
+    script(src='/vendor/jquery-cookie/jquery.cookie.js')
+    script(src='/vendor/perfect-scrollbar/perfect-scrollbar.min.js')
+    script(src='/vendor/switchery/switchery.min.js')
+    script(src="/vue_frameworks/app/build.js" type="text/javascript")
