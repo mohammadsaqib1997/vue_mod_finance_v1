@@ -209,14 +209,18 @@ router.post('/detailed_ledger/render.pdf', function (req, res, next) {
                     let keys = Object.keys(voucherEntData);
                     let process_item = 0;
                     let grabEnt = [];
+                    let start_date = moment(data.start_date).format("DD/MM/YYYY");
+                    let end_date = moment(data.end_date).format("DD/MM/YYYY");
                     keys.forEach(function (key) {
                         let item = voucherEntData[key];
                         item['date'] = moment(item.v_date).format("DD/MM/YYYY");
                         if(item.type === "jv"){
                             refVouchers.child(item.v_key).once('value', function (voucherSnap) {
                                 let voucherData = voucherSnap.val();
-                                item['v_id'] = voucherData.id;
-                                grabEnt.push(item);
+                                if(voucherData !== null && voucherData.posted_status === "Yes"){
+                                    item['v_id'] = voucherData.id;
+                                    grabEnt.push(item);
+                                }
                                 process_item++;
                                 if(process_item === keys.length){
                                     grabEnt = func.sortObjByVal(grabEnt, "v_date");
@@ -224,7 +228,12 @@ router.post('/detailed_ledger/render.pdf', function (req, res, next) {
                                     res.render('pdf_templates/detailed_ledger', {
                                         proName: proData.name,
                                         date: todayDate,
-                                        data: grabEnt
+                                        code: (item.code) ? item.code:"",
+                                        code_name: (item.code_name) ? item.code_name:"",
+                                        data: grabEnt.newEnt,
+                                        start_date: start_date,
+                                        end_date: end_date,
+                                        balance: grabEnt.balance
                                     });
                                 }
                             });
@@ -240,7 +249,12 @@ router.post('/detailed_ledger/render.pdf', function (req, res, next) {
                                     res.render('pdf_templates/detailed_ledger', {
                                         proName: proData.name,
                                         date: todayDate,
-                                        data: grabEnt
+                                        code: (item.code) ? item.code:"",
+                                        code_name: (item.code_name) ? item.code_name:"",
+                                        data: grabEnt.newEnt,
+                                        start_date: start_date,
+                                        end_date: end_date,
+                                        balance: grabEnt.balance
                                     });
                                 }
                             });
@@ -260,16 +274,20 @@ module.exports = router;
 
 function bwDatesEntries(bwDates, objEnt){
     let newGrabEnt = [];
-    if(bwDates[0] !== "" || bwDates[1] !== ""){
-        objEnt.forEach(function (row) {
-            let sel_row = null;
-            if(row.v_date >= bwDates[0] && row.v_date <= bwDates[1]){
-                sel_row = row;
-            }
-            if(sel_row !== null){
-                newGrabEnt.push(sel_row);
-            }
-        });
-    }
-    return newGrabEnt;
+    let balCr = 0;
+    let balDr = 0;
+    objEnt.forEach(function (row) {
+        let sel_row = null;
+        if(row.v_date < bwDates[0]){
+            balCr += row.credit;
+            balDr += row.debit;
+        }
+        if(row.v_date >= bwDates[0] && row.v_date <= bwDates[1]){
+            sel_row = row;
+        }
+        if(sel_row !== null){
+            newGrabEnt.push(sel_row);
+        }
+    });
+    return { newEnt: newGrabEnt, balance: {balCr: balCr, balDr: balDr} };
 }

@@ -59,31 +59,33 @@ html(lang='en')
                         .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
                             h4.panel-title.pull-left.padding-15 Project Name: #{proName}
                             h6.pull-right.text-right.padding-15 Create Date: #{date}
+                            h6.pull-right.text-right.padding-15 Period: #{start_date} - #{end_date}
                         .panel-body.padding-30
                             table.table.table-striped.misreport(cellpadding='5' style='width:100%;' border=1)
                                 tr.background-e2e8f0.no-border
-                                    th Date
-                                    th(colspan=4)
+                                    th(colspan=6) Date
                                     th Debit
                                     th Credit
                                     th Balance
                                     th
                                 tr.background-e3e3e3
-                                    td 04/05/2017
-                                    td(colspan=3) Cash In Hand
-                                    td.text-bold Balance
-                                    td 592,000.00
-                                    td 0.00
-                                    td 592,000.00
-                                    td dr
-                                - var bal = 0
+                                    td #{code}
+                                    td(colspan=3) #{code_name}
+                                    td.text-bold(colspan=2) Balance
+                                    td #{balance.balDr}
+                                    td #{balance.balCr}
+                                    td #{balance.balDr-balance.balCr}
+                                    td #{((balance.balDr-balance.balCr) >= 0) ? "Dr":"Cr"}
+                                - var bal = balance.balDr-balance.balCr
+                                - var totCr = balance.balCr
+                                - var totDr = balance.balDr
                                 each item in data
+                                    - totCr += item.credit; totDr += item.debit;
                                     tr
                                         td(style="width:40px;") #{item.date}
                                         td #{item.type.toUpperCase()}
                                         td #{item.v_id}
                                         td #{item.remarks}
-                                        td
                                         td #{item.debit}
                                         td #{item.credit}
                                         td #{bal += item.debit-item.credit}
@@ -95,18 +97,3 @@ html(lang='en')
                                     td(colspan=2)
                             button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;") Save
                             button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
-
-
-
-
-
-    script(src='/vendor/jquery/jquery.min.js')
-    script(src='/vendor/bootstrap/js/bootstrap.min.js')
-    script(src='/vendor/moment/moment.min.js')
-    script(src='/vendor/jquery-ui/jquery-ui-1.10.1.custom.min.js')
-    script(src='/assets/js/bootstrap-datepicker.min.js')
-    script(src='/vendor/modernizr/modernizr.js')
-    script(src='/vendor/jquery-cookie/jquery.cookie.js')
-    script(src='/vendor/perfect-scrollbar/perfect-scrollbar.min.js')
-    script(src='/vendor/switchery/switchery.min.js')
-    script(src="/vue_frameworks/app/build.js" type="text/javascript")
