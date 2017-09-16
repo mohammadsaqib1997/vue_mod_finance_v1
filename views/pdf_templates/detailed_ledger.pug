@@ -63,7 +63,7 @@ html(lang='en')
                         .panel-body.padding-30
                             table.table.table-striped.misreport(cellpadding='5' style='width:100%;' border=1)
                                 tr.background-e2e8f0.no-border
-                                    th(colspan=6) Date
+                                    th(colspan=5) Date
                                     th Debit
                                     th Credit
                                     th Balance
@@ -71,7 +71,7 @@ html(lang='en')
                                 tr.background-e3e3e3
                                     td #{code}
                                     td(colspan=3) #{code_name}
-                                    td.text-bold(colspan=2) Balance
+                                    td.text-bold Balance
                                     td #{balance.balDr}
                                     td #{balance.balCr}
                                     td #{balance.balDr-balance.balCr}
@@ -86,6 +86,7 @@ html(lang='en')
                                         td #{item.type.toUpperCase()}
                                         td #{item.v_id}
                                         td #{item.remarks}
+                                        td
                                         td #{item.debit}
                                         td #{item.credit}
                                         td #{bal += item.debit-item.credit}
