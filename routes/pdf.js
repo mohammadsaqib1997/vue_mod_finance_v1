@@ -42,11 +42,11 @@ router.post('/control/render.pdf', function (req, res, next){
                                     data: grabData,
                                     proName: proData.name,
                                     date: todayDate
-                                }, function (errJade, html) {
+                                }/*, function (errJade, html) {
                                     pdf.create(html).toStream(function (err, stream) {
                                         stream.pipe(res);
                                     });
-                                });
+                                }*/);
                             }
                         });
                     });
@@ -102,11 +102,11 @@ router.post('/sub_control/render.pdf', function (req, res, next) {
                                         data: grabData,
                                         proName: proData.name,
                                         date: todayDate
-                                    }, function (errJade, html) {
+                                    }/*, function (errJade, html) {
                                         pdf.create(html).toStream(function (err, stream) {
                                             stream.pipe(res);
                                         });
-                                    });
+                                    }*/);
                                 }
                             });
                         });
@@ -174,11 +174,11 @@ router.post('/subsidiary/render.pdf', function (req, res, next) {
                                             data: grabData,
                                             proName: proData.name,
                                             date: todayDate
-                                        }, function (errJade, html) {
+                                        }/*, function (errJade, html) {
                                             pdf.create(html).toStream(function (err, stream) {
                                                 stream.pipe(res);
                                             });
-                                        });
+                                        }*/);
                                     }
                                 });
                             });
