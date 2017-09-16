@@ -12617,12 +12617,14 @@ a.btn.btn-primary.backtotop {
 .btn-dark-Red{
   background:#e85450;
   color: #fff;
+  line-height: normal;
   font-size:21px;
 }
 
 .btn-dark-black{
   background:#404040;
   color: #fff;
+  line-height: normal;
   font-size:21px;
 }
 
