@@ -29,6 +29,9 @@
                 form#form
                     .row
                         .col-md-12
+                            p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
+                            p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
+                        .col-md-12
                             .row
                                 .col-md-4
                                     .form-group

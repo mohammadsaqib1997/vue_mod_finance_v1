@@ -53,21 +53,32 @@
                                         p.text-danger.text-right(v-if='validation.hasError("v_remarks")') {{ validation.firstError('v_remarks') }}
                                     .form-group
                                         label
-                                            | Posted Y/N
-                                        .clip-radio.radio-primary
-                                            input#p_yes(type='radio', value='Yes', v-model='posted_status')
-                                            label(for='p_yes')
-                                                | Yes
-                                            input#p_no(type='radio', value='No', v-model='posted_status')
-                                            label(for='p_no')
-                                                | No
-                                            p.text-danger.text-right(v-if='validation.hasError("posted_status")') {{ validation.firstError('posted_status') }}
+                                            | Voucher Date
+                                        input.form-control.datepicker.voucher_date(type='text' placeholder='Enter your Voucher Date')
+                                        p.text-danger.text-right(v-if='validation.hasError("voucher_date")') {{ validation.firstError('voucher_date') }}
                                 .col-md-6
                                     .form-group
                                         label
-                                            | Reference Number
-                                        input.form-control(type='text' placeholder='Enter your Reference Number')
-                                        //p.text-danger.text-right(v-if='validation.hasError("gender")') {{ validation.firstError('gender') }}
+                                            | Reference Type
+                                        .clip-radio.radio-primary
+                                            input#md(type='radio', value='md', v-model='ref_type')
+                                            label(for='md')
+                                                | Master Detail
+                                            input#pi(type='radio', value='pi', v-model='ref_type')
+                                            label(for='pi')
+                                                | Party Information
+                                            p.text-danger.text-right(v-if='validation.hasError("ref_type")') {{ validation.firstError('ref_type') }}
+                                    .form-group
+                                        label
+                                            | Select {{ (ref_type === 'md')? "Master Detail":"Party Information" }}
+                                        div.text-center(v-if='dataLoad4')
+                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                        template(v-else)
+                                            select.form-control(v-model='sel_ref')
+                                                option(value='') Select {{ (ref_type === 'md')? "Master Detail":"Party Information" }}
+                                                option(v-if="ref_type === 'md'" v-for='(row, key, ind) in masterDetailsData' v-bind:value='key') {{ row.allotee_code }} | {{ row.allotee_name }}
+                                                option(v-if="ref_type === 'pi'" v-for='(row, key, ind) in partyInformationData' v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
+                                            p.text-danger.text-right(v-if='validation.hasError("sel_ref")') {{ validation.firstError('sel_ref') }}
                                     .form-group
                                         label
                                             | Project
@@ -83,9 +94,15 @@
                                                 p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                                     .form-group
                                         label
-                                            | Voucher Date
-                                        input.form-control.datepicker.voucher_date(type='text' placeholder='Enter your Voucher Date')
-                                        p.text-danger.text-right(v-if='validation.hasError("voucher_date")') {{ validation.firstError('voucher_date') }}
+                                            | Posted Y/N
+                                        .clip-radio.radio-primary
+                                            input#p_yes(type='radio', value='Yes', v-model='posted_status')
+                                            label(for='p_yes')
+                                                | Yes
+                                            input#p_no(type='radio', value='No', v-model='posted_status')
+                                            label(for='p_no')
+                                                | No
+                                            p.text-danger.text-right(v-if='validation.hasError("posted_status")') {{ validation.firstError('posted_status') }}
                             div.text-center(v-if='dataLoad3')
                                 i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
                             template(v-else)
@@ -103,7 +120,8 @@
                                             .col-md-1.padding-right-0
                                                 get-codes(v-bind:project='sel_project' v-bind:code='row.code' v-on:name_change="changeCode($event, ind)")
                                             .col-md-2.padding-none
-                                                input.form-control(type='text' v-bind:value="row.code_name" disabled='disabled')
+                                                get-subs-name(v-bind:project='sel_project')
+                                                //input.form-control(type='text' v-bind:value="row.code_name" disabled='disabled')
                                             .col-md-4.padding-none
                                                 input.form-control(type='text' v-model='row.remarks')
                                             .col-md-1.padding-none

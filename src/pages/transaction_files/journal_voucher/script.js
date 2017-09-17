@@ -4,6 +4,7 @@ import Promise from 'bluebird'
 import func from '../../../../custom_libs/func'
 
 import getCodes from '../../../partials/components/get_codes/get_codes.vue'
+import getSubsName from '../../../partials/components/get_subs_name/get_subs_name.vue'
 
 const Validator = SimpleVueValidation.Validator;
 
@@ -13,6 +14,10 @@ export default {
 
         self.$watch("sel_voucher", function (val, oldVal) {
             self.updateVoucherVal(val);
+        });
+
+        self.$watch('ref_type', function (val, oldVal) {
+            self.sel_ref = "";
         });
 
         self.rows.forEach(function (row, ind) {
@@ -39,6 +44,8 @@ export default {
         self.projectsRef = db.ref('/projects');
         self.vouchersRef = db.ref('/vouchers');
         self.vouchersEntriesRef = db.ref('/vouchers_entries');
+        self.masterDetailsRef = db.ref('/master_details');
+        self.partyInformationRef = db.ref('/party_information');
 
         self.projectsRef.on('value', function (proSnap) {
             let renderData = proSnap.val();
@@ -60,6 +67,26 @@ export default {
             self.dataLoad2 = false;
         });
 
+        self.masterDetailsRef.on('value', function (snap) {
+            let renderData = snap.val();
+            if (renderData !== null) {
+                self.masterDetailsData = renderData;
+            } else {
+                self.masterDetailsData = {};
+            }
+            self.dataLoad4 = false;
+        });
+
+        self.partyInformationRef.on('value', function (snap) {
+            let renderData = snap.val();
+            if (renderData !== null) {
+                self.partyInformationData = renderData;
+            } else {
+                self.partyInformationData = {};
+            }
+            self.dataLoad4 = false;
+        });
+
         setTimeout(function () {
             $(function () {
                 $(".datepicker").datepicker().on('change', function (e) {
@@ -79,14 +106,19 @@ export default {
             dataLoad1: true,
             dataLoad2: true,
             dataLoad3: false,
+            dataLoad4: true,
             updateV: false,
 
             // data save
             proData: {},
             vouchersData: {},
+            masterDetailsData: {},
+            partyInformationData: {},
 
             // references
             projectsRef: null,
+            masterDetailsRef: null,
+            partyInformationRef: null,
             vouchersRef: null,
             vouchersEntriesRef: null,
 
@@ -167,6 +199,8 @@ export default {
             nbr_number: "",
             v_remarks: "",
             posted_status: "Yes",
+            ref_type: "md",
+            sel_ref: "",
             sel_project: "",
             voucher_date: "",
             errMain: "",
@@ -210,6 +244,9 @@ export default {
         posted_status: function (value) {
             return Validator.value(value).required().in(['Yes', 'No'], "Invalid Status!");
         },
+        ref_type: function (value) {
+            return Validator.value(value).in(['md', 'pi'], "Invalid Reference Type!");
+        },
         sel_project: function (value) {
             return Validator.value(value).required().lengthBetween(20, 36);
         },
@@ -246,6 +283,8 @@ export default {
                                 v_remarks: self.v_remarks,
                                 posted_status: self.posted_status,
                                 sel_project: self.sel_project,
+                                ref_type: self.ref_type,
+                                ref_key: self.sel_ref,
                                 voucher_date: self.voucher_date,
                                 uid: firebase.auth().currentUser.uid,
                                 createdAt: firebase.database.ServerValue.TIMESTAMP
@@ -304,6 +343,8 @@ export default {
                         nbr_number: self.nbr_number,
                         v_remarks: self.v_remarks,
                         posted_status: self.posted_status,
+                        ref_type: self.ref_type,
+                        ref_key: self.sel_ref,
                         voucher_date: self.voucher_date,
                         uid: firebase.auth().currentUser.uid,
                         createdAt: firebase.database.ServerValue.TIMESTAMP
@@ -398,8 +439,12 @@ export default {
                 self.nbr_number = sel_voucher.nbr_number;
                 self.v_remarks = sel_voucher.v_remarks;
                 self.posted_status = sel_voucher.posted_status;
+                self.ref_type = sel_voucher.ref_type;
                 self.sel_project = sel_voucher.sel_project;
                 self.voucher_date = sel_voucher.voucher_date;
+                setTimeout(function () {
+                    self.sel_ref = sel_voucher.ref_key;
+                }, 100);
                 $(".datepicker.voucher_date").datepicker("setDate", new Date(sel_voucher.voucher_date));
                 self.voucherEntriesGet(self);
 
@@ -413,6 +458,8 @@ export default {
             self.nbr_number = "";
             self.v_remarks = "";
             self.posted_status = "Yes";
+            self.ref_type = "md";
+            self.sel_ref = "";
             self.sel_project = "";
             $(".datepicker.voucher_date").val('');
             self.voucher_date = "";
@@ -472,6 +519,7 @@ export default {
         }
     },
     components: {
-        getCodes
+        getCodes,
+        getSubsName
     }
 }

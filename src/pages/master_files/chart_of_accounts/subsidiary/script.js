@@ -45,7 +45,8 @@ export default {
         self.controlsRef = db.ref('/controls');
         self.subControlsRef = db.ref('/sub_controls');
         self.subsRef = db.ref('/subsidiary');
-        self.proSelContRef = db.ref('/pro_sel_control');
+        self.regControlsRef = db.ref('/reg_controls');
+        self.regSubControlsRef = db.ref('/reg_sub_controls');
         self.regSubsRef = db.ref('/reg_subsidiary');
         self.billTypesRef = db.ref('/bill_types');
         self.partyInformationRef = db.ref('/party_information');
@@ -108,6 +109,8 @@ export default {
             controlsRef: null,
             projectsRef: null,
             proSelContRef: null,
+            regControlsRef: null,
+            regSubControlsRef: null,
             regSubsRef: null,
             billTypesRef: null,
             partyInformationRef: null,
@@ -144,12 +147,6 @@ export default {
         bill_type: function (value) {
             return Validator.value(value).required().lengthBetween(1, 11, "Invalid Bill Type!");
         },
-        debit: function (value) {
-            return Validator.value(value).required();
-        },
-        credit: function (value) {
-            return Validator.value(value).required();
-        }
     },
     methods: {
         getObjId: func.getObjId,
@@ -160,30 +157,26 @@ export default {
             self.sel_control = "";
             self.controlData = {};
             if(pro_key !== ""){
-                func.dbLoadMet(function () {
-                    self.proSelContRef.child(pro_key).on('value', function (proSelContSnap) {
-                        let data = proSelContSnap.val();
-                        if(data !== null){
-                            let keys = Object.keys(data);
-                            let keys_length = keys.length;
-                            let process_item = 0;
-                            self.sel_control = "";
-                            self.controlData = {};
-                            keys.forEach(function (row) {
-                                self.controlsRef.child(row).once('value').then(function (conSnap) {
-                                    self.controlData[row] = conSnap.val();
-                                    process_item++;
-                                    if(process_item === keys_length){
-                                        self.controlData = func.sortObj(self.controlData, false);
-                                        self.dataLoad2 = false;
-                                    }
-                                });
+                self.regControlsRef.child(pro_key).on('value', function (proSelContSnap) {
+                    let data = proSelContSnap.val();
+                    if (data !== null) {
+                        let keys = Object.keys(data);
+                        self.sel_control = "";
+                        self.controlData = {};
+                        keys.forEach(function (row, ind, arr) {
+                            let item = data[row];
+                            self.controlsRef.child(item.key).once('value').then(function (conSnap) {
+                                self.controlData[item.key] = conSnap.val();
+                                if (ind === arr.length-1) {
+                                    self.controlData = func.sortObj(self.controlData, false);
+                                    self.dataLoad2 = false;
+                                }
                             });
-                        }else{
-                            self.dataLoad2 = false;
-                        }
-                    });
-                }, 500, self.dbLoad);
+                        });
+                    } else {
+                        self.dataLoad2 = false;
+                    }
+                });
             }else{
                 self.dataLoad2 = false;
             }
@@ -194,34 +187,29 @@ export default {
             self.sel_sub_control = "";
             self.subControlData = {};
             if(cont_key !== ""){
-                func.dbLoadMet(function () {
-                    self.proSelContRef.child(self.sel_project+"/"+cont_key).once('value', function (proSelSubContSnap) {
-                        let data = proSelSubContSnap.val();
-                        if(data !== null){
-                            let keys = Object.keys(data);
-                            let keys_length = keys.length;
-                            if(keys_length > 0){
-                                let process_item = 0;
-                                self.sel_sub_control = "";
-                                self.subControlData = {};
-                                keys.forEach(function (row) {
-                                    self.subControlsRef.child(row).once('value').then(function (subConSnap) {
-                                        self.subControlData[row] = subConSnap.val();
-                                        process_item++;
-                                        if(process_item === keys_length){
-                                            self.subControlData = func.sortObj(self.subControlData, false);
-                                            self.dataLoad3 = false;
-                                        }
-                                    });
-                                });
-                            }else{
-                                self.dataLoad3 = false;
-                            }
-                        }else{
-                            self.dataLoad3 = false;
-                        }
-                    });
-                }, 500, self.dbLoad);
+                self.regSubControlsRef.child(self.sel_project)
+                    .orderByChild("cont_key")
+                    .equalTo(cont_key)
+                    .on('value', function (proSelSubContSnap) {
+                    let data = proSelSubContSnap.val();
+                    if (data !== null) {
+                        let keys = Object.keys(data);
+                        self.sel_sub_control = "";
+                        self.subControlData = {};
+                        keys.forEach(function (row, ind, arr) {
+                            let item = data[row];
+                            self.subControlsRef.child(item.key).once('value').then(function (subConSnap) {
+                                self.subControlData[item.key] = subConSnap.val();
+                                if (ind === arr.length-1) {
+                                    self.subControlData = func.sortObj(self.subControlData, false);
+                                    self.dataLoad3 = false;
+                                }
+                            });
+                        });
+                    } else {
+                        self.dataLoad3 = false;
+                    }
+                });
             }else{
                 self.dataLoad3 = false;
             }
@@ -232,34 +220,29 @@ export default {
             self.sel_subsidiary = "";
             self.subsData = {};
             if(sub_cont_key !== ""){
-                func.dbLoadMet(function () {
-                    self.proSelContRef.child(self.sel_project+"/"+self.sel_control+"/"+sub_cont_key).once('value', function (proSubsSnap) {
-                        let data = proSubsSnap.val();
-                        if(data !== null){
-                            let keys = Object.keys(data);
-                            let keys_length = keys.length;
-                            if(keys_length > 0){
-                                let process_item = 0;
-                                self.sel_subsidiary = "";
-                                self.subsData = {};
-                                keys.forEach(function (row) {
-                                    self.subsRef.child(row).once('value').then(function (subsSnap) {
-                                        self.subsData[row] = subsSnap.val();
-                                        process_item++;
-                                        if(process_item === keys_length){
-                                            self.subsData = func.sortObj(self.subsData, false);
-                                            self.dataLoad4 = false;
-                                        }
-                                    });
-                                });
-                            }else{
-                                self.dataLoad4 = false;
-                            }
-                        }else{
-                            self.dataLoad4 = false;
-                        }
-                    });
-                }, 500, self.dbLoad);
+                self.regSubsRef.child(self.sel_project)
+                    .orderByChild("sub_cont_key")
+                    .equalTo(sub_cont_key)
+                    .once('value', function (proSubsSnap) {
+                    let data = proSubsSnap.val();
+                    if (data !== null) {
+                        let keys = Object.keys(data);
+                        self.sel_subsidiary = "";
+                        self.subsData = {};
+                        keys.forEach(function (row, ind, arr) {
+                            let item = data[row];
+                            self.subsRef.child(item.key).once('value').then(function (subsSnap) {
+                                self.subsData[item.key] = subsSnap.val();
+                                if (ind === arr.length-1) {
+                                    self.subsData = func.sortObj(self.subsData, false);
+                                    self.dataLoad4 = false;
+                                }
+                            });
+                        });
+                    } else {
+                        self.dataLoad4 = false;
+                    }
+                });
             }else{
                 self.dataLoad4 = false;
             }
@@ -287,16 +270,15 @@ export default {
                 self.dataLoad5 = false;
             }
         },
-        addSubsEntry: function () {
+        updateSubsEntry: function () {
             let self = this;
+            self.inProcess = true;
             self.$validate().then(function (success) {
                 if (success) {
-                    self.inProcess = true;
                     let id_gen = func.genInvoiceNo(self.controlData[self.sel_control].id, '00', 3)
                         +func.genInvoiceNo(self.subControlData[self.sel_sub_control].id, '000', 4)
                         +func.genInvoiceNo(self.subsData[self.sel_subsidiary].id, '00', 3);
-                    self.regSubsRef.child(self.sel_project+"/"+id_gen).set({
-                        'key': self.sel_subsidiary,
+                    self.regSubsRef.child(self.sel_project+"/"+id_gen).update({
                         'debit': self.debit,
                         'credit': self.credit,
                         'party_key': (self.party_id !== "")? self.party_id: false,
@@ -323,6 +305,8 @@ export default {
                         }
                         self.inProcess = false;
                     });
+                }else{
+                    self.inProcess = false;
                 }
             });
         }

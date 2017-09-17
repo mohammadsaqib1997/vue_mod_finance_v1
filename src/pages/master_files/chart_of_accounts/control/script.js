@@ -21,17 +21,16 @@ export default {
             self.loadDataCont(self.sel_project, val);
         });
         self.$watch('debit', function (val, oldVal) {
-            self.debit = self.$root.isNumber(val, 100000);
+            self.debit = func.isNumber(val, 8);
         });
         self.$watch('credit', function (val, oldVal) {
-            self.credit = self.$root.isNumber(val, 100000);
+            self.credit = func.isNumber(val, 8);
         });
 
         const db = firebase.database();
         self.projectsRef = db.ref('/projects');
         self.controlsRef = db.ref('/controls');
         self.regControlsRef = db.ref('/reg_controls');
-        self.proSelContRef = db.ref('/pro_sel_control');
 
         self.projectsRef.on('value', function (proSnap) {
             let renderData = proSnap.val();
@@ -61,7 +60,6 @@ export default {
             regControlsRef: null,
             controlsRef: null,
             projectsRef: null,
-            proSelContRef: null,
 
             // form fields
             sel_project: "",
@@ -95,30 +93,26 @@ export default {
             self.sel_control = "";
             self.controlData = {};
             if(pro_key !== ""){
-                func.dbLoadMet(function () {
-                    self.proSelContRef.child(pro_key).on('value', function (proSelContSnap) {
-                        let data = proSelContSnap.val();
-                        if(data !== null){
-                            let keys = Object.keys(data);
-                            let keys_length = keys.length;
-                            let process_item = 0;
-                            self.sel_control = "";
-                            self.controlData = {};
-                            keys.forEach(function (row) {
-                                self.controlsRef.child(row).once('value').then(function (conSnap) {
-                                    self.controlData[row] = conSnap.val();
-                                    process_item++;
-                                    if(process_item === keys_length){
-                                        self.controlData = func.sortObj(self.controlData, false);
-                                        self.dataLoad2 = false;
-                                    }
-                                });
+                self.regControlsRef.child(pro_key).on('value', function (regContSnap) {
+                    let regContData = regContSnap.val();
+                    if(regContData !== null){
+                        let keys = Object.keys(regContData);
+                        self.sel_control = "";
+                        self.controlData = {};
+                        keys.forEach(function (key, ind, arr) {
+                            let item = regContData[key];
+                            self.controlsRef.child(item.key).once('value').then(function (conSnap) {
+                                self.controlData[item.key] = conSnap.val();
+                                if(ind === arr.length-1){
+                                    self.controlData = func.sortObj(self.controlData, false);
+                                    self.dataLoad2 = false;
+                                }
                             });
-                        }else{
-                            self.dataLoad2 = false;
-                        }
-                    });
-                }, 500, self.dbLoad);
+                        });
+                    }else{
+                        self.dataLoad2 = false;
+                    }
+                });
             }else{
                 self.dataLoad2 = false;
             }
@@ -144,14 +138,13 @@ export default {
                 self.credit = 0;
             }
         },
-        addContEntry: function () {
+        updateContEntry: function () {
             let self = this;
             self.$validate().then(function (success) {
                 if (success) {
                     self.inProcess = true;
                     let id_gen = func.genInvoiceNo(self.controlData[self.sel_control].id, '00', 3);
-                    self.regControlsRef.child(self.sel_project+"/"+id_gen).set({
-                        'key': self.sel_control,
+                    self.regControlsRef.child(self.sel_project+"/"+id_gen).update({
                         'debit': self.debit,
                         'credit': self.credit,
                         'createdAt': firebase.database.ServerValue.TIMESTAMP
@@ -160,7 +153,7 @@ export default {
                             self.errMain = err.message;
                         }else{
                             self.errMain = "";
-                            self.sucMain = "Successfully inserted control amount!";
+                            self.sucMain = "Successfully update control amount!";
                             self.sel_project = "";
                             self.sel_control = "";
                             self.debit = 0;

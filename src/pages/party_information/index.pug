@@ -28,9 +28,9 @@
                                                     option(value='') Select Party Information
                                                     option(v-for='(row, key, ind) in partyData', v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
                                             .col-md-4.pull-right
-                                                router-link.btn.btn-primary.backtotop.btn-o.pull-right(to='/add_party')
+                                                router-link.btn.btn-primary.backtotop.btn-o.pull-right(to='/create_subsidiary')
                                                     i.ti-angle-left
-                                                    |  Back to subsibary
+                                                    |  Back to subsidiary
                             form(v-on:submit.prevent='')
                                 .row(v-if='errMain !== "" || sucMain !== ""')
                                     .col-md-12

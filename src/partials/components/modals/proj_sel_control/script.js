@@ -8,10 +8,17 @@ export default {
     created: function () {
         let self = this;
 
+        self.$watch('debit', function (val, oldVal) {
+            self.debit = func.isNumber(val, 8);
+        });
+        self.$watch('credit', function (val, oldVal) {
+            self.credit = func.isNumber(val, 8);
+        });
+
         const db = firebase.database();
         self.controlsRef = db.ref('/controls');
         self.projectsRef = db.ref('/projects');
-        self.proSelControlRef = db.ref('/pro_sel_control');
+        self.regControlsRef = db.ref('/reg_controls');
 
         self.projectsRef.on('value', function (proSnap) {
             let data = proSnap.val();
@@ -45,7 +52,7 @@ export default {
             // db reference
             projectsRef: null,
             controlsRef: null,
-            proSelControlRef: null,
+            regControlsRef: null,
 
             // db reference
             projectData: {},
@@ -54,6 +61,8 @@ export default {
             // form fields
             sel_project: "",
             sel_control: "",
+            debit: 0,
+            credit: 0,
             errMain: "",
             sucMain: "",
         }
@@ -67,8 +76,10 @@ export default {
             return Validator.value(value).required().lengthBetween(20, 36).custom(function () {
                 return Promise.delay(1000).then(function () {
                     if (self.sel_control !== "" && self.sel_project !== "") {
-                        return self.proSelControlRef
-                            .child(self.sel_project + "/" + self.sel_control)
+                        return self.regControlsRef
+                            .child(self.sel_project)
+                            .orderByChild("key")
+                            .equalTo(self.sel_control)
                             .once('value').then(function (snap) {
                                 if(snap.val() !== null){
                                     return "Already Selected!";
@@ -82,12 +93,17 @@ export default {
     methods: {
         addControl: function () {
             let self = this;
+            self.inProcess = true;
             self.$validate().then(function (success) {
                 if (success) {
-                    self.inProcess = true;
-                    self.proSelControlRef
-                        .child(self.sel_project + "/" + self.sel_control)
-                        .set(true, function (err) {
+                    self.regControlsRef
+                        .child(self.sel_project + "/" + func.genInvoiceNo(self.controlData[self.sel_control].id, "00", 3))
+                        .set({
+                            'key': self.sel_control,
+                            'debit': self.debit,
+                            'credit': self.credit,
+                            'createdAt': firebase.database.ServerValue.TIMESTAMP
+                        }, function (err) {
                             if (err) {
                                 self.errMain = err.message;
                             } else {
@@ -95,6 +111,8 @@ export default {
                                 self.sucMain = "Successfully added control in project!";
                                 self.sel_project = "";
                                 self.sel_control = "";
+                                self.debit = 0;
+                                self.credit = 0;
                                 self.validation.reset();
                                 setTimeout(function () {
                                     self.sucMain = "";
@@ -102,6 +120,8 @@ export default {
                             }
                             self.inProcess = false;
                         });
+                }else{
+                    self.inProcess = false;
                 }
             });
         }

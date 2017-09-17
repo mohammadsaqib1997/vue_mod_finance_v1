@@ -12,7 +12,7 @@
                 li.active
                     span Control
     .container-fluid.container-fullw.bg-offwhite
-        form#form(v-on:submit.prevent='addContEntry')
+        form#form(v-on:submit.prevent='updateContEntry')
             .row
                 .col-md-12
                     .panel.panel-white.no-radius
@@ -49,10 +49,10 @@
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                                             .col-md-2.icon-container
                                                 ul.ul-action
-                                                    li
+                                                    li(v-if="sel_project === ''")
                                                         a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_project')
                                                             i.ti-plus
-                                                    li
+                                                    li(v-if="sel_project !== ''")
                                                         a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_project')
                                                             span(style='color:#545454;margin-right:5px;') Edit
                                                             i.ti-pencil
@@ -63,13 +63,13 @@
                                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                             template(v-if='!dataLoad2')
                                                 .col-md-3
-                                                    input.form-control(type='text', placeholder='ID of Control number', disabled='disabled', v-bind:value='getObjId(sel_control, controlData)')
+                                                    input.form-control(type='text', placeholder='ID of Control number', disabled='disabled', v-bind:value='(sel_control !== "") ? ("00"+getObjId(sel_control, controlData)).slice(-3):""')
                                                 .col-md-7
                                                     select.form-control(v-model='sel_control')
                                                         option(value='') Select Control
                                                         option(v-for='(row, key, ind) in controlData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
-                                            .col-md-2.icon-container
+                                            .col-md-2.icon-container(v-if="sel_control === ''")
                                                 ul.ul-action
                                                     li
                                                         a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#proj_sel_control')
@@ -79,7 +79,7 @@
                                     .col-md-3
                                         .text-center
                                             i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                            template(v-if='!dataLoad3')
+                            template(v-if='!dataLoad3 && sel_control !== ""')
                                 .row
                                     .col-md-3
                                         .form-group
@@ -96,12 +96,12 @@
                                                 span.symbol.required(aria-required='true')
                                             input.form-control(type='text', v-model='credit')
                                             p.text-danger.text-right(v-if='validation.hasError("credit")') {{ validation.firstError('credit') }}
-                            .row
-                                .col-md-4.pull-left
-                                    button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='submit', v-if='!inProcess && !dataLoad3') Create
-                                    button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='button', disabled='disabled', v-if='inProcess || dataLoad3')
-                                        i.fa.fa-refresh.fa-spin.fa-fw
-    add-project-modal
+                                .row
+                                    .col-md-4.pull-left
+                                        button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='submit', v-if='!inProcess && !dataLoad3') Update
+                                        button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='button', disabled='disabled', v-if='inProcess || dataLoad3')
+                                            i.fa.fa-refresh.fa-spin.fa-fw
+    add-project-modal(v-bind:sel_project="sel_project")
     pro-sel-control-modal
     add-control-modal
     add-sub-control-modal

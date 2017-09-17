@@ -12,11 +12,18 @@ export default {
             self.loadSubCont(val);
         });
 
+        self.$watch('debit', function (val, oldVal) {
+            self.debit = func.isNumber(val, 8);
+        });
+        self.$watch('credit', function (val, oldVal) {
+            self.credit = func.isNumber(val, 8);
+        });
+
         const db = firebase.database();
         self.subControlsRef = db.ref('/sub_controls');
         self.controlsRef = db.ref('/controls');
         self.projectsRef = db.ref('/projects');
-        self.proSelControlRef = db.ref('/pro_sel_control');
+        self.regSubControlsRef = db.ref('/reg_sub_controls');
 
         self.projectsRef.on('value', function (proSnap) {
             let data = proSnap.val();
@@ -54,7 +61,7 @@ export default {
             projectsRef: null,
             controlsRef: null,
             subControlsRef: null,
-            proSelControlRef: null,
+            regSubControlsRef: null,
 
             // db reference
             projectData: {},
@@ -65,6 +72,8 @@ export default {
             sel_project: "",
             sel_control: "",
             sel_sub_control: "",
+            debit: 0,
+            credit: 0,
             errMain: "",
             sucMain: "",
         }
@@ -81,8 +90,10 @@ export default {
             return Validator.value(value).required().lengthBetween(20, 36).custom(function () {
                 return Promise.delay(1000).then(function () {
                     if (self.sel_sub_control !== "" && self.sel_control !== "" && self.sel_project !== "") {
-                        return self.proSelControlRef
-                            .child(self.sel_project + "/" + self.sel_control + "/" + self.sel_sub_control)
+                        return self.regSubControlsRef
+                            .child(self.sel_project/* + "/" + self.sel_control + "/" + self.sel_sub_control*/)
+                            .orderByChild("key")
+                            .equalTo(self.sel_sub_control)
                             .once('value').then(function (snap) {
                                 if(snap.val() !== null){
                                     return "Already Selected!";
@@ -96,31 +107,34 @@ export default {
     methods: {
         loadSubCont: function (cont_key) {
             let self = this;
-            self.dataLoad3 = true;
             self.sel_sub_control = "";
             self.subControlData = {};
             if(cont_key !== ""){
-                func.dbLoadMet(function () {
-                    self.subControlsRef.orderByChild('cont_key').equalTo(cont_key).on('value', function (subContSnap) {
-                        let data = subContSnap.val();
-                        if(data !== null){
-                            self.subControlData = data;
-                        }
-                        self.dataLoad3 = false;
-                    });
-                }, 500, self.dbLoad);
-            }else{
-                self.dataLoad3 = false;
+                self.dataLoad3 = true;
+                self.subControlsRef.orderByChild('cont_key').equalTo(cont_key).on('value', function (subContSnap) {
+                    let data = subContSnap.val();
+                    if (data !== null) {
+                        self.subControlData = data;
+                    }
+                    self.dataLoad3 = false;
+                });
             }
         },
-        selContPro: function () {
+        addRegSubCont: function () {
             let self = this;
+            self.inProcess = true;
             self.$validate().then(function (success) {
                 if (success) {
-                    self.inProcess = true;
-                    self.proSelControlRef
-                        .child(self.sel_project + "/" + self.sel_control + "/" + self.sel_sub_control)
-                        .set(true, function (err) {
+                    let id_gen = func.genInvoiceNo(self.controlData[self.sel_control].id, '00', 3)+func.genInvoiceNo(self.subControlData[self.sel_sub_control].id, '000', 4);
+                    self.regSubControlsRef
+                        .child(self.sel_project+"/"+id_gen)
+                        .set({
+                            'key': self.sel_sub_control,
+                            'cont_key': self.sel_control,
+                            'debit': self.debit,
+                            'credit': self.credit,
+                            'createdAt': firebase.database.ServerValue.TIMESTAMP
+                        }, function (err) {
                             if (err) {
                                 self.errMain = err.message;
                             } else {
@@ -129,6 +143,8 @@ export default {
                                 self.sel_project = "";
                                 self.sel_control = "";
                                 self.sel_sub_control = "";
+                                self.debit = 0;
+                                self.credit = 0;
                                 self.validation.reset();
                                 setTimeout(function () {
                                     self.sucMain = "";
@@ -136,6 +152,8 @@ export default {
                             }
                             self.inProcess = false;
                         });
+                }else{
+                    self.inProcess = false;
                 }
             });
         }

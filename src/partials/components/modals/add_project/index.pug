@@ -6,7 +6,9 @@
                     span(aria-hidden='true') ×
                 h4.modal-title Add Project
             .modal-body
-                form(v-on:submit.prevent='addProject')
+                .text-center(v-if='dataLoad')
+                    i.fa.fa-refresh.fa-spin.fa-1x.fa-fw
+                form(v-if="!dataLoad" v-on:submit.prevent='addProject')
                     .form-group
                         p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
                         p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
@@ -36,7 +38,7 @@
                                 label Project Contact Number
                                 input.form-control(type='text', placeholder='Contact number - 300-2139877', v-model='contactNo')
                                 p.text-danger.text-right(v-if='validation.hasError("contactNo")') {{ validation.firstError('contactNo') }}
-                    button.btn.btn-primary(type='submit', v-if='!inProcess') Save
+                    button.btn.btn-primary(type='submit', v-if='!inProcess') {{ (sel_project !== "") ? "Update":"Save" }}
                     button.btn.btn-primary(type='button', disabled='disabled', v-if='inProcess')
                         i.fa.fa-refresh.fa-spin.fa-fw
                     button.btn.btn-primary.btn-o.pull-right(type='button', data-dismiss='modal') Cancel

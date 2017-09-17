@@ -270,6 +270,141 @@ router.post('/detailed_ledger/render.pdf', function (req, res, next) {
     });
 });
 
+router.post('/balance_sheet/controls/view', function (req, res, next) {
+    admin.auth().verifyIdToken(req.body.auth).then(function (decodedToken) {
+        let data = req.body;
+        let bwDates = [new Date(data.start_date).getTime(), new Date(data.end_date).getTime()];
+        bwDates.sort();
+        refPro.child(data.sel_project).once('value').then(function (proSnap) {
+            let proData = proSnap.val();
+            let todayDate = moment().format('dddd, DD MMMM YYYY');
+
+            refRegCont.child(data.sel_project).once('value', function (regContSnap) {
+                let regContData = regContSnap.val();
+                if(regContData !== null){
+                    let keys = Object.keys(regContData);
+                    let grabData = {};
+                    keys.forEach(function (key, loopInd1, array1) {
+                        let item = regContData[key];
+                        refCont.child(item.key).once('value', function (contSnap) {
+                            let contData = contSnap.val();
+                            let totalCr = item.credit;
+                            let totalDr = item.debit;
+                            item['contData'] = contData;
+
+                            refSubCont.orderByChild("cont_key").equalTo(item.key).once('value', function (subContSnap) {
+                                let subContData = subContSnap.val();
+                                if(subContData !== null){
+                                    item['subContData'] = subContData;
+                                    let subContKeys = Object.keys(subContData);
+
+                                    subContKeys.forEach(function (subContKey, loopInd2, array2) {
+                                        refRegSubCont.child(data.sel_project).orderByChild("key").equalTo(subContKey).once("value", function (regSubContSnap) {
+                                            let regSubContData = regSubContSnap.val();
+                                            if(regSubContData !== null){
+                                                let keys = Object.keys(regSubContData);
+                                                item['subContData'][subContKey]['code'] = keys[0];
+                                                item['subContData'][subContKey]['credit'] = regSubContData[keys[0]].credit;
+                                                item['subContData'][subContKey]['debit'] = regSubContData[keys[0]].debit;
+                                            }
+
+                                            refSubsidiary.orderByChild("sub_cont_key").equalTo(subContKey).once('value', function (subsSnap) {
+                                                let subsData = subsSnap.val();
+
+                                                if(subsData !== null){
+                                                    item['subContData'][subContKey]['subsData'] = {};
+                                                    item['subContData'][subContKey]['subsData'] = subsData;
+                                                    let subsKeys = Object.keys(subsData);
+
+                                                    subsKeys.forEach(function (subsKey, loopInd3, array3) {
+                                                        refRegSubsidiary.child(data.sel_project).orderByChild("key").equalTo(subsKey).once('value', function (regSubsSnap) {
+                                                            let regSubsData = regSubsSnap.val();
+
+                                                            if(regSubsData !== null){
+                                                                let keys = Object.keys(regSubsData);
+                                                                item['subContData'][subContKey]['subsData'][subsKey]['code'] = keys[0];
+                                                                item['subContData'][subContKey]['subsData'][subsKey]['credit'] = regSubsData[keys[0]].credit;
+                                                                item['subContData'][subContKey]['subsData'][subsKey]['debit'] = regSubsData[keys[0]].debit;
+
+                                                                refVouchersEntries.orderByChild("code").equalTo(keys[0]).once('value', function (voucherEntSnap) {
+                                                                    let voucherEntData = voucherEntSnap.val();
+                                                                    if (voucherEntData !== null) {
+                                                                        let keys = Object.keys(voucherEntData);
+                                                                        item['subContData'][subContKey]['subsData'][subsKey]['entries'] = [];
+                                                                        keys.forEach(function (voucherEntKey) {
+                                                                            let voucherEntItem = voucherEntData[voucherEntKey];
+                                                                            item['subContData'][subContKey]['subsData'][subsKey]['entries'].push(voucherEntItem);
+                                                                        });
+                                                                    }
+                                                                    if(loopInd3 === array3.length-1){
+                                                                        if(loopInd2 === array2.length-1){
+                                                                            grabData[key] = item;
+                                                                            if(loopInd1 === array1.length-1){
+                                                                                res.render('pdf_templates/bs_controls_listing', {
+                                                                                    proName: proData.name,
+                                                                                    date: todayDate,
+                                                                                    data: grabData
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }else{
+                                                                if(loopInd3 === array3.length-1){
+                                                                    if(loopInd2 === array2.length-1){
+                                                                        grabData[key] = item;
+                                                                        if(loopInd1 === array1.length-1){
+                                                                            res.render('pdf_templates/bs_controls_listing', {
+                                                                                proName: proData.name,
+                                                                                date: todayDate,
+                                                                                data: grabData
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+                                                }else{
+                                                    if(loopInd2 === array2.length-1){
+                                                        grabData[key] = item;
+                                                        if(loopInd1 === array1.length-1){
+                                                            res.render('pdf_templates/bs_controls_listing', {
+                                                                proName: proData.name,
+                                                                date: todayDate,
+                                                                data: grabData
+                                                            });
+                                                        }
+                                                    }
+                                                }
+
+                                            });
+
+                                        });
+                                    });
+                                }else{
+                                    grabData[key] = item;
+                                    if(loopInd1 === array1.length-1){
+                                        res.render('pdf_templates/bs_controls_listing', {
+                                            proName: proData.name,
+                                            date: todayDate,
+                                            data: grabData
+                                        });
+                                    }
+                                }
+                            });
+                        });
+                    });
+                }else {
+                    res.json({status: 'failed', message: "No Data Found!"});
+                }
+            });
+        });
+    }).catch(function (err) {
+        res.json({err: err, status: 'failed'});
+    });
+});
+
 module.exports = router;
 
 function bwDatesEntries(bwDates, objEnt){

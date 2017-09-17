@@ -27,6 +27,7 @@ import profile from '../pages/profile/profile.vue'
 import partyInformation from '../pages/party_information/party_information.vue'
 
 import detailedLedger from '../pages/mis_reports/detailed_ledger/detailed_ledger.vue'
+import balListControl from '../pages/mis_reports/balance_sheet/list_control/list_control.vue'
 
 const routes = [
     {
@@ -75,6 +76,10 @@ const routes = [
                     {
                         path: '/detailed_ledger',
                         component: detailedLedger
+                    },
+                    {
+                        path: '/balance_sheet/list_control',
+                        component: balListControl
                     },
                     {
                         path: '/journal_voucher',
