@@ -12787,6 +12787,49 @@ body .create-user .panel select[multiple="multiple"]{
 
 .page-loader.in {
   opacity: 1;
-  background-color: rgba(0, 0, 0, 0.40);
-  display:block !important;
+  background-color: rgba(215, 215, 215, 0.4);
+  display: block !important;
+}
+
+.btn-dark-black:hover {
+  background-color: #8e8e93 !important;
+  border-color: #aeacb4 !important;
+  color: #ffffff;
+}
+.profile_page .user-image {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width:100%;
+}
+.profile_page .fileinput-new.thumbnail {
+  width: 100%;
+}
+
+.profile_page .user-image img {
+  max-width:100%;
+}
+.profile_page .fileinput-new.thumbnail {
+  width: 100%;
+  min-height: 300px;
+  max-width:100%;
+}
+
+.profile-table {
+  padding: 10px 5px;
+}
+
+
+.profile_page .user-left{
+  border: 0px;
+  text-align: center;
+}
+
+.profile-table td{
+  line-height: 30px;
+  font-size: 16px;
+}
+.profile-table td .form-control{
+  line-height: 30px;
+  font-size: 16px;
 }

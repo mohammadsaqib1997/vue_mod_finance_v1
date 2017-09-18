@@ -9,7 +9,7 @@
                     span User Control
                 li.active
                     span Profile
-    .container-fluid.container-fullw.bg-offwhite
+    .container-fluid.container-fullw.bg-offwhite.profile_page
         .panel.panel-white.no-radius
             .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
                 h4.panel-title.pull-left.padding-15 Journal Voucher
@@ -22,10 +22,11 @@
                     .col-md-12(v-if='errMain !== "" || sucMain !== ""')
                         p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
                         p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
-                    .col-sm-5.col-md-4
+                .row
+                    .col-md-12
+                        h3.p_subheading {{ first_name+" "+last_name }}
+                    .col-sm-5.col-md-3
                         .user-left
-                            .center
-                                h4 {{ first_name+" "+last_name }}
                                 div.text-center(v-if='loadImg')
                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                 .fileinput.fileinput-new(v-else data-provides='fileinput')
@@ -42,23 +43,19 @@
                                     button.btn.btn-azure.btn-file.mar-lf-10(v-on:click.prevent="reset_file_input") Cancel
                                 button.btn.btn-azure.btn-file(v-if="fileLoader" disabled="disabled")
                                     i.fa.fa-refresh.fa-spin.fa-fw
-                                hr
-                    .col-sm-7.col-md-8
-                        table.table.table-condensed
-                            thead
-                                tr
-                                    th(colspan='3') Contact Information
+                    .col-sm-7.col-md-9
+                        table.table.table-condensed.profile-table
                             tbody
                                 tr
-                                    td First Name:
-                                    td(v-if='!edit["first_name"]') {{ first_name }}
-                                    td(v-else)
+                                    td.col-md-3(style="font-size: 16px;") First Name:
+                                    td.col-md-7(v-if='!edit["first_name"]' style="font-size: 16px;font-weight:600;") {{ first_name }}
+                                    td.col-md-7(v-else style="font-size: 16px;font-weight:600;")
                                         input.form-control(v-model="edit_val.first_name")
                                         p.text-danger.text-right(v-if='validation.hasError("edit_val.first_name")') {{ validation.firstError('edit_val.first_name') }}
-                                    td(v-if='!edit["first_name"]')
+                                    td.col-md-1.text-right(v-if='!edit["first_name"]' style="font-size: 16px;font-weight:600;")
                                         a.show-tab(v-on:click.prevent="simEdit('first_name')")
                                             i.fa.fa-pencil.edit-user-info
-                                    td(v-else)
+                                    td.col-md-1.text-right(v-else)
                                         div(v-if="inProcess")
                                             i.fa.fa-refresh.fa-spin.fa-fw
                                         template(v-else)
@@ -67,15 +64,15 @@
                                             a.show-tab(v-on:click.prevent="cancel('first_name')")
                                                 i.fa.fa-times
                                 tr
-                                    td Last Name:
-                                    td(v-if='!edit["last_name"]') {{ last_name }}
-                                    td(v-else)
+                                    td.col-md-3(style="font-size: 16px;") Last Name:
+                                    td.col-md-7(v-if='!edit["last_name"]' style="font-size: 16px;font-weight:600;") {{ last_name }}
+                                    td.col-md-7(v-else style="font-size: 16px;font-weight:600;")
                                         input.form-control(v-model="edit_val.last_name")
                                         p.text-danger.text-right(v-if='validation.hasError("edit_val.last_name")') {{ validation.firstError('edit_val.last_name') }}
-                                    td(v-if='!edit["last_name"]')
+                                    td.col-md-1.text-right(v-if='!edit["last_name"]')
                                         a.show-tab(v-on:click.prevent="simEdit('last_name')")
                                             i.fa.fa-pencil.edit-user-info
-                                    td(v-else)
+                                    td.col-md-1.text-right(v-else)
                                         div(v-if="inProcess")
                                             i.fa.fa-refresh.fa-spin.fa-fw
                                         template(v-else)
@@ -84,19 +81,19 @@
                                             a.show-tab(v-on:click.prevent="cancel('last_name')")
                                                 i.fa.fa-times
                                 tr
-                                    td Email:
-                                    td {{ email }}
-                                    td
+                                    td.col-md-3(style="font-size: 16px;") Email:
+                                    td.col-md-7(style="font-size: 16px;font-weight:600") {{ email }}
+                                    td.col-md-1.text-right
                                 tr
-                                    td Phone/Mobile:
-                                    td(v-if='!edit["mob_num"]') {{ mob_num }}
-                                    td(v-else)
+                                    td.col-md-3(style="font-size: 16px;") Phone/Mobile:
+                                    td.col-md-7(v-if='!edit["mob_num"]' style="font-size: 16px;font-weight:600") {{ mob_num }}
+                                    td.col-md-7(v-else style="font-size: 16px;font-weight:600")
                                         input.form-control(v-model="edit_val.mob_num")
                                         p.text-danger.text-right(v-if='validation.hasError("edit_val.mob_num")') {{ validation.firstError('edit_val.mob_num') }}
-                                    td(v-if='!edit["mob_num"]')
+                                    td.col-md-1.text-right(v-if='!edit["mob_num"]')
                                         a.show-tab(v-on:click.prevent="simEdit('mob_num')")
                                             i.fa.fa-pencil.edit-user-info
-                                    td(v-else)
+                                    td.col-md-1.text-right(v-else)
                                         div(v-if="inProcess")
                                             i.fa.fa-refresh.fa-spin.fa-fw
                                         template(v-else)
@@ -105,9 +102,9 @@
                                             a.show-tab(v-on:click.prevent="cancel('mob_num')")
                                                 i.fa.fa-times
                                 tr
-                                    td Gender
-                                    td(v-if='!edit["gender"]') {{ gender }}
-                                    td(v-else)
+                                    td.col-md-3(style="font-size: 16px;") Gender
+                                    td.col-md-7(v-if='!edit["gender"]' style="font-size: 16px;font-weight:600") {{ gender }}
+                                    td.col-md-7(v-else style="font-size: 16px;font-weight:600")
                                         .clip-radio.radio-primary
                                             input#us-female(type='radio', value='Female', v-model='edit_val.gender')
                                             label(for='us-female')
@@ -116,10 +113,10 @@
                                             label(for='us-male')
                                                 | Male
                                             p.text-danger.text-right(v-if='validation.hasError("edit_val.gender")') {{ validation.firstError('edit_val.gender') }}
-                                    td(v-if='!edit["gender"]')
+                                    td.col-md-1.text-right(v-if='!edit["gender"]' style="font-size: 16px;font-weight:600")
                                         a.show-tab(v-on:click.prevent="simEdit('gender')")
                                             i.fa.fa-pencil.edit-user-info
-                                    td(v-else)
+                                    td.col-md-1.text-right(v-else style="font-size: 16px;font-weight:600")
                                         div(v-if="inProcess")
                                             i.fa.fa-refresh.fa-spin.fa-fw
                                         template(v-else)
@@ -128,21 +125,21 @@
                                             a.show-tab(v-on:click.prevent="cancel('gender')")
                                                 i.fa.fa-times
                                 tr
-                                    td Project
-                                    td(v-if='!dataLoad1') {{ getPro() }}
-                                    td(v-else)
+                                    td.col-md-3(style="font-size: 16px;") Project
+                                    td.col-md-7(v-if='!dataLoad1' style="font-size: 16px;font-weight:600") {{ getPro() }}
+                                    td.col-md-7(v-else style="font-size: 16px;font-weight:600;")
                                         div
                                             i.fa.fa-refresh.fa-spin.fa-fw
-                                    td
+                                    td.col-md-1.text-right
                                 tr
-                                    td City
-                                    td(v-if='!edit["city"]') {{ city }}
-                                    td(v-else)
+                                    td.col-md-3(style="font-size: 16px;") City
+                                    td.col-md-7(v-if='!edit["city"]' style="font-size: 16px;font-weight:600") {{ city }}
+                                    td.col-md-7(v-else style="font-size: 16px;font-weight:600")
                                         com_cities(ref='sel_city' v-bind:label_con="false")
-                                    td(v-if='!edit["city"]')
+                                    td.col-md-1.text-right(v-if='!edit["city"]')
                                         a.show-tab(v-on:click.prevent="simEdit('city')")
                                             i.fa.fa-pencil.edit-user-info
-                                    td(v-else)
+                                    td.col-md-1.text-right(v-else)
                                         div(v-if="inProcess")
                                             i.fa.fa-refresh.fa-spin.fa-fw
                                         template(v-else)
@@ -151,15 +148,15 @@
                                             a.show-tab(v-on:click.prevent="cancel('city')")
                                                 i.fa.fa-times
                                 tr
-                                    td Zipcode
-                                    td(v-if='!edit["zipcode"]') {{ zipcode }}
-                                    td(v-else)
+                                    td.col-md-3(style="font-size: 16px;") Zipcode
+                                    td.col-md-7(v-if='!edit["zipcode"]' style="font-size: 16px;font-weight:600") {{ zipcode }}
+                                    td.col-md-7(v-else style="font-size: 16px;font-weight:600")
                                         input.form-control(v-model="edit_val.zipcode")
                                         p.text-danger.text-right(v-if='validation.hasError("edit_val.zipcode")') {{ validation.firstError('edit_val.zipcode') }}
-                                    td(v-if='!edit["zipcode"]')
+                                    td.col-md-1.text-right(v-if='!edit["zipcode"]')
                                         a.show-tab(v-on:click.prevent="simEdit('zipcode')")
                                             i.fa.fa-pencil.edit-user-info
-                                    td(v-else)
+                                    td.col-md-1.text-right(v-else)
                                         div(v-if="inProcess")
                                             i.fa.fa-refresh.fa-spin.fa-fw
                                         template(v-else)
@@ -168,19 +165,19 @@
                                             a.show-tab(v-on:click.prevent="cancel('zipcode')")
                                                 i.fa.fa-times
                                 tr
-                                    td Change Password
-                                    td(v-if='!edit["password"]') ********
-                                    td(v-else)
+                                    td.col-md-3(style="font-size: 16px;") Change Password
+                                    td.col-md-7(v-if='!edit["password"]' style="font-size: 16px;font-weight:600") ********
+                                    td.col-md-7(v-else style="font-size: 16px;font-weight:600")
                                         .form-group
                                             input.form-control(type="password" v-model="edit_val.password" placeholder="Enter New Password")
                                             p.text-danger.text-right(v-if='validation.hasError("edit_val.password")') {{ validation.firstError('edit_val.password') }}
                                         .form-group
                                             input.form-control(type="password" v-model="edit_val.re_password" placeholder="Re-Type Password")
                                             p.text-danger.text-right(v-if='validation.hasError("edit_val.re_password")') {{ validation.firstError('edit_val.re_password') }}
-                                    td(v-if='!edit["password"]')
+                                    td.col-md-1.text-right(v-if='!edit["password"]')
                                         a.show-tab(v-on:click.prevent="simEdit('password')")
                                             i.fa.fa-pencil.edit-user-info
-                                    td(v-else)
+                                    td.col-md-1.text-right(v-else)
                                         div(v-if="inProcess")
                                             i.fa.fa-refresh.fa-spin.fa-fw
                                         template(v-else)

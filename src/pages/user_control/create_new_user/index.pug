@@ -103,7 +103,22 @@
                                     .col-md-9
                                         input.form-control.input-mask-phone(type='text', placeholder='Phone/Mobile' v-model='mob_num')
                                     p.text-danger.text-right(v-if='validation.hasError("mob_num")') {{ validation.firstError('mob_num') }}
-                        .row
+                                .form-group
+                                    .col-md-3
+                                        label
+                                            | Image Upload
+                                    .col-md-9
+                                        .fileinput.fileinput-new(data-provides='fileinput')
+                                            .fileinput-new.thumbnail
+                                                img(v-bind:src='profile_img_src', alt='Profile Image')
+                                            button.btn.btn-primary(v-if="fileLoader" type='button' disabled='disabled')
+                                                i.fa.fa-refresh.fa-spin.fa-fw
+                                            .user-edit-image-buttons(v-else)
+                                                span.btn.btn.btn-o.btn-red.btn-file
+                                                    span.fileinput-new
+                                                        i.fa.fa-picture
+                                                        |  Select image
+                                                    input.btn.btn-o(type='file' id="profile_img")
                             .col-md-6
                                 .form-group
                                     .col-md-3
@@ -124,22 +139,6 @@
                                                 select.form-control(v-model='sel_project' multiple)
                                                     option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
                                                 p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
-                            .col-md-6
-                                .form-group
-                                    label
-                                        | Image Upload
-                                    .fileinput.fileinput-new(data-provides='fileinput')
-                                        .fileinput-new.thumbnail
-                                            img(v-bind:src='profile_img_src', alt='Profile Image')
-                                        button.btn.btn-primary(v-if="fileLoader" type='button' disabled='disabled')
-                                            i.fa.fa-refresh.fa-spin.fa-fw
-                                        .user-edit-image-buttons(v-else)
-                                            span.btn.btn.btn-o.btn-red.btn-file
-                                                span.fileinput-new
-                                                    i.fa.fa-picture
-                                                    |  Select image
-                                                input.btn.btn-o(type='file' id="profile_img")
-
                     .row
                         .col-md-4.pull-left
                             button.btn.btn-primary.pull-left(v-if="inProcess" type='button' disabled='disabled')
