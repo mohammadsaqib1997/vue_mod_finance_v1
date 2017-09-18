@@ -231,44 +231,50 @@ export default {
             });
         },
         succMsg: function (self) {
+            self.emailSend(self, function () {
+                self.errMain = "";
+
+                self.first_name = "";
+                self.last_name = "";
+                self.email = "";
+                self.mob_num = "";
+                self.password = "";
+                self.retype_password = "";
+                self.gender = "Male";
+                self.sel_project = [];
+                self.zipcode = "";
+                self.pro_sel_type = "Select";
+                self.$refs.sel_city.query = "";
+
+                self.validation.reset();
+                self.$refs.sel_city.validation.reset();
+                setTimeout(function () {
+                    self.sucMain = "";
+                }, 1500);
+
+            });
+            //self.inProcess = false;
+            //self.sucMain = "Successfully Inserted User!";
+        },
+        emailSend: function (self, callback) {
             self.$http.post('/api/send_create_user_email', {
-                email: self.frg_email,
+                email: self.email,
+                password: self.password,
+                username: self.first_name + " " + self.last_name,
             }).then(function (res) {
-                console.log(res.body);
-                /*let body = res.body;
+                let body = res.body;
                 if (body.status === "ok") {
-                    self.resetForms(true);
-                    self.frgMsg = "Successfully Email Send!";
+                    self.sucMain = "Successfully Inserted User!";
                 } else {
-                    self.frgErr = body.message;
+                    self.sucMain = body.message;
                 }
-                self.frgProcess = false;*/
+                self.inProcess = false;
+                callback();
             }, function (err) {
                 console.log(err);
-                //self.frgProcess = false;
+                self.inProcess = false;
+                callback();
             });
-
-            self.inProcess = false;
-            self.errMain = "";
-            self.sucMain = "Successfully Inserted User!";
-
-            self.first_name = "";
-            self.last_name = "";
-            self.email = "";
-            self.mob_num = "";
-            self.password = "";
-            self.retype_password = "";
-            self.gender = "Male";
-            self.sel_project = [];
-            self.zipcode = "";
-            self.pro_sel_type = "Select";
-            self.$refs.sel_city.query = "";
-
-            self.validation.reset();
-            self.$refs.sel_city.validation.reset();
-            setTimeout(function () {
-                self.sucMain = "";
-            }, 1500);
         }
     },
     components: {
