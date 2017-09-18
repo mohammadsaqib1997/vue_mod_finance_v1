@@ -9,31 +9,34 @@
                     span Process
                 li.active
                     span Post/Un Post
-    .container-fluid.container-fullw.bg-white
+    .container-fluid.container-fullw.bg-offwhite
         .row
             .col-md-12
-                h2 Post/Un Post
-                div.text-center(v-if='dataLoad1')
-                    i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
-                .table-responsive(v-else)
-                    table.table.table-striped.table-hover
-                        thead
-                            tr
-                                th Voucher ID
-                                th Voucher Type
-                                th NBR
-                                th Reference Number
-                                th Project
-                                th Voucher Date
-                                th Post/Unpost
-                        tbody
-                            tr(v-for='(row, key, ind) in vouchersData')
-                                td {{ row.id }}
-                                td jv
-                                td {{ row.nbr_number }}
-                                td {{ row.refrence }}
-                                td {{ row.project }}
-                                td {{ formatDate(new Date(row.voucher_date)) }}
-                                td.icon-container
-                                    button.btn.btn-danger(v-if='row.posted_status === "Yes"' v-on:click="deactive(key)") UnPost
-                                    button.btn.btn-success(v-else v-on:click="active(key)") Post
+                .panel.panel-white.no-radius
+                    .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
+                        h4.panel-title.pull-left.padding-15 Post/Un Post
+                    .panel-body
+                        div.text-center(v-if='dataLoad1')
+                            i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
+                        .table-responsive(v-else)
+                            table.table.table-striped.table-hover
+                                thead
+                                    tr
+                                        th Voucher ID
+                                        th Voucher Type
+                                        th NBR
+                                        th Reference Number
+                                        th Project
+                                        th Voucher Date
+                                        th Post/Unpost
+                                tbody
+                                    tr(v-for='(row, key, ind) in vouchersData')
+                                        td {{ row.id }}
+                                        td jv
+                                        td {{ row.nbr_number }}
+                                        td {{ row.refrence }}
+                                        td {{ row.project }}
+                                        td {{ formatDate(new Date(row.voucher_date)) }}
+                                        td.icon-container
+                                            button.btn.btn-danger(v-if='row.posted_status === "Yes"' v-on:click="deactive(key)") UnPost
+                                            button.btn.btn-success(v-else v-on:click="active(key)") Post

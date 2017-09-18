@@ -11,79 +11,75 @@
                     span List: Chart Of Account
                 li.active
                     span Subsidiary
-    .container-fluid.container-fullw.bg-white
-        .row
-            .col-md-12
-                form(v-on:submit.prevent="showSheet")
-                    h2 Master Listing / List: Chart Of Account / Subsidiary
-                    .row
-                        .col-md-12
-                            .form-group
+    .container-fluid.container-fullw.bg-offwhite
+        form(v-on:submit.prevent='showSheet')
+            .row
+                .col-md-12
+                    .panel.panel-white.no-radius
+                        .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
+                            h4.panel-title.pull-left.padding-15 Subsidiary
+                        .panel-body
+                            .row
+                                .col-md-12
+                                    .form-group
+                                        .row
+                                            .col-md-6
+                                                .text-center(v-if='dataLoad1')
+                                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                                template(v-else='v-else')
+                                                    label Project
+                                                    select.form-control(name='sel_project', v-model='sel_project')
+                                                        option(value='') Select Project
+                                                        option(v-for='(row, key, ind) in proData', v-bind:value='key') {{ row.name }}
+                                                    p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
+                            .row
+                                .col-md-6
+                                    .form-group
+                                        .row
+                                            .col-md-6
+                                                label Start Date
+                                                .input-group.date
+                                                    input.form-control.datepicker.start_date(type='text', placeholder='Enter your Starting Date')
+                                            .col-md-6
+                                                label End Date
+                                                .input-group.date
+                                                    input.form-control.datepicker.end_date(type='text', placeholder='Enter your Ending Date')
+                            .row(v-if='dataLoad2')
+                                .col-md-6
+                                    .text-center
+                                        i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                            template(v-else='v-else')
                                 .row
-                                    .col-md-6
-                                        div.text-center(v-if='dataLoad1')
-                                            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                        template(v-else)
-                                            label Project
-                                            select.form-control(name='sel_project' v-model='sel_project')
-                                                option(value='') Select Project
-                                                option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
-                    .row
-                        .col-md-12
-                            .form-group
+                                    .col-md-12
+                                        .form-group
+                                            .row
+                                                .col-md-6
+                                                    label Starting Subsidiary
+                                                    select.form-control(name='sel_subs_start', v-model='sel_subs_start')
+                                                        option(value='') Select Subsidiary
+                                                        option(v-for='(row, key, ind) in subsData', v-bind:value='key') {{ row.name }}
+                                                    p.text-danger.text-right(v-if='validation.hasError("sel_subs_start")') {{ validation.firstError('sel_subs_start') }}
                                 .row
-                                    .col-md-6
-                                        label
-                                            | Start Date
-                                        .input-group.date
-                                            input.form-control.datepicker.start_date(type='text', placeholder='Enter your Starting Date')
-                    .row
-                        .col-md-12
-                            .form-group
-                                .row
-                                    .col-md-6
-                                        label
-                                            | End Date
-                                        .input-group.date
-                                            input.form-control.datepicker.end_date(type='text', placeholder='Enter your Ending Date')
-                    .row(v-if='dataLoad2')
-                        .col-md-6
-                            div.text-center
-                                i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                    template(v-else)
-                        .row
-                            .col-md-12
-                                .form-group
-                                    .row
-                                        .col-md-6
-                                            label Starting Subsidiary
-                                            select.form-control(name='sel_subs_start' v-model='sel_subs_start')
-                                                option(value='') Select Subsidiary
-                                                option(v-for='(row, key, ind) in subsData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_subs_start")') {{ validation.firstError('sel_subs_start') }}
-                        .row
-                            .col-md-12
-                                .form-group
-                                    .row
-                                        .col-md-6
-                                            label Ending Subsidiary
-                                            select.form-control(name='sel_subs_end' v-model='sel_subs_end')
-                                                option(value='') Select Subsidiary
-                                                option(v-for='(row, key, ind) in subsData' v-bind:value='key') {{ row.name }}
-                                            p.text-danger.text-right(v-if='validation.hasError("sel_subs_end")') {{ validation.firstError('sel_subs_end') }}
-                    .row
-                        .col-md-12
-                            .form-group
-                                .row
-                                    .col-md-6
-                                        label Destination
-                                        select.form-control(v-model='sel_show_type')
-                                            option(value='Screen') Screen
-                                            option(value='File') File
-                                        p.text-danger.text-right(v-if='validation.hasError("sel_show_type")') {{ validation.firstError('sel_show_type') }}
-                    .row
-                        .col-md-4.pull-right
-                            button.btn.btn-lg.btn-primary.btn-wide.pull-right(type='submit')
-                                | Submit&nbsp;
-                                i.fa.fa-arrow-circle-right
+                                    .col-md-12
+                                        .form-group
+                                            .row
+                                                .col-md-6
+                                                    label Ending Subsidiary
+                                                    select.form-control(name='sel_subs_end', v-model='sel_subs_end')
+                                                        option(value='') Select Subsidiary
+                                                        option(v-for='(row, key, ind) in subsData', v-bind:value='key') {{ row.name }}
+                                                    p.text-danger.text-right(v-if='validation.hasError("sel_subs_end")') {{ validation.firstError('sel_subs_end') }}
+                            .row
+                                .col-md-12
+                                    .form-group
+                                        .row
+                                            .col-md-6
+                                                label Destination
+                                                select.form-control(v-model='sel_show_type')
+                                                    option(value='Screen') Screen
+                                                    option(value='File') File
+                                                p.text-danger.text-right(v-if='validation.hasError("sel_show_type")') {{ validation.firstError('sel_show_type') }}
+                            .row
+                                .col-md-4.pull-left
+                                    button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='submit')
+                                        | Submit

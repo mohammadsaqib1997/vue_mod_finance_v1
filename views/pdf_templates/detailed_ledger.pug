@@ -55,46 +55,49 @@ html(lang='en')
                                 span.mainDescription(style='font-size: 19px;color: #ec5d58;') DETAILED LEDGER
             .row.padding-30
                 .col-md-12
-                    .panel.panel-white.no-radius
-                        .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
-                            h4.panel-title.pull-left.padding-15 Project Name: #{proName}
-                            h6.pull-right.text-right.padding-15 Create Date: #{date}
-                            h6.pull-right.text-right.padding-15 Period: #{start_date} - #{end_date}
-                        .panel-body.padding-30
-                            table.table.table-striped.misreport(cellpadding='5' style='width:100%;' border=1)
-                                tr.background-e2e8f0.no-border
-                                    th(colspan=5) Date
-                                    th Debit
-                                    th Credit
-                                    th Balance
-                                    th
-                                tr.background-e3e3e3
-                                    td #{code}
-                                    td(colspan=3) #{code_name}
-                                    td.text-bold Balance
-                                    td #{balance.balDr}
-                                    td #{balance.balCr}
-                                    td #{balance.balDr-balance.balCr}
-                                    td #{((balance.balDr-balance.balCr) >= 0) ? "Dr":"Cr"}
-                                - var bal = balance.balDr-balance.balCr
-                                - var totCr = balance.balCr
-                                - var totDr = balance.balDr
-                                each item in data
-                                    - totCr += item.credit; totDr += item.debit;
-                                    tr
-                                        td(style="width:40px;") #{item.date}
-                                        td #{item.type.toUpperCase()}
-                                        td #{item.v_id}
-                                        td #{item.remarks}
-                                        td
-                                        td #{item.debit}
-                                        td #{item.credit}
-                                        td #{bal += item.debit-item.credit}
-                                        td #{(bal >= 0) ? "Dr": "Cr"}
-                                tr.no-border
-                                    td(colspan=5)
-                                    td.background-e6e6e6 #{totDr}
-                                    td.background-e6e6e6 #{totCr}
-                                    td(colspan=2)
-                            button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;") Save
-                            button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
+                    .row.padding-15.padding-top-0
+                        .panel.panel-white.no-radius
+                            .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
+                                h4.panel-title.pull-left.padding-15 Project Name: #{proName}
+                                h6.pull-right.text-right.padding-15 Create Date: #{date}
+                                h6.pull-right.text-right.padding-15 Period: #{start_date} - #{end_date}
+                            .panel-body.padding-30
+                                table.table.table-striped.misreport(cellpadding='5' style='width:100%;' border=1)
+                                    tr.background-e2e8f0.no-border
+                                        th.col-md-1 Date
+                                        th.col-md-1 Docment No.
+                                        th.col-md-1 Reference No.
+                                        th.col-md-5(colspan=2) Narration
+                                        th.col-md-1 Debit
+                                        th.col-md-1 Credit
+                                        th.col-md-1 Balance
+                                        th.col-md-1
+                                    tr.background-e3e3e3
+                                        td.col-md-1 #{code}
+                                        td.col-md-5(colspan=3) #{code_name}
+                                        td.col-md-1.text-bold Balance
+                                        td.col-md-1 #{balance.balDr}
+                                        td.col-md-1 #{balance.balCr}
+                                        td.col-md-1 #{balance.balDr-balance.balCr}
+                                        td.col-md-1 #{((balance.balDr-balance.balCr) >= 0) ? "Dr":"Cr"}
+                                    - var bal = balance.balDr-balance.balCr
+                                    - var totCr = balance.balCr
+                                    - var totDr = balance.balDr
+                                    each item in data
+                                        - totCr += item.credit; totDr += item.debit;
+                                        tr
+                                            td.col-md-1(style="width:40px;") #{item.date}
+                                            td.col-md-1 #{item.type.toUpperCase()}
+                                            td.col-md-1 #{item.v_id}
+                                            td.col-md-4(colspan=2) #{item.remarks}
+                                            td.col-md-1 #{item.debit}
+                                            td.col-md-1 #{item.credit}
+                                            td.col-md-1 #{bal += item.debit-item.credit}
+                                            td.col-md-1 #{(bal >= 0) ? "Dr": "Cr"}
+                                    tr.no-border
+                                        td(colspan=5)
+                                        td.background-e6e6e6 #{totDr}
+                                        td.background-e6e6e6 #{totCr}
+                                        td(colspan=2)
+                                button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;") Save
+                                button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
