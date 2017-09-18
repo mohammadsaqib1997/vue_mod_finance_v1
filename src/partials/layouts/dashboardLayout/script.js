@@ -4,33 +4,26 @@ import sidebar from '../../components/sidebar/sidebar.vue'
 
 export default {
     created: function () {
+        let self = this;
         $.getScript('/assets/js/dashboard.js', function (data, textStatus, jqxhr) {
             Dashboard.init();
         });
-        //console.log(this.$root.loginUData);
-        let self = this;
-        self.$watch(function () {
-            return self.$root.loginUData;
-        }, function (val, oldVal) {
-            if(val !== null){
-                self.username = val.first_name +" "+ val.last_name;
-                if(val.type === "admin"){
-                    self.type = "Administrator";
-                }else if(val.type === "accountant"){
-                    self.type = "Accountant";
-                }
-            }
-        });
-    },
-    data: function(){
-        return {
-            username: "",
-            type: ""
+        self.show = self.$root.userLoginEmit;
+        self.username = self.$root.loginUData.first_name + " " + self.$root.loginUData.last_name;
+        if (self.$root.loginUData.type === "admin") {
+            self.type = "Administrator";
+        } else {
+            self.type = "Accountant";
         }
     },
-    methods: {
-
+    data: function () {
+        return {
+            username: "",
+            type: "",
+            show: false,
+        }
     },
+    methods: {},
     components: {
         header_com: header,
         footer_com: footer,

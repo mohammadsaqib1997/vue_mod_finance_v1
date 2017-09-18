@@ -19,7 +19,10 @@ export default {
             this.$emit('name_change', {code: "", sub_name: ""});
             this.selected = "";
             this.reset_items();
-        }
+        },
+        code: function (val) {
+            this.query = this.selected = val;
+        },
     },
     props: ['project', 'code'],
     data: function(){
@@ -30,6 +33,14 @@ export default {
         }
     },
     methods: {
+        blur_reset: function () {
+            if(this.query !== ""){
+                this.reset_items();
+            }else{
+                this.$emit('name_change', {code: "", sub_name: ""});
+                this.query = this.selected = "";
+            }
+        },
         reset_items: function () {
             this.query = this.selected;
             this.items = [];

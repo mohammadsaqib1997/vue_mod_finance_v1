@@ -96,7 +96,7 @@
                                                             option(value='') Select Project
                                                             option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
                                                         p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
-                                            .form-group
+                                            .form-group(v-if="userType === 'admin'")
                                                 label
                                                     | Posted Y/N
                                                 .clip-radio.radio-primary
@@ -116,7 +116,7 @@
                                         .detail-heading
                                             .row
                                                 .col-md-1.padding-right-0
-                                                    .padding-5 Account Code
+                                                    .padding-5 Code
                                                 .col-md-2
                                                     .padding-5 Account Description
                                                 .col-md-4
@@ -133,7 +133,7 @@
                                                     .col-md-1.padding-right-0
                                                         get-codes(v-bind:project='sel_project' v-bind:code='row.code' v-on:name_change="changeCode($event, ind)")
                                                     .col-md-2.padding-none
-                                                        get-subs-name(v-bind:project='sel_project')
+                                                        get-subs-name(v-bind:project='sel_project' v-bind:name='row.code_name' v-on:name_change="changeSubName($event, ind)")
                                                         //input.form-control(type='text' v-bind:value="row.code_name" disabled='disabled')
                                                     .col-md-4.padding-none
                                                         input.form-control(type='text' v-model='row.remarks')

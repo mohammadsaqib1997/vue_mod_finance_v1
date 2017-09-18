@@ -12,6 +12,9 @@ export default {
     created: function () {
         let self = this;
 
+        self.userType = self.$root.loginUData.type;
+        self.setPostStatus();
+
         self.$watch("sel_voucher", function (val, oldVal) {
             self.updateVoucherVal(val);
         });
@@ -123,6 +126,7 @@ export default {
             vouchersEntriesRef: null,
 
             // form fields
+            userType: "admin",
             sel_voucher: "",
             rows: [
                 {
@@ -415,6 +419,12 @@ export default {
                 this.rows[ind].code_name = e.sub_name;
             }
         },
+        changeSubName: function (e, ind) {
+            if (e !== "") {
+                this.rows[ind].code = e.code;
+                this.rows[ind].code_name = e.name;
+            }
+        },
         totalCredit: function () {
             let self = this;
             self.total_credit = 0;
@@ -454,10 +464,10 @@ export default {
             }
         },
         fullVoucherReset: function (self) {
+            self.setPostStatus();
             self.voucher_id = "";
             self.nbr_number = "";
             self.v_remarks = "";
-            self.posted_status = "Yes";
             self.ref_type = "md";
             self.sel_ref = "";
             self.sel_project = "";
@@ -516,6 +526,14 @@ export default {
                     }
                     self.dataLoad3 = false;
                 });
+        },
+        setPostStatus: function () {
+            let self = this;
+            if(self.userType === "admin"){
+                self.posted_status = "Yes";
+            }else{
+                self.posted_status = "No";
+            }
         }
     },
     components: {

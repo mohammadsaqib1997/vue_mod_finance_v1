@@ -3,8 +3,8 @@ div
     div.app-content
         header_com
         .main-content
-            .alertsbar
-                strong Keen Developments:
-                |  You are logged in as an Administrator.
+            .alertsbar(v-if="show")
+                strong {{ username }}:
+                |  You are logged in as an {{ type }}.
             router-view
     footer_com

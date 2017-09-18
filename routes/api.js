@@ -108,6 +108,77 @@ router.get('/get_codes', function (req, res, next) {
     });
 });
 
+router.get('/get_subs_name', function (req, res, next) {
+    let project = req.query.project;
+    let input = req.query.input;
+    client.search({
+        index: 'subs',
+        type: 'id',
+        body: {
+            size: 15,
+            query: {
+                bool: {
+                    must: {
+                        regexp: {
+                            name: input+".*"
+                        }
+                    }
+                }
+            },
+            _source: ['name']
+        }
+    }, function (err, response) {
+        if(err){
+            res.json(null);
+        }else{
+            if(response.hits.hits.length > 0){
+                let hits1 = response.hits.hits;
+                let grab_ids = [];
+                hits1.forEach(function (hit, ind, arr) {
+                    grab_ids.push(hit._id);
+                    if(ind === arr.length-1){
+                        client.search({
+                            index: 'reg_subs',
+                            type: 'id',
+                            body: {
+                                query: {
+                                    match: {
+                                        _id: project
+                                    }
+                                },
+                            }
+                        }, function (err, response2) {
+                            let hits = response2.hits.hits;
+                            if(hits.length > 0){
+                                let source = hits[0]._source;
+                                let keys = Object.keys(source);
+                                let grabFields = [];
+                                keys.forEach(function (key, ind, arr) {
+                                    let item = source[key];
+                                    let id_ind = grab_ids.indexOf(item.key);
+                                    if(id_ind !== -1){
+                                        let sel_hit = hits1[id_ind];
+                                        sel_hit._source['code'] = key;
+                                        grabFields.push(sel_hit);
+                                    }
+
+                                    if(ind === arr.length-1){
+                                        res.json(grabFields);
+                                    }
+                                });
+                            }else{
+                                res.json(null);
+                            }
+                        });
+                    }
+                });
+            }else{
+                res.json(null);
+            }
+        }
+    });
+});
+
 router.post("/send_mail", function (req, res, next) {
     req.assert('email', 'Email is required!').notEmpty();
     req.getValidationResult().then(function(result) {
@@ -184,3 +255,48 @@ function renderEmail(res, sel_user, newPass, callback){
         });
     });
 }
+
+
+/*
+client.search({
+    index: 'reg_subs',
+    type: 'id',
+    body: {
+        query: {
+            bool: {
+                must: {
+                    match: {
+                        _id: project
+                    }
+                },
+                must: {
+                    match: {
+                        key: hit._id
+                    }
+                }
+            }
+            /!*filtered: {
+             query: {match_all: {}},
+             filter: {
+             nested: {
+             path: "key",
+             filter: {
+             term: {
+             "key": hit._id
+             }
+             },
+             inner_hits : {}
+             }
+             }
+             }*!/
+        }
+    }
+}, function (err, response2) {
+    hit._source['nested'] = {};
+    hit._source['nested'] = response2.hits.hits;
+    grab_ids.push(hit);
+    // response.hits.hits[0]._source[code].sub_name = response2.hits.hits[0]._source.name;
+    if(ind === arr.length-1){
+        res.json(grab_ids);
+    }
+});*/

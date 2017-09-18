@@ -8,7 +8,7 @@ div
         v-on:keydown.up='up'
         v-on:keydown.enter='hit'
         v-on:keydown.esc='reset'
-        v-on:blur='reset_items'
+        v-on:blur='blur_reset'
         v-on:input='update'
         )
     ul(v-show='hasItems')

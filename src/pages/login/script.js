@@ -65,6 +65,7 @@ export default {
                     if (self.email === admin_email) {
                         firebase.auth().signInWithEmailAndPassword(self.email, self.password).then(function () {
                             self.isProcess = false;
+                            self.$root.userLoginEmit = true;
                             self.$router.push('/');
                         }).catch(function (err) {
                             self.isProcess = false;
@@ -79,6 +80,7 @@ export default {
                             if (body.status === "ok") {
                                 firebase.auth().signInWithCustomToken(body.token).then(function () {
                                     self.isProcess = false;
+                                    self.$root.userLoginEmit = true;
                                     self.$router.push('/');
                                 }, function (err) {
                                     self.mainErr = err.message;

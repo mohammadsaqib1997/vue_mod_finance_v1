@@ -70,6 +70,7 @@ new Vue({
     },
     data: {
         csrf: '',
+        userLoginEmit: false,
         loginUID: "",
         loginUData: null,
         loadImgSrc: "",

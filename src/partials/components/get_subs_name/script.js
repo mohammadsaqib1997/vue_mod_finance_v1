@@ -7,7 +7,7 @@ export default {
     created: function () {
         let self = this;
 
-        self.src = "/api/get_codes?project="+self.project;
+        self.src = "/api/get_subs_name?project="+self.project;
         self.query = self.selected;
     },
     watch: {
@@ -15,21 +15,32 @@ export default {
             this.query = val;
         },
         project: function (val) {
-            this.src = "/api/get_codes?project="+val;
-            this.$emit('name_change', {code: "", sub_name: ""});
+            this.src = "/api/get_subs_name?project="+val;
+            this.$emit('name_change', {code: "", name: ""});
             this.selected = "";
             this.reset_items();
+        },
+        name: function (val) {
+            this.query = this.selected = val;
         }
     },
-    props: ['project', 'code'],
+    props: ['project', 'name'],
     data: function(){
         return {
-            src: "/api/get_codes",
+            src: "/api/get_subs_name",
             queryParamName: 'input',
-            selected: this.code
+            selected: this.name
         }
     },
     methods: {
+        blur_reset: function () {
+            if(this.query !== ""){
+                this.reset_items();
+            }else{
+                this.$emit('name_change', {code: "", name: ""});
+                this.query = this.selected = "";
+            }
+        },
         reset_items: function () {
             this.query = this.selected;
             this.items = [];
@@ -37,21 +48,18 @@ export default {
         onHit (item) {
             if(item){
                 this.$emit('name_change', item);
-                this.selected = item.code;
+                this.selected = item.name;
                 this.reset_items();
             }
         },
         prepareResponseData (data) {
             let grabData = [];
             if(data !== null){
-                let hits = data.hits.hits;
+                let hits = data;
                 if(hits.length > 0){
-                    let source = hits[0]._source;
-                    let codes = Object.keys(source);
-                    codes.forEach(function (code) {
-                        let item = source[code];
-                        item['code'] = code;
-                        grabData.push(item);
+                    hits.forEach(function (hit) {
+                        let source = hit._source;
+                        grabData.push(source);
                     });
                 }
             }
