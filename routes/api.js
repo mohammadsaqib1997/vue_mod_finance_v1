@@ -228,6 +228,56 @@ router.post("/send_mail", function (req, res, next) {
     });
 });
 
+router.post("/send_create_user_email", function (req, res, next) {
+    req.assert('email', 'Email is required!').notEmpty();
+    req.getValidationResult().then(function(result) {
+        var errors = result.useFirstErrorOnly().array();
+        if (errors.length > 0) {
+            return res.json({status: "failed", message: errors[0].msg});
+        }else{
+            return res.json({status: "ok", data: "Checked"});
+            /*usersRef.orderByChild('email').equalTo(req.body.email).once('value').then(function (userSnap) {
+                let userData = userSnap.val();
+                if(userData !== null){
+                    let keys = Object.keys(userData);
+                    let sel_user = userData[keys[0]];
+                    let randomStringPass = Math.random().toString(36).slice(-8);
+
+                    if(sel_user.type === "admin"){
+                        admin_firebase.auth().updateUser(keys[0], {
+                            password: randomStringPass
+                        }).then(function (userRecord) {
+                            renderEmail(res, sel_user, randomStringPass, function (result) {
+                                return res.json(result);
+                            });
+                        }).catch(function (err) {
+                            console.log(err);
+                            return res.json({status: "failed", message: "Firebase Auth Update Error!"});
+                        });
+                    }else{
+                        let salt = bcrypt.genSaltSync(saltRounds);
+                        let hashPass = bcrypt.hashSync(randomStringPass, salt);
+                        usersRef.child(keys[0]).update({
+                            password: hashPass
+                        }, function (err) {
+                            if(err){
+                                console.log(err);
+                                return res.json({status: "failed", message: "Firebase Update Error!"});
+                            }
+                            renderEmail(res, sel_user, randomStringPass, function (result) {
+                                return res.json(result);
+                            });
+                        });
+                    }
+
+                }else{
+                    return res.json({status: "failed", message: "Invalid email!"});
+                }
+            });*/
+        }
+    });
+});
+
 module.exports = router;
 
 function renderEmail(res, sel_user, newPass, callback){

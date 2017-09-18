@@ -1,5 +1,7 @@
-<template>
-    <router-view v-if="!process"></router-view>
+<template lang="pug">
+    router-view(v-if="!process")
+    .page-loader.text-center.fade.in(v-else style="display:none;")
+        img(src='/assets/images/loader.gif' style="margin-top: 30vh;")
 </template>
 <style>
 

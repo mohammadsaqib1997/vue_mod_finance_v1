@@ -97,28 +97,28 @@
                                 span.title M.I.S Reports
                                 i.icon-arrow
                     ul.sub-menu
-                        li
-                            a(href='javascript:void(0)')
-                                span Trial Balance
-                                i.icon-arrow
-                            ul.sub-menu
-                                li
-                                    a(href='#') Control
-                                li
-                                    a(href='#') Sub Control
-                                li
-                                    a(href='#') Subsidiary
-                        li(v-bind:class="(this.$route.path === '/balance_sheet/list_control') ? 'active open': ''")
-                            a(href='javascript:void(0)')
-                                span Balance Sheet
-                                i.icon-arrow
-                            ul.sub-menu
-                                li(v-bind:class="(this.$route.path === '/balance_sheet/list_control') ? 'active': ''")
-                                    router-link(to="/balance_sheet/list_control") Control
-                                li
-                                    a(href='#') Sub Control
-                                li
-                                    a(href='#') Subsidiary
+                        //li
+                        //    a(href='javascript:void(0)')
+                        //        span Trial Balance
+                        //        i.icon-arrow
+                        //    ul.sub-menu
+                        //        li
+                        //            a(href='#') Control
+                        //        li
+                        //            a(href='#') Sub Control
+                        //        li
+                        //            a(href='#') Subsidiary
+                        //li(v-bind:class="(this.$route.path === '/balance_sheet/list_control') ? 'active open': ''")
+                        //    a(href='javascript:void(0)')
+                        //        span Balance Sheet
+                        //        i.icon-arrow
+                        //    ul.sub-menu
+                        //        li(v-bind:class="(this.$route.path === '/balance_sheet/list_control') ? 'active': ''")
+                        //            router-link(to="/balance_sheet/list_control") Control
+                        //        li
+                        //            a(href='#') Sub Control
+                        //        li
+                        //            a(href='#') Subsidiary
                         li(v-bind:class="(this.$route.path === '/detailed_ledger') ? 'active': ''")
                             router-link(to='/detailed_ledger')
                                 span Detailed Ledger

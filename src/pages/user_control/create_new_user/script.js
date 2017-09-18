@@ -231,6 +231,23 @@ export default {
             });
         },
         succMsg: function (self) {
+            self.$http.post('/api/send_create_user_email', {
+                email: self.frg_email,
+            }).then(function (res) {
+                console.log(res.body);
+                /*let body = res.body;
+                if (body.status === "ok") {
+                    self.resetForms(true);
+                    self.frgMsg = "Successfully Email Send!";
+                } else {
+                    self.frgErr = body.message;
+                }
+                self.frgProcess = false;*/
+            }, function (err) {
+                console.log(err);
+                //self.frgProcess = false;
+            });
+
             self.inProcess = false;
             self.errMain = "";
             self.sucMain = "Successfully Inserted User!";

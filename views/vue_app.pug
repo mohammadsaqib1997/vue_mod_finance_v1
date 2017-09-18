@@ -46,8 +46,6 @@ html(lang='en')
 
     body
         div#app(csrf=_csrf)
-            .page-loader.text-center.fade(style="display:none;")
-                img(src='/assets/images/loader.gif' style="margin-top: 30vh;")
             router-view
 
         script(src='/vendor/jquery/jquery.min.js')
