@@ -13,7 +13,126 @@ export default {
     },
     data: function(){
         return {
-            admin: false
+            admin: false,
+            sidebarData: [
+                {
+                    title: "Dashboard",
+                    href: "/",
+                    icon: "<i class='ti-home'></i>"
+                },
+                {
+                    title: "Master Files",
+                    href: "#",
+                    event: this.navParentClick,
+                    icon: "<img class='icon-media' src='/assets/images/icons/masterFiles.png'/>",
+                    children: [
+                        {
+                            title: "Chart of Accounts",
+                            href: "#",
+                            event: this.navParentClick,
+                            children: [
+                                {
+                                    title: "Control",
+                                    href: "/create_control"
+                                },
+                                {
+                                    title: "Sub Control",
+                                    href: "/create_sub_control"
+                                },
+                                {
+                                    title: "Subsidiary",
+                                    href: "/create_subsidiary"
+                                },
+                            ]
+                        },
+                        {
+                            title: "Master Detail",
+                            href: "/master_details",
+                        }
+                    ]
+                },
+                {
+                    title: "Master Listing",
+                    href: "#",
+                    event: this.navParentClick,
+                    icon: "<img class='icon-media' src='/assets/images/icons/masterListings.png'/>",
+                    children: [
+                        {
+                            title: "List: Chart of Accounts",
+                            href: "#",
+                            event: this.navParentClick,
+                            children: [
+                                {
+                                    title: "Control",
+                                    href: "/listing_control"
+                                },
+                                {
+                                    title: "Sub Control",
+                                    href: "/listing_sub_control"
+                                },
+                                {
+                                    title: "Subsidiary",
+                                    href: "/listing_subsidiary"
+                                },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    title: "Transaction Files",
+                    href: "#",
+                    event: this.navParentClick,
+                    icon: "<img class='icon-media' src='/assets/images/icons/transaction.png'/>",
+                    children: [
+                        {
+                            title: "Journal Voucher",
+                            href: "/journal_voucher"
+                        },
+                    ]
+                },
+                {
+                    title: "Process",
+                    href: "#",
+                    event: this.navParentClick,
+                    icon: "<img class='icon-media' src='/assets/images/icons/process.png'/>",
+                    children: [
+                        {
+                            title: "Post/Unpost",
+                            href: "/post_unpost"
+                        },
+                    ]
+                },
+                {
+                    title: "M.I.S Reports",
+                    href: "#",
+                    event: this.navParentClick,
+                    icon: "<img class='icon-media' src='/assets/images/icons/reports.png'/>",
+                    children: [
+                        {
+                            title: "Detailed Ledger",
+                            href: "/detailed_ledger"
+                        },
+                    ]
+                },
+                {
+                    title: "User Control",
+                    href: "#",
+                    event: this.navParentClick,
+                    icon: "<img class='icon-media' src='/assets/images/icons/user.png'/>",
+                    children: [
+                        {
+                            title: "Create New User",
+                            href: "/create_new_user"
+                        },
+                    ]
+                },
+                {
+                    title: "Logout",
+                    href: "#",
+                    event: this.logout,
+                    icon: "<img class='icon-media' src='/assets/images/icons/logout.png'/>",
+                }
+            ]
         }
     },
     methods: {
@@ -25,6 +144,57 @@ export default {
                     console.log(err);
                 }
             });
+        },
+        navParentClick: function (e) {
+            let ancSel = $(e.target);
+            if(e.target.nodeName !== "A"){
+                ancSel = $(e.target).parents().closest('a');
+            }
+            if(ancSel.length > 0){
+                let liSel = ancSel.parent();
+                liSel.parent().find('li.active.open').slideUp(200, function(){
+                    $(this).removeClass('active open');
+                });
+                liSel.slideDown(200, function(){
+                    $(this).addClass('active open');
+                });
+                /*ancSel.closest("ul").find(".open").not(".active").children("ul").not(ancSel.next()).slideUp(200).parent('.open').removeClass("open");
+                if (ancSel.next().is('ul') && ancSel.parent().toggleClass('open')) {
+                    ancSel.next().slideToggle(200);
+                }*/
+            }
+        },
+        checkActiveRoute: function (row) {
+            let self = this;
+            let grabClass = "";
+            if(row.href === "#"){
+                if(row.children && row.children.length > 0){
+                    for(let cInd=0; cInd < row.children.length; cInd++){
+                        let child = row.children[cInd];
+                        if(child.href === "#"){
+                            if(child.children && child.children.length > 0){
+                                for (let scInd=0; scInd < child.children.length; scInd++){
+                                    let sub_child = child.children[scInd];
+                                    if(sub_child.href === self.$route.path){
+                                        grabClass = "active open";
+                                        break;
+                                    }
+                                }
+                            }
+                        }else{
+                            if(child.href === self.$route.path){
+                                grabClass = "active open";
+                                break;
+                            }
+                        }
+                    }
+                }
+            }else{
+                if(row.href === self.$route.path){
+                    grabClass = "active open";
+                }
+            }
+            return grabClass;
         }
     }
 }

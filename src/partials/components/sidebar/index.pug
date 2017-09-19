@@ -14,130 +14,160 @@
             .navbar-title
                 span Main Navigation
             ul.main-navigation-menu
-                li(v-bind:class="(this.$route.path === '/') ? 'active': ''")
-                    router-link(to='/')
-                        .item-content
-                            .item-media
-                                i.ti-home
-                            .item-inner
-                                span.title Dashboard
-                li(v-bind:class="(this.$route.path === '/create_control' || this.$route.path === '/create_sub_control' || this.$route.path === '/create_subsidiary' || this.$route.path === '/master_details') ? 'active open': ''")
-                    a(href='javascript:void(0)')
-                        .item-content
-                            .item-media
-                                img.icon-media(src='/assets/images/icons/masterFiles.png')
-                            .item-inner
-                                span.title Master Files
-                                i.icon-arrow
-                    ul.sub-menu
-                        li(v-bind:class="(this.$route.path === '/create_control' || this.$route.path === '/create_sub_control' || this.$route.path === '/create_subsidiary') ? 'active open': ''")
-                            a(href='javascript:;')
-                                span Chart of Accounts
-                                i.icon-arrow
+                li(v-for="row in sidebarData" v-bind:class="checkActiveRoute(row)")
+                    template(v-if="row.href === '#'")
+                        a(v-bind:href="row.href" v-on:click.stop.prevent='row.event')
+                            .item-content
+                                .item-media(v-html="row.icon")
+                                .item-inner
+                                    span.title {{ row.title }}
+                                    i.icon-arrow(v-if="row.children")
+                        template(v-if="row.children && row.children.length > 0")
                             ul.sub-menu
-                                li(v-bind:class="(this.$route.path === '/create_control') ? 'active': ''")
-                                    router-link(to='/create_control') Control
-                                li(v-bind:class="(this.$route.path === '/create_sub_control') ? 'active': ''")
-                                    router-link(to='/create_sub_control') Sub Control
-                                li(v-bind:class="(this.$route.path === '/create_subsidiary') ? 'active': ''")
-                                    router-link(to='/create_subsidiary') Subsidiary
-                        li(v-bind:class="(this.$route.path === '/master_details') ? 'active': ''")
-                            router-link(to='/master_details')
-                                span Master Detail
-                li(v-bind:class="(this.$route.path === '/listing_control' || this.$route.path === '/listing_sub_control' || this.$route.path === '/listing_subsidiary') ? 'active open': ''")
-                    a(href='javascript:void(0)')
-                        .item-content
-                            .item-media
-                                img.icon-media(src='/assets/images/icons/masterListings.png')
-                            .item-inner
-                                span.title Master Listing
-                                i.icon-arrow
-                    ul.sub-menu
-                        li(v-bind:class="(this.$route.path === '/listing_control' || this.$route.path === '/listing_sub_control' || this.$route.path === '/listing_subsidiary') ? 'active open': ''")
-                            a(href='javascript:;')
-                                span List: Chart of Accounts
-                                i.icon-arrow
-                            ul.sub-menu
-                                li(v-bind:class="(this.$route.path === '/listing_control') ? 'active': ''")
-                                    router-link(to='/listing_control') Control
-                                li(v-bind:class="(this.$route.path === '/listing_sub_control') ? 'active': ''")
-                                    router-link(to='/listing_sub_control') Sub Control
-                                li(v-bind:class="(this.$route.path === '/listing_subsidiary') ? 'active': ''")
-                                    router-link(to='/listing_subsidiary') Subsidiary
-                li(v-bind:class="(this.$route.path === '/journal_voucher') ? 'active': ''")
-                    a(href='javascript:void(0)')
-                        .item-content
-                            .item-media
-                                img.icon-media(src='/assets/images/icons/transaction.png')
-                            .item-inner
-                                span.title Transaction Files
-                                i.icon-arrow
-                    ul.sub-menu
-                        li(v-bind:class="(this.$route.path === '/journal_voucher') ? 'active': ''")
-                            router-link(to='/journal_voucher')
-                                span Journal Voucher
-                li(v-if="admin" v-bind:class="(this.$route.path === '/post_unpost') ? 'active': ''")
-                    a(href='javascript:void(0)')
-                        .item-content
-                            .item-media
-                                img.icon-media(src='/assets/images/icons/process.png')
-                            .item-inner
-                                span.title Process
-                                i.icon-arrow
-                    ul.sub-menu
-                        li
-                            router-link(to='/post_unpost')
-                                span Post/Unpost
-                li(v-bind:class="(this.$route.path === '/detailed_ledger' || this.$route.path === '/balance_sheet/list_control') ? 'active open': ''")
-                    a(href='javascript:void(0)')
-                        .item-content
-                            .item-media
-                                img.icon-media(src='/assets/images/icons/reports.png')
-                            .item-inner
-                                span.title M.I.S Reports
-                                i.icon-arrow
-                    ul.sub-menu
-                        //li
-                        //    a(href='javascript:void(0)')
-                        //        span Trial Balance
-                        //        i.icon-arrow
-                        //    ul.sub-menu
-                        //        li
-                        //            a(href='#') Control
-                        //        li
-                        //            a(href='#') Sub Control
-                        //        li
-                        //            a(href='#') Subsidiary
-                        //li(v-bind:class="(this.$route.path === '/balance_sheet/list_control') ? 'active open': ''")
-                        //    a(href='javascript:void(0)')
-                        //        span Balance Sheet
-                        //        i.icon-arrow
-                        //    ul.sub-menu
-                        //        li(v-bind:class="(this.$route.path === '/balance_sheet/list_control') ? 'active': ''")
-                        //            router-link(to="/balance_sheet/list_control") Control
-                        //        li
-                        //            a(href='#') Sub Control
-                        //        li
-                        //            a(href='#') Subsidiary
-                        li(v-bind:class="(this.$route.path === '/detailed_ledger') ? 'active': ''")
-                            router-link(to='/detailed_ledger')
-                                span Detailed Ledger
-                li(v-if="admin" v-bind:class="(this.$route.path === '/create_new_user') ? 'active': ''")
-                    a(href='javascript:void(0)')
-                        .item-content
-                            .item-media
-                                img.icon-media(src='/assets/images/icons/user.png')
-                            .item-inner
-                                span.title User Control
-                                i.icon-arrow
-                    ul.sub-menu
-                        li(v-bind:class="(this.$route.path === '/create_new_user') ? 'active': ''")
-                            router-link(to='/create_new_user')
-                                span Create New User
-                li
-                    a(href='javascript:void(0)')
-                        .item-content
-                            .item-media
-                                img.icon-media(src='/assets/images/icons/logout.png')
-                            .item-inner
-                                span.title(v-on:click.prevent='logout') Logout
+                                li(v-for="child in row.children" v-bind:class="checkActiveRoute(child)")
+                                    template(v-if="child.href === '#'")
+                                        a(v-bind:href="child.href" v-on:click.stop.prevent='child.event')
+                                            span {{ row.title }}
+                                            i.icon-arrow(v-if="child.children")
+                                        template(v-if="child.children && child.children.length > 0")
+                                            ul.sub-menu
+                                                li(v-for="sub_child in child.children")
+                                                    router-link(v-bind:to='sub_child.href') {{ sub_child.title }}
+                                    template(v-else)
+                                        router-link(v-bind:to='child.href')
+                                            span {{ child.title }}
+
+                    template(v-else)
+                        router-link(v-bind:to='row.href')
+                            .item-content
+                                .item-media(v-html="row.icon")
+                                .item-inner
+                                    span.title {{ row.title }}
+
+                //li(v-bind:class="(this.$route.path === '/') ? 'active': ''")
+                //    router-link(to='/')
+                //        .item-content
+                //            .item-media
+                //                i.ti-home
+                //            .item-inner
+                //                span.title Dashboard
+                //li(v-bind:class="(this.$route.path === '/create_control' || this.$route.path === '/create_sub_control' || this.$route.path === '/create_subsidiary' || this.$route.path === '/master_details') ? 'active open': ''")
+                //    a(v-on:click.stop="navParentClick")
+                //        .item-content
+                //            .item-media
+                //                img.icon-media(src='/assets/images/icons/masterFiles.png')
+                //            .item-inner
+                //                span.title Master Files
+                //                i.icon-arrow
+                //    ul.sub-menu
+                //        li(v-bind:class="(this.$route.path === '/create_control' || this.$route.path === '/create_sub_control' || this.$route.path === '/create_subsidiary') ? 'active open': ''")
+                //            a(href='javascript:;')
+                //                span Chart of Accounts
+                //                i.icon-arrow
+                //            ul.sub-menu
+                //                li(v-bind:class="(this.$route.path === '/create_control') ? 'active': ''")
+                //                    router-link(to='/create_control') Control
+                //                li(v-bind:class="(this.$route.path === '/create_sub_control') ? 'active': ''")
+                //                    router-link(to='/create_sub_control') Sub Control
+                //                li(v-bind:class="(this.$route.path === '/create_subsidiary') ? 'active': ''")
+                //                    router-link(to='/create_subsidiary') Subsidiary
+                //        li(v-bind:class="(this.$route.path === '/master_details') ? 'active': ''")
+                //            router-link(to='/master_details')
+                //                span Master Detail
+                //li(v-bind:class="(this.$route.path === '/listing_control' || this.$route.path === '/listing_sub_control' || this.$route.path === '/listing_subsidiary') ? 'active open': ''")
+                //    a(href='javascript:void(0)')
+                //        .item-content
+                //            .item-media
+                //                img.icon-media(src='/assets/images/icons/masterListings.png')
+                //            .item-inner
+                //                span.title Master Listing
+                //                i.icon-arrow
+                //    ul.sub-menu
+                //        li(v-bind:class="(this.$route.path === '/listing_control' || this.$route.path === '/listing_sub_control' || this.$route.path === '/listing_subsidiary') ? 'active open': ''")
+                //            a(href='javascript:;')
+                //                span List: Chart of Accounts
+                //                i.icon-arrow
+                //            ul.sub-menu
+                //                li(v-bind:class="(this.$route.path === '/listing_control') ? 'active': ''")
+                //                    router-link(to='/listing_control') Control
+                //                li(v-bind:class="(this.$route.path === '/listing_sub_control') ? 'active': ''")
+                //                    router-link(to='/listing_sub_control') Sub Control
+                //                li(v-bind:class="(this.$route.path === '/listing_subsidiary') ? 'active': ''")
+                //                    router-link(to='/listing_subsidiary') Subsidiary
+                //li(v-bind:class="(this.$route.path === '/journal_voucher') ? 'active': ''")
+                //    a(href='javascript:void(0)')
+                //        .item-content
+                //            .item-media
+                //                img.icon-media(src='/assets/images/icons/transaction.png')
+                //            .item-inner
+                //                span.title Transaction Files
+                //                i.icon-arrow
+                //    ul.sub-menu
+                //        li(v-bind:class="(this.$route.path === '/journal_voucher') ? 'active': ''")
+                //            router-link(to='/journal_voucher')
+                //                span Journal Voucher
+                //li(v-if="admin" v-bind:class="(this.$route.path === '/post_unpost') ? 'active': ''")
+                //    a(href='javascript:void(0)')
+                //        .item-content
+                //            .item-media
+                //                img.icon-media(src='/assets/images/icons/process.png')
+                //            .item-inner
+                //                span.title Process
+                //                i.icon-arrow
+                //    ul.sub-menu
+                //        li
+                //            router-link(to='/post_unpost')
+                //                span Post/Unpost
+                //li(v-bind:class="(this.$route.path === '/detailed_ledger' || this.$route.path === '/balance_sheet/list_control') ? 'active open': ''")
+                //    a(href='javascript:void(0)')
+                //        .item-content
+                //            .item-media
+                //                img.icon-media(src='/assets/images/icons/reports.png')
+                //            .item-inner
+                //                span.title M.I.S Reports
+                //                i.icon-arrow
+                //    ul.sub-menu
+                //        //li
+                //        //    a(href='javascript:void(0)')
+                //        //        span Trial Balance
+                //        //        i.icon-arrow
+                //        //    ul.sub-menu
+                //        //        li
+                //        //            a(href='#') Control
+                //        //        li
+                //        //            a(href='#') Sub Control
+                //        //        li
+                //        //            a(href='#') Subsidiary
+                //        //li(v-bind:class="(this.$route.path === '/balance_sheet/list_control') ? 'active open': ''")
+                //        //    a(href='javascript:void(0)')
+                //        //        span Balance Sheet
+                //        //        i.icon-arrow
+                //        //    ul.sub-menu
+                //        //        li(v-bind:class="(this.$route.path === '/balance_sheet/list_control') ? 'active': ''")
+                //        //            router-link(to="/balance_sheet/list_control") Control
+                //        //        li
+                //        //            a(href='#') Sub Control
+                //        //        li
+                //        //            a(href='#') Subsidiary
+                //        li(v-bind:class="(this.$route.path === '/detailed_ledger') ? 'active': ''")
+                //            router-link(to='/detailed_ledger')
+                //                span Detailed Ledger
+                //li(v-if="admin" v-bind:class="(this.$route.path === '/create_new_user') ? 'active': ''")
+                //    a(href='javascript:void(0)')
+                //        .item-content
+                //            .item-media
+                //                img.icon-media(src='/assets/images/icons/user.png')
+                //            .item-inner
+                //                span.title User Control
+                //                i.icon-arrow
+                //    ul.sub-menu
+                //        li(v-bind:class="(this.$route.path === '/create_new_user') ? 'active': ''")
+                //            router-link(to='/create_new_user')
+                //                span Create New User
+                //li
+                //    a(href='javascript:void(0)')
+                //        .item-content
+                //            .item-media
+                //                img.icon-media(src='/assets/images/icons/logout.png')
+                //            .item-inner
+                //                span.title(v-on:click.prevent='logout') Logout

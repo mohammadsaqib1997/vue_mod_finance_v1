@@ -6,6 +6,7 @@ import func from '../../../../custom_libs/func'
 import getCodes from '../../../partials/components/get_codes/get_codes.vue'
 import addBrokerModel from '../../../partials/components/modals/add_broker/add_broker.vue';
 import addTypeItemsModel from '../../../partials/components/modals/add_type_items/add_type_items.vue';
+import getSubsName from '../../../partials/components/get_subs_name/get_subs_name.vue'
 
 const Validator = SimpleVueValidation.Validator;
 
@@ -488,6 +489,12 @@ export default {
                 this.rows[ind].code_name = e.sub_name;
             }
         },
+        changeSubName: function (e, ind) {
+            if (e !== "") {
+                this.rows[ind].code = e.code;
+                this.rows[ind].code_name = e.name;
+            }
+        },
         totalCredit: function () {
             let self = this;
             self.total_credit = 0;
@@ -654,6 +661,7 @@ export default {
     components: {
         getCodes,
         addBrokerModel,
-        addTypeItemsModel
+        addTypeItemsModel,
+        getSubsName
     }
 }
