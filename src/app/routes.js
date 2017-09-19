@@ -28,6 +28,8 @@ import partyInformation from '../pages/party_information/party_information.vue'
 
 import detailedLedger from '../pages/mis_reports/detailed_ledger/detailed_ledger.vue'
 import balListControl from '../pages/mis_reports/balance_sheet/list_control/list_control.vue'
+import balListSubControl from '../pages/mis_reports/balance_sheet/list_sub_control/list_sub_control.vue'
+import balListSubsidiary from '../pages/mis_reports/balance_sheet/list_subsidiary/list_subsidiary.vue'
 
 const routes = [
     {
@@ -80,6 +82,14 @@ const routes = [
                     {
                         path: '/balance_sheet/list_control',
                         component: balListControl
+                    },
+                    {
+                        path: '/balance_sheet/list_sub_control',
+                        component: balListSubControl
+                    },
+                    {
+                        path: '/balance_sheet/list_subsidiary',
+                        component: balListSubsidiary
                     },
                     {
                         path: '/journal_voucher',

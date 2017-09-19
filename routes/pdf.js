@@ -278,6 +278,8 @@ router.post('/balance_sheet/controls/view', function (req, res, next) {
         refPro.child(data.sel_project).once('value').then(function (proSnap) {
             let proData = proSnap.val();
             let todayDate = moment().format('dddd, DD MMMM YYYY');
+            let start_date = moment(data.start_date).format("DD/MM/YYYY");
+            let end_date = moment(data.end_date).format("DD/MM/YYYY");
 
             refRegCont.child(data.sel_project).once('value', function (regContSnap) {
                 let regContData = regContSnap.val();
@@ -287,69 +289,44 @@ router.post('/balance_sheet/controls/view', function (req, res, next) {
                     keys.forEach(function (key, loopInd1, array1) {
                         let item = regContData[key];
                         refCont.child(item.key).once('value', function (contSnap) {
-                            let contData = contSnap.val();
-                            let totalCr = item.credit;
-                            let totalDr = item.debit;
-                            item['contData'] = contData;
+                            item['contData'] = contSnap.val();
 
-                            refSubCont.orderByChild("cont_key").equalTo(item.key).once('value', function (subContSnap) {
-                                let subContData = subContSnap.val();
-                                if(subContData !== null){
-                                    item['subContData'] = subContData;
-                                    let subContKeys = Object.keys(subContData);
+                            refRegSubCont.child(data.sel_project).orderByChild("cont_key").equalTo(item.key).once('value', function (regSubContSnap) {
+                                let regSubContData = regSubContSnap.val();
+                                if(regSubContData !== null){
+                                    item['contData']['regSubContData'] = {};
+                                    item['contData']['regSubContData'] = regSubContData;
+                                    let regSubContKeys = Object.keys(regSubContData);
+                                    regSubContKeys.forEach(function (rscKey, loopInd2, array2) {
+                                        let rscItem = regSubContData[rscKey];
 
-                                    subContKeys.forEach(function (subContKey, loopInd2, array2) {
-                                        refRegSubCont.child(data.sel_project).orderByChild("key").equalTo(subContKey).once("value", function (regSubContSnap) {
-                                            let regSubContData = regSubContSnap.val();
-                                            if(regSubContData !== null){
-                                                let keys = Object.keys(regSubContData);
-                                                item['subContData'][subContKey]['code'] = keys[0];
-                                                item['subContData'][subContKey]['credit'] = regSubContData[keys[0]].credit;
-                                                item['subContData'][subContKey]['debit'] = regSubContData[keys[0]].debit;
-                                            }
+                                        refSubCont.child(rscItem.key).once('value', function (subContSnap) {
+                                            let subContData = subContSnap.val();
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = {};
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = subContData;
 
-                                            refSubsidiary.orderByChild("sub_cont_key").equalTo(subContKey).once('value', function (subsSnap) {
-                                                let subsData = subsSnap.val();
+                                            refRegSubsidiary.child(data.sel_project).orderByChild("sub_cont_key").equalTo(rscItem.key).once('value', function (regSubsSnap) {
+                                                let regSubsData = regSubsSnap.val();
 
-                                                if(subsData !== null){
-                                                    item['subContData'][subContKey]['subsData'] = {};
-                                                    item['subContData'][subContKey]['subsData'] = subsData;
-                                                    let subsKeys = Object.keys(subsData);
+                                                if(regSubsData !== null){
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = {};
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = regSubsData;
+                                                    let regSubsKeys = Object.keys(regSubsData);
+                                                    regSubsKeys.forEach(function (rssKey, loopInd3, array3) {
+                                                        let rssItem = regSubsData[rssKey];
 
-                                                    subsKeys.forEach(function (subsKey, loopInd3, array3) {
-                                                        refRegSubsidiary.child(data.sel_project).orderByChild("key").equalTo(subsKey).once('value', function (regSubsSnap) {
-                                                            let regSubsData = regSubsSnap.val();
+                                                        refSubsidiary.child(rssItem.key).once('value', function(subsSnap){
+                                                            let subsData = subsSnap.val();
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = {};
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = subsData;
 
-                                                            if(regSubsData !== null){
-                                                                let keys = Object.keys(regSubsData);
-                                                                item['subContData'][subContKey]['subsData'][subsKey]['code'] = keys[0];
-                                                                item['subContData'][subContKey]['subsData'][subsKey]['credit'] = regSubsData[keys[0]].credit;
-                                                                item['subContData'][subContKey]['subsData'][subsKey]['debit'] = regSubsData[keys[0]].debit;
+                                                            refVouchersEntries.orderByChild('code').equalTo(rssKey).once('value', function (voucherEntSnap) {
+                                                                let voucherEntData = voucherEntSnap.val();
 
-                                                                refVouchersEntries.orderByChild("code").equalTo(keys[0]).once('value', function (voucherEntSnap) {
-                                                                    let voucherEntData = voucherEntSnap.val();
-                                                                    if (voucherEntData !== null) {
-                                                                        let keys = Object.keys(voucherEntData);
-                                                                        item['subContData'][subContKey]['subsData'][subsKey]['entries'] = [];
-                                                                        keys.forEach(function (voucherEntKey) {
-                                                                            let voucherEntItem = voucherEntData[voucherEntKey];
-                                                                            item['subContData'][subContKey]['subsData'][subsKey]['entries'].push(voucherEntItem);
-                                                                        });
-                                                                    }
-                                                                    if(loopInd3 === array3.length-1){
-                                                                        if(loopInd2 === array2.length-1){
-                                                                            grabData[key] = item;
-                                                                            if(loopInd1 === array1.length-1){
-                                                                                res.render('pdf_templates/bs_controls_listing', {
-                                                                                    proName: proData.name,
-                                                                                    date: todayDate,
-                                                                                    data: grabData
-                                                                                });
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                });
-                                                            }else{
+                                                                if(voucherEntData !== null){
+                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
+                                                                }
+
                                                                 if(loopInd3 === array3.length-1){
                                                                     if(loopInd2 === array2.length-1){
                                                                         grabData[key] = item;
@@ -357,12 +334,15 @@ router.post('/balance_sheet/controls/view', function (req, res, next) {
                                                                             res.render('pdf_templates/bs_controls_listing', {
                                                                                 proName: proData.name,
                                                                                 date: todayDate,
-                                                                                data: grabData
+                                                                                data: grabData,
+                                                                                start_date: start_date,
+                                                                                end_date: end_date,
                                                                             });
+                                                                            //res.json(grabData);
                                                                         }
                                                                     }
                                                                 }
-                                                            }
+                                                            });
                                                         });
                                                     });
                                                 }else{
@@ -372,14 +352,15 @@ router.post('/balance_sheet/controls/view', function (req, res, next) {
                                                             res.render('pdf_templates/bs_controls_listing', {
                                                                 proName: proData.name,
                                                                 date: todayDate,
-                                                                data: grabData
+                                                                data: grabData,
+                                                                start_date: start_date,
+                                                                end_date: end_date,
                                                             });
+                                                            // res.json(grabData);
                                                         }
                                                     }
                                                 }
-
                                             });
-
                                         });
                                     });
                                 }else{
@@ -388,8 +369,249 @@ router.post('/balance_sheet/controls/view', function (req, res, next) {
                                         res.render('pdf_templates/bs_controls_listing', {
                                             proName: proData.name,
                                             date: todayDate,
-                                            data: grabData
+                                            data: grabData,
+                                            start_date: start_date,
+                                            end_date: end_date,
                                         });
+                                        // res.json(grabData);
+                                    }
+                                }
+                            });
+                        });
+                    });
+                }else {
+                    res.json({status: 'failed', message: "No Data Found!"});
+                }
+            });
+        });
+    }).catch(function (err) {
+        res.json({err: err, status: 'failed'});
+    });
+});
+
+router.post('/balance_sheet/sub_controls/view', function (req, res, next) {
+    admin.auth().verifyIdToken(req.body.auth).then(function (decodedToken) {
+        let data = req.body;
+        let bwDates = [new Date(data.start_date).getTime(), new Date(data.end_date).getTime()];
+        bwDates.sort();
+        refPro.child(data.sel_project).once('value').then(function (proSnap) {
+            let proData = proSnap.val();
+            let todayDate = moment().format('dddd, DD MMMM YYYY');
+            let start_date = moment(data.start_date).format("DD/MM/YYYY");
+            let end_date = moment(data.end_date).format("DD/MM/YYYY");
+
+            refRegCont.child(data.sel_project).once('value', function (regContSnap) {
+                let regContData = regContSnap.val();
+                if(regContData !== null){
+                    let keys = Object.keys(regContData);
+                    let grabData = {};
+                    keys.forEach(function (key, loopInd1, array1) {
+                        let item = regContData[key];
+                        refCont.child(item.key).once('value', function (contSnap) {
+                            item['contData'] = contSnap.val();
+
+                            refRegSubCont.child(data.sel_project).orderByChild("cont_key").equalTo(item.key).once('value', function (regSubContSnap) {
+                                let regSubContData = regSubContSnap.val();
+                                if(regSubContData !== null){
+                                    item['contData']['regSubContData'] = {};
+                                    item['contData']['regSubContData'] = regSubContData;
+                                    let regSubContKeys = Object.keys(regSubContData);
+                                    regSubContKeys.forEach(function (rscKey, loopInd2, array2) {
+                                        let rscItem = regSubContData[rscKey];
+
+                                        refSubCont.child(rscItem.key).once('value', function (subContSnap) {
+                                            let subContData = subContSnap.val();
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = {};
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = subContData;
+
+                                            refRegSubsidiary.child(data.sel_project).orderByChild("sub_cont_key").equalTo(rscItem.key).once('value', function (regSubsSnap) {
+                                                let regSubsData = regSubsSnap.val();
+
+                                                if(regSubsData !== null){
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = {};
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = regSubsData;
+                                                    let regSubsKeys = Object.keys(regSubsData);
+                                                    regSubsKeys.forEach(function (rssKey, loopInd3, array3) {
+                                                        let rssItem = regSubsData[rssKey];
+
+                                                        refSubsidiary.child(rssItem.key).once('value', function(subsSnap){
+                                                            let subsData = subsSnap.val();
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = {};
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = subsData;
+
+                                                            refVouchersEntries.orderByChild('code').equalTo(rssKey).once('value', function (voucherEntSnap) {
+                                                                let voucherEntData = voucherEntSnap.val();
+
+                                                                if(voucherEntData !== null){
+                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
+                                                                }
+
+                                                                if(loopInd3 === array3.length-1){
+                                                                    if(loopInd2 === array2.length-1){
+                                                                        grabData[key] = item;
+                                                                        if(loopInd1 === array1.length-1){
+                                                                            res.render('pdf_templates/bs_sub_controls_listing', {
+                                                                                proName: proData.name,
+                                                                                date: todayDate,
+                                                                                data: grabData,
+                                                                                start_date: start_date,
+                                                                                end_date: end_date,
+                                                                            });
+                                                                            //res.json(grabData);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                }else{
+                                                    if(loopInd2 === array2.length-1){
+                                                        grabData[key] = item;
+                                                        if(loopInd1 === array1.length-1){
+                                                            res.render('pdf_templates/bs_sub_controls_listing', {
+                                                                proName: proData.name,
+                                                                date: todayDate,
+                                                                data: grabData,
+                                                                start_date: start_date,
+                                                                end_date: end_date,
+                                                            });
+                                                            //res.json(grabData);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    });
+                                }else{
+                                    grabData[key] = item;
+                                    if(loopInd1 === array1.length-1){
+                                        res.render('pdf_templates/bs_sub_controls_listing', {
+                                            proName: proData.name,
+                                            date: todayDate,
+                                            data: grabData,
+                                            start_date: start_date,
+                                            end_date: end_date,
+                                        });
+                                        //res.json(grabData);
+                                    }
+                                }
+                            });
+                        });
+                    });
+                }else {
+                    res.json({status: 'failed', message: "No Data Found!"});
+                }
+            });
+        });
+    }).catch(function (err) {
+        res.json({err: err, status: 'failed'});
+    });
+});
+
+router.post('/balance_sheet/subsidiary/view', function (req, res, next) {
+    admin.auth().verifyIdToken(req.body.auth).then(function (decodedToken) {
+        let data = req.body;
+        let bwDates = [new Date(data.start_date).getTime(), new Date(data.end_date).getTime()];
+        bwDates.sort();
+        refPro.child(data.sel_project).once('value').then(function (proSnap) {
+            let proData = proSnap.val();
+            let todayDate = moment().format('dddd, DD MMMM YYYY');
+            let start_date = moment(data.start_date).format("DD/MM/YYYY");
+            let end_date = moment(data.end_date).format("DD/MM/YYYY");
+
+            refRegCont.child(data.sel_project).once('value', function (regContSnap) {
+                let regContData = regContSnap.val();
+                if(regContData !== null){
+                    let keys = Object.keys(regContData);
+                    let grabData = {};
+                    keys.forEach(function (key, loopInd1, array1) {
+                        let item = regContData[key];
+                        refCont.child(item.key).once('value', function (contSnap) {
+                            item['contData'] = contSnap.val();
+
+                            refRegSubCont.child(data.sel_project).orderByChild("cont_key").equalTo(item.key).once('value', function (regSubContSnap) {
+                                let regSubContData = regSubContSnap.val();
+                                if(regSubContData !== null){
+                                    item['contData']['regSubContData'] = {};
+                                    item['contData']['regSubContData'] = regSubContData;
+                                    let regSubContKeys = Object.keys(regSubContData);
+                                    regSubContKeys.forEach(function (rscKey, loopInd2, array2) {
+                                        let rscItem = regSubContData[rscKey];
+
+                                        refSubCont.child(rscItem.key).once('value', function (subContSnap) {
+                                            let subContData = subContSnap.val();
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = {};
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = subContData;
+
+                                            refRegSubsidiary.child(data.sel_project).orderByChild("sub_cont_key").equalTo(rscItem.key).once('value', function (regSubsSnap) {
+                                                let regSubsData = regSubsSnap.val();
+
+                                                if(regSubsData !== null){
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = {};
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = regSubsData;
+                                                    let regSubsKeys = Object.keys(regSubsData);
+                                                    regSubsKeys.forEach(function (rssKey, loopInd3, array3) {
+                                                        let rssItem = regSubsData[rssKey];
+
+                                                        refSubsidiary.child(rssItem.key).once('value', function(subsSnap){
+                                                            let subsData = subsSnap.val();
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = {};
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = subsData;
+
+                                                            refVouchersEntries.orderByChild('code').equalTo(rssKey).once('value', function (voucherEntSnap) {
+                                                                let voucherEntData = voucherEntSnap.val();
+
+                                                                if(voucherEntData !== null){
+                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
+                                                                }
+
+                                                                if(loopInd3 === array3.length-1){
+                                                                    if(loopInd2 === array2.length-1){
+                                                                        grabData[key] = item;
+                                                                        if(loopInd1 === array1.length-1){
+                                                                            res.render('pdf_templates/bs_subsidiary_listing', {
+                                                                                proName: proData.name,
+                                                                                date: todayDate,
+                                                                                data: grabData,
+                                                                                start_date: start_date,
+                                                                                end_date: end_date,
+                                                                            });
+                                                                            //res.json(grabData);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                }else{
+                                                    if(loopInd2 === array2.length-1){
+                                                        grabData[key] = item;
+                                                        if(loopInd1 === array1.length-1){
+                                                            res.render('pdf_templates/bs_subsidiary_listing', {
+                                                                proName: proData.name,
+                                                                date: todayDate,
+                                                                data: grabData,
+                                                                start_date: start_date,
+                                                                end_date: end_date,
+                                                            });
+                                                            //res.json(grabData);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    });
+                                }else{
+                                    grabData[key] = item;
+                                    if(loopInd1 === array1.length-1){
+                                        res.render('pdf_templates/bs_subsidiary_listing', {
+                                            proName: proData.name,
+                                            date: todayDate,
+                                            data: grabData,
+                                            start_date: start_date,
+                                            end_date: end_date,
+                                        });
+                                        //res.json(grabData);
                                     }
                                 }
                             });
@@ -425,4 +647,18 @@ function bwDatesEntries(bwDates, objEnt){
         }
     });
     return { newEnt: newGrabEnt, balance: {balCr: balCr, balDr: balDr} };
+}
+
+function bwDatesEntObj(bwDates, entries){
+    let keys = Object.keys(entries);
+    let totCr = 0;
+    let totDr = 0;
+    keys.forEach(function (key) {
+        let item = entries[key];
+        if(item.v_date >= bwDates[0] && item.v_date <= bwDates[1]){
+            totCr += item.credit;
+            totDr += item.debit;
+        }
+    });
+    return {credit: totCr, debit: totDr};
 }

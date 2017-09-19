@@ -2,7 +2,7 @@ doctype html
 html(lang='en')
     head
         meta(charset="UTF-8")
-        title FocusMedia360° - Management | Balance Sheet - Controls Listing
+        title FocusMedia360° - Management | Balance Sheet - Sub Controls Listing
 
         link(rel='apple-touch-icon', sizes='57x57', href='/assets/images/favicon/apple-icon-57x57.png')
         link(rel='apple-touch-icon', sizes='60x60', href='/assets/images/favicon/apple-icon-60x60.png')
@@ -53,7 +53,7 @@ html(lang='en')
                         .col-sm-8
                             .col-sm-8
                                 h1.mainTitle(style='font-size: 38.02px;') Balance Sheet
-                                span.mainDescription(style='font-size: 19px;color: #ec5d58;') Controls Listing
+                                span.mainDescription(style='font-size: 19px;color: #ec5d58;') Sub Controls Listing
             .row.padding-30
                 .col-md-12
                     .panel.panel-white.no-radius
@@ -75,16 +75,24 @@ html(lang='en')
                                         - var totCr = item.credit; var totDr = item.debit;
                                         if item.contData.regSubContData
                                             each subItem, sid in item.contData.regSubContData
+                                                - var scTotCr = subItem.credit; var scTotDr = subItem.debit;
                                                 - totCr += subItem.credit; totDr += subItem.debit;
                                                 if subItem.subContData.regSubsData
                                                     each ssItem, ssid in subItem.subContData.regSubsData
+                                                        - scTotCr += ssItem.credit; scTotDr += ssItem.debit;
                                                         - totCr += ssItem.credit; totDr += ssItem.debit;
                                                         if ssItem.subsData.entries_data
+                                                            - scTotCr += ssItem.subsData.entries_data.credit; scTotDr += ssItem.subsData.entries_data.debit;
                                                             - totCr += ssItem.subsData.entries_data.credit; totDr += ssItem.subsData.entries_data.debit;
+                                                tr
+                                                    td #{sid}
+                                                    td #{subItem.subContData.name}
+                                                    td #{scTotDr}
+                                                    td #{scTotCr}
                                         - grTotCr += totCr; grTotDr += totDr;
-                                        tr
-                                            td #{id}
-                                            td #{item.contData.name}
+                                        tr(style="font-weight:bold;")
+                                            td Total Control
+                                            td #{id+" "+item.contData.name}
                                             td #{totDr}
                                             td #{totCr}
                                     tr(style="font-weight:bold;")
@@ -93,7 +101,7 @@ html(lang='en')
                                         td #{grTotCr}
                                     tr(style="font-weight:bold;")
                                         td(colspan=2 style="text-align:right;") Difference
-                                        td #{((grTotDr - grTotCr) > -1) ? grTotDr - grTotCr: ''}
-                                        td #{((grTotDr - grTotCr) < 0) ? grTotDr - grTotCr: ''}
+                                        td #{((grTotDr - grTotCr) > -1) ? grTotDr - grTotCr : ''}
+                                        td #{((grTotDr - grTotCr) < 0) ? grTotDr - grTotCr : ''}
                             button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;") Save
                             button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
