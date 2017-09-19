@@ -18,11 +18,13 @@ export default {
                 {
                     title: "Dashboard",
                     href: "/",
+                    class: "dashboard",
                     icon: "<i class='ti-home'></i>"
                 },
                 {
                     title: "Master Files",
                     href: "#",
+                    class: "master_file",
                     event: this.navParentClick,
                     icon: "<img class='icon-media' src='/assets/images/icons/masterFiles.png'/>",
                     children: [
@@ -54,6 +56,7 @@ export default {
                 {
                     title: "Master Listing",
                     href: "#",
+                    class: "master_listing",
                     event: this.navParentClick,
                     icon: "<img class='icon-media' src='/assets/images/icons/masterListings.png'/>",
                     children: [
@@ -81,6 +84,7 @@ export default {
                 {
                     title: "Transaction Files",
                     href: "#",
+                    class: "transaction_file",
                     event: this.navParentClick,
                     icon: "<img class='icon-media' src='/assets/images/icons/transaction.png'/>",
                     children: [
@@ -93,6 +97,7 @@ export default {
                 {
                     title: "Process",
                     href: "#",
+                    class: "process",
                     event: this.navParentClick,
                     icon: "<img class='icon-media' src='/assets/images/icons/process.png'/>",
                     children: [
@@ -105,6 +110,7 @@ export default {
                 {
                     title: "M.I.S Reports",
                     href: "#",
+                    class: "mis_reports",
                     event: this.navParentClick,
                     icon: "<img class='icon-media' src='/assets/images/icons/reports.png'/>",
                     children: [
@@ -117,6 +123,7 @@ export default {
                 {
                     title: "User Control",
                     href: "#",
+                    class: "user_control",
                     event: this.navParentClick,
                     icon: "<img class='icon-media' src='/assets/images/icons/user.png'/>",
                     children: [
@@ -190,9 +197,14 @@ export default {
                     }
                 }
             }else{
+
                 if(row.href === self.$route.path){
-                    grabClass = "active open";
+                    grabClass = "active open ";
                 }
+
+            }
+            if(row.class){
+                grabClass += row.class;
             }
             return grabClass;
         }
