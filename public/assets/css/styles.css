@@ -222,7 +222,7 @@ html {
 }
 
 body {
-  color: #8e8e93;
+  color: #000;
   direction: ltr;
   overflow-x: hidden;
   height: 100%;
@@ -289,7 +289,7 @@ h3, h4, h5 {
 h1, h2, h3, h4, h5 {
   font-weight: 300;
   margin-top: 0;
-  color: #5b5b60;
+  color: #000;
 }
 .text-bold h1, h1.text-bold, h1 .text-bold, .text-bold h2, h2.text-bold, h2 .text-bold, .text-bold h3, h3.text-bold, h3 .text-bold, .text-bold h4, h4.text-bold, h4 .text-bold, .text-bold h5, h5.text-bold, h5 .text-bold {
   font-weight: 600;
@@ -4025,7 +4025,7 @@ a.text-light:hover {
 .panel-white, .partition-white {
   background-color: #ffffff;
   position: relative;
-  color: #5b5b60;
+  color: #000;
   border: 1px solid rgba(0, 0, 0, 0.07);
 }
 
@@ -4833,17 +4833,17 @@ fieldset legend {
   margin: 0 auto;
 }
 .form-control::-moz-placeholder {
-  color: #c2c2c5;
+  color: #000;
   opacity: 1;
 }
 
 .form-control:-ms-input-placeholder {
-  color: #c2c2c5;
+  color: #000;
   opacity: 1;
 }
 
 .form-control::-webkit-input-placeholder {
-  color: #c2c2c5;
+  color: #000;
   opacity: 1;
 }
 
@@ -10174,7 +10174,7 @@ div.timeline .column_center .timeline_element:before, div.timeline .column_cente
 
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
   border-bottom: 1px solid #e2e2e4;
-  color: #5b5b60 !important;
+  color: #000 !important;
   border-top: none;
 }
 
@@ -12454,7 +12454,7 @@ body .panel input[type="url"],
 body .panel input[type="search"],
 body .panel input[type="tel"],
 body .panel input[type="color"]{
-  color:#c3c3c3 !important;
+  color: #000 !important;
   font-size:16px;
   border: 1px solid #dedede;
   height: auto;
@@ -12476,7 +12476,7 @@ body .panel-white {
 }
 body .panel label {
   font-weight: normal;
-  color: #858585;
+  color: #000000;
   font-size: 16px;
   width: 100%;
   text-transform: capitalize;
@@ -12741,7 +12741,7 @@ button[disabled], html input[disabled] {
 }
 .create-user .form-group select[multiple="multiple"]:focus option,
 .create-user .form-group select.form-control option:hover{
-  background:#555555;
+  background:#555555 !important;
   color:#ffffff;
 }
 .create-user .form-group select.form-control::-webkit-scrollbar-track
