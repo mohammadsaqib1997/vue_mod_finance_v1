@@ -37,6 +37,7 @@ html(lang='en')
         link(href='/vendor/perfect-scrollbar/perfect-scrollbar.min.css', rel='stylesheet', media='screen')
         link(href='/vendor/switchery/switchery.min.css', rel='stylesheet', media='screen')
 
+        link(rel='stylesheet', href='/assets/css/responsive.css')
         link(rel='stylesheet', href='/assets/css/styles.css')
         link(rel='stylesheet', href='/assets/css/plugins.css')
         link#skin_color(rel='stylesheet', href='/assets/css/themes/theme-1.css')
@@ -62,7 +63,7 @@ html(lang='en')
                                 h6.pull-right.text-right.padding-15 Create Date: #{date}
                                 h6.pull-right.text-right.padding-15 Period: #{start_date} - #{end_date}
                             .panel-body.padding-30
-                                table.table.table-striped.misreport(cellpadding='5' style='width:100%;' border=1)
+                                table.table-responsive.table.table-striped.misreport(cellpadding='5' style='width:100%;' border=1)
                                     tr.background-e2e8f0.no-border
                                         th.col-md-1 Date
                                         th.col-md-1 Docment No.
