@@ -11787,6 +11787,18 @@ div#control-list .the-icons .col-md-12.col-sm-12 > .row > .col-md-12.col-sm-12 >
   }
 
 }
+@media print {
+  .border-right{
+    border:0px !important;
+  }
+  img.logo-image {
+    width: 230px !important;
+    margin-bottom:20px !important;
+  }
+  .detailreports button{
+    display:none !important;
+  }
+}
 
 /* Custom css */
 body .ui-tooltip {

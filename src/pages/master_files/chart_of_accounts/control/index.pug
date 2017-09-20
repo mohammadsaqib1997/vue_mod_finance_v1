@@ -1,7 +1,7 @@
 #container.wrap-content.container
     section#page-title
         .row
-            .col-sm-8
+            .col-xs-12.col-sm-12.col-md-8.col-lg-8
                 h1.mainTitle Master Files
                 span.mainDescription Chart of Accounts
             ol.breadcrumb
@@ -14,11 +14,11 @@
     .container-fluid.container-fullw.bg-offwhite
         form#form(v-on:submit.prevent='updateContEntry')
             .row
-                .col-md-12
+                .col-xs-12.col-sm-12.col-md-12.col-lg-12
                     .panel.panel-white.no-radius
                         .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
                             h4.panel-title.pull-left.padding-15 Daily Reports
-                            .text-right
+                            .text-right.pull-right
                                 a.btn.btn-tabbutton(href='#', data-toggle='modal', data-target='#add_control')
                                     img.tab-icon(src='assets/images/icons/tabicon1.png')
                                     | Add New Control
@@ -30,24 +30,24 @@
                                     | Add New Subsidiary
                         .panel-body
                             .row
-                                .col-md-12
+                                .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                     p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
                                     p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
-                                .col-md-12
+                                .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                     .form-group
                                         .row
-                                            .col-md-10(v-if='dataLoad1')
+                                            .col-xs-12.col-sm-10.col-md-10.col-lg-10(v-if='dataLoad1')
                                                 .text-center
                                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                             template(v-if='!dataLoad1')
-                                                .col-md-3
+                                                .col-xs-12.col-sm-3.col-md-3.col-lg-3
                                                     input.form-control(type='text', placeholder='ID of project', disabled='disabled', v-bind:value='getObjId(sel_project, proData)')
-                                                .col-md-7
+                                                .col-xs-12.col-sm-7.col-md-7.col-lg-7
                                                     select.form-control(v-model='sel_project')
                                                         option(value='') Select Project
                                                         option(v-for='(row, key, ind) in proData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
-                                            .col-md-2.icon-container
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container
                                                 ul.ul-action
                                                     li(v-if="sel_project === ''")
                                                         a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_project')
@@ -58,30 +58,30 @@
                                                             i.ti-pencil
                                     .form-group
                                         .row
-                                            .col-md-10(v-if='dataLoad2')
+                                            .col-xs-12.col-sm-10.col-md-10.col-lg-10(v-if='dataLoad2')
                                                 .text-center
                                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                             template(v-if='!dataLoad2')
-                                                .col-md-3
+                                                .col-xs-12.col-sm-3.col-md-3.col-lg-3
                                                     input.form-control(type='text', placeholder='ID of Control number', disabled='disabled', v-bind:value='(sel_control !== "") ? ("00"+getObjId(sel_control, controlData)).slice(-3):""')
-                                                .col-md-7
+                                                .col-xs-12.col-sm-7.col-md-7.col-lg-7
                                                     select.form-control(v-model='sel_control')
                                                         option(value='') Select Control
                                                         option(v-for='(row, key, ind) in controlData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
-                                            .col-md-2.icon-container(v-if="sel_control === ''")
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container(v-if="sel_control === ''")
                                                 ul.ul-action
                                                     li
                                                         a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#proj_sel_control')
                                                             i.ti-plus
                             template(v-if='dataLoad3')
                                 .row
-                                    .col-md-3
+                                    .col-xs-12.col-sm-3.col-md-3.col-lg-3
                                         .text-center
                                             i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                             template(v-if='!dataLoad3 && sel_control !== ""')
                                 .row
-                                    .col-md-3
+                                    .col-xs-12.col-sm-3.col-md-3.col-lg-3
                                         .form-group
                                             label.control-label
                                                 | Open Debit
@@ -89,7 +89,7 @@
                                             input.form-control(type='text', v-model='debit')
                                             p.text-danger.text-right(v-if='validation.hasError("debit")') {{ validation.firstError('debit') }}
                                 .row
-                                    .col-md-3
+                                    .col-xs-12.col-sm-3.col-md-3.col-lg-3
                                         .form-group
                                             label.control-label
                                                 | Open Credit
@@ -97,7 +97,7 @@
                                             input.form-control(type='text', v-model='credit')
                                             p.text-danger.text-right(v-if='validation.hasError("credit")') {{ validation.firstError('credit') }}
                                 .row
-                                    .col-md-4.pull-left
+                                    .col-xs-12.col-sm-4.col-md-4.col-lg-4.pull-left
                                         button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='submit', v-if='!inProcess && !dataLoad3') Update
                                         button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='button', disabled='disabled', v-if='inProcess || dataLoad3')
                                             i.fa.fa-refresh.fa-spin.fa-fw

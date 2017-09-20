@@ -1,7 +1,7 @@
 #container.wrap-content.container
     section#page-title
         .row
-            .col-sm-8
+            .col-xs-12.col-sm-12.col-md-8.col-lg-8
                 h1.mainTitle Master Files
                 span.mainDescription Chart of Accounts
             ol.breadcrumb
@@ -11,30 +11,30 @@
                     span Master Detail
     .container-fluid.container-fullw.bg-offwhite
         .row.master_details
-            .col-md-12
+            .col-xs-12.col-sm-12.col-md-12.col-lg-12
                 .panel.panel-white.no-radius
                     .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
                         h4.panel-title.pull-left.padding-15 Master Detail
                     .panel-body
                         .row
-                            .col-md-12
+                            .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                 .form-group
                                     .row
-                                        .col-md-4
+                                        .col-xs-12.col-sm-12.col-md-4.col-lg-4
                                             .text-center(v-if='dataLoad5')
                                                 i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                             select.form-control(v-else='v-else', v-model='sel_master_det')
                                                 option(value='') Select Master Detail
                                                 option(v-for='(row, key, ind) in masterDetailsData', v-bind:value='key') {{ row.allotee_code }} | {{ row.allotee_name }}
-                            .col-md-12
+                            .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                 p.alert.alert-danger(v-if="errMain !== ''") {{ errMain }}
                                 p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
-                            .col-md-12
+                            .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                 .row
-                                    .col-md-12
+                                    .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                         h3.p_subheading Person Details
                                 .row
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Project
                                             template(v-if='updateV')
@@ -47,11 +47,11 @@
                                                         option(value='') Select Project
                                                         option(v-for='(row, key, ind) in proData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Broker
                                             .row
-                                                .col-md-9
+                                                .col-xs-12.col-sm-10.col-md-9.col-lg-9
                                                     .text-center(v-if='dataLoad2')
                                                         i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                                     template(v-else='v-else')
@@ -59,12 +59,12 @@
                                                             option(value='') Select Broker
                                                             option(v-for='(row, key, ind) in brokersData', v-bind:value='key') {{ row.name }} | {{ row.contact_num }}
                                                         p.text-danger.text-right(v-if='validation.hasError("sel_broker")') {{ validation.firstError('sel_broker') }}
-                                                .col-md-3.icon-container
+                                                .col-xs-12.col-sm-2.col-md-3.col-lg-3.icon-container
                                                     ul.ul-action
                                                         li
                                                             a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_broker')
                                                                 i.ti-plus
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Type
                                             .text-center(v-if='dataLoad3')
@@ -78,7 +78,7 @@
                                             .form-group
                                                 label {{ proTypesData[sel_type].name }} No.
                                                 .row
-                                                    .col-md-10
+                                                    .col-xs-12.col-sm-10.col-md-10.col-lg-10
                                                         .text-center(v-if='dataLoad4')
                                                             i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                                         template(v-else='v-else')
@@ -88,123 +88,123 @@
                                                             p.text-danger.text-right(v-if='validation.hasError("sel_pro_type_no")') {{ validation.firstError('sel_pro_type_no') }}
                                                             .text-right(v-if='validation.isValidating("sel_pro_type_no")')
                                                                 i.fa.fa-spinner.fa-spin
-                                                    .col-md-2.icon-container
+                                                    .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container
                                                         ul.ul-action
                                                             li
                                                                 a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_type_items')
                                                                     i.ti-plus
                                 .row
-                                    .col-md-12
+                                    .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                         h3.p_subheading Allotee Details
                                 .row
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Allotee Code
                                             input.form-control(type='text', v-model='allotee_code', placeholder='Enter your Allotee Code')
                                             p.text-danger.text-right(v-if='validation.hasError("allotee_code")') {{ validation.firstError('allotee_code') }}
                                             .text-right(v-if='validation.isValidating("allotee_code")')
                                                 i.fa.fa-spinner.fa-spin
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Allotee Name
                                             input.form-control(type='text', v-model='allotee_name', placeholder='Enter your Allotee Name')
                                             p.text-danger.text-right(v-if='validation.hasError("allotee_name")') {{ validation.firstError('allotee_name') }}
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Contact No.
                                             input.form-control(type='text', v-model='contact_no', placeholder='Enter your Contact Number')
                                             p.text-danger.text-right(v-if='validation.hasError("contact_no")') {{ validation.firstError('contact_no') }}
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label E-Mail
                                             input.form-control(type='text', v-model='allotee_email', placeholder='Enter your E-Mail')
                                             p.text-danger.text-right(v-if='validation.hasError("allotee_email")') {{ validation.firstError('allotee_email') }}
                                 .row
-                                    .col-md-12
+                                    .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                         h3.p_subheading Booking Details
                                 .row
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Document Year
                                             select.form-control(v-model='doc_year')
                                                 option(value='') Select Document Year
                                                 option(v-for='n in 50', v-bind:value='"20"+("0"+n).slice(-2)') {{ "20"+("0"+n).slice(-2) }}
                                             p.text-danger.text-right(v-if='validation.hasError("doc_year")') {{ validation.firstError('doc_year') }}
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Booking Date
                                             input.form-control.datepicker.booking_date(type='text', placeholder='Enter your Booking Date')
                                             p.text-danger.text-right(v-if='validation.hasError("booking_date")') {{ validation.firstError('booking_date') }}
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Selling Price
                                             input.form-control(type='text', v-model='selling_price', placeholder='Enter your Selling Price')
                                             p.text-danger.text-right(v-if='validation.hasError("selling_price")') {{ validation.firstError('selling_price') }}
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Booking Amount
                                             input.form-control(type='text', v-model='booking_amount', placeholder='Enter your Booking Amount')
                                             p.text-danger.text-right(v-if='validation.hasError("booking_amount")') {{ validation.firstError('booking_amount') }}
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Installment
                                             input.form-control(type='text', v-model='payment_installment', placeholder='Enter your Installment')
                                             p.text-danger.text-right(v-if='validation.hasError("payment_installment")') {{ validation.firstError('payment_installment') }}
-                                    .col-md-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
                                             label Payment Plan
                                             input.form-control(type='text', v-bind:value='payment_plan', placeholder='Enter your Payment Plan', disabled='disabled')
                                 .row
-                                    .col-md-12
+                                    .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                         h3.p_subheading Account Details
                                 .text-center(v-if='dataLoad6')
                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
                                 template(v-else='v-else')
                                     .detail-heading
                                         .row
-                                            .col-md-1.padding-right-0
+                                            .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-right-0
                                                 .padding-5 Code
-                                            .col-md-2
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2
                                                 .padding-5 Account Description
-                                            .col-md-4
+                                            .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                 .padding-5 Remark
-                                            .col-md-1
+                                            .col-xs-12.col-sm-1.col-md-1.col-lg-1
                                                 .padding-5 Quantity
-                                            .col-md-2
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2
                                                 .padding-5 Debit
-                                            .col-md-2.padding-left-0
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-left-0
                                                 .padding-5 Credit
                                     .detail-Content.form-group
                                         template(v-for='row, ind in rows')
                                             .row(v-bind:class='"row-"+ind')
-                                                .col-md-1.padding-right-0
+                                                .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-right-0
                                                     get-codes(v-bind:project='sel_project', v-bind:code='row.code', v-on:name_change='changeCode($event, ind)')
-                                                .col-md-2.padding-none
+                                                .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
                                                     get-subs-name(v-bind:project='sel_project' v-bind:name='row.code_name' v-on:name_change="changeSubName($event, ind)")
-                                                .col-md-4.padding-none
+                                                .col-xs-12.col-sm-4.col-md-4.col-lg-4.padding-none
                                                     input.form-control(type='text', v-model='row.remarks')
-                                                .col-md-1.padding-none
+                                                .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-none
                                                     input.form-control(type='text', v-model='row.quantity')
-                                                .col-md-2.padding-none
+                                                .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
                                                     input.form-control(type='text', v-model='row.debit')
-                                                .col-md-2.padding-left-0
+                                                .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-left-0
                                                     input.form-control(type='text', v-model='row.credit')
                                         .row.Total
-                                            .col-md-2.padding-right-0
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-right-0
                                                 p.margin-bottom-0.text-center(style='line-height: 48px;font-size: 14px;color: #545454;')
                                                     | JV Difference
                                                     | < Debit / Credit >
-                                            .col-md-2.padding-none
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
                                                 input.form-control(type='text', disabled='disabled', v-bind:value='total_debit - total_credit')
-                                            .col-md-2.padding-none
-                                            .col-md-2.padding-none
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
                                                 h3.margin-bottom-0(style='line-height: 48px;text-transform: uppercase;font-size: 14px;text-align: right;padding-right: 20px;font-weight: 600;') Total
-                                            .col-md-2.padding-none
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
                                                 input.form-control(type='text', v-bind:value='total_debit', disabled='disabled')
-                                            .col-md-2.padding-left-0
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-left-0
                                                 input.form-control(type='text', v-bind:value='total_credit', disabled='disabled')
                         .row
-                            .col-md-4.pull-left
+                            .col-xs-12.col-sm-12.col-md-4.col-lg-4.pull-left
                                 button.btn.btn-primary.btn-wide.pull-right(v-if='inProcess', type='button', disabled='disabled')
                                     i.fa.fa-refresh.fa-spin.fa-fw
                                 template(v-else='v-else')

@@ -14,12 +14,14 @@
                             .col-md-12
                                 div.text-center(v-if='dataLoad1')
                                     i.fa.fa-refresh.fa-spin.fa-1x.fa-fw
+                                label Control Name
                                 select.form-control(v-else v-model='sel_control')
                                     option(value='') Select Control
                                     option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
                                 p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
                         .row.margin-bottom-10
                             .col-md-12
+                                label Sub Control Name
                                 input.form-control(type='text', placeholder='Sub Control Name' v-model="sub_cont_name")
                                 p.text-danger.text-right(v-if='validation.hasError("sub_cont_name")') {{ validation.firstError('sub_cont_name') }}
                                 .text-right(v-if='validation.isValidating("sub_cont_name")')

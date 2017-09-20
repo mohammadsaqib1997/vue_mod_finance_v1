@@ -14,6 +14,7 @@
                             .col-md-12
                                 div.text-center(v-if='dataLoad1')
                                     i.fa.fa-refresh.fa-spin.fa-1x.fa-fw
+                                label Control Name
                                 select.form-control(v-else v-model='sel_control')
                                     option(value='') Select Control
                                     option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
@@ -22,12 +23,14 @@
                             .col-md-12
                                 div.text-center(v-if='dataLoad2')
                                     i.fa.fa-refresh.fa-spin.fa-1x.fa-fw
+                                label Sub Control Name
                                 select.form-control(v-else v-model='sel_sub_control')
                                     option(value='') Select Sub Control
                                     option(v-for='(row, key, ind) in subControlData' v-bind:value='key') {{ row.name }}
                                 p.text-danger.text-right(v-if='validation.hasError("sel_sub_control")') {{ validation.firstError('sel_sub_control') }}
                         .row.margin-bottom-10
                             .col-md-12
+                                label Subsidiary Name
                                 input.form-control(type='text', placeholder='Subsidiary Name' v-model="subsidiary_name")
                                 p.text-danger.text-right(v-if='validation.hasError("subsidiary_name")') {{ validation.firstError('subsidiary_name') }}
                                 .text-right(v-if='validation.isValidating("subsidiary_name")')

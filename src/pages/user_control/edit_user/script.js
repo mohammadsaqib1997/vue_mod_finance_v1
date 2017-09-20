@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt-nodejs'
 import SimpleVueValidation from 'simple-vue-validator'
 import Promise from 'bluebird'
 
-import comCities from '../../../partials/components/get_cities/get_cities.vue'
+import comUserCities from '../../../partials/components/get_user_cities/get_user_cities.vue'
 
 const Validator = SimpleVueValidation.Validator;
 const saltRounds = 10;
@@ -268,6 +268,6 @@ export default {
         }
     },
     components: {
-        "com_cities": comCities
+        "com_cities": comUserCities
     }
 }

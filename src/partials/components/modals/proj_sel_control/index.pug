@@ -14,6 +14,7 @@
                             .col-md-12
                                 div.text-center(v-if='dataLoad1')
                                     i.fa.fa-refresh.fa-spin.fa-1x.fa-fw
+                                label Project Name
                                 select.form-control(v-else v-model='sel_project')
                                     option(value='') Select Project
                                     option(v-for='(row, key, ind) in projectData' v-bind:value='key') {{ row.name }}
@@ -22,6 +23,7 @@
                             .col-md-12
                                 div.text-center(v-if='dataLoad2')
                                     i.fa.fa-refresh.fa-spin.fa-1x.fa-fw
+                                label Control Name
                                 select.form-control(v-else v-model='sel_control')
                                     option(value='') Select Control
                                     option(v-for='(row, key, ind) in controlData' v-bind:value='key') {{ row.name }}
@@ -31,10 +33,12 @@
                         .row.margin-bottom-10
                             .col-md-12
                                 .form-group
+                                    label Debit
                                     input.form-control(type='text', v-model='debit')
                         .row.margin-bottom-10
                             .col-md-12
                                 .form-group
+                                    label Credit
                                     input.form-control(type='text', v-model='credit')
                     button.btn.btn-primary(type='submit' v-if="!inProcess")
                         | Add
