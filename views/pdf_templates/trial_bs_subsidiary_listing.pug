@@ -1,0 +1,149 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset="UTF-8")
+        title FocusMedia360° - Management | Trial Balance - Subsidiary Listing
+
+        link(rel='apple-touch-icon', sizes='57x57', href='/assets/images/favicon/apple-icon-57x57.png')
+        link(rel='apple-touch-icon', sizes='60x60', href='/assets/images/favicon/apple-icon-60x60.png')
+        link(rel='apple-touch-icon', sizes='72x72', href='/assets/images/favicon/apple-icon-72x72.png')
+        link(rel='apple-touch-icon', sizes='76x76', href='/assets/images/favicon/apple-icon-76x76.png')
+        link(rel='apple-touch-icon', sizes='114x114', href='/assets/images/favicon/apple-icon-114x114.png')
+        link(rel='apple-touch-icon', sizes='120x120', href='/assets/images/favicon/apple-icon-120x120.png')
+        link(rel='apple-touch-icon', sizes='144x144', href='/assets/images/favicon/apple-icon-144x144.png')
+        link(rel='apple-touch-icon', sizes='152x152', href='/assets/images/favicon/apple-icon-152x152.png')
+        link(rel='apple-touch-icon', sizes='180x180', href='/assets/images/favicon/apple-icon-180x180.png')
+        link(rel='icon', type='image/png', sizes='192x192', href='/assets/images/favicon/android-icon-192x192.png')
+        link(rel='icon', type='image/png', sizes='32x32', href='/assets/images/favicon/favicon-32x32.png')
+        link(rel='icon', type='image/png', sizes='96x96', href='/assets/images/favicon/favicon-96x96.png')
+        link(rel='icon', type='image/png', sizes='16x16', href='/assets/images/favicon/favicon-16x16.png')
+        link(rel='manifest', href='/manifest.json')
+        meta(name='msapplication-TileColor', content='#ffffff')
+        meta(name='msapplication-TileImage', content='/assets/images/favicon/ms-icon-144x144.png')
+        meta(name='theme-color', content='#ffffff')
+
+        meta(http-equiv='X-UA-Compatible', content='IE=edge,IE=9,IE=8,chrome=1')
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        meta(name='apple-mobile-web-app-status-bar-style', content='black')
+        meta(content='', name='description')
+        meta(content='', name='author')
+
+        link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/vendor/fontawesome/css/font-awesome.min.css')
+        link(rel='stylesheet', href='/vendor/themify-icons/themify-icons.min.css')
+        link(href='/vendor/animate.css/animate.min.css', rel='stylesheet', media='screen')
+        link(href='/vendor/perfect-scrollbar/perfect-scrollbar.min.css', rel='stylesheet', media='screen')
+        link(href='/vendor/switchery/switchery.min.css', rel='stylesheet', media='screen')
+
+        link(rel='stylesheet', href='/assets/css/styles.css')
+        link(rel='stylesheet', href='/assets/css/plugins.css')
+        link#skin_color(rel='stylesheet', href='/assets/css/themes/theme-1.css')
+        link(href='/vendor/jquery-ui/jquery-ui-1.10.1.custom.min.css', rel='stylesheet', media='screen')
+        link(href='/assets/css/bootstrap-datepicker.min.css', rel='stylesheet', media='screen')
+
+    body.detailreports
+        .bg-offwhite
+            #container.wrap-content.container-fluid
+                section#page-title
+                    .row
+                        .col-md-2.border-right(style='border-color: #aeaeae;')
+                            img(src='http://localhost:3000/assets/images/logo.png', style='width: 100%;max-width:230px;')
+                        .col-sm-8
+                            .col-sm-8
+                                h1.mainTitle(style='font-size: 38.02px;') Trial Balance
+                                span.mainDescription(style='font-size: 19px;color: #ec5d58;') Subsidiary Listing
+            .row.padding-30
+                .col-md-12
+                    .panel.panel-white.no-radius
+                        .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
+                            h4.panel-title.pull-left.padding-15 Project Name: #{proName}
+                            h6.pull-right.text-right.padding-15 Create Date: #{date}
+                            h6.pull-right.text-right.padding-15 Period: #{start_date} - #{end_date}
+                        .panel-body.padding-30
+                            table.table.table-striped.table-responsive.misreport(cellpadding='5' style='width:100%;' border=1)
+                                tbody
+                                    tr.no-border
+                                        th(colspan=2)
+                                        th.text-center(colspan=2) Opening
+                                        th.text-center(colspan=2) Activity During Period
+                                        th.text-center(colspan=2) Closing
+                                    tr.background-e2e8f0.no-border
+                                        th(style='width:10%;') Code
+                                        th(style='width:30%;') Account Description
+                                        th(style='width:10%;') Debit Balance
+                                        th(style='width:10%;') Credit Balance
+                                        th(style='width:10%;') Debit Activity
+                                        th(style='width:10%;') Credit Activity
+                                        th(style='width:10%;') Debit Balance
+                                        th(style='width:10%;') Credit Balance
+
+                                    - var grTotCr = 0; var grTotDr = 0;
+                                    - var grTotOCr = 0; var grTotODr = 0;
+                                    - var grTotCCr = 0; var grTotCDr = 0;
+                                    each item, id in data
+                                        - var totCr = 0; var totDr = 0;
+                                        - var totOCr = 0; var totODr = 0;
+                                        - var totCCr = 0; var totCDr = 0;
+                                        if item.contData.regSubContData
+                                            each subItem, sid in item.contData.regSubContData
+                                                - var scTotCr = 0; var scTotDr = 0;
+                                                - var scTotOCr = 0; var scTotODr = 0;
+                                                - var scTotCCr = 0; var scTotCDr = 0;
+                                                if subItem.subContData.regSubsData
+                                                    each ssItem, ssid in subItem.subContData.regSubsData
+                                                        - var ssTotCr = 0; var ssTotDr = 0;
+                                                        if ssItem.subsData.entries_data
+                                                            - ssTotCr += ssItem.subsData.entries_data.credit; ssTotDr += ssItem.subsData.entries_data.debit;
+                                                            - scTotCr += ssItem.subsData.entries_data.credit; scTotDr += ssItem.subsData.entries_data.debit;
+                                                        - var bal = (ssItem.debit + ssTotDr)-(ssItem.credit + ssTotCr)
+                                                        - scTotOCr += ssItem.credit; scTotODr += ssItem.debit;
+                                                        - scTotCCr += (bal < 0) ? -(bal) : 0; scTotCDr += (bal > -1) ? bal : 0;
+                                                        tr
+                                                            td #{ssid}
+                                                            td #{ssItem.subsData.name}
+                                                            td #{ssItem.debit}
+                                                            td #{ssItem.credit}
+                                                            td #{ssTotDr}
+                                                            td #{ssTotCr}
+                                                            td #{(bal > -1) ? bal : 0}
+                                                            td #{(bal < 0) ? -(bal) : 0}
+                                                    - totOCr += scTotOCr; totODr += scTotODr;
+                                                    - totCCr += scTotCCr; totCDr += scTotCDr;
+                                                    - totCr += scTotCr; totDr += scTotDr;
+                                                    tr
+                                                        td Total Sub
+                                                        td #{sid+" "+subItem.subContData.name}
+                                                        td #{scTotODr}
+                                                        td #{scTotOCr}
+                                                        td #{scTotDr}
+                                                        td #{scTotCr}
+                                                        td #{scTotCDr}
+                                                        td #{scTotCCr}
+                                            - grTotCr += totCr; grTotDr += totDr;
+                                            - grTotODr += totODr; grTotOCr += totOCr;
+                                            - grTotCDr += totCDr; grTotCCr += totCCr;
+                                            tr(style="font-weight:bold;")
+                                                td Total Control
+                                                td #{id+" "+item.contData.name}
+                                                td #{totODr}
+                                                td #{totOCr}
+                                                td #{totDr}
+                                                td #{totCr}
+                                                td #{totCDr}
+                                                td #{totCCr}
+
+                                    tr(style="font-weight:bold;")
+                                        td(colspan=2 style="text-align:right;") Grand Total (Rs.)
+                                        td #{grTotODr}
+                                        td #{grTotOCr}
+                                        td #{grTotDr}
+                                        td #{grTotCr}
+                                        td #{grTotCDr}
+                                        td #{grTotCCr}
+                                    tr(style="font-weight:bold;")
+                                        td(colspan=7 style="text-align:right;") Difference
+                                        td #{grTotCDr - grTotCCr}
+                            button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;") Save
+                            button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
