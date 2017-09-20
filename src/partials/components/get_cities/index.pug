@@ -1,8 +1,8 @@
 div.form-group
-    .col-md-3
-        label.control-label(v-if="typeof label_con === 'undefined' || label_con")
-        | City
-    .col-md-9
+    .col-md-3(v-if="typeof label_con === 'undefined' || label_con")
+        label.control-label
+            | City
+    div(v-bind:class="(typeof label_con === 'undefined' || label_con) ? 'col-md-9':''")
         input.form-control.tooltips.typeahead(
             type='text'
             placeholder='Karachi'

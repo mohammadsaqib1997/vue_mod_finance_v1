@@ -27,7 +27,7 @@
                                 li(v-for="child in row.children" v-bind:class="checkActiveRoute(child)")
                                     template(v-if="child.href === '#'")
                                         a(v-bind:href="child.href" v-on:click.stop.prevent='child.event')
-                                            span {{ row.title }}
+                                            span {{ child.title }}
                                             i.icon-arrow(v-if="child.children")
                                         template(v-if="child.children && child.children.length > 0")
                                             ul.sub-menu

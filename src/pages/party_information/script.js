@@ -100,7 +100,7 @@ export default {
             return Validator.value(value).required().digit().lengthBetween(11, 11);
         },
         fax_num: function (value) {
-            return Validator.value(value).required().digit().maxLength(13);
+            return Validator.value(value).digit().maxLength(13);
         },
         email: function (value) {
             let self = this;
@@ -125,19 +125,19 @@ export default {
             });
         },
         nic_num: function (value) {
-            return Validator.value(value).required().digit().maxLength(13);
+            return Validator.value(value).digit().maxLength(13);
         },
         ntn_num: function (value) {
-            return Validator.value(value).required().digit().maxLength(8);
+            return Validator.value(value).digit().maxLength(8);
         },
         gst_num: function (value) {
-            return Validator.value(value).required().digit().maxLength(13);
+            return Validator.value(value).digit().maxLength(13);
         },
         cr_day: function (value) {
-            return Validator.value(value).required().digit().maxLength(3);
+            return Validator.value(value).digit().maxLength(3);
         },
         cr_limit: function (value) {
-            return Validator.value(value).required().digit().maxLength(8);
+            return Validator.value(value).digit().maxLength(8);
         },
     },
     methods: {

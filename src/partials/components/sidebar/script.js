@@ -115,6 +115,25 @@ export default {
                     icon: "<img class='icon-media' src='/assets/images/icons/reports.png'/>",
                     children: [
                         {
+                            title: "Balance Sheet",
+                            href: "#",
+                            event: this.navParentClick,
+                            children: [
+                                {
+                                    title: "Control",
+                                    href: "/balance_sheet/list_control"
+                                },
+                                {
+                                    title: "Sub Control",
+                                    href: "/balance_sheet/list_sub_control"
+                                },
+                                {
+                                    title: "Subsidiary",
+                                    href: "/balance_sheet/list_subsidiary"
+                                },
+                            ]
+                        },
+                        {
                             title: "Detailed Ledger",
                             href: "/detailed_ledger"
                         },
@@ -159,16 +178,14 @@ export default {
             }
             if(ancSel.length > 0){
                 let liSel = ancSel.parent();
-                liSel.parent().find('li.active.open').slideUp(200, function(){
-                    $(this).removeClass('active open');
+                liSel.parent().find('li.active ul').slideUp(200, function(){
+                    $(this).parent().removeClass('active open');
                 });
-                liSel.slideDown(200, function(){
-                    $(this).addClass('active open');
-                });
-                /*ancSel.closest("ul").find(".open").not(".active").children("ul").not(ancSel.next()).slideUp(200).parent('.open').removeClass("open");
-                if (ancSel.next().is('ul') && ancSel.parent().toggleClass('open')) {
-                    ancSel.next().slideToggle(200);
-                }*/
+                if(!liSel.hasClass("active open")){
+                    liSel.find('> ul').slideDown(200, function(){
+                        $(this).parent().addClass('active open');
+                    });
+                }
             }
         },
         checkActiveRoute: function (row) {
