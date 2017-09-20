@@ -114,25 +114,25 @@ html(lang='en')
                                                     - totCr += scTotCr; totDr += scTotDr;
                                                     tr
                                                         td Total Sub
-                                                        td #{sid+" "+subItem.subContData.name}
+                                                        td #{sid + " " + subItem.subContData.name}
                                                         td #{scTotODr}
                                                         td #{scTotOCr}
                                                         td #{scTotDr}
                                                         td #{scTotCr}
                                                         td #{scTotCDr}
                                                         td #{scTotCCr}
-                                            - grTotCr += totCr; grTotDr += totDr;
-                                            - grTotODr += totODr; grTotOCr += totOCr;
-                                            - grTotCDr += totCDr; grTotCCr += totCCr;
-                                            tr(style="font-weight:bold;")
-                                                td Total Control
-                                                td #{id+" "+item.contData.name}
-                                                td #{totODr}
-                                                td #{totOCr}
-                                                td #{totDr}
-                                                td #{totCr}
-                                                td #{totCDr}
-                                                td #{totCCr}
+                                        - grTotCr += totCr; grTotDr += totDr;
+                                        - grTotODr += totODr; grTotOCr += totOCr;
+                                        - grTotCDr += totCDr; grTotCCr += totCCr;
+                                        tr(style="font-weight:bold;")
+                                            td Total Control
+                                            td #{id + " " + item.contData.name}
+                                            td #{totODr}
+                                            td #{totOCr}
+                                            td #{totDr}
+                                            td #{totCr}
+                                            td #{totCDr}
+                                            td #{totCCr}
 
                                     tr(style="font-weight:bold;")
                                         td(colspan=2 style="text-align:right;") Grand Total (Rs.)
@@ -144,6 +144,6 @@ html(lang='en')
                                         td #{grTotCCr}
                                     tr(style="font-weight:bold;")
                                         td(colspan=7 style="text-align:right;") Difference
-                                        td #{grTotCDr - grTotCCr}
+                                        td #{(grTotODr + grTotDr) - (grTotOCr + grTotCr)}
                             button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;") Save
                             button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print

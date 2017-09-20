@@ -99,20 +99,20 @@ html(lang='en')
                                                             - scTotCr += ssItem.subsData.entries_data.credit; scTotDr += ssItem.subsData.entries_data.debit;
                                                         - scTotCr += ssItem.credit; scTotDr += ssItem.debit;
 
-                                                    - var bal = (scTotODr + scTotDr)-(scTotOCr + scTotCr)
-                                                    - scTotCCr += (bal < 0) ? -(bal) : 0; scTotCDr += (bal > -1) ? bal : 0;
-                                                    - totOCr += scTotOCr; totODr += scTotODr;
-                                                    - totCCr += scTotCCr; totCDr += scTotCDr;
-                                                    - totCr += scTotCr; totDr += scTotDr;
-                                                    tr
-                                                        td #{sid}
-                                                        td #{subItem.subContData.name}
-                                                        td #{scTotODr}
-                                                        td #{scTotOCr}
-                                                        td #{scTotDr}
-                                                        td #{scTotCr}
-                                                        td #{scTotCDr}
-                                                        td #{scTotCCr}
+                                                - var bal = (scTotODr + scTotDr)-(scTotOCr + scTotCr)
+                                                - scTotCCr += (bal < 0) ? -(bal) : 0; scTotCDr += (bal > -1) ? bal : 0;
+                                                - totOCr += scTotOCr; totODr += scTotODr;
+                                                - totCCr += scTotCCr; totCDr += scTotCDr;
+                                                - totCr += scTotCr; totDr += scTotDr;
+                                                tr
+                                                    td #{sid}
+                                                    td #{subItem.subContData.name}
+                                                    td #{scTotODr}
+                                                    td #{scTotOCr}
+                                                    td #{scTotDr}
+                                                    td #{scTotCr}
+                                                    td #{scTotCDr}
+                                                    td #{scTotCCr}
                                             - grTotCr += totCr; grTotDr += totDr;
                                             - grTotODr += totODr; grTotOCr += totOCr;
                                             - grTotCDr += totCDr; grTotCCr += totCCr;

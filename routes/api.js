@@ -18,6 +18,10 @@ var client = elasticSearch.Client({
 var nodemailer = require("nodemailer");
 var transporter = nodemailer.createTransport(config.smtp);
 
+router.get('/payment', function (req, res, next) {
+    res.render('pdf_templates/payment_plan');
+});
+
 router.post('/check_user', cors(), function (req, res, next) {
     req.assert('email', 'Email is required!').notEmpty();
     req.assert('password', 'Password is required!').notEmpty();
