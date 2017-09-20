@@ -44,7 +44,7 @@ html(lang='en')
         link(href='/vendor/jquery-ui/jquery-ui-1.10.1.custom.min.css', rel='stylesheet', media='screen')
         link(href='/assets/css/bootstrap-datepicker.min.css', rel='stylesheet', media='screen')
 
-    body
+    body.detailreports
         .bg-offwhite
             #container.wrap-content.container-fluid
                 section#page-title
@@ -62,7 +62,7 @@ html(lang='en')
                             h4.panel-title.pull-left.padding-15 Project Name: #{proName}
                             h6.pull-right.text-right.padding-15 Create Date: #{date}
                         .panel-body.padding-30
-                            table.table.table-striped.misreport(cellpadding='5' style='width:100%;' border=1)
+                            table.table.table-striped.table-responsive.misreport(cellpadding='5' style='width:100%;' border=1)
                                 tbody
                                     tr.background-e2e8f0.no-border
                                         th(style='width:25%;') Account Code

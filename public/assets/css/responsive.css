@@ -116,7 +116,7 @@
     html body .panel-title {
         font-size: 16px !important;
     }
-    .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {
+    .misreport.table thead > tr > th, .table tbody > tr > th, .misreport.table tfoot > tr > th, .table thead > tr > td, .misreport.table tbody > tr > td, .table tfoot > tr > td {
         vertical-align: middle;
         font-size: 3px;
     }
@@ -146,6 +146,10 @@
         margin-top: 0;
         float: left;
         width: 100%;
+    }
+    body .msi_reports .panel-white,
+    body .create-user .panel-white {
+        margin-bottom: 20px;
     }
 }
 
