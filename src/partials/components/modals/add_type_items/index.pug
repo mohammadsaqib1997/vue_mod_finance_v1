@@ -16,6 +16,7 @@
                                     div.text-center(v-if='dataLoad1')
                                         i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                     template(v-else)
+                                        label Project Name
                                         select.form-control(v-model='sel_project')
                                             option(value='') Select Project
                                             option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
@@ -25,12 +26,14 @@
                                     div.text-center(v-if='dataLoad2')
                                         i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                     template(v-else)
+                                        label Type
                                         select.form-control(v-model='sel_type')
                                             option(value='') Select Type
                                             option(v-for='(row, key, ind) in proTypesData' v-bind:value='key') {{ row.name }}
                                         p.text-danger.text-right(v-if='validation.hasError("sel_type")') {{ validation.firstError('sel_type') }}
                             .col-md-12
                                 .form-group
+                                    label Name
                                     input.form-control(type='text', placeholder='Name' v-model="name")
                                     p.text-danger.text-right(v-if='validation.hasError("name")') {{ validation.firstError('name') }}
                                     .text-right(v-if='validation.isValidating("name")')

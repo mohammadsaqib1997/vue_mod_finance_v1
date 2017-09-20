@@ -12,6 +12,7 @@
                         p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
                         .row.margin-bottom-10
                             .col-md-12
+                                label Control Name
                                 input.form-control(type='text', placeholder='Control Name' v-model="cont_name")
                                 p.text-danger.text-right(v-if='validation.hasError("cont_name")') {{ validation.firstError('cont_name') }}
                                 .text-right(v-if='validation.isValidating("cont_name")')

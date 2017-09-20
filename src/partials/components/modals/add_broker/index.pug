@@ -12,14 +12,17 @@
                         p.alert.alert-success(v-if="sucMain !== ''") {{ sucMain }}
                         .row.margin-bottom-10
                             .col-md-12
+                                label Name
                                 input.form-control(type='text', placeholder='Name' v-model="name")
                                 p.text-danger.text-right(v-if='validation.hasError("name")') {{ validation.firstError('name') }}
                             .col-md-12
+                                label Email
                                 input.form-control(type='text', placeholder='Email' v-model="email")
                                 p.text-danger.text-right(v-if='validation.hasError("email")') {{ validation.firstError('email') }}
                                 .text-right(v-if='validation.isValidating("email")')
                                     i.fa.fa-spinner.fa-spin
                             .col-md-12
+                                label Contact Number
                                 input.form-control(type='text', placeholder='Contact Number' v-model="cont_number")
                                 p.text-danger.text-right(v-if='validation.hasError("cont_number")') {{ validation.firstError('cont_number') }}
                                 .text-right(v-if='validation.isValidating("cont_number")')

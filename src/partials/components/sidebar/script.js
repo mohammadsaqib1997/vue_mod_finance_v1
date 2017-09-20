@@ -200,14 +200,14 @@ export default {
                                 for (let scInd=0; scInd < child.children.length; scInd++){
                                     let sub_child = child.children[scInd];
                                     if(sub_child.href === self.$route.path){
-                                        grabClass = "active open ";
+                                        grabClass = "active open";
                                         break;
                                     }
                                 }
                             }
                         }else{
                             if(child.href === self.$route.path){
-                                grabClass = "active open ";
+                                grabClass = "active open";
                                 break;
                             }
                         }

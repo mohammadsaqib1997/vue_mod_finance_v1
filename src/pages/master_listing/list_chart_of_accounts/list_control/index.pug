@@ -1,7 +1,7 @@
 #container.wrap-content.container
     section#page-title
         .row
-            .col-sm-8
+            .col-xs-12.col-sm-12.col-md-8.col-lg-8
                 h1.mainTitle Master Listing
                 span.mainDescription List: Chart Of Account
             ol.breadcrumb
@@ -14,16 +14,16 @@
     .container-fluid.container-fullw.bg-offwhite
         form(v-on:submit.prevent='showSheet')
             .row
-                .col-md-12
+                .col-xs-12.col-sm-12.col-md-12.col-lg-12
                     .panel.panel-white.no-radius
                         .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
                             h4.panel-title.pull-left.padding-15 Control
                         .panel-body
                             .row
-                                .col-md-12
+                                .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                     .form-group
                                         .row
-                                            .col-md-6
+                                            .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                                 .text-center(v-if='dataLoad1')
                                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                                 template(v-else='v-else')
@@ -33,41 +33,41 @@
                                                         option(v-for='(row, key, ind) in proData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
                             .row(v-if='dataLoad2')
-                                .col-md-6
+                                .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                     .text-center
                                         i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                             template(v-else='v-else')
                                 .row
-                                    .col-md-12
+                                    .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                         .form-group
                                             .row
-                                                .col-md-6
+                                                .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                                     label Starting Control
                                                     select.form-control(name='sel_control_start', v-model='sel_control_start')
                                                         option(value='') Select Control
                                                         option(v-for='(row, key, ind) in controlData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_control_start")') {{ validation.firstError('sel_control_start') }}
                                 .row
-                                    .col-md-12
+                                    .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                         .form-group
                                             .row
-                                                .col-md-6
+                                                .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                                     label Ending Control
                                                     select.form-control(name='sel_control_end', v-model='sel_control_end')
                                                         option(value='') Select Control
                                                         option(v-for='(row, key, ind) in controlData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_control_end")') {{ validation.firstError('sel_control_end') }}
                             .row
-                                .col-md-12
+                                .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                     .form-group
                                         .row
-                                            .col-md-6
+                                            .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                                 label Destination
                                                 select.form-control(v-model='sel_show_type')
                                                     option(value='Screen') Screen
                                                     option(value='File') File
                                                 p.text-danger.text-right(v-if='validation.hasError("sel_show_type")') {{ validation.firstError('sel_show_type') }}
                             .row
-                                .col-md-4.pull-left
+                                .col-xs-12.col-sm-12.col-md-4.col-lg-4.pull-left
                                     button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='submit')
                                         | Submit
