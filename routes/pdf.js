@@ -627,6 +627,363 @@ router.post('/balance_sheet/subsidiary/view', function (req, res, next) {
     });
 });
 
+router.post('/trial_balance/subsidiary/view', function (req, res, next) {
+    admin.auth().verifyIdToken(req.body.auth).then(function (decodedToken) {
+        let data = req.body;
+        let bwDates = [new Date(data.start_date).getTime(), new Date(data.end_date).getTime()];
+        bwDates.sort();
+        refPro.child(data.sel_project).once('value').then(function (proSnap) {
+            let proData = proSnap.val();
+            let todayDate = moment().format('dddd, DD MMMM YYYY');
+            let start_date = moment(data.start_date).format("DD/MM/YYYY");
+            let end_date = moment(data.end_date).format("DD/MM/YYYY");
+
+            refRegCont.child(data.sel_project).once('value', function (regContSnap) {
+                let regContData = regContSnap.val();
+                if(regContData !== null){
+                    let keys = Object.keys(regContData);
+                    let grabData = {};
+                    keys.forEach(function (key, loopInd1, array1) {
+                        let item = regContData[key];
+                        refCont.child(item.key).once('value', function (contSnap) {
+                            item['contData'] = contSnap.val();
+
+                            refRegSubCont.child(data.sel_project).orderByChild("cont_key").equalTo(item.key).once('value', function (regSubContSnap) {
+                                let regSubContData = regSubContSnap.val();
+                                if(regSubContData !== null){
+                                    item['contData']['regSubContData'] = {};
+                                    item['contData']['regSubContData'] = regSubContData;
+                                    let regSubContKeys = Object.keys(regSubContData);
+                                    regSubContKeys.forEach(function (rscKey, loopInd2, array2) {
+                                        let rscItem = regSubContData[rscKey];
+
+                                        refSubCont.child(rscItem.key).once('value', function (subContSnap) {
+                                            let subContData = subContSnap.val();
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = {};
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = subContData;
+
+                                            refRegSubsidiary.child(data.sel_project).orderByChild("sub_cont_key").equalTo(rscItem.key).once('value', function (regSubsSnap) {
+                                                let regSubsData = regSubsSnap.val();
+
+                                                if(regSubsData !== null){
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = {};
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = regSubsData;
+                                                    let regSubsKeys = Object.keys(regSubsData);
+                                                    regSubsKeys.forEach(function (rssKey, loopInd3, array3) {
+                                                        let rssItem = regSubsData[rssKey];
+
+                                                        refSubsidiary.child(rssItem.key).once('value', function(subsSnap){
+                                                            let subsData = subsSnap.val();
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = {};
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = subsData;
+
+                                                            refVouchersEntries.orderByChild('code').equalTo(rssKey).once('value', function (voucherEntSnap) {
+                                                                let voucherEntData = voucherEntSnap.val();
+
+                                                                if(voucherEntData !== null){
+                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
+                                                                }
+
+                                                                if(loopInd3 === array3.length-1){
+                                                                    if(loopInd2 === array2.length-1){
+                                                                        grabData[key] = item;
+                                                                        if(loopInd1 === array1.length-1){
+                                                                            res.render('pdf_templates/trial_bs_subsidiary_listing', {
+                                                                                proName: proData.name,
+                                                                                date: todayDate,
+                                                                                data: grabData,
+                                                                                start_date: start_date,
+                                                                                end_date: end_date,
+                                                                            });
+                                                                            //res.json(grabData);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                }else{
+                                                    if(loopInd2 === array2.length-1){
+                                                        grabData[key] = item;
+                                                        if(loopInd1 === array1.length-1){
+                                                            res.render('pdf_templates/trial_bs_subsidiary_listing', {
+                                                                proName: proData.name,
+                                                                date: todayDate,
+                                                                data: grabData,
+                                                                start_date: start_date,
+                                                                end_date: end_date,
+                                                            });
+                                                            //res.json(grabData);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    });
+                                }else{
+                                    grabData[key] = item;
+                                    if(loopInd1 === array1.length-1){
+                                        res.render('pdf_templates/trial_bs_subsidiary_listing', {
+                                            proName: proData.name,
+                                            date: todayDate,
+                                            data: grabData,
+                                            start_date: start_date,
+                                            end_date: end_date,
+                                        });
+                                        //res.json(grabData);
+                                    }
+                                }
+                            });
+                        });
+                    });
+                }else {
+                    res.json({status: 'failed', message: "No Data Found!"});
+                }
+            });
+        });
+    }).catch(function (err) {
+        res.json({err: err, status: 'failed'});
+    });
+});
+
+router.post('/trial_balance/sub_controls/view', function (req, res, next) {
+    admin.auth().verifyIdToken(req.body.auth).then(function (decodedToken) {
+        let data = req.body;
+        let bwDates = [new Date(data.start_date).getTime(), new Date(data.end_date).getTime()];
+        bwDates.sort();
+        refPro.child(data.sel_project).once('value').then(function (proSnap) {
+            let proData = proSnap.val();
+            let todayDate = moment().format('dddd, DD MMMM YYYY');
+            let start_date = moment(data.start_date).format("DD/MM/YYYY");
+            let end_date = moment(data.end_date).format("DD/MM/YYYY");
+
+            refRegCont.child(data.sel_project).once('value', function (regContSnap) {
+                let regContData = regContSnap.val();
+                if(regContData !== null){
+                    let keys = Object.keys(regContData);
+                    let grabData = {};
+                    keys.forEach(function (key, loopInd1, array1) {
+                        let item = regContData[key];
+                        refCont.child(item.key).once('value', function (contSnap) {
+                            item['contData'] = contSnap.val();
+
+                            refRegSubCont.child(data.sel_project).orderByChild("cont_key").equalTo(item.key).once('value', function (regSubContSnap) {
+                                let regSubContData = regSubContSnap.val();
+                                if(regSubContData !== null){
+                                    item['contData']['regSubContData'] = {};
+                                    item['contData']['regSubContData'] = regSubContData;
+                                    let regSubContKeys = Object.keys(regSubContData);
+                                    regSubContKeys.forEach(function (rscKey, loopInd2, array2) {
+                                        let rscItem = regSubContData[rscKey];
+
+                                        refSubCont.child(rscItem.key).once('value', function (subContSnap) {
+                                            let subContData = subContSnap.val();
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = {};
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = subContData;
+
+                                            refRegSubsidiary.child(data.sel_project).orderByChild("sub_cont_key").equalTo(rscItem.key).once('value', function (regSubsSnap) {
+                                                let regSubsData = regSubsSnap.val();
+
+                                                if(regSubsData !== null){
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = {};
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = regSubsData;
+                                                    let regSubsKeys = Object.keys(regSubsData);
+                                                    regSubsKeys.forEach(function (rssKey, loopInd3, array3) {
+                                                        let rssItem = regSubsData[rssKey];
+
+                                                        refSubsidiary.child(rssItem.key).once('value', function(subsSnap){
+                                                            let subsData = subsSnap.val();
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = {};
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = subsData;
+
+                                                            refVouchersEntries.orderByChild('code').equalTo(rssKey).once('value', function (voucherEntSnap) {
+                                                                let voucherEntData = voucherEntSnap.val();
+
+                                                                if(voucherEntData !== null){
+                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
+                                                                }
+
+                                                                if(loopInd3 === array3.length-1){
+                                                                    if(loopInd2 === array2.length-1){
+                                                                        grabData[key] = item;
+                                                                        if(loopInd1 === array1.length-1){
+                                                                            res.render('pdf_templates/trial_bs_sub_control_listing', {
+                                                                                proName: proData.name,
+                                                                                date: todayDate,
+                                                                                data: grabData,
+                                                                                start_date: start_date,
+                                                                                end_date: end_date,
+                                                                            });
+                                                                            //res.json(grabData);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                }else{
+                                                    if(loopInd2 === array2.length-1){
+                                                        grabData[key] = item;
+                                                        if(loopInd1 === array1.length-1){
+                                                            res.render('pdf_templates/trial_bs_sub_control_listing', {
+                                                                proName: proData.name,
+                                                                date: todayDate,
+                                                                data: grabData,
+                                                                start_date: start_date,
+                                                                end_date: end_date,
+                                                            });
+                                                            //res.json(grabData);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    });
+                                }else{
+                                    grabData[key] = item;
+                                    if(loopInd1 === array1.length-1){
+                                        res.render('pdf_templates/trial_bs_sub_control_listing', {
+                                            proName: proData.name,
+                                            date: todayDate,
+                                            data: grabData,
+                                            start_date: start_date,
+                                            end_date: end_date,
+                                        });
+                                        //res.json(grabData);
+                                    }
+                                }
+                            });
+                        });
+                    });
+                }else {
+                    res.json({status: 'failed', message: "No Data Found!"});
+                }
+            });
+        });
+    }).catch(function (err) {
+        res.json({err: err, status: 'failed'});
+    });
+});
+
+router.post('/trial_balance/controls/view', function (req, res, next) {
+    admin.auth().verifyIdToken(req.body.auth).then(function (decodedToken) {
+        let data = req.body;
+        let bwDates = [new Date(data.start_date).getTime(), new Date(data.end_date).getTime()];
+        bwDates.sort();
+        refPro.child(data.sel_project).once('value').then(function (proSnap) {
+            let proData = proSnap.val();
+            let todayDate = moment().format('dddd, DD MMMM YYYY');
+            let start_date = moment(data.start_date).format("DD/MM/YYYY");
+            let end_date = moment(data.end_date).format("DD/MM/YYYY");
+
+            refRegCont.child(data.sel_project).once('value', function (regContSnap) {
+                let regContData = regContSnap.val();
+                if(regContData !== null){
+                    let keys = Object.keys(regContData);
+                    let grabData = {};
+                    keys.forEach(function (key, loopInd1, array1) {
+                        let item = regContData[key];
+                        refCont.child(item.key).once('value', function (contSnap) {
+                            item['contData'] = contSnap.val();
+
+                            refRegSubCont.child(data.sel_project).orderByChild("cont_key").equalTo(item.key).once('value', function (regSubContSnap) {
+                                let regSubContData = regSubContSnap.val();
+                                if(regSubContData !== null){
+                                    item['contData']['regSubContData'] = {};
+                                    item['contData']['regSubContData'] = regSubContData;
+                                    let regSubContKeys = Object.keys(regSubContData);
+                                    regSubContKeys.forEach(function (rscKey, loopInd2, array2) {
+                                        let rscItem = regSubContData[rscKey];
+
+                                        refSubCont.child(rscItem.key).once('value', function (subContSnap) {
+                                            let subContData = subContSnap.val();
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = {};
+                                            item['contData']['regSubContData'][rscKey]['subContData'] = subContData;
+
+                                            refRegSubsidiary.child(data.sel_project).orderByChild("sub_cont_key").equalTo(rscItem.key).once('value', function (regSubsSnap) {
+                                                let regSubsData = regSubsSnap.val();
+
+                                                if(regSubsData !== null){
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = {};
+                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'] = regSubsData;
+                                                    let regSubsKeys = Object.keys(regSubsData);
+                                                    regSubsKeys.forEach(function (rssKey, loopInd3, array3) {
+                                                        let rssItem = regSubsData[rssKey];
+
+                                                        refSubsidiary.child(rssItem.key).once('value', function(subsSnap){
+                                                            let subsData = subsSnap.val();
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = {};
+                                                            item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData'] = subsData;
+
+                                                            refVouchersEntries.orderByChild('code').equalTo(rssKey).once('value', function (voucherEntSnap) {
+                                                                let voucherEntData = voucherEntSnap.val();
+
+                                                                if(voucherEntData !== null){
+                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
+                                                                }
+
+                                                                if(loopInd3 === array3.length-1){
+                                                                    if(loopInd2 === array2.length-1){
+                                                                        grabData[key] = item;
+                                                                        if(loopInd1 === array1.length-1){
+                                                                            res.render('pdf_templates/trial_bs_control_listing', {
+                                                                                proName: proData.name,
+                                                                                date: todayDate,
+                                                                                data: grabData,
+                                                                                start_date: start_date,
+                                                                                end_date: end_date,
+                                                                            });
+                                                                            //res.json(grabData);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                }else{
+                                                    if(loopInd2 === array2.length-1){
+                                                        grabData[key] = item;
+                                                        if(loopInd1 === array1.length-1){
+                                                            res.render('pdf_templates/trial_bs_control_listing', {
+                                                                proName: proData.name,
+                                                                date: todayDate,
+                                                                data: grabData,
+                                                                start_date: start_date,
+                                                                end_date: end_date,
+                                                            });
+                                                            //res.json(grabData);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    });
+                                }else{
+                                    grabData[key] = item;
+                                    if(loopInd1 === array1.length-1){
+                                        res.render('pdf_templates/trial_bs_control_listing', {
+                                            proName: proData.name,
+                                            date: todayDate,
+                                            data: grabData,
+                                            start_date: start_date,
+                                            end_date: end_date,
+                                        });
+                                        //res.json(grabData);
+                                    }
+                                }
+                            });
+                        });
+                    });
+                }else {
+                    res.json({status: 'failed', message: "No Data Found!"});
+                }
+            });
+        });
+    }).catch(function (err) {
+        res.json({err: err, status: 'failed'});
+    });
+});
+
 module.exports = router;
 
 function bwDatesEntries(bwDates, objEnt){

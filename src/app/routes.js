@@ -30,6 +30,9 @@ import detailedLedger from '../pages/mis_reports/detailed_ledger/detailed_ledger
 import balListControl from '../pages/mis_reports/balance_sheet/list_control/list_control.vue'
 import balListSubControl from '../pages/mis_reports/balance_sheet/list_sub_control/list_sub_control.vue'
 import balListSubsidiary from '../pages/mis_reports/balance_sheet/list_subsidiary/list_subsidiary.vue'
+import tBalListControl from '../pages/mis_reports/trial_balance/list_control/list_control.vue'
+import tBalListSubControl from '../pages/mis_reports/trial_balance/list_sub_control/list_sub_control.vue'
+import tBalListSubsidiary from '../pages/mis_reports/trial_balance/list_subsidiary/list_subsidiary.vue'
 
 const routes = [
     {
@@ -90,6 +93,18 @@ const routes = [
                     {
                         path: '/balance_sheet/list_subsidiary',
                         component: balListSubsidiary
+                    },
+                    {
+                        path: '/trial_balance/list_control',
+                        component: tBalListControl
+                    },
+                    {
+                        path: '/trial_balance/list_sub_control',
+                        component: tBalListSubControl
+                    },
+                    {
+                        path: '/trial_balance/list_subsidiary',
+                        component: tBalListSubsidiary
                     },
                     {
                         path: '/journal_voucher',

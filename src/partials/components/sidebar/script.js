@@ -115,6 +115,25 @@ export default {
                     icon: "<img class='icon-media' src='/assets/images/icons/reports.png'/>",
                     children: [
                         {
+                            title: "Trial Balance",
+                            href: "#",
+                            event: this.navParentClick,
+                            children: [
+                                {
+                                    title: "Control",
+                                    href: "/trial_balance/list_control"
+                                },
+                                {
+                                    title: "Sub Control",
+                                    href: "/trial_balance/list_sub_control"
+                                },
+                                {
+                                    title: "Subsidiary",
+                                    href: "/trial_balance/list_subsidiary"
+                                },
+                            ]
+                        },
+                        {
                             title: "Balance Sheet",
                             href: "#",
                             event: this.navParentClick,
