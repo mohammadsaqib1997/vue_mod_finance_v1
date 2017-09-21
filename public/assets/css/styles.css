@@ -12067,11 +12067,13 @@ body #sidebar nav > ul > li.open {
   body .text-font-62 {
     font-size: 28px;
     line-height: 88px;
+    color: #575757 !important;
   }
 
   body .text-font-21 {
     font-size: 14px;
     line-height: 88px;
+    color: #575757 !important;
   }
   html body table.table.no-margin td {
     padding: 14px 8px;
@@ -12147,10 +12149,12 @@ body #sidebar nav > ul > li.open {
   body .text-font-62 {
     font-size: 30px;
     line-height: 88px;
+    color: #575757 !important;
   }
   body .text-font-21 {
     font-size: 16px;
     line-height: 88px;
+    color: #575757 !important;
   }
 }
 
@@ -12219,11 +12223,13 @@ body #sidebar nav > ul > li.open {
     font-size: 19px;
     line-height: normal;
     width: auto;
+    color: #575757 !important;
     float: left!important;
   }
   body .text-font-21 {
     font-size: 19px;
     line-height: normal;
+    color: #575757 !important;
     width: auto;
     float: left!important;
   }
@@ -12970,7 +12976,7 @@ body .dashboard table.table.no-margin td {
 }
 .circle-tile-description {
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -13032,4 +13038,39 @@ body .dashboard table.table.no-margin td {
 
 .color-white {
   color: #f8f8f8;
+}
+
+
+.background-f8f8f8:after {
+  content: "";
+  background: #40ed9a;
+  position: absolute;
+  bottom: 0;
+  height: 5px;
+  width: 100%;
+  left: 0;
+}
+
+.background-efefef:after {
+  content: "";
+  background: #ff625f;
+  position: absolute;
+  bottom: 0;
+  height: 5px;
+  width: 30%;
+  right: 0;
+}
+
+.background-e6e6e6:after {
+  content: "";
+  background: #4bc9f3;
+  position: absolute;
+  bottom: 0;
+  height: 5px;
+  width: 50%;
+  right: 0;
+}
+
+.legend-xs .chart-legend > ul li span {
+  border-radius: 30px;
 }
