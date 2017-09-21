@@ -1,4 +1,4 @@
-#container.wrap-content.container.dashboard
+#container.wrap-content.container
     section#page-title.padding-top-15.padding-bottom-15
         .row
             .col-sm-7
@@ -46,49 +46,48 @@
                                             span.text-light.text-left.text-font-21.col-xs-12.col-sm-6.col-md-6.col-lg-6.pull-right Total
                                             span.text-bold.block.text-font-62.col-xs-12.col-sm-6.col-md-6.col-lg-6.pull-left 100%
             .col-xs-12.col-sm-12.col-md-6.col-lg-6
-                .panel.panel-white.no-radius
-                    .panel-heading.border-bottom.border-green
-                        h4.panel-title Short Cut Links
-                    .panel-body.no-padding
-                        .margin-top-20.text-left.legend-xs.inline
-                            table.table.no-margin.table-striped
-                                tbody
-                                    tr
-                                        a(href="/create_control")
-                                            td(style='text-align: left;width: 30px;')
-                                                img(src='/assets/images/icons/masterFiles.png', style=' margin-left: 10px; ')
-                                            td
-                                                span.text-small.block.text-light.table-heading Control
-                                    tr
-                                        a(href="/create_sub_control")
-                                            td(style='text-align: left;width: 30px;')
-                                                img(src='/assets/images/icons/masterFiles.png', style=' margin-left: 10px; ')
-                                            td
-                                                span.text-small.block.text-light.table-heading Sub Control
-                                    tr
-                                        a(href="/create_subsidiary")
-                                            td(style='text-align: left;width: 30px;')
-                                                img(src='/assets/images/icons/masterFiles.png', style=' margin-left: 10px; ')
-                                            td
-                                                span.text-small.block.text-light.table-heading Subsidiary
-                                    tr
-                                        a(href="/master_details")
-                                            td(style='text-align: left;width: 30px;')
-                                                img(src='/assets/images/icons/masterFiles.png', style=' margin-left: 10px; ')
-                                            td
-                                                span.text-small.block.text-light.table-heading Customer Details
-                                    tr
-                                        a(href="/journal_voucher")
-                                            td(style='text-align: left;width: 30px;')
-                                                img(src='/assets/images/icons/transaction.png', style=' margin-left: 10px; ')
-                                            td
-                                                span.text-small.block.text-light.table-heading Vendor Details
-                                    tr
-                                        a(href="/post_unpost")
-                                            td(style='text-align: left;width: 30px;')
-                                                img(src='/assets/images/icons/transaction.png', style=' margin-left: 10px; ')
-                                            td
-                                                span.text-small.block.text-light.table-heading Post / Un Post
+                .col-xs-12.col-sm-12.col-md-4.col-lg-4.padding-none
+                    a(href='/create_control')
+                        .circle-tile
+                            .circle-tile-content.blue
+                                .color-white(style=' margin-bottom: 20px; ')
+                                    i.fa.fa-building.fa-fw.fa-5x
+                                .circle-tile-description.text-faded Project
+                .col-xs-12.col-sm-12.col-md-4.col-lg-4.padding-none
+                    a(href='/create_control')
+                        .circle-tile
+                            .circle-tile-content.green
+                                .color-white(style='margin-bottom: 20px;')
+                                    i.fa.fa-folder-open.fa-fw.fa-5x
+                                .circle-tile-description.text-faded Control
+                .col-xs-12.col-sm-12.col-md-4.col-lg-4.padding-none
+                    a(href='/create_sub_control')
+                        .circle-tile
+                            .circle-tile-content.dark-blue
+                                .color-white(style='margin-bottom: 20px;')
+                                    i.fa.fa-folder-open.fa-fw.fa-5x
+                                .circle-tile-description.text-faded Sub Control
+                .col-xs-12.col-sm-12.col-md-4.col-lg-4.padding-none
+                    a(href='/create_subsidiary')
+                        .circle-tile
+                            .circle-tile-content.yellow
+                                .color-white(style='margin-bottom: 20px;')
+                                    i.fa.fa-folder-open.fa-fw.fa-5x
+                                .circle-tile-description.text-faded Subsidiary
+                .col-xs-12.col-sm-12.col-md-4.col-lg-4.padding-none
+                    a(href='/master_details')
+                        .circle-tile
+                            .circle-tile-content.red
+                                .color-white(style='margin-bottom: 20px;')
+                                    i.fa.fa-folder-open.fa-fw.fa-5x
+                                .circle-tile-description.text-faded Customer Detail
+                .col-xs-12.col-sm-12.col-md-4.col-lg-4.padding-none
+                    a(href='/add_party')
+                        .circle-tile
+                            .circle-tile-content.purple
+                                .color-white(style='margin-bottom: 20px;')
+                                    i.fa.fa-exchange.fa-fw.fa-5x
+                                .circle-tile-description.text-faded Vendor Details
     .container-fluid.container-fullw.bg-offwhite
         .row
             .col-xs-12.col-sm-12.col-md-6.col-lg-6

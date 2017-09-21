@@ -1571,6 +1571,7 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
     display: none;
     bottom: -1px;
     top: -1px;
+    padding: 3px;
   }
   .app-sidebar-closed #sidebar .navbar-form .form-group input {
     background: rgba(255, 255, 255, 0.3);
@@ -12846,4 +12847,189 @@ body .create-user .panel select[multiple="multiple"]{
 .profile-table td .form-control{
   line-height: 30px;
   font-size: 16px;
+}
+body #sidebar nav > ul > li.open > a > .item-content > .item-media > img {
+  filter: brightness(0%) invert(100%);
+}
+
+body .dashboard table.table.no-margin td {
+  padding: 16px 8px;
+  float: left;
+  line-height: 30px;
+  margin-right: 5px;
+}
+
+
+@media (min-width: 768px){
+  .circle-tile {
+    margin-bottom: 30px;
+  }
+}
+
+.circle-tile {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.circle-tile-heading {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto -40px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 100%;
+  color: #fff;
+  transition: all ease-in-out .3s;
+}
+
+/* -- Background Helper Classes */
+
+/* Use these to cuztomize the background color of a div. These are used along with tiles, or any other div you want to customize. */
+
+.dark-blue {
+  background-color: #65a2c5;
+}
+
+.green {
+  background-color: #5bd999;
+}
+
+.blue {
+  background-color: #00c0e4;
+}
+.dark-blue{
+  background-color: #7658f8;
+}
+.orange {
+  background-color: #fa6800;
+}
+
+.red {
+  background-color: #e6567a;
+}
+
+.purple {
+  background-color: #cb70d7;
+}
+
+.dark-gray {
+  background-color: #647687;
+}
+
+.gray {
+  background-color: #95a5a6;
+}
+
+.light-gray {
+  background-color: #bdc3c7;
+}
+
+.yellow {
+  background-color: #eac14d;
+}
+
+/* -- Text Color Helper Classes */
+
+.text-dark-blue {
+  color: #34495e;
+}
+
+.text-green {
+  color: #16a085;
+}
+
+.text-blue {
+  color: #2980b9;
+}
+
+.text-orange {
+  color: #f39c12;
+}
+
+.text-red {
+  color: #e74c3c;
+}
+
+.text-purple {
+  color: #8e44ad;
+}
+
+.text-faded {
+  color: rgba(255,255,255,0.7);
+}
+
+
+
+.circle-tile-heading .fa {
+  line-height: 80px;
+}
+
+.circle-tile-content {
+  padding-top: 57px;
+  padding-bottom: 57px;
+}
+.circle-tile-description {
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.text-faded {
+  color: rgba(255,255,255,0.7);
+}
+
+.circle-tile-number {
+  padding: 5px 0 15px;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.circle-tile-footer {
+  display: block;
+  padding: 5px;
+  color: rgba(255,255,255,0.5);
+  background-color: rgba(0,0,0,0.1);
+  transition: all ease-in-out .3s;
+}
+
+.circle-tile-footer:hover {
+  text-decoration: none;
+  color: rgba(255,255,255,0.5);
+  background-color: rgba(0,0,0,0.2);
+}
+
+
+.morning {
+  background: url(https://lh3.googleusercontent.com/-1YbV7nsVnX8/WMugaq-6BEI/AAAAAAAADSg/0wPfQ84vMUcCle_SkgiUDOumUKscMaA8QCL0B/w530-d-h353-p-rw/widget-bg-morning.jpg) center bottom no-repeat;
+  background-size: cover;
+}
+
+.time-widget {
+  margin-top: 5px;
+  overflow: hidden;
+  text-align: center;
+  font-size: 1.75em;
+}
+
+.time-widget-heading {
+  text-transform: uppercase;
+  font-size: .5em;
+  font-weight: 400;
+  color: #fff;
+}
+#datetime{color:#fff;}
+.tile-img {
+  text-shadow: 2px 2px 3px rgba(0,0,0,0.9);
+}
+
+.tile {
+  margin-bottom: 15px;
+  padding: 15px;
+  overflow: hidden;
+  color: #fff;
+}
+
+.color-white {
+  color: #f8f8f8;
 }
