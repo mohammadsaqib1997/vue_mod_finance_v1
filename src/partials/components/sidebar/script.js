@@ -97,6 +97,9 @@ export default {
                 {
                     title: "Process",
                     href: "#",
+                    meta: {
+                        secure: "admin"
+                    },
                     class: "process",
                     event: this.navParentClick,
                     icon: "<img class='icon-media' src='/assets/images/icons/process.png'/>",
@@ -161,6 +164,9 @@ export default {
                 {
                     title: "User Control",
                     href: "#",
+                    meta: {
+                        secure: "admin"
+                    },
                     class: "user_control",
                     event: this.navParentClick,
                     icon: "<img class='icon-media' src='/assets/images/icons/user.png'/>",
@@ -243,6 +249,17 @@ export default {
                 grabClass += row.class;
             }
             return grabClass;
+        },
+        checkAdmin: function (row) {
+            let self = this;
+            if(row.meta){
+                if(row.meta.secure){
+                    if(row.meta.secure === "admin" && !self.admin){
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

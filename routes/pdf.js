@@ -324,21 +324,83 @@ router.post('/balance_sheet/controls/view', function (req, res, next) {
                                                                 let voucherEntData = voucherEntSnap.val();
 
                                                                 if(voucherEntData !== null){
-                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
-                                                                }
-
-                                                                if(loopInd3 === array3.length-1){
-                                                                    if(loopInd2 === array2.length-1){
-                                                                        grabData[key] = item;
-                                                                        if(loopInd1 === array1.length-1){
-                                                                            res.render('pdf_templates/bs_controls_listing', {
-                                                                                proName: proData.name,
-                                                                                date: todayDate,
-                                                                                data: grabData,
-                                                                                start_date: start_date,
-                                                                                end_date: end_date,
+                                                                    let voucherEntKeys = Object.keys(voucherEntData);
+                                                                    let grabEnt = {};
+                                                                    let process_ent = 0;
+                                                                    voucherEntKeys.forEach(function (vEntKey, loopInd4, array4) {
+                                                                        let vEntItem = voucherEntData[vEntKey];
+                                                                        if(vEntItem.type === "md"){
+                                                                            refMasterDetails.child(vEntItem.v_key).once('value', function (mdSnap) {
+                                                                                let mdData = mdSnap.val();
+                                                                                if(mdData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/bs_controls_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
                                                                             });
-                                                                            //res.json(grabData);
+                                                                        }else{
+                                                                            refVouchers.child(vEntItem.v_key).once('value', function (voucherSnap) {
+                                                                                let voucherData = voucherSnap.val();
+                                                                                if(voucherData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/bs_controls_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }else{
+                                                                    if(loopInd3 === array3.length-1){
+                                                                        if(loopInd2 === array2.length-1){
+                                                                            grabData[key] = item;
+                                                                            if(loopInd1 === array1.length-1){
+                                                                                res.render('pdf_templates/bs_controls_listing', {
+                                                                                    proName: proData.name,
+                                                                                    date: todayDate,
+                                                                                    data: grabData,
+                                                                                    start_date: start_date,
+                                                                                    end_date: end_date,
+                                                                                });
+                                                                                //res.json(grabData);
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -443,21 +505,83 @@ router.post('/balance_sheet/sub_controls/view', function (req, res, next) {
                                                                 let voucherEntData = voucherEntSnap.val();
 
                                                                 if(voucherEntData !== null){
-                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
-                                                                }
-
-                                                                if(loopInd3 === array3.length-1){
-                                                                    if(loopInd2 === array2.length-1){
-                                                                        grabData[key] = item;
-                                                                        if(loopInd1 === array1.length-1){
-                                                                            res.render('pdf_templates/bs_sub_controls_listing', {
-                                                                                proName: proData.name,
-                                                                                date: todayDate,
-                                                                                data: grabData,
-                                                                                start_date: start_date,
-                                                                                end_date: end_date,
+                                                                    let voucherEntKeys = Object.keys(voucherEntData);
+                                                                    let grabEnt = {};
+                                                                    let process_ent = 0;
+                                                                    voucherEntKeys.forEach(function (vEntKey, loopInd4, array4) {
+                                                                        let vEntItem = voucherEntData[vEntKey];
+                                                                        if(vEntItem.type === "md"){
+                                                                            refMasterDetails.child(vEntItem.v_key).once('value', function (mdSnap) {
+                                                                                let mdData = mdSnap.val();
+                                                                                if(mdData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/bs_sub_controls_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
                                                                             });
-                                                                            //res.json(grabData);
+                                                                        }else{
+                                                                            refVouchers.child(vEntItem.v_key).once('value', function (voucherSnap) {
+                                                                                let voucherData = voucherSnap.val();
+                                                                                if(voucherData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/bs_sub_controls_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }else{
+                                                                    if(loopInd3 === array3.length-1){
+                                                                        if(loopInd2 === array2.length-1){
+                                                                            grabData[key] = item;
+                                                                            if(loopInd1 === array1.length-1){
+                                                                                res.render('pdf_templates/bs_sub_controls_listing', {
+                                                                                    proName: proData.name,
+                                                                                    date: todayDate,
+                                                                                    data: grabData,
+                                                                                    start_date: start_date,
+                                                                                    end_date: end_date,
+                                                                                });
+                                                                                //res.json(grabData);
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -562,21 +686,83 @@ router.post('/balance_sheet/subsidiary/view', function (req, res, next) {
                                                                 let voucherEntData = voucherEntSnap.val();
 
                                                                 if(voucherEntData !== null){
-                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
-                                                                }
-
-                                                                if(loopInd3 === array3.length-1){
-                                                                    if(loopInd2 === array2.length-1){
-                                                                        grabData[key] = item;
-                                                                        if(loopInd1 === array1.length-1){
-                                                                            res.render('pdf_templates/bs_subsidiary_listing', {
-                                                                                proName: proData.name,
-                                                                                date: todayDate,
-                                                                                data: grabData,
-                                                                                start_date: start_date,
-                                                                                end_date: end_date,
+                                                                    let voucherEntKeys = Object.keys(voucherEntData);
+                                                                    let grabEnt = {};
+                                                                    let process_ent = 0;
+                                                                    voucherEntKeys.forEach(function (vEntKey, loopInd4, array4) {
+                                                                        let vEntItem = voucherEntData[vEntKey];
+                                                                        if(vEntItem.type === "md"){
+                                                                            refMasterDetails.child(vEntItem.v_key).once('value', function (mdSnap) {
+                                                                                let mdData = mdSnap.val();
+                                                                                if(mdData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/bs_subsidiary_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
                                                                             });
-                                                                            //res.json(grabData);
+                                                                        }else{
+                                                                            refVouchers.child(vEntItem.v_key).once('value', function (voucherSnap) {
+                                                                                let voucherData = voucherSnap.val();
+                                                                                if(voucherData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/bs_subsidiary_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }else{
+                                                                    if(loopInd3 === array3.length-1){
+                                                                        if(loopInd2 === array2.length-1){
+                                                                            grabData[key] = item;
+                                                                            if(loopInd1 === array1.length-1){
+                                                                                res.render('pdf_templates/bs_subsidiary_listing', {
+                                                                                    proName: proData.name,
+                                                                                    date: todayDate,
+                                                                                    data: grabData,
+                                                                                    start_date: start_date,
+                                                                                    end_date: end_date,
+                                                                                });
+                                                                                //res.json(grabData);
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -681,21 +867,83 @@ router.post('/trial_balance/subsidiary/view', function (req, res, next) {
                                                                 let voucherEntData = voucherEntSnap.val();
 
                                                                 if(voucherEntData !== null){
-                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
-                                                                }
-
-                                                                if(loopInd3 === array3.length-1){
-                                                                    if(loopInd2 === array2.length-1){
-                                                                        grabData[key] = item;
-                                                                        if(loopInd1 === array1.length-1){
-                                                                            res.render('pdf_templates/trial_bs_subsidiary_listing', {
-                                                                                proName: proData.name,
-                                                                                date: todayDate,
-                                                                                data: grabData,
-                                                                                start_date: start_date,
-                                                                                end_date: end_date,
+                                                                    let voucherEntKeys = Object.keys(voucherEntData);
+                                                                    let grabEnt = {};
+                                                                    let process_ent = 0;
+                                                                    voucherEntKeys.forEach(function (vEntKey, loopInd4, array4) {
+                                                                        let vEntItem = voucherEntData[vEntKey];
+                                                                        if(vEntItem.type === "md"){
+                                                                            refMasterDetails.child(vEntItem.v_key).once('value', function (mdSnap) {
+                                                                                let mdData = mdSnap.val();
+                                                                                if(mdData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/trial_bs_subsidiary_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
                                                                             });
-                                                                            //res.json(grabData);
+                                                                        }else{
+                                                                            refVouchers.child(vEntItem.v_key).once('value', function (voucherSnap) {
+                                                                                let voucherData = voucherSnap.val();
+                                                                                if(voucherData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/trial_bs_subsidiary_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }else{
+                                                                    if(loopInd3 === array3.length-1){
+                                                                        if(loopInd2 === array2.length-1){
+                                                                            grabData[key] = item;
+                                                                            if(loopInd1 === array1.length-1){
+                                                                                res.render('pdf_templates/trial_bs_subsidiary_listing', {
+                                                                                    proName: proData.name,
+                                                                                    date: todayDate,
+                                                                                    data: grabData,
+                                                                                    start_date: start_date,
+                                                                                    end_date: end_date,
+                                                                                });
+                                                                                //res.json(grabData);
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -800,21 +1048,83 @@ router.post('/trial_balance/sub_controls/view', function (req, res, next) {
                                                                 let voucherEntData = voucherEntSnap.val();
 
                                                                 if(voucherEntData !== null){
-                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
-                                                                }
-
-                                                                if(loopInd3 === array3.length-1){
-                                                                    if(loopInd2 === array2.length-1){
-                                                                        grabData[key] = item;
-                                                                        if(loopInd1 === array1.length-1){
-                                                                            res.render('pdf_templates/trial_bs_sub_control_listing', {
-                                                                                proName: proData.name,
-                                                                                date: todayDate,
-                                                                                data: grabData,
-                                                                                start_date: start_date,
-                                                                                end_date: end_date,
+                                                                    let voucherEntKeys = Object.keys(voucherEntData);
+                                                                    let grabEnt = {};
+                                                                    let process_ent = 0;
+                                                                    voucherEntKeys.forEach(function (vEntKey, loopInd4, array4) {
+                                                                        let vEntItem = voucherEntData[vEntKey];
+                                                                        if(vEntItem.type === "md"){
+                                                                            refMasterDetails.child(vEntItem.v_key).once('value', function (mdSnap) {
+                                                                                let mdData = mdSnap.val();
+                                                                                if(mdData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/trial_bs_sub_control_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
                                                                             });
-                                                                            //res.json(grabData);
+                                                                        }else{
+                                                                            refVouchers.child(vEntItem.v_key).once('value', function (voucherSnap) {
+                                                                                let voucherData = voucherSnap.val();
+                                                                                if(voucherData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/trial_bs_sub_control_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }else{
+                                                                    if(loopInd3 === array3.length-1){
+                                                                        if(loopInd2 === array2.length-1){
+                                                                            grabData[key] = item;
+                                                                            if(loopInd1 === array1.length-1){
+                                                                                res.render('pdf_templates/trial_bs_sub_control_listing', {
+                                                                                    proName: proData.name,
+                                                                                    date: todayDate,
+                                                                                    data: grabData,
+                                                                                    start_date: start_date,
+                                                                                    end_date: end_date,
+                                                                                });
+                                                                                //res.json(grabData);
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -919,21 +1229,83 @@ router.post('/trial_balance/controls/view', function (req, res, next) {
                                                                 let voucherEntData = voucherEntSnap.val();
 
                                                                 if(voucherEntData !== null){
-                                                                    item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, voucherEntData);
-                                                                }
-
-                                                                if(loopInd3 === array3.length-1){
-                                                                    if(loopInd2 === array2.length-1){
-                                                                        grabData[key] = item;
-                                                                        if(loopInd1 === array1.length-1){
-                                                                            res.render('pdf_templates/trial_bs_control_listing', {
-                                                                                proName: proData.name,
-                                                                                date: todayDate,
-                                                                                data: grabData,
-                                                                                start_date: start_date,
-                                                                                end_date: end_date,
+                                                                    let voucherEntKeys = Object.keys(voucherEntData);
+                                                                    let grabEnt = {};
+                                                                    let process_ent = 0;
+                                                                    voucherEntKeys.forEach(function (vEntKey, loopInd4, array4) {
+                                                                        let vEntItem = voucherEntData[vEntKey];
+                                                                        if(vEntItem.type === "md"){
+                                                                            refMasterDetails.child(vEntItem.v_key).once('value', function (mdSnap) {
+                                                                                let mdData = mdSnap.val();
+                                                                                if(mdData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/trial_bs_control_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
                                                                             });
-                                                                            //res.json(grabData);
+                                                                        }else{
+                                                                            refVouchers.child(vEntItem.v_key).once('value', function (voucherSnap) {
+                                                                                let voucherData = voucherSnap.val();
+                                                                                if(voucherData.posted_status === "Yes"){
+                                                                                    grabEnt[vEntKey] = vEntItem;
+                                                                                }
+                                                                                process_ent++;
+                                                                                if(process_ent === array4.length){
+                                                                                    if(Object.keys(grabEnt).length > 0){
+                                                                                        item['contData']['regSubContData'][rscKey]['subContData']['regSubsData'][rssKey]['subsData']['entries_data'] = bwDatesEntObj(bwDates, grabEnt);
+                                                                                    }
+                                                                                    if(loopInd3 === array3.length-1){
+                                                                                        if(loopInd2 === array2.length-1){
+                                                                                            grabData[key] = item;
+                                                                                            if(loopInd1 === array1.length-1){
+                                                                                                res.render('pdf_templates/trial_bs_control_listing', {
+                                                                                                    proName: proData.name,
+                                                                                                    date: todayDate,
+                                                                                                    data: grabData,
+                                                                                                    start_date: start_date,
+                                                                                                    end_date: end_date,
+                                                                                                });
+                                                                                                //res.json(grabData);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }else{
+                                                                    if(loopInd3 === array3.length-1){
+                                                                        if(loopInd2 === array2.length-1){
+                                                                            grabData[key] = item;
+                                                                            if(loopInd1 === array1.length-1){
+                                                                                res.render('pdf_templates/trial_bs_control_listing', {
+                                                                                    proName: proData.name,
+                                                                                    date: todayDate,
+                                                                                    data: grabData,
+                                                                                    start_date: start_date,
+                                                                                    end_date: end_date,
+                                                                                });
+                                                                                //res.json(grabData);
+                                                                            }
                                                                         }
                                                                     }
                                                                 }

@@ -72,28 +72,35 @@ html(lang='en')
 
                                     - var grTotCr = 0; var grTotDr = 0;
                                         each item, id in data
+                                            - var subContCheck = false;
                                             - var totCr = 0; var totDr = 0;
                                             if item.contData.regSubContData
                                                 each subItem, sid in item.contData.regSubContData
+                                                    - var subsCheck = false;
                                                     - var scTotCr = subItem.credit; var scTotDr = subItem.debit;
                                                     if subItem.subContData.regSubsData
                                                         each ssItem, ssid in subItem.subContData.regSubsData
                                                             - var ssTotCr = ssItem.credit; var ssTotDr = ssItem.debit;
                                                             if ssItem.subsData.entries_data
                                                                 - ssTotCr += ssItem.subsData.entries_data.credit; ssTotDr += ssItem.subsData.entries_data.debit;
-                                                            - scTotCr += ssTotCr; scTotDr += ssTotDr;
-                                                    tr
-                                                        td #{sid}
-                                                        td #{subItem.subContData.name}
-                                                        td #{scTotDr}
-                                                        td #{scTotCr}
-                                                    - totCr += scTotCr; totDr += scTotDr;
+                                                                - scTotCr += ssTotCr; scTotDr += ssTotDr;
+                                                                - subsCheck = true;
+                                                    if subsCheck
+                                                        - totCr += scTotCr; totDr += scTotDr;
+                                                        - subContCheck = true;
+                                                        tr
+                                                            td #{sid}
+                                                            td #{subItem.subContData.name}
+                                                            td #{scTotDr}
+                                                            td #{scTotCr}
+                                            if subContCheck
                                                 - grTotCr += totCr; grTotDr += totDr;
                                                 tr(style="font-weight:bold;")
                                                     td Total Control
                                                     td #{id + " " + item.contData.name}
                                                     td #{totDr}
                                                     td #{totCr}
+
                                     tr(style="font-weight:bold;")
                                         td(colspan=2 style="text-align:right;") Grand Total (Rs.)
                                         td #{grTotDr}

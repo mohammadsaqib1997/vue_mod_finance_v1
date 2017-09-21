@@ -14,7 +14,7 @@
             .navbar-title
                 span Main Navigation
             ul.main-navigation-menu
-                li(v-for="row in sidebarData" v-bind:class="checkActiveRoute(row)")
+                li(v-for="row in sidebarData" v-if="checkAdmin(row)" v-bind:class="checkActiveRoute(row)")
                     template(v-if="row.href === '#'")
                         a(v-bind:href="row.href" v-on:click.stop.prevent='row.event')
                             .item-content
@@ -36,7 +36,6 @@
                                     template(v-else)
                                         router-link(v-bind:to='child.href')
                                             span {{ child.title }}
-
                     template(v-else)
                         router-link(v-bind:to='row.href')
                             .item-content

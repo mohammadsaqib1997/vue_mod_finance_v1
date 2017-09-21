@@ -25,18 +25,18 @@
                                         th Voucher ID
                                         th Voucher Type
                                         th NBR
-                                        th Reference Number
+                                        th Reference
                                         th Project
                                         th Voucher Date
                                         th Post/Unpost
                                 tbody
                                     tr(v-for='(row, key, ind) in vouchersData')
                                         td {{ row.id }}
-                                        td jv
+                                        td {{ (row.type === "md")? "Customer Details":"Journal Voucher" }}
                                         td {{ row.nbr_number }}
-                                        td {{ row.refrence }}
+                                        td {{ row.ref_gen }}
                                         td {{ row.project }}
-                                        td {{ formatDate(new Date(row.voucher_date)) }}
+                                        td {{ (row.type === "md")? formatDate(new Date(row.booking_date)):formatDate(new Date(row.voucher_date)) }}
                                         td.icon-container
                                             button.btn.btn-danger(v-if='row.posted_status === "Yes"' v-on:click="deactive(key)") UnPost
                                             button.btn.btn-success(v-else v-on:click="active(key)") Post

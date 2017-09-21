@@ -38,7 +38,7 @@
                                 label Project Contact Number
                                 input.form-control(type='text', placeholder='Contact number - 300-2139877', v-model='contactNo')
                                 p.text-danger.text-right(v-if='validation.hasError("contactNo")') {{ validation.firstError('contactNo') }}
-                    button.btn.btn-primary(type='submit', v-if='!inProcess') {{ (sel_project !== "") ? "Update":"Save" }}
+                    button.btn.btn-primary(type='submit', v-if='!inProcess') {{ (sel_project && sel_project !== "") ? "Update":"Save" }}
                     button.btn.btn-primary(type='button', disabled='disabled', v-if='inProcess')
                         i.fa.fa-refresh.fa-spin.fa-fw
                     button.btn.btn-primary.btn-o.pull-right(type='button', data-dismiss='modal') Cancel

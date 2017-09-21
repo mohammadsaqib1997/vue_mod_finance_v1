@@ -147,38 +147,50 @@ export default {
             self.$validate().then(function (success_form) {
                 self.$refs.sel_city.validate(function (success_city) {
                     if(success_form && success_city){
-                        self.partyInformationRef.push({
-                            contact_name: self.contact_name,
-                            agent_code: self.agent_code,
-                            agent_name: self.agent_name,
-                            address: self.address,
-                            sel_category: self.sel_category,
-                            group_code: self.group_code,
-                            phone_num: self.phone_num,
-                            fax_num: self.fax_num,
-                            email: self.email,
-                            nic_num: self.nic_num,
-                            ntn_num: self.ntn_num,
-                            gst_num: self.gst_num,
-                            cr_day: self.cr_day,
-                            cr_limit: self.cr_limit,
-                            city: self.$refs.sel_city.query,
-                            createdAt: firebase.database.ServerValue.TIMESTAMP
-                        }, function (err) {
-                            if (err) {
-                                self.errMain = err.message;
-                            } else {
-                                self.errMain = "";
-                                self.sucMain = "Successfully Inserted Party Information!";
+                        self.partyInformationRef
+                            .orderByChild('id')
+                            .limitToLast(1)
+                            .once('value', function (lastIdSnap) {
+                                let renderData = lastIdSnap.val();
+                                let next_id = 1;
+                                if (renderData !== null) {
+                                    let keys = Object.keys(renderData);
+                                    next_id = parseInt(renderData[keys[0]].id) + 1;
+                                }
+                                self.partyInformationRef.push({
+                                    id: next_id,
+                                    contact_name: self.contact_name,
+                                    agent_code: self.agent_code,
+                                    agent_name: self.agent_name,
+                                    address: self.address,
+                                    sel_category: self.sel_category,
+                                    group_code: self.group_code,
+                                    phone_num: self.phone_num,
+                                    fax_num: self.fax_num,
+                                    email: self.email,
+                                    nic_num: self.nic_num,
+                                    ntn_num: self.ntn_num,
+                                    gst_num: self.gst_num,
+                                    cr_day: self.cr_day,
+                                    cr_limit: self.cr_limit,
+                                    city: self.$refs.sel_city.query,
+                                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                                }, function (err) {
+                                    if (err) {
+                                        self.errMain = err.message;
+                                    } else {
+                                        self.errMain = "";
+                                        self.sucMain = "Successfully Inserted Party Information!";
 
-                                self.resetForm(self);
+                                        self.resetForm(self);
 
-                                setTimeout(function () {
-                                    self.sucMain = "";
-                                }, 1500);
-                            }
-                            self.inProcess = false;
-                        });
+                                        setTimeout(function () {
+                                            self.sucMain = "";
+                                        }, 1500);
+                                    }
+                                    self.inProcess = false;
+                                });
+                            });
                     }else{
                         self.inProcess = false;
                     }

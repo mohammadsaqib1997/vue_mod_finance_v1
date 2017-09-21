@@ -83,42 +83,46 @@ html(lang='en')
                                     - var grTotOCr = 0; var grTotODr = 0;
                                     - var grTotCCr = 0; var grTotCDr = 0;
                                     each item, id in data
+                                        - var subContCheck = false;
                                         - var totCr = 0; var totDr = 0;
                                         - var totOCr = 0; var totODr = 0;
                                         - var totCCr = 0; var totCDr = 0;
                                         if item.contData.regSubContData
                                             each subItem, sid in item.contData.regSubContData
+                                                - var subsCheck = false;
                                                 - var scTotCr = 0; var scTotDr = 0;
                                                 - var scTotOCr = subItem.credit; var scTotODr = subItem.debit;
                                                 - var scTotCCr = 0; var scTotCDr = 0;
                                                 if subItem.subContData.regSubsData
                                                     each ssItem, ssid in subItem.subContData.regSubsData
-                                                        - var ssTotCr = 0; var ssTotDr = 0;
+                                                        - var ssTotCr = ssItem.credit; var ssTotDr = ssItem.debit;
                                                         if ssItem.subsData.entries_data
                                                             - ssTotCr += ssItem.subsData.entries_data.credit; ssTotDr += ssItem.subsData.entries_data.debit;
-                                                            - scTotCr += ssItem.subsData.entries_data.credit; scTotDr += ssItem.subsData.entries_data.debit;
-                                                        - scTotCr += ssItem.credit; scTotDr += ssItem.debit;
-
-                                                - var bal = (scTotODr + scTotDr)-(scTotOCr + scTotCr)
-                                                - scTotCCr += (bal < 0) ? -(bal) : 0; scTotCDr += (bal > -1) ? bal : 0;
-                                                - totOCr += scTotOCr; totODr += scTotODr;
-                                                - totCCr += scTotCCr; totCDr += scTotCDr;
-                                                - totCr += scTotCr; totDr += scTotDr;
-                                                tr
-                                                    td #{sid}
-                                                    td #{subItem.subContData.name}
-                                                    td #{scTotODr}
-                                                    td #{scTotOCr}
-                                                    td #{scTotDr}
-                                                    td #{scTotCr}
-                                                    td #{scTotCDr}
-                                                    td #{scTotCCr}
+                                                            - scTotCr += ssTotCr; scTotDr += ssTotDr;
+                                                            - subsCheck = true;
+                                                if subsCheck
+                                                    - var bal = (scTotODr + scTotDr)-(scTotOCr + scTotCr)
+                                                    - scTotCCr += (bal < 0) ? -(bal) : 0; scTotCDr += (bal > -1) ? bal : 0;
+                                                    - totOCr += scTotOCr; totODr += scTotODr;
+                                                    - totCCr += scTotCCr; totCDr += scTotCDr;
+                                                    - totCr += scTotCr; totDr += scTotDr;
+                                                    - subContCheck = true;
+                                                    tr
+                                                        td #{sid}
+                                                        td #{subItem.subContData.name}
+                                                        td #{scTotODr}
+                                                        td #{scTotOCr}
+                                                        td #{scTotDr}
+                                                        td #{scTotCr}
+                                                        td #{scTotCDr}
+                                                        td #{scTotCCr}
+                                        if subContCheck
                                             - grTotCr += totCr; grTotDr += totDr;
                                             - grTotODr += totODr; grTotOCr += totOCr;
                                             - grTotCDr += totCDr; grTotCCr += totCCr;
                                             tr(style="font-weight:bold;")
                                                 td Total Control
-                                                td #{id+" "+item.contData.name}
+                                                td #{id + " " + item.contData.name}
                                                 td #{totODr}
                                                 td #{totOCr}
                                                 td #{totDr}

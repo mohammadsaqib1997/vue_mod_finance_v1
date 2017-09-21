@@ -72,24 +72,31 @@ html(lang='en')
                                         th(style='width:10%;') Credit
 
                                     - var grTotCr = 0; var grTotDr = 0;
-                                    each item, id in data
-                                        - var totCr = item.credit; var totDr = item.debit;
-                                        if item.contData.regSubContData
-                                            each subItem, sid in item.contData.regSubContData
-                                                - var scTotCr = subItem.credit; var scTotDr = subItem.debit;
-                                                if subItem.subContData.regSubsData
-                                                    each ssItem, ssid in subItem.subContData.regSubsData
-                                                        - var ssTotCr = ssItem.credit; var ssTotDr = ssItem.debit;
-                                                        if ssItem.subsData.entries_data
-                                                            - ssTotCr += ssItem.subsData.entries_data.credit; ssTotDr += ssItem.subsData.entries_data.debit;
-                                                        - scTotCr += ssTotCr; scTotDr += ssTotDr;
-                                                - totCr += scTotCr; totDr += scTotDr;
-                                        - grTotCr += totCr; grTotDr += totDr;
-                                        tr
-                                            td Total Control
-                                            td #{id + " " + item.contData.name}
-                                            td #{totDr}
-                                            td #{totCr}
+                                        each item, id in data
+                                            - var subContCheck = false;
+                                            - var totCr = item.credit; var totDr = item.debit;
+                                            if item.contData.regSubContData
+                                                each subItem, sid in item.contData.regSubContData
+                                                    - var subsCheck = false;
+                                                    - var scTotCr = subItem.credit; var scTotDr = subItem.debit;
+                                                    if subItem.subContData.regSubsData
+                                                        each ssItem, ssid in subItem.subContData.regSubsData
+                                                            - var ssTotCr = ssItem.credit; var ssTotDr = ssItem.debit;
+                                                            if ssItem.subsData.entries_data
+                                                                - ssTotCr += ssItem.subsData.entries_data.credit; ssTotDr += ssItem.subsData.entries_data.debit;
+                                                                - scTotCr += ssTotCr; scTotDr += ssTotDr;
+                                                                - subsCheck = true;
+                                                    if subsCheck
+                                                        - totCr += scTotCr; totDr += scTotDr;
+                                                        - subContCheck = true;
+                                            if subContCheck
+                                                - grTotCr += totCr; grTotDr += totDr;
+                                                tr
+                                                    td #{id}
+                                                    td #{item.contData.name}
+                                                    td #{totDr}
+                                                    td #{totCr}
+
                                     tr(style="font-weight:bold;")
                                         td(colspan=2 style="text-align:right;") Grand Total (Rs.)
                                         td #{grTotDr}

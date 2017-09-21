@@ -341,6 +341,7 @@ export default {
                             voucher_push_gen.set({
                                 id: next_id,
                                 sel_project: self.sel_project,
+                                posted_status: "No",
                                 allotee_code: self.allotee_code,
                                 allotee_name: self.allotee_name,
                                 contact_no: self.contact_no,
@@ -518,7 +519,6 @@ export default {
                 self.voucher_id = sel_voucher.id;
                 self.nbr_number = sel_voucher.nbr_number;
                 self.v_remarks = sel_voucher.v_remarks;
-                self.posted_status = sel_voucher.posted_status;
                 self.sel_project = sel_voucher.sel_project;
                 self.voucher_date = sel_voucher.voucher_date;
 
