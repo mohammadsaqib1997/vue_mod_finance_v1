@@ -1,4 +1,4 @@
-#container.wrap-content.container
+#container.wrap-content.container.dashboard
     section#page-title.padding-top-15.padding-bottom-15
         .row
             .col-sm-7
@@ -48,65 +48,47 @@
             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                 .panel.panel-white.no-radius
                     .panel-heading.border-bottom.border-green
-                        h4.panel-title Recent Reports
+                        h4.panel-title Short Cut Links
                     .panel-body.no-padding
                         .margin-top-20.text-left.legend-xs.inline
                             table.table.no-margin.table-striped
                                 tbody
                                     tr
-                                        td(style='text-align: left;width: 30px;')
-                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
-                                        td
-                                            span.text-small.block.text-light.table-heading Control Reports
-                                            span.table-subheading Monthly
-                                        td.text-right
-                                            .cl-effect-13
-                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
+                                        a(href="/create_control")
+                                            td(style='text-align: left;width: 30px;')
+                                                img(src='/assets/images/icons/masterFiles.png', style=' margin-left: 10px; ')
+                                            td
+                                                span.text-small.block.text-light.table-heading Control
                                     tr
-                                        td(style='text-align: left;width: 30px;')
-                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
-                                        td
-                                            span.text-small.block.text-light.table-heading Control Reports
-                                            span.table-subheading Monthly
-                                        td.text-right
-                                            .cl-effect-13
-                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
+                                        a(href="/create_sub_control")
+                                            td(style='text-align: left;width: 30px;')
+                                                img(src='/assets/images/icons/masterFiles.png', style=' margin-left: 10px; ')
+                                            td
+                                                span.text-small.block.text-light.table-heading Sub Control
                                     tr
-                                        td(style='text-align: left;width: 30px;')
-                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
-                                        td
-                                            span.text-small.block.text-light.table-heading Control Reports
-                                            span.table-subheading Monthly
-                                        td.text-right
-                                            .cl-effect-13
-                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
+                                        a(href="/create_subsidiary")
+                                            td(style='text-align: left;width: 30px;')
+                                                img(src='/assets/images/icons/masterFiles.png', style=' margin-left: 10px; ')
+                                            td
+                                                span.text-small.block.text-light.table-heading Subsidiary
                                     tr
-                                        td(style='text-align: left;width: 30px;')
-                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
-                                        td
-                                            span.text-small.block.text-light.table-heading Control Reports
-                                            span.table-subheading Monthly
-                                        td.text-right
-                                            .cl-effect-13
-                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
+                                        a(href="/master_details")
+                                            td(style='text-align: left;width: 30px;')
+                                                img(src='/assets/images/icons/masterFiles.png', style=' margin-left: 10px; ')
+                                            td
+                                                span.text-small.block.text-light.table-heading Customer Details
                                     tr
-                                        td(style='text-align: left;width: 30px;')
-                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
-                                        td
-                                            span.text-small.block.text-light.table-heading Control Reports
-                                            span.table-subheading Monthly
-                                        td.text-right
-                                            .cl-effect-13
-                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
+                                        a(href="/journal_voucher")
+                                            td(style='text-align: left;width: 30px;')
+                                                img(src='/assets/images/icons/transaction.png', style=' margin-left: 10px; ')
+                                            td
+                                                span.text-small.block.text-light.table-heading Vendor Details
                                     tr
-                                        td(style='text-align: left;width: 30px;')
-                                            img(src='assets/images/list-icon.png', style=' margin-left: 10px; ')
-                                        td
-                                            span.text-small.block.text-light.table-heading Control Reports
-                                            span.table-subheading Monthly
-                                        td.text-right
-                                            .cl-effect-13
-                                                a(data-v-8efb31ec='', href='', style=' color: #a6c367; ') view more
+                                        a(href="/post_unpost")
+                                            td(style='text-align: left;width: 30px;')
+                                                img(src='/assets/images/icons/transaction.png', style=' margin-left: 10px; ')
+                                            td
+                                                span.text-small.block.text-light.table-heading Post / Un Post
     .container-fluid.container-fullw.bg-offwhite
         .row
             .col-xs-12.col-sm-12.col-md-6.col-lg-6

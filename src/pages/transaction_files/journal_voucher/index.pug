@@ -67,19 +67,19 @@
                                                 .clip-radio.radio-primary
                                                     input#md(type='radio', value='md', v-model='ref_type')
                                                     label(for='md')
-                                                        | Master Detail
+                                                        | Customer Detail
                                                     input#pi(type='radio', value='pi', v-model='ref_type')
                                                     label(for='pi')
-                                                        | Party Information
+                                                        | Vendor Detail
                                                     p.text-danger.text-right(v-if='validation.hasError("ref_type")') {{ validation.firstError('ref_type') }}
                                             .form-group
                                                 label
-                                                    | Select {{ (ref_type === 'md')? "Customer Detail":"vender Detail" }}
+                                                    | Select {{ (ref_type === 'md')? "Customer Detail":"Vendor Detail" }}
                                                 div.text-center(v-if='dataLoad4')
                                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                                 template(v-else)
                                                     select.form-control(v-model='sel_ref')
-                                                        option(value='') Select {{ (ref_type === 'md')? "Master Detail":"Party Information" }}
+                                                        option(value='') Select {{ (ref_type === 'md')? "Customer Detail":"Vendor Detail" }}
                                                         option(v-if="ref_type === 'md'" v-for='(row, key, ind) in masterDetailsData' v-bind:value='key') {{ row.allotee_code }} | {{ row.allotee_name }}
                                                         option(v-if="ref_type === 'pi'" v-for='(row, key, ind) in partyInformationData' v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_ref")') {{ validation.firstError('sel_ref') }}
