@@ -47,10 +47,19 @@
                                             span.text-bold.block.text-font-62.col-xs-12.col-sm-6.col-md-6.col-lg-6.pull-left 100%
             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                 .panel.panel-white.no-radius
-                    .panel-heading.border-bottom.border-green
-                        h4.panel-title Calculator
-                    .panel-body
-                        img(src="/assets/images/calculator.png" style="width:100%")
+                    .panel-body.no-padding
+                        #full-calendar
+                    .panel-footer.padding-10.partition-white
+                        .list-inline
+                            li
+                                i.circle-20(style="background: #f5b620; float: left; margin-right: 5px;")
+                                h5(style="float: left;line-height: 22px;margin-bottom: 0px;text-transform: uppercase;color: #b3b3b3;font-size: 12px;") Meeting
+                            li
+                                i.circle-20(style="background: #a6c367; float: left; margin-right: 5px;")
+                                h5(style="float: left;line-height: 22px;margin-bottom: 0px;text-transform: uppercase;color: #b3b3b3;font-size: 12px;") Reminder
+                            li(style="float: left; margin-right: 5px;")
+                                i.circle-20(style="background: #e8534f; float: left; margin-right: 5px;")
+                                h5(style="float: left;line-height: 22px;margin-bottom: 0px;text-transform: uppercase;color: #b3b3b3;font-size: 12px;") Event
     .container-fluid.container-fullw.bg-offwhite
         .row
             .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-right-0
