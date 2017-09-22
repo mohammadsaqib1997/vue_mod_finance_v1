@@ -179,26 +179,30 @@ html(lang='en')
                                             tbody
                                                 tr.background-e2e8f0.no-border
                                                     th.col-md-1 Installment No.
+                                                    th.col-md-1 Pay Date
                                                     th.col-md-1 Due Date
                                                     th.col-md-1 Allotee Name
                                                     th.col-md-5(colspan='2') Project
                                                     th.col-md-1 Amount
                                                     th.col-md-1 Status
                                                     th.col-md-1 Balance
-                                                tr
-                                                    td.col-md-1 01
-                                                    td.col-md-1(style='width:40px;') #{data.booking_date}
-                                                    td.col-md-1 #{data.allotee_name}
-                                                    td.col-md-4(colspan='2') #{data.sel_project} - #{data.sel_pro_type_no}
-                                                    td.col-md-1 #{data.booking_amount}
-                                                    td.col-md-1 paid
-                                                    td.col-md-1 #{data.selling_price}
-                                                - var start_ind = 2;
+                                                - var totAmount = 0;
+                                                each ent, ind in entData
+                                                    - totAmount += ent.amount;
+                                                    tr
+                                                        td.col-md-1 #{("0"+(1+ind)).slice(-2)}
+                                                        td.col-md-1(style='width:40px;') #{(ent.pay_date) ? ent.pay_date: ""}
+                                                        td.col-md-1(style='width:40px;') #{ent.due_date}
+                                                        td.col-md-1 #{data.allotee_name}
+                                                        td.col-md-4(colspan='2') #{data.sel_project} - #{data.sel_pro_type_no}
+                                                        td.col-md-1 #{ent.amount}
+                                                        td.col-md-1 #{ent.status}
+                                                        td.col-md-1 #{ent.balance}
 
                                                 tr.no-border
                                                     td(colspan='4')
                                                     td.col-md-1 Total
-                                                    td.background-e6e6e6 40000
+                                                    td.background-e6e6e6 #{totAmount}
                                                     td(colspan='2')
                                         button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button', style='margin-right:20px;') Save
                                         button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print

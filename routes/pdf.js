@@ -1381,11 +1381,54 @@ router.get('/payment/:id', function(req, res, next){
                             let proTypeItemData = proTypeItemSnap.val();
                             mdData['sel_pro_type_no'] = proTypeItemData.name;
 
-                            let booking_date = moment(mdData.booking_date);
+                            refRegSubsidiary.child(projectSnap.key).orderByChild("key").equalTo(proTypeItemData.subs_key).once('value', function (regSubsSnap) {
+                                let regSubsData = regSubsSnap.val();
+                                refVouchersEntries.orderByChild("v_key").equalTo(mdSnap.key).once('value', function (md_entSnap) {
+                                    if(md_entSnap.numChildren() > 0){
+                                        let process_item = 0;
+                                        let grabEnt = [];
+                                        md_entSnap.forEach(function (entItemSnap) {
+                                            let entItemData = entItemSnap.val();
+                                            let balance = mdData.selling_price;
+                                            if(entItemData.debit > 0){
+                                                let date = moment(entItemData.v_date);
+                                                balance = balance - entItemData.debit;
+                                                grabEnt.push({
+                                                    amount: entItemData.debit,
+                                                    pay_date: date.format("DD/MM/YYYY"),
+                                                    due_date: date.add(1, "M").set('date', 1).format("DD/MM/YYYY"),
+                                                    status: "Paid",
+                                                    balance: balance
+                                                });
+                                            }
 
+                                            process_item++;
+                                            if(process_item === md_entSnap.numChildren()){
+                                                refVouchers.orderByChild("ref_key").equalTo(mdSnap.key).once('value', function (jv_entSnap) {
+                                                    //console.log(jv_entSnap.val());
 
-                            mdData['booking_date'] = moment(mdData.booking_date).format("DD/MM/YYYY");
-                            res.render('pdf_templates/payment_plan', {data: mdData});
+                                                    let booking_date = moment(mdData.booking_date).add(1, "M");
+                                                    for(let i=0; i<mdData.payment_installment; i++){
+                                                        balance = balance - mdData.payment_plan;
+                                                        grabEnt.push({
+                                                            amount: mdData.payment_plan,
+                                                            pay_date: false,
+                                                            due_date: booking_date.add(1, "M").set('date', 1).format("DD/MM/YYYY"),
+                                                            status: "Unpaid",
+                                                            balance: balance
+                                                        });
+                                                    }
+
+                                                    mdData['booking_date'] = moment(mdData.booking_date).format("DD/MM/YYYY");
+                                                    res.render('pdf_templates/payment_plan', {data: mdData, entData: grabEnt});
+                                                });
+                                            }
+                                        });
+                                    }else{
+                                        res.json({status: "failed", message: "No Customer voucher found!"});
+                                    }
+                                });
+                            });
                         });
                     });
                 });

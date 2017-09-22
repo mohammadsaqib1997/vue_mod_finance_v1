@@ -120,6 +120,7 @@ export default {
             dataLoad5: true,
             dataLoad6: false,
             updateV: false,
+            typeChgCheck: true,
 
             // data save
             proData: {},
@@ -442,7 +443,7 @@ export default {
                                     if (row.code !== "") {
                                         delete row['key'];
                                         row.v_key = self.sel_master_det;
-                                        row.v_data = self.booking_date;
+                                        row.v_date = self.booking_date;
                                         row.createdAt = firebase.database.ServerValue.TIMESTAMP;
                                         row['type'] = "md";
 
@@ -516,11 +517,6 @@ export default {
                 self.updateV = true;
                 self.fullVoucherReset(self);
                 let sel_voucher = self.masterDetailsData[key];
-                self.voucher_id = sel_voucher.id;
-                self.nbr_number = sel_voucher.nbr_number;
-                self.v_remarks = sel_voucher.v_remarks;
-                self.sel_project = sel_voucher.sel_project;
-                self.voucher_date = sel_voucher.voucher_date;
 
                 self.sel_project = sel_voucher.sel_project;
                 self.allotee_code = sel_voucher.allotee_code;
@@ -528,14 +524,17 @@ export default {
                 self.contact_no = sel_voucher.contact_no;
                 self.allotee_email = sel_voucher.allotee_email;
                 self.sel_broker = sel_voucher.sel_broker;
-                self.sel_type = sel_voucher.sel_type;
-                self.sel_pro_type_no = sel_voucher.sel_pro_type_no;
                 self.doc_year = sel_voucher.doc_year;
                 self.booking_date = sel_voucher.booking_date;
                 self.selling_price = sel_voucher.selling_price;
                 self.booking_amount = sel_voucher.booking_amount;
                 self.payment_installment = sel_voucher.payment_installment;
                 self.payment_plan = sel_voucher.payment_plan;
+
+                setTimeout(function () {
+                    self.typeChgCheck = false;
+                    self.sel_type = sel_voucher.sel_type;
+                }, 100);
 
                 $(".datepicker.booking_date").datepicker("update", new Date(sel_voucher.booking_date));
                 self.voucherEntriesGet(self);
@@ -623,16 +622,18 @@ export default {
             self.sel_pro_type_no = "";
             if(self.sel_project !== "" && self.sel_type !== ""){
                 self.projectTypeItemsRef.orderByChild("pro_key").equalTo(self.sel_project).on("value", function (snap) {
-                    let data = snap.val();
-                    if(data !== null){
-                        let keys = Object.keys(data);
+                    if(snap.numChildren() > 0){
                         let grabData = {};
-                        keys.forEach(function (key) {
-                            let item = data[key];
+                        snap.forEach(function (itemSnap) {
+                            let item = itemSnap.val();
                             if(item.type_key === self.sel_type){
-                                grabData[key] = item;
+                                grabData[itemSnap.key] = item;
                             }
                         });
+                        if(self.updateV && !self.typeChgCheck){
+                            self.sel_pro_type_no = self.masterDetailsData[self.sel_master_det].sel_pro_type_no;
+                            self.typeChgCheck = true;
+                        }
                         self.proTypesSubData = grabData;
                     }else{
                         self.proTypesSubData = {};
