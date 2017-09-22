@@ -4,7 +4,8 @@ var Calendar = function() {"use strict";
 	defaultRange.start = moment();
 	defaultRange.end = moment().add(1, 'days');
 	//Calendar
-	var setFullCalendarEvents = function() {
+	function setFullCalendarEvents() {
+		console.log("setFullCalendarEvents");
 		var date = new Date();
 		dateToShow = date;
 		var d = date.getDate();
@@ -43,6 +44,7 @@ var Calendar = function() {"use strict";
 	};
 	//function to initiate Full Calendar
 	var runFullCalendar = function() {
+        console.log("runFullCalendar");
 		$(".add-event").off().on("click", function() {
 			eventInputDateHandler();
 			$(".form-full-event #event-id").val("");
@@ -155,7 +157,7 @@ var Calendar = function() {"use strict";
 	};
 
 	var runFullCalendarValidation = function(el) {
-
+        console.log("runFullCalendarValidation");
 		var formEvent = $('.form-full-event');
 
 		formEvent.validate({

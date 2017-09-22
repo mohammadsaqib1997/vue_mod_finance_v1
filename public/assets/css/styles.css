@@ -13041,7 +13041,7 @@ body .dashboard table.table.no-margin td {
 }
 
 
-.background-f8f8f8:after {
+.dashboard .background-f8f8f8:after {
   content: "";
   background: #40ed9a;
   position: absolute;
@@ -13051,7 +13051,7 @@ body .dashboard table.table.no-margin td {
   left: 0;
 }
 
-.background-efefef:after {
+.dashboard .background-efefef:after {
   content: "";
   background: #ff625f;
   position: absolute;
@@ -13061,7 +13061,7 @@ body .dashboard table.table.no-margin td {
   right: 0;
 }
 
-.background-e6e6e6:after {
+.dashboard .background-e6e6e6:after {
   content: "";
   background: #4bc9f3;
   position: absolute;
