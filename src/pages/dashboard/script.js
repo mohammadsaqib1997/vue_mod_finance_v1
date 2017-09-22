@@ -11,9 +11,6 @@ export default {
                 $.getScript('/vendor/fullcalendar/fullcalendar.min.js', function (data, textStatus, jqxhr) {
                     $.getScript('/assets/js/calender.js', function (data, textStatus, jqxhr) {
                         Calendar.init();
-                        Calendar.setFullCalendarEvents();
-                        Calendar.runFullCalendar();
-                        Calendar.runFullCalendarValidation();
                     });
                 });
             });

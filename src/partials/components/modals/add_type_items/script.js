@@ -12,6 +12,8 @@ export default {
         self.projectsRef = db.ref('/projects');
         self.projectTypesRef = db.ref('/project_types');
         self.projectTypeItemsRef = db.ref('/project_type_items');
+        self.regSubsidiaryRef = db.ref('/reg_subsidiary');
+        self.subsidiaryRef = db.ref('/subsidiary');
 
         self.projectsRef.on('value', function (proSnap) {
             let renderData = proSnap.val();
@@ -39,22 +41,31 @@ export default {
             inProcess: false,
             dataLoad1: true,
             dataLoad2: true,
+            dataLoad3: false,
 
             //data
             proData: {},
             proTypesData: {},
+            regSubsData: {},
 
             //reference
             projectsRef: null,
             projectTypesRef: null,
             projectTypeItemsRef: null,
+            regSubsidiaryRef: null,
 
             // form fields
             name: "",
+            sel_subs: "",
             sel_project: "",
             sel_type: "",
             errMain: "",
             sucMain: "",
+        }
+    },
+    watch: {
+        sel_project: function (val) {
+            this.loadSubsidiary(val);
         }
     },
     validators: {
@@ -87,6 +98,32 @@ export default {
         sel_project: function (value) {
             return Validator.value(value).required().lengthBetween(20, 36);
         },
+        sel_subs: function (value) {
+            let self = this;
+            return Validator.value(value).required().lengthBetween(20, 36).custom(function () {
+                if(value !== ""){
+                    return Promise.delay(1000).then(function () {
+                        return self.projectTypeItemsRef.orderByChild('subs_key').equalTo(value).once('value').then(function (snap) {
+                            let data = snap.val();
+                            if(data !== null){
+                                let keys = Object.keys(data);
+                                let exist = false;
+                                keys.forEach(function (key) {
+                                    let item = data[key];
+                                    if(item.pro_key === self.sel_project){
+                                        exist = true;
+                                        return false;
+                                    }
+                                });
+                                if(exist){
+                                    return "Already taken!";
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+        },
         sel_type: function (value) {
             return Validator.value(value).required().lengthBetween(1, 11);
         },
@@ -113,6 +150,7 @@ export default {
                                 name: self.name,
                                 pro_key: self.sel_project,
                                 type_key: self.sel_type,
+                                subs_key: self.sel_subs,
                                 createdAt: firebase.database.ServerValue.TIMESTAMP,
                             }, function (err) {
                                 if (err) {
@@ -135,6 +173,37 @@ export default {
                     self.inProcess = false;
                 }
             });
+        },
+        loadSubsidiary: function (val) {
+            let self = this;
+            self.sel_subs = "";
+            if(val !== ""){
+                self.dataLoad3 = true;
+                self.regSubsidiaryRef.child(val).once('value', function (regSubsSnap) {
+                    if(regSubsSnap.numChildren() > 0){
+                        let grabData = {};
+                        let process_item = 0;
+                        regSubsSnap.forEach(function (regSubSnap) {
+                            let regSubItem = regSubSnap.val();
+                            self.subsidiaryRef.child(regSubItem.key).once('value', function (subsSnap) {
+                                let subsData = subsSnap.val();
+                                regSubItem['name'] = subsData.name;
+                                grabData[subsSnap.key] = regSubItem;
+
+                                process_item++;
+                                if(process_item === regSubsSnap.numChildren()){
+                                    self.regSubsData = grabData;
+                                }
+                            });
+                        });
+                    }else{
+                        self.regSubsData = {};
+                    }
+                    self.dataLoad3 = false;
+                });
+            }else{
+                self.regSubsData = {}
+            }
         }
     }
 }

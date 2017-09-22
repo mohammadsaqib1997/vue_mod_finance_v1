@@ -16,6 +16,9 @@ var refPro = db.ref('/projects');
 var refVouchersEntries = db.ref('/vouchers_entries');
 var refVouchers = db.ref('/vouchers');
 var refMasterDetails = db.ref('/master_details');
+var refBrokers = db.ref('/brokers');
+var refProjectTypeItems = db.ref('/project_type_items');
+var refProjectTypes = db.ref('/project_types');
 
 router.post('/control/render.pdf', function (req, res, next){
     admin.auth().verifyIdToken(req.body.auth).then(function (decodedToken) {
@@ -240,8 +243,10 @@ router.post('/detailed_ledger/render.pdf', function (req, res, next) {
                         }else if(item.type === "md"){
                             refMasterDetails.child(item.v_key).once('value', function (mdSnap) {
                                 let mdData = mdSnap.val();
-                                item['v_id'] = mdData.id;
-                                grabEnt.push(item);
+                                if(mdData !== null && mdData.posted_status === "Yes"){
+                                    item['v_id'] =  mdData.id;
+                                    grabEnt.push(item);
+                                }
                                 process_item++;
                                 if(process_item === keys.length){
                                     grabEnt = func.sortObjByVal(grabEnt, "v_date");
@@ -261,7 +266,7 @@ router.post('/detailed_ledger/render.pdf', function (req, res, next) {
                         }
                     });
                 }else{
-                    res.json({project: proData.name, data: {}});
+                    res.json({status: "failed", message: "No data found!"});
                 }
             });
         });
@@ -1354,6 +1359,42 @@ router.post('/trial_balance/controls/view', function (req, res, next) {
     }).catch(function (err) {
         res.json({err: err, status: 'failed'});
     });
+});
+
+router.get('/payment/:id', function(req, res, next){
+    refMasterDetails.child(req.params.id).once('value', function (mdSnap) {
+        let mdData = mdSnap.val();
+        if(mdData !== null){
+            refPro.child(mdData.sel_project).once('value', function (projectSnap) {
+                let projectData = projectSnap.val();
+                mdData['sel_project'] = projectData.name;
+
+                refBrokers.child(mdData.sel_broker).once('value', function (brokerSnap) {
+                    let brokerData = brokerSnap.val();
+                    mdData['sel_broker'] = brokerData.name;
+
+                    refProjectTypes.child(mdData.sel_type).once('value', function (proTypeSnap) {
+                        let proTypeData = proTypeSnap.val();
+                        mdData['sel_type'] = proTypeData.name;
+
+                        refProjectTypeItems.child(mdData.sel_pro_type_no).once('value', function (proTypeItemSnap) {
+                            let proTypeItemData = proTypeItemSnap.val();
+                            mdData['sel_pro_type_no'] = proTypeItemData.name;
+
+                            let booking_date = moment(mdData.booking_date);
+
+
+                            mdData['booking_date'] = moment(mdData.booking_date).format("DD/MM/YYYY");
+                            res.render('pdf_templates/payment_plan', {data: mdData});
+                        });
+                    });
+                });
+            });
+        }else{
+            res.json({status: "failed", message: "Invalid Id!"});
+        }
+    });
+
 });
 
 module.exports = router;

@@ -52,8 +52,8 @@ html(lang='en')
                         .col-md-2.border-right(style='border-color: #aeaeae;')
                             img(src='/assets/images/logo.png', class="logo-image", style='width: 100%;max-width:230px;')
                         .col-sm-8
-                            h1.mainTitle(style='font-size: 38.02px;') M.I.S REPORTS
-                            span.mainDescription(style='font-size: 19px;color: #ec5d58;') DETAILED LEDGER
+                            h1.mainTitle(style='font-size: 38.02px;margin-top: 16px;') Payment Plan
+                            //span.mainDescription(style='font-size: 19px;color: #ec5d58;') DETAILED LEDGER
             .row.padding-30
                 .col-md-12
                     .row.padding-30
@@ -61,7 +61,7 @@ html(lang='en')
                             .row.padding-15.padding-top-0
                                 .panel.panel-white.no-radius
                                     .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
-                                        h4.panel-title.pull-left.padding-15 ABC PROJECT - ISHTIAQ HUSSAIN PAYMENTS
+                                        h4.panel-title.pull-left.padding-15 #{data.sel_project} - #{data.allotee_name}
                                     .panel-body.padding-30
                                         .row
                                             .col-xs-12.col-sm-12.col-md-12.col-lg-12
@@ -72,21 +72,28 @@ html(lang='en')
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Project
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong ABC Project
+                                                            strong #{data.sel_project}
                                             .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                                 .form-group
                                                     .row
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
-                                                            label Project Type
+                                                            label Type
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong Housing Soceity Benglow
+                                                            strong #{data.sel_type}
+                                            .col-xs-12.col-sm-12.col-md-3.col-lg-3
+                                                .form-group
+                                                    .row
+                                                        .col-xs-12.col-sm-4.col-md-4.col-lg-4
+                                                            label #{data.sel_type} No.
+                                                        .col-xs-12.col-sm-8.col-md-8.col-lg-8
+                                                            strong #{data.sel_pro_type_no}
                                             .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                                 .form-group
                                                     .row
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Broker
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong Saqib
+                                                            strong #{data.sel_broker}
                                         .row
                                             .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                                 h3.p_subheading Allotee Details
@@ -97,28 +104,28 @@ html(lang='en')
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Allotee Code
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong 0921
+                                                            strong #{data.allotee_code}
                                             .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                                 .form-group
                                                     .row
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Allotee Name
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong Ishtiaq Hussain
+                                                            strong #{data.allotee_name}
                                             .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                                 .form-group
                                                     .row
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Contact No.
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong +92 335 213 4661
+                                                            strong #{data.contact_no}
                                             .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                                 .form-group
                                                     .row
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label E-Mail
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong abc@abc.com
+                                                            strong #{data.allotee_email}
                                         .row
                                             .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                                 h3.p_subheading Booking Details
@@ -129,42 +136,42 @@ html(lang='en')
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Document Year
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong 2017
+                                                            strong #{data.doc_year}
                                             .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                                 .form-group
                                                     .row
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Booking Date
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong 21/01/2017
+                                                            strong #{data.booking_date}
                                             .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                                 .form-group
                                                     .row
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Selling Price
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong 50,000
+                                                            strong #{data.selling_price}
                                             .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                                 .form-group
                                                     .row
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Booking Amount
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong 50,000
+                                                            strong #{data.booking_amount}
                                             .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                                 .form-group
                                                     .row
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Payment Plan
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong 6 months
+                                                            strong #{data.payment_plan}/month
                                             .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                                 .form-group
                                                     .row
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4
                                                             label Installment
                                                         .col-xs-12.col-sm-8.col-md-8.col-lg-8
-                                                            strong 1100
+                                                            strong #{data.payment_installment} months
                                         .row
                                             .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                                 h3.p_subheading Monthly Payment Details
@@ -174,18 +181,20 @@ html(lang='en')
                                                     th.col-md-1 Installment No.
                                                     th.col-md-1 Due Date
                                                     th.col-md-1 Allotee Name
-                                                    th.col-md-5(colspan='2') Project Name
+                                                    th.col-md-5(colspan='2') Project
                                                     th.col-md-1 Amount
                                                     th.col-md-1 Status
                                                     th.col-md-1 Balance
                                                 tr
                                                     td.col-md-1 01
-                                                    td.col-md-1(style='width:40px;') 5/04/2017
-                                                    td.col-md-1 Ishtiaq Hussain
-                                                    td.col-md-4(colspan='2') Housing Soceity Benglow
-                                                    td.col-md-1 10000
+                                                    td.col-md-1(style='width:40px;') #{data.booking_date}
+                                                    td.col-md-1 #{data.allotee_name}
+                                                    td.col-md-4(colspan='2') #{data.sel_project} - #{data.sel_pro_type_no}
+                                                    td.col-md-1 #{data.booking_amount}
                                                     td.col-md-1 paid
-                                                    td.col-md-1 10000
+                                                    td.col-md-1 #{data.selling_price}
+                                                - var start_ind = 2;
+
                                                 tr.no-border
                                                     td(colspan='4')
                                                     td.col-md-1 Total

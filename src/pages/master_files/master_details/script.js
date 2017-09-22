@@ -620,6 +620,7 @@ export default {
         loadTypesData: function () {
             let self = this;
             self.dataLoad4 = true;
+            self.sel_pro_type_no = "";
             if(self.sel_project !== "" && self.sel_type !== ""){
                 self.projectTypeItemsRef.orderByChild("pro_key").equalTo(self.sel_project).on("value", function (snap) {
                     let data = snap.val();
@@ -632,20 +633,13 @@ export default {
                                 grabData[key] = item;
                             }
                         });
-                        if(!self.updateV){
-                            self.sel_pro_type_no = "";
-                        }
                         self.proTypesSubData = grabData;
                     }else{
-                        if(!self.updateV){
-                            self.sel_pro_type_no = "";
-                        }
                         self.proTypesSubData = {};
                     }
                     self.dataLoad4 = false;
                 });
             }else{
-                self.sel_pro_type_no = "";
                 self.proTypesSubData = {};
                 self.dataLoad4 = false;
             }
