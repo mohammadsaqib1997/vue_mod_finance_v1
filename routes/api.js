@@ -264,6 +264,28 @@ router.post("/send_create_user_email", function (req, res, next) {
     });
 });
 
+router.get("/search_dash", function (req, res, next) {
+    let data = req.query;
+    let search_param = {
+        index: data.index,
+        type: data.type,
+        body: {
+            size: 5,
+            query: {
+                bool: {
+                    must: {
+                        regexp: {}
+                    }
+                }
+            }
+        }
+    };
+    search_param['body']['query']['bool']['must']['regexp'][data.field] = data.search+".*";
+    client.search(search_param, function (err, result) {
+        return res.json(result.hits.hits);
+    });
+});
+
 module.exports = router;
 
 function renderEmail(res, sel_user, newPass, callback){
@@ -291,48 +313,3 @@ function renderEmail(res, sel_user, newPass, callback){
         });
     });
 }
-
-
-/*
-client.search({
-    index: 'reg_subs',
-    type: 'id',
-    body: {
-        query: {
-            bool: {
-                must: {
-                    match: {
-                        _id: project
-                    }
-                },
-                must: {
-                    match: {
-                        key: hit._id
-                    }
-                }
-            }
-            /!*filtered: {
-             query: {match_all: {}},
-             filter: {
-             nested: {
-             path: "key",
-             filter: {
-             term: {
-             "key": hit._id
-             }
-             },
-             inner_hits : {}
-             }
-             }
-             }*!/
-        }
-    }
-}, function (err, response2) {
-    hit._source['nested'] = {};
-    hit._source['nested'] = response2.hits.hits;
-    grab_ids.push(hit);
-    // response.hits.hits[0]._source[code].sub_name = response2.hits.hits[0]._source.name;
-    if(ind === arr.length-1){
-        res.json(grab_ids);
-    }
-});*/

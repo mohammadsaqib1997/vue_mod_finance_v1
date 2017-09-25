@@ -571,7 +571,7 @@ export default {
                 self.rows[ind].debit = 0;
                 self.rows[ind].credit = 0;
                 self.rows[ind].v_key = '';
-                self.rows[ind].v_data = 0;
+                self.rows[ind].v_date = 0;
                 self.rows[ind].type = '';
                 self.rows[ind].createdAt = 0;
             });
@@ -608,7 +608,7 @@ export default {
                                 self.rows[ind].debit = item.debit;
                                 self.rows[ind].quantity = item.quantity;
                                 self.rows[ind].remarks = item.remarks;
-                                self.rows[ind].v_data = item.v_data;
+                                self.rows[ind].v_date = item.v_date;
                                 self.rows[ind].v_key = item.v_key;
                             }
                         });

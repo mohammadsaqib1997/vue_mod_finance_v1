@@ -9,6 +9,8 @@ admin_firebase.initializeApp({
 var db = admin_firebase.database();
 var regSubsRef = db.ref('reg_subsidiary');
 var subsRef = db.ref('subsidiary');
+var partyInfoRef = db.ref('party_information');
+var masterDetailsRef = db.ref('master_details');
 
 var elasticSearch = require('elasticsearch');
 var client = elasticSearch.Client({
@@ -35,6 +37,26 @@ subsRef.on("child_changed", function (snap) {
 });
 subsRef.on("child_removed", function (snap) {
     removeIndex(snap, 'subs', 'id');
+});
+
+partyInfoRef.on("child_added", function (snap) {
+    createOrUpdateIndex(snap, 'party_info', 'id');
+});
+partyInfoRef.on("child_changed", function (snap) {
+    createOrUpdateIndex(snap, 'party_info', 'id');
+});
+partyInfoRef.on("child_removed", function (snap) {
+    removeIndex(snap, 'party_info', 'id');
+});
+
+masterDetailsRef.on("child_added", function (snap) {
+    createOrUpdateIndex(snap, 'master_detail', 'id');
+});
+masterDetailsRef.on("child_changed", function (snap) {
+    createOrUpdateIndex(snap, 'master_detail', 'id');
+});
+masterDetailsRef.on("child_removed", function (snap) {
+    removeIndex(snap, 'master_detail', 'id');
 });
 
 
