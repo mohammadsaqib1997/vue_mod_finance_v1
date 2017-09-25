@@ -12760,7 +12760,6 @@ button[disabled], html input[disabled] {
   font-size: 16px;
   color: #545454;
 }
-.create-user .form-group select[multiple="multiple"]:focus option,
 .create-user .form-group select.form-control option:hover{
   background:#555555 !important;
   color:#ffffff;
@@ -13073,4 +13072,9 @@ body .dashboard table.table.no-margin td {
 
 .legend-xs .chart-legend > ul li span {
   border-radius: 30px;
+}
+
+.create-user .form-group select[multiple="multiple"]:focus option{
+    background: #f5f5f5 !important;
+    color: #555;
 }
