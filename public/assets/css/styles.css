@@ -11958,9 +11958,7 @@ body #sidebar nav > ul > li.open {
   background: #f1f1f1 !important;
 }
 
-#app.app-sidebar-closed footer {
-  margin-left: 70px;
-}
+
 .main-content > .container .navbar-form .form-control {
   background: #fff !important;
   text-transform: uppercase;
@@ -13090,4 +13088,8 @@ body .dashboard table.table.no-margin td {
 .create-user .form-group select[multiple="multiple"]:focus option{
   background: #f5f5f5 !important;
   color: #555;
+}
+
+.circle-tile-content img {
+  height: 50px;
 }
