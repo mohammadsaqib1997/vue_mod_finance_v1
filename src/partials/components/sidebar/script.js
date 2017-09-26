@@ -8,6 +8,11 @@ export default {
         jQuery(function(){
             setTimeout(function () {
                 jQuery.getScript( "/assets/js/main.js", function( data, textStatus, jqxhr ) {});
+                jQuery(".dashboard").click(function(e) {
+                    console.log("work");
+                    e.preventDefault();
+                    $(this).parent().find('li ul.sub-menu').slideUp(200);
+                });
             }, 100);
         });
     },
@@ -263,3 +268,4 @@ export default {
         }
     }
 }
+
