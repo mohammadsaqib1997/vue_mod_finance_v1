@@ -1049,7 +1049,7 @@ h5.over-title {
   height: 100%;
 }
 .app-sidebar-fixed #sidebar > .sidebar-container {
-  overflow-y: hidden;
+  overflow-y: visible;
   overflow-x: visible;
   position: relative;
 }
@@ -1217,7 +1217,8 @@ h5.over-title {
 }
 @media (min-width: 992px) {
   .app-sidebar-closed #sidebar > div nav > ul li ul.sub-menu {
-    display: none !important;
+    display: none;
+    border:0px;
   }
 }
 #sidebar > div nav > ul li.active > ul.sub-menu {
@@ -1242,6 +1243,9 @@ h5.over-title {
   text-decoration: none;
   border-bottom: 1px solid;
   border-bottom-color: #2e2e2e;
+}
+#sidebar > div nav > ul li:last-child a{
+  border-bottom: 0px solid;
 }
 #sidebar > div nav > ul li a i[class*="ti-"] {
   margin-right: 5px;
@@ -1292,6 +1296,13 @@ ul.sub-menu li {
 ul.sub-menu li.active, ul.sub-menu li.open {
   background: #e7e7e9 !important;
 }
+.no-touch body .app-sidebar-closed .app-aside .sub-menu li a:hover {
+  color: rgb(255, 255, 255) !important;
+  background: rgb(53, 53, 53) !important;
+}
+body .app-sidebar-closed .app-aside .sub-menu li a {
+  color: #fff !important;
+}
 .no-touch ul.sub-menu li:hover {
   background: #edecee;
 }
@@ -1331,13 +1342,14 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
     border-right: 1px solid #c8c7cc;
     border-bottom: 1px solid #c8c7cc;
     background: #ffffff;
-    left: 70px;
+    left: 69px;
     position: absolute;
     padding: 1px 0;
     overflow-y: auto;
     overflow-x: visible;
     height: auto;
     bottom: auto;
+    top:0px;
     width: 260px;
     z-index: 1050;
     display: none;
@@ -1474,7 +1486,9 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
 }
 @media (min-width: 992px) and (min-width: 992px) {
   .app-sidebar-closed #sidebar > div nav > ul {
-    padding: 1px 0;
+    padding: 0;
+    margin: 0;
+    border-top: 0;
   }
   .no-touch .app-sidebar-closed #sidebar > div nav > ul li {
     -moz-transition: background-color 0ms linear;
