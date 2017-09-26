@@ -6,68 +6,89 @@
 
 /* Custom, iPhone Retina */
 @media only screen and (min-width : 320px)  and (max-width : 479px) {
+    .navbar .navbar-header .navbar-brand {
+        padding: 0 15px;
+        display: none;
+    }
+
     a.btn.btn-tabbutton {
         width: 100%;
     }
-    img.tab-icon{
-        float:none;
+
+    img.tab-icon {
+        float: none;
     }
+
     html body .panel-title {
         font-size: 16px !important;
         width: 100%;
         text-align: center;
     }
+
     .bg-offwhite > .row > .col-xs-12 {
         margin-bottom: 20px;
     }
-    .container-fullw{
+
+    .container-fullw {
         padding-bottom: 0;
     }
-    .go-top{
+
+    .go-top {
         line-height: normal;
     }
+
     .main-content > .container {
         padding-bottom: 70px;
     }
+
     #app footer .footer-inner {
         padding: 20px;
         line-height: normal;
         float: left;
         width: 100%;
     }
+
     body .app-slide-off #sidebar {
         z-index: 5;
     }
+
     #sidebar > div nav > ul li.master_listing,
     #sidebar > div nav > ul li.process,
     #sidebar > div nav > ul li.transaction_file,
-    #sidebar > div nav > ul li.master_file{
+    #sidebar > div nav > ul li.master_file {
         display: none;
         visibility: hidden;
     }
+
     .app-sidebar-fixed #sidebar .navbar-form {
         background: #2e2e2e !important;
         min-height: 66px;
     }
+
     a#menu-toggler {
         display: none;
         visibility: hidden;
     }
+
     .navbar .navbar-header {
         float: left;
     }
+
     .navbar .navbar-collapse.collapse {
         display: block;
         visibility: initial;
     }
-    .navbar .navbar-collapse{
+
+    .navbar .navbar-collapse {
         overflow: visible !important;
     }
-    .navbar .navbar-collapse .nav{
+
+    .navbar .navbar-collapse .nav {
         height: auto !important;
         float: right;
         overflow-y: visible;
     }
+
     .navbar .navbar-header {
         z-index: 10;
         background: #ffffff;
@@ -75,14 +96,17 @@
         position: relative;
         height: 65px;
     }
+
     .navbar .navbar-right > li {
         float: left;
         width: 100%;
-        padding:9.5px;
+        padding: 9.5px;
     }
+
     .navbar .navbar-right > li:last-child {
         margin-bottom: 0;
     }
+
     .navbar .navbar-right .dropdown-menu.dropdown-dark {
         background-color: #2B3034;
         border: 1px solid #1A1C1E;
@@ -98,25 +122,31 @@
         right: 0;
         left: auto;
     }
+
     body .navbar .navbar-right .dropdown-menu:after {
         left: 80% !important;
     }
+
     #page-title h1 {
         font-size: 24px !important;
     }
-    body .border-right{
+
+    body .border-right {
         margin-bottom: 10px;
     }
+
     .navbar .navbar-right > li.current-user > a {
         float: right;
         padding: 4px;
     }
+
     .panel-heading h6.pull-right.text-right.padding-15 {
         padding: 5px 15px !important;
         margin: 0 auto;
         text-align: left;
         width: 100%;
     }
+
     body .table tr.background-e3e3e3 td {
         background: #e3e3e3;
         font-size: 3px;
@@ -124,16 +154,20 @@
         font-weight: 600;
         border-collapse: collapse;
     }
+
     html body .panel-title {
         font-size: 16px !important;
     }
+
     .misreport.table thead > tr > th, .table tbody > tr > th, .misreport.table tfoot > tr > th, .table thead > tr > td, .misreport.table tbody > tr > td, .table tfoot > tr > td {
         vertical-align: middle;
         font-size: 3px;
     }
+
     body header .navbar-collapse .navbar-right > li {
         border-bottom: 0px solid #c8c7cc !important;
     }
+
     body .border-right {
         border-right-style: solid;
         border-right-width: 0px;
@@ -144,32 +178,55 @@
     body h3.p_subheading {
         margin: 10px auto 20px;
     }
+
     body.create-user .panel-white {
         float: left;
         width: 100%;
     }
+
     .create-user .form-group label.control-label {
         float: left;
         line-height: normal;
     }
+
     .create-user .clip-radio {
         margin-bottom: 0;
         margin-top: 0;
         float: left;
         width: 100%;
     }
+
     body .msi_reports .panel-white,
     body .create-user .panel-white {
         margin-bottom: 20px;
     }
-    .detailreports button{
-        display:none;
-        visibility:hidden;
+
+    .detailreports button {
+        display: none;
+        visibility: hidden;
+    }
+
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-right-0 {
+        width: 100%;
+        float: left;
+        margin-bottom: 0;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-left-0 {
+        width: 100%;
+        float: left;
+        margin-bottom: 0;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
     }
 }
 
+
 /* Extra Small Devices, Phones */
 @media only screen and (min-width : 480px)  and (max-width : 767px) {
+
     a.btn.btn-tabbutton {
         width: 100%;
     }
@@ -322,10 +379,29 @@
         display:none;
         visibility:hidden;
     }
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-right-0 {
+        width: 100%;
+        float: left;
+        margin-bottom: 0;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-left-0 {
+        width: 100%;
+        float: left;
+        margin-bottom: 0;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
 }
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) and (max-width : 991px) {
+    body .app-slide-off #sidebar {
+        z-index: 5;
+    }
     body .navbar .navbar-right {
         margin: 0px auto 0;
     }
@@ -346,6 +422,20 @@
         padding: 11px 3px;
         line-height: 24px;
     }
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-right-0 {
+        margin-bottom: 0;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-left-0 {
+        margin-bottom: 0;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6:first-child {
+        margin-bottom: 30px;
+    }
 }
 
 /* Medium Devices, Desktops */
@@ -354,6 +444,20 @@
         font-size: 11px;
         padding: 11px 0.5%;
         line-height: 24px;
+    }
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-right-0 {
+        margin-bottom: 0;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-left-0 {
+        margin-bottom: 0;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    body .app-slide-off #sidebar {
+        z-index: 5;
     }
 }
 

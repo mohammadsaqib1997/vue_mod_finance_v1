@@ -1,0 +1,99 @@
+#container.wrap-content.container
+    section#page-title
+        .row
+            .col-xs-12.col-sm-12.col-md-8.col-lg-8
+                h1.mainTitle Search
+                span.mainDescription Journal Voucher
+            ol.breadcrumb
+                li
+                    span Search
+                li.active
+                    span Journal Voucher
+    .container-fluid.container-fullw.bg-offwhite
+        .row.voucher_details
+            .col-xs-12.col-sm-12.col-md-12.col-lg-12
+                .panel.panel-white.no-radius
+                    .panel-heading.border-bottom.border-left.border-yellow.no-padding.no-line-height.no-min-height
+                        h4.panel-title.pull-left.padding-15 Journal Voucher
+                    .panel-body
+                        .row
+                            .col-xs-12.col-sm-12.col-md-12.col-lg-12
+                                h3.p_subheading Voucher Details
+                        .row
+                            .col-xs-12.col-sm-12.col-md-12.col-lg-12
+                                .row
+                                    .col-xs-12.col-sm-6.col-md-6.col-lg-6
+                                        .form-group
+                                            label
+                                                | Voucher ID
+                                            p 02
+                                        .form-group
+                                            label
+                                                | NBR
+                                            p 1245265464
+                                        .form-group
+                                            label
+                                                | Remark
+                                            p asdasdasd asdasdasdasd
+                                        .form-group
+                                            label
+                                                | Voucher Date
+                                            p 02/02/2017
+                                    .col-xs-12.col-sm-6.col-md-6.col-lg-6
+                                        .form-group
+                                            label
+                                                | Reference Type
+                                            p asdasdasd
+                                        .form-group
+                                            label
+                                                Customer Detai
+                                            p  asdasdasd
+                                        .form-group
+                                            label
+                                                | Project
+                                            asdasdasdasd
+                                        .form-group
+                                            label
+                                                | Posted Y/N
+                                            asdasdasd
+                                .row
+                                    .col-xs-12.col-sm-12.col-md-12.col-lg-12
+                                        h3.p_subheading Account Details
+                                .row
+                                    .col-xs-12.col-sm-12.col-md-12.col-lg-12
+                                        h3.p_subheading Master Detail Entry
+                                table.table-responsive.table.table-striped.misreport(cellpadding='5', style='width:100%;', border='1')
+                                    tbody
+                                        tr.background-e2e8f0.no-border
+                                            th.col-md-1 Installment No.
+                                            th.col-md-1 Voucher Type
+                                            th.col-md-1 Voucher ID
+                                            th.col-md-1 Payment Date
+                                            th.col-md-1 Due Date
+                                            th.col-md-1 Penalty
+                                            th.col-md-1 Installment
+                                            th.col-md-1 Amount
+                                            th.col-md-1 Remaining Amount
+                                            th.col-md-1 Status
+                                            th.col-md-1 Balance
+                                            tr
+                                                td.col-md-1 ("0" + (1 + ind)).slice(-2)}
+                                                td.col-md-1 ent.type}
+                                                td.col-md-1 ent.voucher_id}
+                                                td.col-md-1(style='width:40px;') (ent.pay_date) ? ent.pay_date : ""}
+                                                td.col-md-1(style='width:40px;') ent.due_date}
+                                                td.col-md-1 (penalty > 0) ? penalty : ""}
+                                                td.col-md-1 installment}
+                                                td.col-md-1 ent.amount}
+                                                td.col-md-1 remaining}
+                                                td.col-md-1 ((ent.installment - ent.amount) > 0) ? "Unpaid" : "Paid"}
+                                                td.col-md-1 balance}
+
+                                        tr.no-border
+                                            td(colspan='4')
+                                            td.col-md-1 Total
+                                            td.background-e6e6e6 totPenalty}
+                                            td.background-e6e6e6 totInstallment}
+                                            td.background-e6e6e6 totAmount}
+                                            td.background-e6e6e6 totRemAmount}
+                                            td(colspan='2')
