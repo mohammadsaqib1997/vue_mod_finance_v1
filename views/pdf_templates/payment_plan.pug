@@ -189,14 +189,17 @@ html(lang='en')
                                                     th.col-md-1 Remaining Amount
                                                     th.col-md-1 Status
                                                     th.col-md-1 Balance
-                                                - var totAmount = 0;
+                                                - var totAmount = 0; var totPenalty = 0; var totInstallment = 0; var totRemAmount = 0;
                                                 - var balance = data.selling_price;
                                                 each ent, ind in entData
                                                     - totAmount += ent.amount;
                                                     - balance -= ent.amount;
                                                     - penalty = (ent.penalty) ? (ent.installment*1)/100:0;
+                                                    - totPenalty += penalty;
                                                     - balance += penalty;
                                                     - remaining = ((ent.installment + penalty) - ent.amount);
+                                                    - totInstallment += ent.installment;
+                                                    - totRemAmount += remaining;
                                                     tr
                                                         td.col-md-1 #{("0"+(1+ind)).slice(-2)}
                                                         td.col-md-1 #{ent.type}
@@ -207,16 +210,16 @@ html(lang='en')
                                                         td.col-md-1 #{ent.installment}
                                                         td.col-md-1 #{ent.amount}
                                                         td.col-md-1 #{remaining}
-                                                        td.col-md-1 #{((ent.installment - ent.amount) > 0) ? "Unpaid":"Paid"}
+                                                        td.col-md-1(style=(((ent.installment - ent.amount) > 0) ? 'color:red !important;':'color:green !important;')) #{((ent.installment - ent.amount) > 0) ? "Unpaid":"Paid"}
                                                         td.col-md-1 #{balance}
 
                                                 tr.no-border
                                                     td(colspan='4')
                                                     td.col-md-1 Total
-                                                    td.background-e6e6e6
-                                                    td.background-e6e6e6
+                                                    td.background-e6e6e6 #{totPenalty}
+                                                    td.background-e6e6e6 #{totInstallment}
                                                     td.background-e6e6e6 #{totAmount}
-                                                    td.background-e6e6e6
+                                                    td.background-e6e6e6 #{totRemAmount}
                                                     td(colspan='2')
                                         button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button', style='margin-right:20px;') Save
                                         button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print

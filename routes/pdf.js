@@ -1361,133 +1361,145 @@ router.post('/trial_balance/controls/view', function (req, res, next) {
     });
 });
 
-router.get('/payment/:id', function(req, res, next){
-    refMasterDetails.child(req.params.id).once('value', function (mdSnap) {
-        let mdData = mdSnap.val();
-        if(mdData !== null){
-            refPro.child(mdData.sel_project).once('value', function (projectSnap) {
-                let projectData = projectSnap.val();
-                mdData['sel_project'] = projectData.name;
+router.post('/payment/:id', function(req, res, next){
+    admin.auth().verifyIdToken(req.body.auth).then(function (decodedToken) {
+        refMasterDetails.child(req.params.id).once('value', function (mdSnap) {
+            let mdData = mdSnap.val();
+            if (mdData !== null) {
+                refPro.child(mdData.sel_project).once('value', function (projectSnap) {
+                    let projectData = projectSnap.val();
+                    mdData['sel_project'] = projectData.name;
 
-                refBrokers.child(mdData.sel_broker).once('value', function (brokerSnap) {
-                    let brokerData = brokerSnap.val();
-                    mdData['sel_broker'] = brokerData.name;
+                    refBrokers.child(mdData.sel_broker).once('value', function (brokerSnap) {
+                        let brokerData = brokerSnap.val();
+                        mdData['sel_broker'] = brokerData.name;
 
-                    refProjectTypes.child(mdData.sel_type).once('value', function (proTypeSnap) {
-                        let proTypeData = proTypeSnap.val();
-                        mdData['sel_type'] = proTypeData.name;
+                        refProjectTypes.child(mdData.sel_type).once('value', function (proTypeSnap) {
+                            let proTypeData = proTypeSnap.val();
+                            mdData['sel_type'] = proTypeData.name;
 
-                        refProjectTypeItems.child(mdData.sel_pro_type_no).once('value', function (proTypeItemSnap) {
-                            let proTypeItemData = proTypeItemSnap.val();
-                            mdData['sel_pro_type_no'] = proTypeItemData.name;
+                            refProjectTypeItems.child(mdData.sel_pro_type_no).once('value', function (proTypeItemSnap) {
+                                let proTypeItemData = proTypeItemSnap.val();
+                                mdData['sel_pro_type_no'] = proTypeItemData.name;
 
-                            refRegSubsidiary.child(projectSnap.key).orderByChild("key").equalTo(proTypeItemData.subs_key).once('value', function (regSubsSnap) {
-                                let regSubsCode = Object.keys(regSubsSnap.val())[0];
-                                refVouchersEntries.orderByChild("v_key").equalTo(mdSnap.key).once('value', function (md_entSnap) {
-                                    if(md_entSnap.numChildren() > 0){
-                                        let process_item = 0;
-                                        let grabEnt = [];
-                                        md_entSnap.forEach(function (entItemSnap) {
-                                            let entItemData = entItemSnap.val();
-                                            if(regSubsCode === entItemData.code){
-                                                let date = moment(entItemData.v_date);
-                                                let dueDate = date.clone().add(1, "M").set('date', 1);
-                                                grabEnt.push({
-                                                    type: "MD",
-                                                    voucher_id: mdData.id,
-                                                    installment: entItemData.credit,
-                                                    amount: entItemData.credit,
-                                                    penalty: false,
-                                                    pay_date: date.format("DD/MM/YYYY"),
-                                                    due_date: dueDate.format("DD/MM/YYYY"),
-                                                    due_date_unix: dueDate.unix(),
-                                                });
-                                            }
-
-                                            process_item++;
-                                            if(process_item === md_entSnap.numChildren()){
-                                                let server_date_unix = moment().unix();
-                                                let booking_date = moment(mdData.booking_date).add(1, "M");
-                                                for(let i=0; i<mdData.payment_installment; i++){
-                                                    let dueDate = booking_date.add(1, "M").set('date', 1);
-                                                    let dataSet = {
-                                                        type: "",
-                                                        voucher_id: "",
-                                                        installment: mdData.payment_plan,
-                                                        amount: 0,
+                                refRegSubsidiary.child(projectSnap.key).orderByChild("key").equalTo(proTypeItemData.subs_key).once('value', function (regSubsSnap) {
+                                    let regSubsCode = Object.keys(regSubsSnap.val())[0];
+                                    refVouchersEntries.orderByChild("v_key").equalTo(mdSnap.key).once('value', function (md_entSnap) {
+                                        if (md_entSnap.numChildren() > 0) {
+                                            let process_item = 0;
+                                            let grabEnt = [];
+                                            md_entSnap.forEach(function (entItemSnap) {
+                                                let entItemData = entItemSnap.val();
+                                                if (regSubsCode === entItemData.code) {
+                                                    let date = moment(entItemData.v_date);
+                                                    let dueDate = date.clone().add(1, "M").set('date', 1);
+                                                    grabEnt.push({
+                                                        type: "MD",
+                                                        voucher_id: mdData.id,
+                                                        installment: entItemData.credit,
+                                                        amount: entItemData.credit,
                                                         penalty: false,
-                                                        pay_date: false,
+                                                        pay_date: date.format("DD/MM/YYYY"),
                                                         due_date: dueDate.format("DD/MM/YYYY"),
                                                         due_date_unix: dueDate.unix(),
-                                                    };
-                                                    if(server_date_unix > dataSet.due_date_unix){
-                                                        dataSet['penalty'] = true;
-                                                    }
-                                                    grabEnt.push(dataSet);
+                                                    });
                                                 }
 
-                                                refVouchers.orderByChild("ref_key").equalTo(mdSnap.key).once('value', function (jv_entsSnap) {
+                                                process_item++;
+                                                if (process_item === md_entSnap.numChildren()) {
+                                                    let server_date_unix = moment().unix();
+                                                    let booking_date = moment(mdData.booking_date).add(1, "M");
+                                                    for (let i = 0; i < mdData.payment_installment; i++) {
+                                                        let dueDate = booking_date.add(1, "M").set('date', 1);
+                                                        let dataSet = {
+                                                            type: "",
+                                                            voucher_id: "",
+                                                            installment: mdData.payment_plan,
+                                                            amount: 0,
+                                                            penalty: false,
+                                                            pay_date: false,
+                                                            due_date: dueDate.format("DD/MM/YYYY"),
+                                                            due_date_unix: dueDate.unix(),
+                                                        };
+                                                        if (server_date_unix > dataSet.due_date_unix) {
+                                                            dataSet['penalty'] = true;
+                                                        }
+                                                        grabEnt.push(dataSet);
+                                                    }
 
-                                                    if(jv_entsSnap.numChildren() > 0){
-                                                        let jv_entsData = jv_entsSnap.val();
-                                                        let keys = Object.keys(jv_entsData);
-                                                        keys.forEach(function (key, loopInd, arr) {
-                                                            let jvEntData = jv_entsData[key];
-                                                            if(jvEntData.posted_status === "Yes"){
-                                                                refVouchersEntries.orderByChild("v_key").equalTo(key).once('value', function (jvPayEntsSnap) {
-                                                                    if(jvPayEntsSnap.numChildren() > 0){
-                                                                        jvPayEntsSnap.forEach(function (jvPayEntSnap) {
-                                                                            let jvPayEntData = jvPayEntSnap.val();
-                                                                            if(regSubsCode === jvPayEntData.code){
-                                                                                let date = moment(jvPayEntData.v_date);
-                                                                                grabEnt.forEach(function (obj, ind, arr) {
-                                                                                    if(obj.due_date_unix >  date.unix()){
-                                                                                        if(arr[ind-1].due_date_unix <= date.unix()){
-                                                                                            grabEnt[ind]['type'] = "JV";
-                                                                                            grabEnt[ind]['voucher_id'] = jvEntData.id;
-                                                                                            grabEnt[ind]['penalty'] = false;
-                                                                                            grabEnt[ind]['pay_date'] = date.format("DD/MM/YYYY");
-                                                                                            grabEnt[ind]['amount'] = jvPayEntData.credit;
+                                                    refVouchers.orderByChild("ref_key").equalTo(mdSnap.key).once('value', function (jv_entsSnap) {
+
+                                                        if (jv_entsSnap.numChildren() > 0) {
+                                                            let jv_entsData = jv_entsSnap.val();
+                                                            let keys = Object.keys(jv_entsData);
+                                                            keys.forEach(function (key, loopInd, arr) {
+                                                                let jvEntData = jv_entsData[key];
+                                                                if (jvEntData.posted_status === "Yes") {
+                                                                    refVouchersEntries.orderByChild("v_key").equalTo(key).once('value', function (jvPayEntsSnap) {
+                                                                        if (jvPayEntsSnap.numChildren() > 0) {
+                                                                            jvPayEntsSnap.forEach(function (jvPayEntSnap) {
+                                                                                let jvPayEntData = jvPayEntSnap.val();
+                                                                                if (regSubsCode === jvPayEntData.code) {
+                                                                                    let date = moment(jvPayEntData.v_date);
+                                                                                    grabEnt.forEach(function (obj, ind, arr) {
+                                                                                        if (obj.due_date_unix > date.unix()) {
+                                                                                            if (arr[ind - 1].due_date_unix <= date.unix()) {
+                                                                                                grabEnt[ind]['type'] = "JV";
+                                                                                                grabEnt[ind]['voucher_id'] = jvEntData.id;
+                                                                                                grabEnt[ind]['penalty'] = false;
+                                                                                                grabEnt[ind]['pay_date'] = date.format("DD/MM/YYYY");
+                                                                                                grabEnt[ind]['amount'] = jvPayEntData.credit;
+                                                                                            }
                                                                                         }
-                                                                                    }
-                                                                                });
-                                                                            }
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+
+                                                                        if (loopInd === arr.length - 1) {
+                                                                            mdData['booking_date'] = moment(mdData.booking_date).format("DD/MM/YYYY");
+                                                                            res.render('pdf_templates/payment_plan', {
+                                                                                data: mdData,
+                                                                                entData: grabEnt
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                } else {
+                                                                    if (loopInd === arr.length - 1) {
+                                                                        mdData['booking_date'] = moment(mdData.booking_date).format("DD/MM/YYYY");
+                                                                        res.render('pdf_templates/payment_plan', {
+                                                                            data: mdData,
+                                                                            entData: grabEnt
                                                                         });
                                                                     }
-
-                                                                    if(loopInd === arr.length-1){
-                                                                        mdData['booking_date'] = moment(mdData.booking_date).format("DD/MM/YYYY");
-                                                                        res.render('pdf_templates/payment_plan', {data: mdData, entData: grabEnt});
-                                                                    }
-                                                                });
-                                                            }else{
-                                                                if(loopInd === arr.length-1){
-                                                                    mdData['booking_date'] = moment(mdData.booking_date).format("DD/MM/YYYY");
-                                                                    res.render('pdf_templates/payment_plan', {data: mdData, entData: grabEnt});
                                                                 }
-                                                            }
-                                                        });
-                                                    }else{
-                                                        mdData['booking_date'] = moment(mdData.booking_date).format("DD/MM/YYYY");
-                                                        res.render('pdf_templates/payment_plan', {data: mdData, entData: grabEnt});
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }else{
-                                        res.json({status: "failed", message: "No Customer voucher found!"});
-                                    }
+                                                            });
+                                                        } else {
+                                                            mdData['booking_date'] = moment(mdData.booking_date).format("DD/MM/YYYY");
+                                                            res.render('pdf_templates/payment_plan', {
+                                                                data: mdData,
+                                                                entData: grabEnt
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            res.json({status: "failed", message: "No Customer voucher found!"});
+                                        }
+                                    });
                                 });
                             });
                         });
                     });
                 });
-            });
-        }else{
-            res.json({status: "failed", message: "Invalid Id!"});
-        }
+            } else {
+                res.json({status: "failed", message: "Invalid Id!"});
+            }
+        });
+    }).catch(function (err) {
+        res.json({err: err, status: 'failed'});
     });
-
 });
 
 module.exports = router;

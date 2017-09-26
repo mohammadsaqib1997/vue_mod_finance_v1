@@ -9,7 +9,8 @@ export default {
             query: "",
             src: "/gapi",
             queryParamName: 'input',
-            searchData: [],
+            items: [],
+            current: -1,
 
             // reference
             partyInformationRef: null,
@@ -19,6 +20,8 @@ export default {
         query: function (val) {
             if(val !== ""){
                 this.loadData(val);
+            }else{
+                this.searchLoad([]);
             }
         }
     },
@@ -32,31 +35,18 @@ export default {
         reset_items: function () {
             this.items = [];
         },
-        onHit (item) {
-            if(item){
-                this.query = item.terms[0].value;
-                this.items = [];
-            }
+        reset: function reset() {
+            this.current = -1;
+            this.items = [];
+            this.query = '';
         },
-        prepareResponseData (data) {
-            let search_val = this.query;
-            let pred_data = data.predictions;
-            let keys = Object.keys(pred_data);
-            let match = ["locality", "political", "geocode"];
-            let grabData = [];
-            keys.forEach(function (key) {
-                let item = pred_data[key];
-                let val = item.terms[0].value;
-                if(func.compareArr(match, item.types) && val.toLowerCase().indexOf(search_val.toLowerCase()) > -1){
-                    grabData.push(item);
-                }
-            });
-            return grabData;
+        onHit (item) {
+            alert(item.text);
         },
         loadData: function (val) {
             let self = this;
             let grabData = [];
-            self.$http.get('/api/search_dash?index=party_info&type=id&field=agent_name&search='+val).then(function (res) {
+            self.$http.get('/api/search_dash?index=party_info&type=id&field=agent_name,id,agent_code&search='+val).then(function (res) {
                 let data = res.data;
                 if(data.length > 0){
                     data.forEach(function (obj) {
@@ -66,7 +56,7 @@ export default {
                         });
                     });
                 }
-                self.searchLoad();
+                self.searchLoad(grabData);
             });
             self.$http.get('/api/search_dash?index=master_detail&type=id&field=allotee_name&search='+val).then(function (res) {
                 let data = res.data;
@@ -82,8 +72,37 @@ export default {
             });
         },
         searchLoad: function (data) {
-            this.searchData = data;
+            this.items = data;
             // console.log(this.searchData);
-        }
+        },
+        up: function up() {
+            if (this.current > 0) {
+                this.current--;
+            } else if (this.current === -1) {
+                this.current = this.items.length - 1;
+            } else {
+                this.current = -1;
+            }
+        },
+        down: function down() {
+            if (this.current < this.items.length - 1) {
+                this.current++;
+            } else {
+                this.current = -1;
+            }
+        },
+        hit: function hit() {
+            if (this.current !== -1) {
+                this.onHit(this.items[this.current]);
+            }
+        },
+        activeClass: function activeClass(index) {
+            return {
+                active: this.current === index
+            };
+        },
+        setActive: function setActive(index) {
+            this.current = index;
+        },
     }
 }

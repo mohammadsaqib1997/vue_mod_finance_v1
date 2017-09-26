@@ -387,12 +387,14 @@ export default {
 
                                                     process_item++;
                                                     if (process_item === subLength) {
+                                                        self.view_plan(voucher_push_gen.key);
                                                         self.voucherMsg(self, "Successfully Inserted Master Detail Voucher!");
                                                     }
                                                 });
                                             }
                                         });
                                     } else {
+                                        self.view_plan(voucher_push_gen.key);
                                         self.voucherMsg(self, "Successfully Inserted Master Detail Voucher!");
                                     }
                                 }
@@ -651,6 +653,32 @@ export default {
             if(self.selling_price !== "" && self.booking_amount !== "" && self.payment_installment !== ""){
                 self.payment_plan = (self.selling_price-self.booking_amount)/self.payment_installment;
             }
+        },
+        view_plan: function (sel_voucher) {
+            let self = this;
+            let params = {};
+            firebase.auth().currentUser.getIdToken(true).then(function(idToken){
+                params['auth'] = idToken;
+                self.formSubmit('/pdf/payment/'+sel_voucher, params);
+            }).catch(function(err){
+                console.log(err);
+            });
+        },
+        formSubmit: function (url, params) {
+            let f = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
+                action: url
+            }).appendTo(document.body);
+
+            for (let i in params) {
+                if (params.hasOwnProperty(i)) {
+                    $('<input type="hidden" />').attr({
+                        name: i,
+                        value: params[i]
+                    }).appendTo(f);
+                }
+            }
+            f.trigger('submit');
+            f.remove();
         }
     },
     components: {
