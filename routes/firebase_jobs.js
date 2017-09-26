@@ -11,6 +11,7 @@ var regSubsRef = db.ref('reg_subsidiary');
 var subsRef = db.ref('subsidiary');
 var partyInfoRef = db.ref('party_information');
 var masterDetailsRef = db.ref('master_details');
+var vouchersRef = db.ref('vouchers');
 
 var elasticSearch = require('elasticsearch');
 var client = elasticSearch.Client({
@@ -57,6 +58,16 @@ masterDetailsRef.on("child_changed", function (snap) {
 });
 masterDetailsRef.on("child_removed", function (snap) {
     removeIndex(snap, 'master_detail', 'id');
+});
+
+vouchersRef.on("child_added", function (snap) {
+    createOrUpdateIndex(snap, 'voucher', 'id');
+});
+vouchersRef.on("child_changed", function (snap) {
+    createOrUpdateIndex(snap, 'voucher', 'id');
+});
+vouchersRef.on("child_removed", function (snap) {
+    removeIndex(snap, 'voucher', 'id');
 });
 
 

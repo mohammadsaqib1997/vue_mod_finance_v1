@@ -41,30 +41,47 @@ export default {
             this.query = '';
         },
         onHit (item) {
-            alert(item.text);
+            this.reset();
+            this.$router.push(item.url);
         },
         loadData: function (val) {
             let self = this;
             let grabData = [];
+            self.current = -1;
             self.$http.get('/api/search_dash?index=party_info&type=id&field=agent_name,id,agent_code&search='+val).then(function (res) {
                 let data = res.data;
                 if(data.length > 0){
                     data.forEach(function (obj) {
                         let sel_source = obj._source;
                         grabData.push({
-                            text: sel_source.id+" | "+sel_source.agent_code+" | "+sel_source.agent_name
+                            text: sel_source.id+" | "+sel_source.agent_code+" | "+sel_source.agent_name,
+                            url: "/search/vendor_detail/"+obj._id
                         });
                     });
                 }
                 self.searchLoad(grabData);
             });
-            self.$http.get('/api/search_dash?index=master_detail&type=id&field=allotee_name&search='+val).then(function (res) {
+            self.$http.get('/api/search_dash?index=master_detail&type=id&field=allotee_name,id,allotee_code&search='+val).then(function (res) {
                 let data = res.data;
                 if(data.length > 0){
                     data.forEach(function (obj) {
                         let sel_source = obj._source;
                         grabData.push({
-                            text: sel_source.id+" | "+sel_source.allotee_code+" | "+sel_source.allotee_name
+                            text: sel_source.id+" | "+sel_source.allotee_code+" | "+sel_source.allotee_name,
+                            url: "/search/master_detail/"+obj._id
+                        });
+                    });
+                }
+                self.searchLoad(grabData);
+            });
+            self.$http.get('/api/search_dash?index=voucher&type=id&field=id,v_remarks&search='+val).then(function (res) {
+                let data = res.data;
+                if(data.length > 0){
+                    data.forEach(function (obj) {
+                        let sel_source = obj._source;
+                        grabData.push({
+                            text: sel_source.id+" | "+sel_source.v_remarks,
+                            url: "/search/journal_voucher/"+obj._id
                         });
                     });
                 }

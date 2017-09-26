@@ -35,6 +35,8 @@ import tBalListSubControl from '../pages/mis_reports/trial_balance/list_sub_cont
 import tBalListSubsidiary from '../pages/mis_reports/trial_balance/list_subsidiary/list_subsidiary.vue'
 
 import searchMasterDetail from '../pages/search/master_detail/master_detail.vue'
+import searchPartyInfo from '../pages/search/party_information/party_information.vue'
+import searchJournalVoucher from '../pages/search/journal_voucher/journal_voucher.vue'
 
 const routes = [
     {
@@ -144,6 +146,14 @@ const routes = [
                     {
                         path: '/search/master_detail/:id',
                         component: searchMasterDetail
+                    },
+                    {
+                        path: '/search/journal_voucher/:id',
+                        component: searchJournalVoucher
+                    },
+                    {
+                        path: '/search/vendor_detail/:id',
+                        component: searchPartyInfo
                     }
                 ]
             },
