@@ -54,7 +54,7 @@ export default {
             }
         },
         hidedd: function(targetdd){
-            targetdd.removeClass('fadeInDown').addClass('fadeOutUp').on('animationend webkitAnimationEnd oanimationend MSAnimationEnd');
+            targetdd.css('display', 'none').removeClass('fadeInDown').addClass('fadeOutUp').on('animationend webkitAnimationEnd oanimationend MSAnimationEnd');
             this.opendd = null;
             $('#notifications-count').removeClass('fadeOut').addClass('fadeIn');
         },

@@ -9681,6 +9681,7 @@ nav.links a {
   margin: 0 auto;
   padding: 10px 10px 0;
   text-align: center;
+  color:#fff;
 }
 .main-login .form-actions:before, .main-login .form-actions:after {
   content: "";
