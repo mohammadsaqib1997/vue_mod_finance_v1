@@ -26,3 +26,36 @@ header.navbar.navbar-default.navbar-static-top
                         a(href='login_lockscreen.html') Lock Screen
                     li
                         a(v-on:click.prevent='logout') Log Out
+        .dropdowns-wrapper.pull-right
+            .dropdown-container
+                .notifications.dropdown.dd-trigger(v-on:click.prevent='showNotifications')
+                    span#notifications-count.count.animated 34
+                    span.fa.fa-bell-o
+                #notification-dropdown.dropdown-menu.animated
+                    .dropdown-header
+                        span.triangle
+                        span.heading Notifications
+                        span#dd-notifications-count.count 41
+                    .dropdown-body
+                        .notification
+                            .notification-image-wrapper
+                                .notification-image
+                                    img(src='https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANfAAAAJDE1MzNiYjM1LWVjYzUtNDcwZi1hMmExLTQ5ZDVjYzViMDkzYQ.jpg', alt='', width='32')
+                            .notification-text
+                                span.highlight Fauzan Khan
+                                |  promoted your answer
+                        .notification
+                            .notification-image-wrapper
+                                .notification-image
+                                    img(src='https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANfAAAAJDE1MzNiYjM1LWVjYzUtNDcwZi1hMmExLTQ5ZDVjYzViMDkzYQ.jpg', alt='', width='32')
+                            .notification-text
+                                span.highlight Fauzan Khan
+                                |  promoted your answer
+                        .notification
+                            .notification-image-wrapper
+                                .notification-image
+                                    img(src='https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANfAAAAJDE1MzNiYjM1LWVjYzUtNDcwZi1hMmExLTQ5ZDVjYzViMDkzYQ.jpg', alt='', width='32')
+                            .notification-text
+                                span.highlight Fauzan Khan
+                                |  promoted your answer
+

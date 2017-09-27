@@ -132,19 +132,25 @@ html(lang='en')
                             button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;" data-toggle="modal" data-target="#download-pdf") Save
                             button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
             .modal.fade.modal-aside.center(tabindex='-1' id="download-pdf" role='dialog', aria-labelledby='Full Calendar', aria-hidden='true')
-                .modal-dialog.modal-dialog.modal-lg
+                .modal-dialog.modal-md
                     .modal-content
-                        .modal-header
+                        .modal-header.bg-red
                             button.close(type='button', data-dismiss='modal', aria-label='Close')
                                 span(aria-hidden='true') ×
-                            h4#myModalLabel.modal-title Select the type of download
-                        .modal-body
+                            h4#myModalLabel.modal-title.text-left Select Download File
+                        .modal-body.red-popup
                             .row
-                                .col-xs-12.col-sm-6.col-md-6.col-lg-6
-                                    button.download-pdf(type='button')
-                                        span(aria-hidden='true') Download in PDF
-                                .col-xs-12.col-sm-6.col-md-6.col-lg-6
-                                    button.download-pdf(type='button')
-                                        span(aria-hidden='true') Download in Excel
+                                .col-xs-12.col-sm-12.col-md-12.col-lg-12.margin-bottom-30
+                                    button.btn-default.btn.btn-o.btn-lg.col-xs-12.col-sm-12.col-md-12.col-lg-12.download-button(type='button')
+                                        img.pull-left(src="/assets/images/icons/pdf-icon.png" style="margin-right:15px;")
+                                        | Download in PDF
+                                .col-xs-12.col-sm-12.col-md-12.col-lg-12.margin-bottom-30
+                                    button.btn-default.btn.btn-o.btn-lg.col-xs-12.col-sm-12.col-md-12.col-lg-12.download-button(type='button')
+                                        img.pull-left(src="/assets/images/icons/html-icon.png" style="margin-right:15px;")
+                                        | Download in Html
+                                .col-xs-12.col-sm-12.col-md-12.col-lg-12.margin-bottom-0
+                                    button.btn-default.btn.btn-o.btn-lg.col-xs-12.col-sm-12.col-md-12.col-lg-12.download-button(type='button')
+                                        img.pull-left(src="/assets/images/icons/excel-icon.png" style="margin-right:15px;")
+                                        | Download in Excel
     script(src='/vendor/jquery/jquery.min.js')
     script(src='/vendor/bootstrap/js/bootstrap.min.js')
