@@ -13093,3 +13093,7 @@ body .dashboard table.table.no-margin td {
 .circle-tile-content img {
   height: 50px;
 }
+
+.login span.input-icon input.form-control {
+  color: #555;
+}
