@@ -7,6 +7,7 @@ import getCodes from '../../../partials/components/get_codes/get_codes.vue'
 import getSubsName from '../../../partials/components/get_subs_name/get_subs_name.vue'
 
 const Validator = SimpleVueValidation.Validator;
+const dateYear = require("../../../../config/private.json").dateYear;
 
 export default {
     created: function () {
@@ -92,12 +93,14 @@ export default {
 
         setTimeout(function () {
             $(function () {
-                $(".datepicker").datepicker().on('change', function (e) {
+                $(".datepicker.voucher_date").datepicker({
+                    startDate: new Date(dateYear.open),
+                    endDate: new Date(dateYear.close),
+                    format: 'mm/dd/yyyy',
+                }).on('change', function (e) {
                     let grabField = $(e.target);
-                    if (grabField.hasClass('voucher_date')) {
-                        let date = new Date(grabField.val());
-                        self.voucher_date = date.getTime();
-                    }
+                    let date = new Date(grabField.val());
+                    self.voucher_date = date.getTime();
                 });
             });
         }, 100);

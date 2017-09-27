@@ -8,6 +8,7 @@ import addBrokerModel from '../../../partials/components/modals/add_broker/add_b
 import addTypeItemsModel from '../../../partials/components/modals/add_type_items/add_type_items.vue';
 import getSubsName from '../../../partials/components/get_subs_name/get_subs_name.vue'
 
+const dateYear = require("../../../../config/private.json").dateYear;
 const Validator = SimpleVueValidation.Validator;
 
 export default {
@@ -97,14 +98,14 @@ export default {
 
         setTimeout(function () {
             $(function () {
-                $(".datepicker").datepicker({
+                $(".datepicker.booking_date").datepicker({
+                    startDate: new Date(dateYear.open),
+                    endDate: new Date(dateYear.close),
                     format: 'mm/dd/yyyy',
                 }).on('change', function (e) {
                     let grabField = $(e.target);
-                    if (grabField.hasClass('booking_date')) {
-                        let date = new Date(grabField.val());
-                        self.booking_date = date.getTime();
-                    }
+                    let date = new Date(grabField.val());
+                    self.booking_date = date.getTime();
                 });
             });
         }, 100);
@@ -246,17 +247,17 @@ export default {
         allotee_code: function (value) {
             let self = this;
             return Validator.value(value).required().digit().lengthBetween(1, 11).custom(function () {
-                if(value !== ""){
+                if (value !== "") {
                     return Promise.delay(1000).then(function () {
                         return self.masterDetailsRef.orderByChild('allotee_code').equalTo(self.allotee_code).once('value').then(function (voucherSnap) {
                             let renderData = voucherSnap.val();
                             if (renderData !== null) {
-                                if(self.updateV){
+                                if (self.updateV) {
                                     let keys = Object.keys(renderData);
-                                    if(keys[0] !== self.sel_master_det){
+                                    if (keys[0] !== self.sel_master_det) {
                                         return "Already taken!";
                                     }
-                                }else{
+                                } else {
                                     return "Already taken!";
                                 }
                             }
@@ -284,17 +285,17 @@ export default {
         sel_pro_type_no: function (value) {
             let self = this;
             return Validator.value(value).required().lengthBetween(20, 36).custom(function () {
-                if(value !== ""){
+                if (value !== "") {
                     return Promise.delay(1000).then(function () {
                         return self.masterDetailsRef.orderByChild('sel_pro_type_no').equalTo(self.sel_pro_type_no).once('value').then(function (voucherSnap) {
                             let renderData = voucherSnap.val();
                             if (renderData !== null) {
-                                if(self.updateV){
+                                if (self.updateV) {
                                     let keys = Object.keys(renderData);
-                                    if(keys[0] !== self.sel_master_det){
+                                    if (keys[0] !== self.sel_master_det) {
                                         return "Already booked!";
                                     }
-                                }else{
+                                } else {
                                     return "Already booked!";
                                 }
                             }
@@ -449,7 +450,7 @@ export default {
                                         row.createdAt = firebase.database.ServerValue.TIMESTAMP;
                                         row['type'] = "md";
 
-                                        if(key_save !== ""){
+                                        if (key_save !== "") {
                                             self.vouchersEntriesRef.child(key_save).update(row, function (err) {
                                                 if (err) {
                                                     console.log(err);
@@ -461,7 +462,7 @@ export default {
                                                     self.voucherMsg(self, "Successfully Updated Master Detail Voucher!");
                                                 }
                                             });
-                                        }else{
+                                        } else {
                                             self.vouchersEntriesRef.push(row, function (err) {
                                                 if (err) {
                                                     console.log(err);
@@ -597,10 +598,10 @@ export default {
                 .equalTo(self.sel_master_det)
                 .once('value', function (entSnap) {
                     let entData = entSnap.val();
-                    if(entData !== null){
+                    if (entData !== null) {
                         let keys = Object.keys(entData);
                         self.rows.forEach(function (row, ind) {
-                            if(keys.length >= (ind+1)){
+                            if (keys.length >= (ind + 1)) {
                                 let item = entData[keys[ind]];
                                 self.rows[ind].key = keys[ind];
                                 self.rows[ind].code = item.code;
@@ -622,27 +623,27 @@ export default {
             let self = this;
             self.dataLoad4 = true;
             self.sel_pro_type_no = "";
-            if(self.sel_project !== "" && self.sel_type !== ""){
+            if (self.sel_project !== "" && self.sel_type !== "") {
                 self.projectTypeItemsRef.orderByChild("pro_key").equalTo(self.sel_project).on("value", function (snap) {
-                    if(snap.numChildren() > 0){
+                    if (snap.numChildren() > 0) {
                         let grabData = {};
                         snap.forEach(function (itemSnap) {
                             let item = itemSnap.val();
-                            if(item.type_key === self.sel_type){
+                            if (item.type_key === self.sel_type) {
                                 grabData[itemSnap.key] = item;
                             }
                         });
-                        if(self.updateV && !self.typeChgCheck){
+                        if (self.updateV && !self.typeChgCheck) {
                             self.sel_pro_type_no = self.masterDetailsData[self.sel_master_det].sel_pro_type_no;
                             self.typeChgCheck = true;
                         }
                         self.proTypesSubData = grabData;
-                    }else{
+                    } else {
                         self.proTypesSubData = {};
                     }
                     self.dataLoad4 = false;
                 });
-            }else{
+            } else {
                 self.proTypesSubData = {};
                 self.dataLoad4 = false;
             }
@@ -650,17 +651,17 @@ export default {
         showPaymentPlan: function () {
             let self = this;
             self.payment_plan = "";
-            if(self.selling_price !== "" && self.booking_amount !== "" && self.payment_installment !== ""){
-                self.payment_plan = (self.selling_price-self.booking_amount)/self.payment_installment;
+            if (self.selling_price !== "" && self.booking_amount !== "" && self.payment_installment !== "") {
+                self.payment_plan = (self.selling_price - self.booking_amount) / self.payment_installment;
             }
         },
         view_plan: function (sel_voucher) {
             let self = this;
             let params = {};
-            firebase.auth().currentUser.getIdToken(true).then(function(idToken){
+            firebase.auth().currentUser.getIdToken(true).then(function (idToken) {
                 params['auth'] = idToken;
-                self.formSubmit('/pdf/payment/'+sel_voucher, params);
-            }).catch(function(err){
+                self.formSubmit('/pdf/payment/' + sel_voucher, params);
+            }).catch(function (err) {
                 console.log(err);
             });
         },
