@@ -20,6 +20,16 @@ var refBrokers = db.ref('/brokers');
 var refProjectTypeItems = db.ref('/project_type_items');
 var refProjectTypes = db.ref('/project_types');
 
+router.get('/download/trial_balance/control/:type/:file_name', function(req, res, next){
+    let types = {
+        html: "text/plain",
+        pdf: "application/pdf",
+        csv: "application/csv"
+    };
+    res.contentType(types[req.params.type]);
+    res.render('pdf_templates/controls_listing');
+});
+
 router.post('/control/render.pdf', function (req, res, next){
     admin.auth().verifyIdToken(req.body.auth).then(function (decodedToken) {
         let data = req.body;
