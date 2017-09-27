@@ -440,6 +440,7 @@
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width : 992px)  nd (max-width : 1023px){
+
     a.btn.btn-tabbutton{
         font-size: 11px;
         padding: 11px 0.5%;
@@ -461,9 +462,125 @@
     }
 }
 
-@media only screen and (min-width : 1024px)  nd (min-width : 1200px){
+@media only screen and (min-width : 1024px)  and (max-width : 1200px){
+    body .panel label{
+        font-size: 11px;
+        width:auto;
+    }
+    .panel-body button.btn.btn-primary.btn-lg {
+        text-transform: uppercase;
+        font-size: 12px;
+        box-shadow: inset 0px -2px 1px rgba(0, 0, 0, 0.26) !important;
+        padding: 5px;
+        min-width: 0;
+    }
+    h3.p_subheading {
+        font-size: 12px;
+        margin: 15px auto 10px;
+        padding: 15px 0 5px;
+        font-weight: bold;
+        border-bottom: 1px solid #a6c367;
+        text-transform: uppercase;
+    }
+    a.btn.btn-nobackground{
+        padding: 10px;
+        font-size: 11px;
+    }
+    .voucher_details .detail-heading .row div,
+    .master_details .detail-heading .row div {
+        font-size: 11px;
+        font-weight: 600;
+        line-height: normal;
+    }
+    .row.Total h3.margin-bottom-0,
+    .row.Total .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-right-0 p {
+        font-size: 11px !important;
+        line-height: normal !important;
+        padding-top: 4px;
+    }
+    .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {
+        vertical-align: middle;
+        font-size: 11px;
+    }
+    .voucher_details .detail-Content.form-group .row input,
+    .master_details .detail-Content.form-group .row input {
+        font-size: 11px;
+        line-height: 1.2;
+        padding: 8px 5px;
+        border-radius: 0 !important;
+    }
+    a.btn.btn-nobackground i.ti-plus {
+        font-size: 11px;
+    }
+    body .panel select.form-control,
+    body .panel textarea,
+    body .panel select,
+    body .panel input[type="text"],
+    body .panel input[type="password"],
+    body .panel input[type="datetime"],
+    body .panel input[type="datetime-local"],
+    body .panel input[type="date"],
+    body .panel input[type="month"],
+    body .panel input[type="time"],
+    body .panel input[type="week"],
+    body .panel input[type="number"],
+    body .panel input[type="email"],
+    body .panel input[type="url"],
+    body .panel input[type="search"],
+    body .panel input[type="tel"],
+    body .panel input[type="color"] {
+        font-size: 11px;
+        padding: 10px;
+    }
+    a.btn.btn-tabbutton {
+        font-size: 11px;
+        padding: 12px 5px;
+        line-height: 24px;
+    }
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-right-0 {
+        margin-bottom: 0;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
 
+    .page-dashboard .container-fluid.container-fullw.bg-offwhite .col-xs-12.col-sm-12.col-md-6.col-lg-6.padding-left-0 {
+        margin-bottom: 0;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    body .app-slide-off #sidebar {
+        z-index: 5;
+    }
+    .page-dashboard .col-xs-12.col-sm-12.col-md-6.col-lg-6 .col-xs-12.col-sm-3.col-md-3.col-lg-3 {
+        width: 50%;
+    }
+    body .text-font-62 {
+        font-size: 26px;
+        line-height: 73px;
+    }
+    body .text-font-21{
+        line-height: 73px;
+    }
+    html body .panel-title {
+        font-size: 13px;
+        line-height: 20px;
+    }
+    .create-user .form-group label.control-label {
+        line-height: 15px;
+    }
+    .create-user .form-group select.form-control option {
+        padding: 10px;
+        font-size: 10px;
+        color: #545454;
+    }
+    button.btn,
+    span.btn.btn.btn-o.btn-red.btn-file {
+        font-size: 12px;
+        padding: 5px;
+        min-width: 0;
+    }
 }
+
 
 
 /* Large Devices, Wide Screens */

@@ -26,7 +26,7 @@
                         .row
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .form-group
-                                    .col-xs-12.col-sm-12.col-md-12.col-lg-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         label.control-label
                                             | First Name
                                     .col-xs-12.col-sm-12.col-md-9.col-lg-9
@@ -34,7 +34,7 @@
                                         p.text-danger.text-right(v-if='validation.hasError("first_name")') {{ validation.firstError('first_name') }}
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .form-group
-                                    .col-xs-12.col-sm-12.col-md-12.col-lg-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         label.control-label
                                             | Last Name
                                     .col-xs-12.col-sm-12.col-md-9.col-lg-9
@@ -43,7 +43,7 @@
                         .row
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .form-group
-                                    .col-xs-12.col-sm-12.col-md-12.col-lg-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         label.control-label
                                             | Gender
                                     .col-xs-12.col-sm-12.col-md-9.col-lg-9
@@ -57,7 +57,7 @@
                                             p.text-danger.text-right(v-if='validation.hasError("gender")') {{ validation.firstError('gender') }}
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .form-group
-                                    .col-xs-12.col-sm-12.col-md-12.col-lg-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         label.control-label
                                             | Email Address
                                     .col-xs-12.col-sm-12.col-md-9.col-lg-9
@@ -68,7 +68,7 @@
                         .row
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .form-group
-                                    .col-xs-12.col-sm-12.col-md-12.col-lg-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         label.control-label
                                             | Password
                                     .col-xs-12.col-sm-12.col-md-9.col-lg-9
@@ -76,7 +76,7 @@
                                         p.text-danger.text-right(v-if='validation.hasError("password")') {{ validation.firstError('password') }}
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .form-group
-                                    .col-xs-12.col-sm-12.col-md-12.col-lg-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         label.control-label
                                             | Confirm Password
                                     .col-xs-12.col-sm-12.col-md-9.col-lg-9
@@ -87,7 +87,7 @@
                                 com_cities(ref='sel_city')
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .form-group
-                                    .col-xs-12.col-sm-12.col-md-12.col-lg-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         label.control-label
                                             | Zip Code
                                     .col-xs-12.col-sm-12.col-md-9.col-lg-9
@@ -97,14 +97,14 @@
                         .row
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .form-group
-                                    .col-xs-12.col-sm-12.col-md-12.col-lg-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         label.control-label
                                             | Phone/Mobile
                                     .col-xs-12.col-sm-12.col-md-9.col-lg-9
                                         input.form-control.input-mask-phone(type='text', placeholder='Phone/Mobile' v-model='mob_num')
                                     p.text-danger.text-right(v-if='validation.hasError("mob_num")') {{ validation.firstError('mob_num') }}
                                 .form-group
-                                    .col-xs-12.col-sm-12.col-md-12.col-lg-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         label
                                             | Image Upload
                                     .col-xs-12.col-sm-12.col-md-9.col-lg-9
@@ -121,7 +121,7 @@
                                                     input.btn.btn-o(type='file' id="profile_img")
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .form-group
-                                    .col-xs-12.col-sm-12.col-md-12.col-lg-3
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         label
                                             | Project
                                     .col-xs-12.col-sm-12.col-md-9.col-lg-9
