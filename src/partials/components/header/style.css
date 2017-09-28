@@ -19,6 +19,7 @@
     min-height: 10px;
     min-width: 10px;
     width: 280px;
+    padding: 0;
 }
 .dropdown-container .dropdown-menu .dropdown-header {
     background: #FFF;
@@ -115,13 +116,14 @@
     height: 15px;
     width: 15px;
     overflow: hidden;
-    background: #21B7B7;
+    background: #e8534f;
     color: #FFF;
     text-align: center;
     border-radius: 100%;
     font-size: 9px;
     font-weight: bold;
     line-height: 15px;
+    z-index: 3;
 }
 .notifications {
     margin-right: 10px;
