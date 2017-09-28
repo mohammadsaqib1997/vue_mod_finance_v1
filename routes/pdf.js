@@ -4,6 +4,7 @@ var pdf = require('html-pdf');
 var admin = require('firebase-admin');
 var func = require('../custom_libs/func');
 var moment = require('moment');
+var fs = require('fs');
 
 var db = admin.database();
 var refRegCont = db.ref('/reg_controls');
@@ -20,14 +21,28 @@ var refBrokers = db.ref('/brokers');
 var refProjectTypeItems = db.ref('/project_type_items');
 var refProjectTypes = db.ref('/project_types');
 
-router.get('/download/trial_balance/control/:type/:file_name', function(req, res, next){
+router.get('/download/trial_balance/control/:type', function(req, res, next){
     let types = {
         html: "text/plain",
         pdf: "application/pdf",
         csv: "application/csv"
     };
-    res.contentType(types[req.params.type]);
-    res.render('pdf_templates/controls_listing');
+    res.render('pdf_templates/template_pdf', function (errJade, html) {
+        if(errJade){
+            return res.json({status: "failed", message: "Jade Error!"});
+        }else{
+            let fileDes = __dirname+"/../public/temp/"+new Date().getTime()+".html";
+            let stream = fs.createWriteStream(fileDes);
+            stream.write(html, "UTF8");
+            stream.end();
+            stream.on('finish', function () {
+                res.download(fileDes, "file.html");
+            });
+            stream.on('error', function () {
+                res.json({status: "failed", message: "Write Error!"});
+            });
+        }
+    });
 });
 
 router.post('/control/render.pdf', function (req, res, next){
