@@ -20,22 +20,18 @@
     min-width: 10px;
     width: 280px;
     padding: 0;
+    border-radius: 10px 10px 0 0;
 }
 .dropdown-container .dropdown-menu .dropdown-header {
-    background: #FFF;
+    background: #1A1C1E;
+    color: #FFFFFF;
     padding: 15px;
     position: relative;
     text-align: center;
-    color: #747F8B;
     font-weight: bold;
     border-radius: 10px 10px 0 0;
     border: 0px;
-    border-style: solid;
-    border-bottom-width: 1px;
-    -moz-border-image: -moz-linear-gradient(right, white, #cedae0, #cedae0, white) 1 20%;
-    -o-border-image: -o-linear-gradient(right, white, #cedae0, #cedae0, white) 1 20%;
-    border-image: linear-gradient(to right, white 0%, #cedae0 40%, #cedae0 60%, white 100%) 1 20%;
-    box-shadow: 0px 2px 10px -2px #cedae0;
+    box-shadow: 0px 2px 10px -2px #1A1C1E;
 }
 .dropdown-container .dropdown-menu .dropdown-header .triangle {
     position: absolute;
@@ -45,7 +41,7 @@
     width: 15px;
     border-radius: 6px 0px 0px 0px;
     transform: rotate(45deg);
-    background: #FFF;
+    background: #1A1C1E;
 }
 .dropdown-container .dropdown-menu .dropdown-header .count {
     position: static;
@@ -59,19 +55,20 @@
 }
 .dropdown-container .dropdown-menu .dropdown-body {
     max-height: 292px;
-    background: #e9f0f3;
+    background-color: #2B3034;
     overflow-y: auto;
     overflow-x: hidden;
 }
 .dropdown-container .dropdown-menu .dropdown-body .notification {
-    background: #FFF;
+    background-color: #2B3034;
     padding: 15px;
     border: 0px;
+    border-color: #2B3034;
     border-style: solid;
     border-bottom-width: 1px;
-    -moz-border-image: -moz-linear-gradient(right, white, #cedae0, #cedae0, white) 1 20%;
-    -o-border-image: -o-linear-gradient(right, white, #cedae0, #cedae0, white) 1 20%;
-    border-image: linear-gradient(to right, white 0%, #cedae0 40%, #cedae0 60%, white 100%) 1 20%;
+}
+.dropdown-container .dropdown-menu .dropdown-body .notification:hover {
+    background-color: #212326;
 }
 .dropdown-container .dropdown-menu .dropdown-body .notification.new {
     -webkit-transition: all 500ms ease;
@@ -106,7 +103,7 @@
     font-weight: bold;
 }
 .dropdown-container .fa {
-    color: #9FB6C3;
+    color: #212326;
     font-size: 22px;
 }
 .dropdown-container .count {

@@ -11829,42 +11829,80 @@ body .ui-tooltip {
   border-color: #000;
 }
 .box-login .form-group p.alert.alert-danger {
-  width: 370px;
-  margin: 0 auto;
-  text-align: left;
-  padding: 0;
-  border-color: transparent;
-  background: transparent;
-  color: #d45252;
-  border-radius: 3px 3px 3px 3px;
-  font-size: 11px;
-}
+     width: 370px;
+     margin: 0 auto;
+     text-align: left;
+     padding: 0;
+     border-color: transparent;
+     background: transparent;
+     color: #d45252;
+     border-radius: 3px 3px 3px 3px;
+     font-size: 11px;
+ }
 .box-login fieldset > p.alert-danger {
-  font-size: 16px;
-  background-image: url(/assets/images/warning.png);
-  background-position: top left;
-  background-color: #bd362f;
-  position: relative;
-  pointer-events: auto;
-  overflow: hidden;
-  margin: 0 0 6px;
-  padding: 15px 15px 15px 50px;
-  width: 100%;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  background-position: 15px center;
-  background-repeat: no-repeat;
-  -moz-box-shadow: 0 0 12px #999;
-  -webkit-box-shadow: 0 0 12px #999;
-  box-shadow: 0 0 12px #999;
-  color: #fff;
-  opacity: .8;
-  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-  filter: alpha(opacity=80);
-  max-width: 370px;
-  margin: 0 auto;
-  text-align: left;
+    font-size: 16px;
+    background-image: url(/assets/images/warning.png);
+    background-position: top left;
+    background-color: #bd362f;
+    position: relative;
+    pointer-events: auto;
+    overflow: hidden;
+    margin: 0 0 6px;
+    padding: 15px 15px 15px 50px;
+    width: 100%;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background-position: 15px center;
+    background-repeat: no-repeat;
+    -moz-box-shadow: 0 0 12px #999;
+    -webkit-box-shadow: 0 0 12px #999;
+    box-shadow: 0 0 12px #999;
+    color: #fff;
+    opacity: .8;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+    filter: alpha(opacity=80);
+    max-width: 370px;
+    margin: 0 auto;
+    text-align: left;
+}
+.box-forgot .form-group p.alert.alert-danger {
+    width: 370px;
+    margin: 0 auto;
+    text-align: left;
+    padding: 0;
+    border-color: transparent;
+    background: transparent;
+    color: #d45252;
+    border-radius: 3px 3px 3px 3px;
+    font-size: 11px;
+}
+.box-forgot fieldset > p.alert-danger {
+    font-size: 16px;
+    background-image: url(/assets/images/warning.png);
+    background-position: top left;
+    background-color: #bd362f;
+    position: relative;
+    pointer-events: auto;
+    overflow: hidden;
+    margin: 0 0 6px;
+    padding: 15px 15px 15px 50px;
+    width: 100%;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background-position: 15px center;
+    background-repeat: no-repeat;
+    -moz-box-shadow: 0 0 12px #999;
+    -webkit-box-shadow: 0 0 12px #999;
+    box-shadow: 0 0 12px #999;
+    color: #fff;
+    opacity: .8;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+    filter: alpha(opacity=80);
+    max-width: 370px;
+    margin: 0 auto;
+    text-align: left;
 }
 /*
 .box-login p.alert.alert-danger {
