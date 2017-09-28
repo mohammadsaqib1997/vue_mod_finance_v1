@@ -28,12 +28,14 @@ export default {
                                 self.jvData['ref_key'] = mdData.id+" | "+mdData.allotee_name;
                                 self.loadEnt(self, jvSnap.key);
                             });
-                        }else{
+                        }else if(self.jvData.ref_type === "pi"){
                             self.partyInformationRef.child(self.jvData.ref_key).once('value', function (piSnap) {
                                 let piData = piSnap.val();
                                 self.jvData['ref_key'] = piData.id+" | "+piData.agent_name;
                                 self.loadEnt(self, jvSnap.key);
                             });
+                        }else{
+                            self.loadEnt(self, jvSnap.key);
                         }
                     }else{
                         self.loadEnt(self, jvSnap.key);

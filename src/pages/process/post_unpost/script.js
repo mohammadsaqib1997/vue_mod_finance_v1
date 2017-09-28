@@ -52,6 +52,15 @@ export default {
                                         });
                                     }
                                 });
+                            }else{
+                                self.vouchersData[voucher.key] = item;
+                                process_item++;
+                                if(process_item === snap.numChildren()){
+                                    self.vouchersData = func.sortObj(self.vouchersData, false);
+                                    self.loadMasterDetails(self, function () {
+                                        self.dataLoad1 = false;
+                                    });
+                                }
                             }
                         }else{
                             self.vouchersData[voucher.key] = item;
