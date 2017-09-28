@@ -14,7 +14,7 @@
     position: absolute;
     display: none;
     z-index: 1;
-    left: -130px;
+    left: -142px;
     top: 46px;
     min-height: 10px;
     min-width: 10px;
@@ -40,7 +40,7 @@
 .dropdown-container .dropdown-menu .dropdown-header .triangle {
     position: absolute;
     top: -8px;
-    left: 134px;
+    left: 146px;
     height: 15px;
     width: 15px;
     border-radius: 6px 0px 0px 0px;
