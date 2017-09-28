@@ -164,7 +164,7 @@
                                 .text-center(v-if='dataLoad6')
                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
                                 template(v-else='v-else')
-                                    .detail-Content.form-group(style="overflow-y: auto;height: 210px;padding: 0 15px;")
+                                    .detail-Content.form-group(style="height: 210px;padding: 0 15px;")
                                         .detail-heading
                                             .row
                                                 .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-right-0
@@ -179,20 +179,21 @@
                                                     .padding-5 Debit
                                                 .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-left-0
                                                     .padding-5 Credit
-                                        template(v-for='row, ind in rows')
-                                            .row(v-bind:class='"row-"+ind')
-                                                .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-right-0
-                                                    get-codes(v-bind:project='sel_project', v-bind:code='row.code', v-on:name_change='changeCode($event, ind)')
-                                                .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
-                                                    get-subs-name(v-bind:project='sel_project' v-bind:name='row.code_name' v-on:name_change="changeSubName($event, ind)")
-                                                .col-xs-12.col-sm-4.col-md-4.col-lg-4.padding-none
-                                                    input.form-control(type='text', v-model='row.remarks')
-                                                .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-none
-                                                    input.form-control(type='text', v-model='row.quantity')
-                                                .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
-                                                    input.form-control(type='text', v-model='row.debit')
-                                                .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-left-0
-                                                    input.form-control(type='text', v-model='row.credit')
+                                        .detail-table
+                                            template(v-for='row, ind in rows')
+                                                .row(v-bind:class='"row-"+ind')
+                                                    .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-right-0
+                                                        get-codes(v-bind:project='sel_project', v-bind:code='row.code', v-on:name_change='changeCode($event, ind)')
+                                                    .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
+                                                        get-subs-name(v-bind:project='sel_project' v-bind:name='row.code_name' v-on:name_change="changeSubName($event, ind)")
+                                                    .col-xs-12.col-sm-4.col-md-4.col-lg-4.padding-none
+                                                        input.form-control(type='text', v-model='row.remarks')
+                                                    .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-none
+                                                        input.form-control(type='text', v-model='row.quantity')
+                                                    .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
+                                                        input.form-control(type='text', v-model='row.debit')
+                                                    .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-left-0
+                                                        input.form-control(type='text', v-model='row.credit')
                                         .row.Total
                                             .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-right-0
                                                 p.margin-bottom-0.text-center(style='line-height: 48px;font-size: 14px;color: #545454;')

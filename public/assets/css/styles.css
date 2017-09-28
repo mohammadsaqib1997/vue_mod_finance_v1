@@ -9717,6 +9717,7 @@ nav.links a {
   left: 45%;
   position: absolute;
   top: 50%;
+  top: 50%;
 }
 
 .lock-screen .box-ls {
@@ -13131,4 +13132,9 @@ body .app-content {
 
 .modal-md {
   max-width: 500px;
+}
+.detail-table {
+  max-height: 316px;
+  overflow-y: auto !important;
+  overflow: hidden;
 }
