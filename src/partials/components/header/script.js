@@ -15,6 +15,7 @@ export default {
         });
         $("body").on('click', function(event){
             let clickedElement = $(event.target);
+            console.log(clickedElement);
             let clickedDdTrigger = clickedElement.closest('.dd-trigger').length;
             let clickedDdContainer = clickedElement.closest('.dropdown-menu').length;
             if(self.opendd != null && clickedDdTrigger == 0 && clickedDdContainer == 0){
@@ -38,6 +39,10 @@ export default {
     },
     methods: {
         showNotifications: function($event){
+            console.log(this.opendd);
+            if(this.opendd != null){
+                $('.dropdown-container').find('.dropdown-menu').css('display', 'none').removeClass('fadeInDown').addClass('fadeOutUp').on('animationend webkitAnimationEnd oanimationend MSAnimationEnd');
+            }
             var targetdd = $($event.target).closest('.dropdown-container').find('.dropdown-menu');
             this.opendd = targetdd;
             if(targetdd.hasClass('fadeInDown')){

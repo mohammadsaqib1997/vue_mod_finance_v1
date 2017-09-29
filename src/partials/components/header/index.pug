@@ -13,20 +13,21 @@ header.navbar.navbar-default.navbar-static-top
         .navbar-header
             a.navbar-brand(href='/') Finance Management System
         ul.nav.navbar-right
-            li.dropdown.current-user
-                a.dropdown-toggle(href='', data-toggle='dropdown')
+            li.dropdown-container.current-user
+                a.dropdown.dd-trigger(v-on:click.prevent='showNotifications')
                     .text-center(v-if='loadImg')
                         i.fa.fa-refresh.fa-spin.fa-fw
                     template(v-else='v-else')
                         img(v-bind:src='pro_img_src', alt='Peter')
-                ul.dropdown-menu.dropdown-dark
-                    li.highlight
-                        router-link(to='/profile') {{ s_name }}
-                    li
-                        a(href='login_lockscreen.html') Lock Screen
-                    li
-                        a(v-on:click.prevent='logout') Log Out
-        .dropdowns-wrapper.pull-right
+                .dropdown-menu.dropdown-dark.animated
+                    ul.dropdown-body
+                        li.highlight
+                            router-link(to='/profile') {{ s_name }}
+                        li
+                            a(href='login_lockscreen.html') Lock Screen
+                        li
+                            a(v-on:click.prevent='logout') Log Out
+        .dropdowns-wrapper.pull-right.notifications-section
             .dropdown-container
                 .notifications.dropdown.dd-trigger(v-on:click.prevent='showNotifications')
                     span#notifications-count.count.animated 34

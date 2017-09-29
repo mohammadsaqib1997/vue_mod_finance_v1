@@ -1,28 +1,29 @@
-.dropdowns-wrapper {
+.notifications-section.dropdowns-wrapper {
     padding: 20px 0px;
+    text-align:center;
 }
-.dropdown-container {
+.notifications-section .dropdown-container {
     display: inline-block;
     position: relative;
 }
-.dropdown-container .dropdown {
+.notifications-section .dropdown-container .dropdown {
     position: relative;
     cursor: pointer;
     z-index: 2;
 }
-.dropdown-container .dropdown-menu {
+.notifications-section .dropdown-container .dropdown-menu {
     position: absolute;
     display: none;
     z-index: 1;
     left: -145px;
-    top: 46px;
+    top: 42px;
     min-height: 10px;
     min-width: 10px;
     width: 280px;
     padding: 0;
     border-radius: 0;
 }
-.dropdown-container .dropdown-menu .dropdown-header {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-header {
     background: #1A1C1E;
     color: #FFFFFF;
     padding: 15px;
@@ -32,7 +33,7 @@
     border-radius: 0;
     border: 0px;
 }
-.dropdown-container .dropdown-menu .dropdown-header .triangle {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-header .triangle {
     position: absolute;
     top: -8px;
     left: 146px;
@@ -41,7 +42,7 @@
     transform: rotate(45deg);
     background: #1A1C1E;
 }
-.dropdown-container .dropdown-menu .dropdown-header .count {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-header .count {
     position: static;
     height: 25px;
     width: 25px;
@@ -51,13 +52,13 @@
     font-size: 12px;
     vertical-align: middle;
 }
-.dropdown-container .dropdown-menu .dropdown-body {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-body {
     max-height: 292px;
     background-color: #2B3034;
     overflow-y: auto;
     overflow-x: hidden;
 }
-.dropdown-container .dropdown-menu .dropdown-body .notification {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-body .notification {
     background-color: #2B3034;
     padding: 15px;
     border: 0px;
@@ -66,10 +67,10 @@
     border-style: solid;
     border-bottom-width: 1px;
 }
-.dropdown-container .dropdown-menu .dropdown-body .notification:hover {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-body .notification:hover {
     background-color: #212326;
 }
-.dropdown-container .dropdown-menu .dropdown-body .notification.new {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-body .notification.new {
     -webkit-transition: all 500ms ease;
     -moz-transition: all 500ms ease;
     -ms-transition: all 500ms ease;
@@ -77,18 +78,18 @@
     transition: all 500ms ease;
     background: #e9f0f3;
 }
-.dropdown-container .dropdown-menu .dropdown-body .notification .notification-image-wrapper {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image-wrapper {
     display: table-cell;
     vertical-align: middle;
 }
-.dropdown-container .dropdown-menu .dropdown-body .notification .notification-image {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image {
     display: inline-block;
     height: 32px;
     width: 32px;
     overflow: hidden;
     border-radius: 100%;
 }
-.dropdown-container .dropdown-menu .dropdown-body .notification .notification-text {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-body .notification .notification-text {
     display: table-cell;
     padding-left: 15px;
     vertical-align: middle;
@@ -98,14 +99,14 @@
     word-spacing: 2px;
     line-height: 21px;
 }
-.dropdown-container .dropdown-menu .dropdown-body .notification .notification-text .highlight {
+.notifications-section .dropdown-container .dropdown-menu .dropdown-body .notification .notification-text .highlight {
     font-weight: bold;
 }
-.dropdown-container .fa {
+.notifications-section .dropdown-container .fa {
     color: #212326;
     font-size: 22px;
 }
-.dropdown-container .count {
+.notifications-section .dropdown-container .count {
     position: absolute;
     top: -6px;
     right: -1px;
@@ -442,4 +443,9 @@
 
 .download-button {
     margin-bottom: 30px;
+}
+
+ul.dropdown-body {
+    padding: 0;
+    list-style: none;
 }
