@@ -21,16 +21,16 @@
                                             option(value='') Select Project
                                             option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
                                         p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
-                            .col-md-12
-                                .form-group
-                                    div.text-center(v-if='dataLoad2')
-                                        i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                    template(v-else)
-                                        label Type
-                                        select.form-control(v-model='sel_type')
-                                            option(value='') Select Type
-                                            option(v-for='(row, key, ind) in proTypesData' v-bind:value='key') {{ row.name }}
-                                        p.text-danger.text-right(v-if='validation.hasError("sel_type")') {{ validation.firstError('sel_type') }}
+                            //.col-md-12
+                            //    .form-group
+                            //        div.text-center(v-if='dataLoad2')
+                            //            i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                            //        template(v-else)
+                            //            label Type
+                            //            select.form-control(v-model='sel_type')
+                            //                option(value='') Select Type
+                            //                option(v-for='(row, key, ind) in proTypesData' v-bind:value='key') {{ row.name }}
+                            //            p.text-danger.text-right(v-if='validation.hasError("sel_type")') {{ validation.firstError('sel_type') }}
                             .col-md-12
                                 .form-group
                                     div.text-center(v-if='dataLoad3')

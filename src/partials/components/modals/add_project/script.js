@@ -95,7 +95,7 @@ export default {
             self.inProcess = true;
             self.$validate().then(function (success) {
                 if (success) {
-                    if (self.sel_project !== "") {
+                    if (typeof self.sel_project !== "undefined" && self.sel_project !== "") {
                         self.projectsRef.child(self.sel_project).update({
                             name: self.name,
                             pro_type_id: self.type,

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from "vue-resource"
+import VueSession from "vue-session"
 import SimpleVueValidation from 'simple-vue-validator'
 import firebase from 'firebase'
 
@@ -9,6 +10,7 @@ firebase.initializeApp(config_fb.config_fb);
 
 import routes from './routes'
 
+Vue.use(VueSession);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(SimpleVueValidation);
@@ -59,8 +61,15 @@ new Vue({
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
+                self.$session.start();
+                let userObj = {
+                    uid: user.uid,
+                    lock: false
+                };
+                self.$session.set('loginUser', userObj);
                 self.loginUID = user.uid;
             } else {
+                self.$session.destroy();
                 self.compileProc = false;
                 self.loginUID = "";
                 self.loginUData = null;

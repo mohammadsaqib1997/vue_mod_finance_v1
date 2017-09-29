@@ -527,11 +527,17 @@ export default {
     },
     watch: {
         sel_project: function (val) {
-            this.loadTypesData();
+            let self = this;
+            if(val !== ""){
+                self.sel_type = self.proData[val].pro_type_id;
+            }else{
+                self.sel_type = "";
+            }
+            self.loadTypesData();
         },
-        sel_type: function (val) {
+        /*sel_type: function (val) {
             this.loadTypesData();
-        }
+        }*/
     },
     validators: {
         sel_project: function (value) {

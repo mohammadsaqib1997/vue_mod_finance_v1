@@ -65,6 +65,12 @@ export default {
     },
     watch: {
         sel_project: function (val) {
+            let self = this;
+            if(val !== ""){
+                self.sel_type = self.proData[val].pro_type_id;
+            }else{
+                self.sel_type = "";
+            }
             this.loadSubsidiary(val);
         }
     },

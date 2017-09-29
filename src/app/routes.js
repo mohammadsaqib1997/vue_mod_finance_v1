@@ -3,6 +3,7 @@ import app from './app.vue'
 
 import loginLayout from '../partials/layouts/loginLayout/loginLayout.vue'
 import login from '../pages/login/login.vue'
+import lockAccount from '../pages/lock_account/lock_account.vue'
 
 import dashboardLayout from '../partials/layouts/dashboardLayout/dashboardLayout.vue'
 import dashboard from '../pages/dashboard/dashboard.vue'
@@ -162,6 +163,13 @@ const routes = [
                 component: loginLayout,
                 children: [
                     {path: '', component: login},
+                ]
+            },
+            {
+                path: 'lock_account',
+                component: loginLayout,
+                children: [
+                    {path: '', component: lockAccount},
                 ]
             },
             {
