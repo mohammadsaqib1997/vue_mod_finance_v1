@@ -11692,6 +11692,10 @@ form.form-login .input-icon > input {
   padding-left: 40px !important;
   padding-right: 6px;
   padding: 25px 10px;
+  color: #000;
+}
+.lock-screen .user-info input.form-control::placeholder{
+  color: #8e8e93;
 }
 .lock-screen .user-info > span {
   color: #ffffff;
@@ -11708,7 +11712,9 @@ form.form-login .input-icon > input {
   border: none;
   padding: 0;
 }
-
+.lock-screen .box-ls img {
+  min-width: 200px;
+}
 .input-group > [class*="fa-"] {
   bottom: 0;
   color: #9096b2;
@@ -11916,7 +11922,9 @@ body .ui-tooltip {
     border-radius: 3px 3px 3px 3px;
     font-size: 11px;
 }*/
-
+.navbar .navbar-right > li .dropdown-menu.dropdown-dark a:hover {
+  background: #353535;
+}
 .alertsbar {
   background-color: #dff0d8;
   border-color: #d0e9c6;
