@@ -24,38 +24,26 @@ header.navbar.navbar-default.navbar-static-top
                         li.highlight
                             router-link(to='/profile') {{ s_name }}
                         li
-                            a(href='login_lockscreen.html') Lock Screen
+                            router-link(to='/lock_account') Lock Screen
                         li
                             a(v-on:click.prevent='logout') Log Out
         .dropdowns-wrapper.pull-right.notifications-section
             .dropdown-container
                 .notifications.dropdown.dd-trigger(v-on:click.prevent='showNotifications')
-                    span#notifications-count.count.animated 34
+                    span#notifications-count.count.animated {{ countNotif }}
                     span.fa.fa-bell-o
                 #notification-dropdown.dropdown-menu.animated
                     .dropdown-header
                         span.triangle
                         span.heading Notifications
-                        span#dd-notifications-count.count 41
+                        span#dd-notifications-count.count {{ countNotif }}
                     .dropdown-body
-                        .notification
+                        .notification.text-center(v-if='loadNoti')
+                            i.fa.fa-refresh.fa-spin.fa-fw(style='color:whitesmoke;')
+                        .notification(v-else)
                             .notification-image-wrapper
                                 .notification-image
-                                    img(src='https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANfAAAAJDE1MzNiYjM1LWVjYzUtNDcwZi1hMmExLTQ5ZDVjYzViMDkzYQ.jpg', alt='', width='32')
-                            .notification-text
-                                span.highlight Fauzan Khan
-                                |  promoted your answer
-                        .notification
-                            .notification-image-wrapper
-                                .notification-image
-                                    img(src='https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANfAAAAJDE1MzNiYjM1LWVjYzUtNDcwZi1hMmExLTQ5ZDVjYzViMDkzYQ.jpg', alt='', width='32')
-                            .notification-text
-                                span.highlight Fauzan Khan
-                                |  promoted your answer
-                        .notification
-                            .notification-image-wrapper
-                                .notification-image
-                                    img(src='https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAANfAAAAJDE1MzNiYjM1LWVjYzUtNDcwZi1hMmExLTQ5ZDVjYzViMDkzYQ.jpg', alt='', width='32')
+                                    i.fa.fa-bell(style='color:whitesmoke;')
                             .notification-text
                                 span.highlight Fauzan Khan
                                 |  promoted your answer
