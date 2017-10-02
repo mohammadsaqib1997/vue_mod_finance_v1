@@ -47,11 +47,6 @@
                                                     i.fa.fa-spinner.fa-spin
                                             .form-group
                                                 label
-                                                    | NBR
-                                                input.form-control(type='text' placeholder='Enter your NBR' v-model='nbr_number')
-                                                p.text-danger.text-right(v-if='validation.hasError("nbr_number")') {{ validation.firstError('nbr_number') }}
-                                            .form-group
-                                                label
                                                     | Remark
                                                 input.form-control(type='text' placeholder='Enter Remarks' v-model='v_remarks')
                                                 p.text-danger.text-right(v-if='validation.hasError("v_remarks")') {{ validation.firstError('v_remarks') }}
@@ -75,17 +70,6 @@
                                                     label(for='pi')
                                                         | Vendor Detail
                                                     p.text-danger.text-right(v-if='validation.hasError("ref_type")') {{ validation.firstError('ref_type') }}
-                                            .form-group(v-if="ref_type !== 'mis'")
-                                                label
-                                                    | Select {{ (ref_type === 'md')? "Customer Detail":"Vendor Detail" }}
-                                                div.text-center(v-if='dataLoad4')
-                                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                                template(v-else)
-                                                    select.form-control(v-model='sel_ref')
-                                                        option(value='') Select {{ (ref_type === 'md')? "Customer Detail":"Vendor Detail" }}
-                                                        option(v-if="ref_type === 'md'" v-for='(row, key, ind) in masterDetailsData' v-bind:value='key') {{ row.allotee_code }} | {{ row.allotee_name }}
-                                                        option(v-if="ref_type === 'pi'" v-for='(row, key, ind) in partyInformationData' v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
-                                                    p.text-danger.text-right(v-if='validation.hasError("sel_ref")') {{ validation.firstError('sel_ref') }}
                                             .form-group
                                                 label
                                                     | Project
@@ -99,6 +83,17 @@
                                                             option(value='') Select Project
                                                             option(v-for='(row, key, ind) in proData' v-bind:value='key') {{ row.name }}
                                                         p.text-danger.text-right(v-if='validation.hasError("sel_project")') {{ validation.firstError('sel_project') }}
+                                            .form-group(v-if="ref_type !== 'mis'")
+                                                label
+                                                    | {{ (ref_type === 'md')? "Customer Detail":"Vendor Detail" }}
+                                                div.text-center(v-if='dataLoad4')
+                                                    i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
+                                                template(v-else)
+                                                    select.form-control(v-model='sel_ref')
+                                                        option(value='') Select {{ (ref_type === 'md')? "Customer Detail":"Vendor Detail" }}
+                                                        option(v-if="ref_type === 'md'" v-for='(row, key, ind) in masterDetailsData' v-bind:value='key') {{ row.allotee_code }} | {{ row.allotee_name }}
+                                                        option(v-if="ref_type === 'pi'" v-for='(row, key, ind) in partyInformationData' v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
+                                                    p.text-danger.text-right(v-if='validation.hasError("sel_ref")') {{ validation.firstError('sel_ref') }}
                                             .form-group(v-if="userType === 'admin'")
                                                 label
                                                     | Posted Y/N
@@ -165,7 +160,8 @@
                                     button.btn.btn-primary.btn-wide.pull-left(v-if="inProcess" type='button' disabled='disabled')
                                         i.fa.fa-refresh.fa-spin.fa-fw
                                     template(v-else)
-                                        button.btn.btn-lg.btn-primary.btn-wide.pull-left(v-if='updateV' type='button' v-on:click.prevent='updateVoucher')
-                                            | Update
+                                        template(v-if='updateV')
+                                            button.btn.btn-lg.btn-primary.btn-wide.pull-left(v-if='updateStatus' type='button' v-on:click.prevent='updateVoucher')
+                                                | Update
                                         button.btn.btn-lg.btn-primary.btn-wide.pull-left(v-else type='button' v-on:click.prevent='addVoucher')
                                             | Submit

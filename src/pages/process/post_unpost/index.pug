@@ -24,7 +24,6 @@
                                     tr
                                         th Voucher ID
                                         th Voucher Type
-                                        th NBR
                                         th Reference
                                         th Project
                                         th Voucher Date
@@ -33,7 +32,6 @@
                                     tr(v-for='(row, key, ind) in vouchersData')
                                         td {{ row.id }}
                                         td {{ (row.type === "md")? "Customer Details":"Journal Voucher" }}
-                                        td {{ row.nbr_number }}
                                         td {{ row.ref_gen }}
                                         td {{ row.project }}
                                         td {{ (row.type === "md")? formatDate(new Date(row.booking_date)):formatDate(new Date(row.voucher_date)) }}

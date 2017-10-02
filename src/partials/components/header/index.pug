@@ -40,11 +40,11 @@ header.navbar.navbar-default.navbar-static-top
                     .dropdown-body
                         .notification.text-center(v-if='loadNoti')
                             i.fa.fa-refresh.fa-spin.fa-fw(style='color:whitesmoke;')
-                        .notification(v-else)
+                        .notification(v-else v-for='noti in notiData')
                             .notification-image-wrapper
                                 .notification-image
                                     i.fa.fa-bell(style='color:whitesmoke;')
                             .notification-text
-                                span.highlight Fauzan Khan
-                                |  promoted your answer
+                                //span.highlight Fauzan Khan
+                                | {{ noti }}
 

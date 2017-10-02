@@ -24,6 +24,10 @@ export default {
             self.sel_ref = "";
         });
 
+        self.$watch('sel_project', function (val, oldVal) {
+            self.loadMasterDetails(val);
+        });
+
         self.rows.forEach(function (row, ind) {
             self.$watch(function () {
                 return self.rows[ind].quantity;
@@ -71,16 +75,6 @@ export default {
             self.dataLoad2 = false;
         });
 
-        self.masterDetailsRef.on('value', function (snap) {
-            let renderData = snap.val();
-            if (renderData !== null) {
-                self.masterDetailsData = renderData;
-            } else {
-                self.masterDetailsData = {};
-            }
-            self.dataLoad4 = false;
-        });
-
         self.partyInformationRef.on('value', function (snap) {
             let renderData = snap.val();
             if (renderData !== null) {
@@ -114,6 +108,7 @@ export default {
             dataLoad3: false,
             dataLoad4: true,
             updateV: false,
+            updateStatus: false,
 
             // data save
             proData: {},
@@ -496,7 +491,6 @@ export default {
             total_debit: 0,
             total_credit: 0,
             voucher_id: "",
-            nbr_number: "",
             v_remarks: "",
             posted_status: "Yes",
             ref_type: "mis",
@@ -534,9 +528,6 @@ export default {
                     });
                 }
             });
-        },
-        nbr_number: function (value) {
-            return Validator.value(value).required().digit().maxLength(11, "Invalid NBR Number!");
         },
         v_remarks: function (value) {
             return Validator.value(value).required().lengthBetween(6, 35);
@@ -576,32 +567,32 @@ export default {
                                 }
                             }
 
-                            let voucher_push_gen = self.vouchersRef.push();
-                            voucher_push_gen.set({
-                                id: next_id,
-                                nbr_number: self.nbr_number,
-                                v_remarks: self.v_remarks,
-                                posted_status: self.posted_status,
-                                sel_project: self.sel_project,
-                                ref_type: self.ref_type,
-                                ref_key: self.sel_ref,
-                                voucher_date: self.voucher_date,
-                                uid: firebase.auth().currentUser.uid,
-                                createdAt: firebase.database.ServerValue.TIMESTAMP
-                            }, function (err) {
-                                if (err) {
-                                    self.errMain = err.message;
-                                    self.inProcess = false;
-                                } else {
-                                    let rows = self.rows;
-                                    let subLength = 0;
-                                    let process_item = 0;
-                                    rows.forEach(function (row) {
-                                        if (row.code !== "") {
-                                            subLength++;
-                                        }
-                                    });
-                                    if (subLength > 0) {
+                            let rows = self.rows;
+                            let subLength = 0;
+                            let process_item = 0;
+                            rows.forEach(function (row) {
+                                if (row.code !== "") {
+                                    subLength++;
+                                }
+                            });
+
+                            if(subLength > 0){
+                                let voucher_push_gen = self.vouchersRef.push();
+                                voucher_push_gen.set({
+                                    id: next_id,
+                                    v_remarks: self.v_remarks,
+                                    posted_status: self.posted_status,
+                                    sel_project: self.sel_project,
+                                    ref_type: self.ref_type,
+                                    ref_key: self.sel_ref,
+                                    voucher_date: self.voucher_date,
+                                    uid: firebase.auth().currentUser.uid,
+                                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                                }, function (err) {
+                                    if (err) {
+                                        self.errMain = err.message;
+                                        self.inProcess = false;
+                                    } else {
                                         rows.forEach(function (row, ind) {
                                             if (row.code !== "") {
                                                 delete row['key'];
@@ -622,11 +613,12 @@ export default {
                                                 });
                                             }
                                         });
-                                    } else {
-                                        self.voucherMsg(self, "Successfully Inserted Voucher!");
                                     }
-                                }
-                            });
+                                });
+                            }else{
+                                self.inProcess = false;
+                                alert("Please fill entries!");
+                            }
                         });
                 } else {
                     self.inProcess = false;
@@ -640,7 +632,6 @@ export default {
                 if (success) {
                     self.vouchersRef.child(self.sel_voucher).update({
                         id: self.voucher_id,
-                        nbr_number: self.nbr_number,
                         v_remarks: self.v_remarks,
                         posted_status: self.posted_status,
                         ref_type: self.ref_type,
@@ -742,9 +733,9 @@ export default {
                 self.fullVoucherReset(self);
                 let sel_voucher = self.vouchersData[key];
                 self.voucher_id = sel_voucher.id;
-                self.nbr_number = sel_voucher.nbr_number;
                 self.v_remarks = sel_voucher.v_remarks;
                 self.posted_status = sel_voucher.posted_status;
+                self.updateStatus = sel_voucher.posted_status !== 'Yes';
                 self.ref_type = sel_voucher.ref_type;
                 self.sel_project = sel_voucher.sel_project;
                 self.voucher_date = sel_voucher.voucher_date;
@@ -762,7 +753,6 @@ export default {
         fullVoucherReset: function (self) {
             self.setPostStatus();
             self.voucher_id = "";
-            self.nbr_number = "";
             self.v_remarks = "";
             self.ref_type = "md";
             self.sel_ref = "";
@@ -829,6 +819,24 @@ export default {
                 self.posted_status = "Yes";
             }else{
                 self.posted_status = "No";
+            }
+        },
+        loadMasterDetails: function (val) {
+            let self = this;
+            if(val !== ""){
+                self.dataLoad4 = true;
+                self.masterDetailsRef.orderByChild('sel_project').equalTo(val).once('value', function (snap) {
+                    let renderData = snap.val();
+                    if (renderData !== null) {
+                        self.masterDetailsData = renderData;
+                    } else {
+                        self.masterDetailsData = {};
+                    }
+                    self.dataLoad4 = false;
+                });
+            }else{
+                self.masterDetailsData = {};
+                self.dataLoad4 = false;
             }
         }
     },

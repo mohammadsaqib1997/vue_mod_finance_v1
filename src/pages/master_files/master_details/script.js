@@ -122,6 +122,7 @@ export default {
             dataLoad6: false,
             updateV: false,
             typeChgCheck: true,
+            updateStatus: false,
 
             // data save
             proData: {},
@@ -832,6 +833,7 @@ export default {
                 self.booking_amount = sel_voucher.booking_amount;
                 self.payment_installment = sel_voucher.payment_installment;
                 self.payment_plan = sel_voucher.payment_plan;
+                self.updateStatus = sel_voucher.posted_status !== 'Yes';
 
                 setTimeout(function () {
                     self.typeChgCheck = false;

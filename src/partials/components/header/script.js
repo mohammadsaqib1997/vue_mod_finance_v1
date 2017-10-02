@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import func from '../../../../custom_libs/func'
 import moment from 'moment'
 export default {
     created: function () {
@@ -22,28 +23,57 @@ export default {
         self.masterDetailsData.once('value', function (mdSnap) {
             let mdData = mdSnap.val();
             let keys = Object.keys(mdData);
-            let cur_date = moment();
-            let prev_m = cur_date.clone().subtract(1, 'M').set('date', 1);
-            let next_m = cur_date.clone().add(1, 'M').set('date', 1);
-            let notify_date = next_m.clone().subtract(7, 'days');
-            // console.log("Prev: " + prev_m.format('DD/MM/YYYY') + " Curr: " + cur_date.format('DD/MM/YYYY') + " Next: " + next_m.format('DD/MM/YYYY'));
-            console.log(notify_date.format('DD/MM/YYYY'));
-            keys.forEach(function (key, ind, arr) {
+            let cur_date = moment().set('date', 28);
+            let process_item = 0;
+            keys.forEach(function (key) {
                 let item = mdData[key];
-                let booking_date = moment(item.booking_date).format('DD/MM/YYYY');
+                if(item.posted_status === "Yes"){
+                    let booking_date = moment(item.booking_date);
 
+                    let grabDueDatesUnix = {};
+                    let dueDate = booking_date.clone().set('date', 1);
+                    for (let i=0; i < item.payment_installment; i++){
+                        dueDate.add(1, "M");
+                        if(cur_date.unix() >= dueDate.clone().add(1, 'M').subtract(7, 'days').unix() && cur_date.unix() <= dueDate.clone().add(1, 'M').unix()){
+                            grabDueDatesUnix = {
+                                start: dueDate,
+                                end: dueDate.clone().add(1, "M").subtract(1, 'days')
+                            };
+                            self.notiData[key] = "Receive Payment "+item.allotee_name+" -- "+item.allotee_code;
+                            break;
+                        }
+                    }
 
-                if (ind === arr.length - 1) {
-                    self.countNotif = keys.length;
-                    self.loadNoti = false;
+                    self.vouchersRef.orderByChild('ref_key').equalTo(key).limitToLast(1).once('value', function (vSnap) {
+                        if(vSnap.numChildren() > 0){
+                            vSnap.forEach(function (vItemSnap) {
+                                let vItemData = vItemSnap.val();
+                                if(vItemData.posted_status === "Yes"){
+                                    let v_date = moment(vItemData.voucher_date);
+                                    if(grabDueDatesUnix.start.unix() <= v_date.unix()){
+                                        delete self.notiData[key];
+                                    }
+                                }
+                            });
+                        }
+                        process_item++;
+                        if (process_item === keys.length) {
+                            self.notiData = func.sortObj(self.notiData);
+                            self.countNotif = Object.keys(self.notiData).length;
+                            self.loadNoti = false;
+                        }
+                    });
+                }else{
+                    process_item++;
+                    if (process_item === keys.length) {
+                        self.countNotif = Object.keys(self.notiData).length;
+                        if(self.countNotif > 0){
+                            self.notiData = func.sortObj(self.notiData);
+
+                        }
+                        self.loadNoti = false;
+                    }
                 }
-                /*self.vouchersRef.orderByChild('ref_key').equalTo(key).once('value', function (vSnap) {
-                 let vData = vSnap.val();
-                 console.log(vData);
-                 if(ind === arr.length-1){
-                 self.loadNoti = false;
-                 }
-                 });*/
             });
         });
 
@@ -63,6 +93,7 @@ export default {
         return {
             countNotif: 0,
             loadNoti: true,
+            notiData: {},
             masterDetailsRef: null,
             vouchersRef: null,
             loadImg: true,
