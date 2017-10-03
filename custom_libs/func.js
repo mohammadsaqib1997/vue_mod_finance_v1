@@ -101,5 +101,5 @@ module.exports  = {
         return (arr1.length === arr2.length) && arr1.every(function (elm, ind) {
                 return elm === arr2[ind];
             });
-    }
+    },
 };

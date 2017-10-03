@@ -1,6 +1,8 @@
 import firebase from 'firebase'
 import func from '../../../../custom_libs/func'
 import moment from 'moment'
+import cryptoJSON from 'crypto-json'
+
 export default {
     created: function () {
         let self = this;
@@ -23,7 +25,7 @@ export default {
         self.masterDetailsData.once('value', function (mdSnap) {
             let mdData = mdSnap.val();
             let keys = Object.keys(mdData);
-            let cur_date = moment().set('date', 28);
+            let cur_date = moment();
             let process_item = 0;
             keys.forEach(function (key) {
                 let item = mdData[key];
@@ -44,15 +46,19 @@ export default {
                         }
                     }
 
-                    self.vouchersRef.orderByChild('ref_key').equalTo(key).limitToLast(1).once('value', function (vSnap) {
+                    self.vouchersRef.orderByChild('ref_key').equalTo(key).once('value', function (vSnap) {
                         if(vSnap.numChildren() > 0){
-                            vSnap.forEach(function (vItemSnap) {
-                                let vItemData = vItemSnap.val();
+                            let vData = vSnap.val();
+                            let keys = Object.keys(vData);
+                            keys.reverse();
+                            keys.forEach(function (vKey) {
+                                let vItemData = vData[vKey];
                                 if(vItemData.posted_status === "Yes"){
                                     let v_date = moment(vItemData.voucher_date);
                                     if(grabDueDatesUnix.start.unix() <= v_date.unix()){
                                         delete self.notiData[key];
                                     }
+                                    return true;
                                 }
                             });
                         }
@@ -153,6 +159,18 @@ export default {
                 self.pro_img_src = "/assets/images/avatar-1.jpg";
                 self.loadImg = false;
             });
+        },
+        lockScreen: function () {
+            let self = this;
+            if(self.$ls.get('loginUser')){
+                let encObj = self.$ls.get('loginUser');
+                let userObj = cryptoJSON.decrypt(encObj, self.$root.secKey, { keys: [] });
+                userObj['lock'] = true;
+                let encrypted = cryptoJSON.encrypt(userObj, self.$root.secKey, { keys: [] });
+                self.$ls.set('loginUser', encrypted);
+                self.$router.push('/lock_account');
+                $("#app").removeAttr("class");
+            }
         }
     }
 }

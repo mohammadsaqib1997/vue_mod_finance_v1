@@ -66,6 +66,7 @@ export default {
                         firebase.auth().signInWithEmailAndPassword(self.email, self.password).then(function () {
                             self.isProcess = false;
                             self.$root.userLoginEmit = true;
+                            self.$root.userSaveLS(self.email, self.password, firebase.auth().currentUser.uid);
                             self.$router.push('/');
                         }).catch(function (err) {
                             self.isProcess = false;
@@ -81,6 +82,7 @@ export default {
                                 firebase.auth().signInWithCustomToken(body.token).then(function () {
                                     self.isProcess = false;
                                     self.$root.userLoginEmit = true;
+                                    self.$root.userSaveLS(self.email, self.password, firebase.auth().currentUser.uid);
                                     self.$router.push('/');
                                 }, function (err) {
                                     self.mainErr = err.message;

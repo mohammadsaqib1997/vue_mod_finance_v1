@@ -24,7 +24,7 @@ header.navbar.navbar-default.navbar-static-top
                         li.highlight
                             router-link(to='/profile') {{ s_name }}
                         li
-                            router-link(to='/lock_account') Lock Screen
+                            a(v-on:click.prevent='lockScreen') Lock Screen
                         li
                             a(v-on:click.prevent='logout') Log Out
         .dropdowns-wrapper.pull-right.notifications-section

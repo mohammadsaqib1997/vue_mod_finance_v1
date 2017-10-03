@@ -1,19 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from "vue-resource"
-import VueSession from "vue-session"
+// import VueSession from "vue-session"
+import VueLocalStorage from 'vue-ls'
 import SimpleVueValidation from 'simple-vue-validator'
 import firebase from 'firebase'
+import cryptoJSON from 'crypto-json'
 
 import config_fb from '../../config/private.json'
 firebase.initializeApp(config_fb.config_fb);
 
 import routes from './routes'
 
-Vue.use(VueSession);
+Vue.use(VueLocalStorage);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(SimpleVueValidation);
+
+
 
 const router = new VueRouter({
     mode: 'history',
@@ -31,27 +35,39 @@ new Vue({
             self.routeCond = true;
             self.$router.beforeEach(function (to, from, next) {
                 let route = to.path;
-                if(to.matched.some((rec)=>rec.meta.requiresAuth)){
-                    if(self.loginUData !== null){
-                        if(to.matched.some((rec)=>rec.meta.admin)){
-                            if(self.loginUData.type === "admin"){
-                                next();
+                if(!self.isLockUser()){
+                    if(route !== "/lock_account"){
+                        if(to.matched.some((rec)=>rec.meta.requiresAuth)){
+                            if(self.loginUData !== null){
+                                if(to.matched.some((rec)=>rec.meta.admin)){
+                                    if(self.loginUData.type === "admin"){
+                                        next();
+                                    }else{
+                                        self.$router.push('/');
+                                    }
+                                }else{
+                                    next();
+                                }
                             }else{
-                                self.$router.push('/');
+                                self.$router.push('/login');
                             }
                         }else{
-                            next();
+                            if(route === "/login"){
+                                if(self.loginUData === null){
+                                    next();
+                                }else{
+                                    self.$router.push('/');
+                                }
+                            }else{
+                                next();
+                            }
                         }
                     }else{
-                        self.$router.push('/login');
+                        self.$router.push('/');
                     }
                 }else{
-                    if(route === "/login"){
-                        if(self.loginUData === null){
-                            next();
-                        }else{
-                            self.$router.push('/');
-                        }
+                    if(route !== "/lock_account"){
+                        self.$router.push('/lock_account');
                     }else{
                         next();
                     }
@@ -61,15 +77,9 @@ new Vue({
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                self.$session.start();
-                let userObj = {
-                    uid: user.uid,
-                    lock: false
-                };
-                self.$session.set('loginUser', userObj);
                 self.loginUID = user.uid;
             } else {
-                self.$session.destroy();
+                self.$ls.remove('loginUser');
                 self.compileProc = false;
                 self.loginUID = "";
                 self.loginUData = null;
@@ -79,6 +89,7 @@ new Vue({
     },
     data: {
         csrf: '',
+        secKey: config_fb.config_fb.apiKey,
         userLoginEmit: false,
         loginUID: "",
         loginUData: null,
@@ -102,27 +113,44 @@ new Vue({
             });
             let route = self.$route.path;
             self.compileProc = false;
-            if(checkRouteAuth){
-                if(val === null){
-                    self.$router.push('/login');
-                }else{
-                    if(checkRouteAdmin){
-                        if(val.type !== "admin"){
-                            self.$router.push('/');
+            if(!self.isLockUser()){
+                if(route !== "/lock_account"){
+                    if(checkRouteAuth){
+                        if(val === null){
+                            self.$router.push('/login');
+                        }else{
+                            if(checkRouteAdmin){
+                                if(val.type !== "admin"){
+                                    self.$router.push('/');
+                                }
+                            }
+                        }
+                    }else{
+                        if(route === "/login"){
+                            if(val !== null){
+                                self.$router.push('/');
+                            }
                         }
                     }
+                }else{
+                    self.$router.push('/');
                 }
             }else{
-                if(route === "/login"){
-                    if(val !== null){
-                        self.$router.push('/');
-                    }
+                if(route !== "/lock_account"){
+                    self.$router.push('/lock_account');
                 }
             }
         }
     },
     beforeMount: function () {
         this.csrf = this.$el.attributes.csrf.value;
+    },
+    mounted: function(){
+        this.$ls.on('loginUser', function (val, oldVal, uri) {
+            if(val === null){
+                firebase.auth().signOut();
+            }
+        });
     },
     methods: {
         isNumber: function (val, maxLength) {
@@ -150,16 +178,34 @@ new Vue({
             let self = this;
             if(uid !== ""){
                 self.compileProc = true;
-                self.usersRef.orderByKey().equalTo(uid).on("value", function (snap) {
-                    let data = snap.val();
-                    let keys = Object.keys(data);
-                    let item = data[keys[0]];
-                    item["uid"] = keys[0];
+                self.usersRef.child(uid).on("value", function (snap) {
+                    let item = snap.val();
+                    item["uid"] = uid;
                     self.loginUData = item;
                 });
             }else{
                 self.loginUData = null;
             }
+        },
+        isLockUser: function () {
+            let self = this;
+            if(self.$ls.get('loginUser')){
+                let encObj = self.$ls.get('loginUser');
+                let userObj = cryptoJSON.decrypt(encObj, self.secKey, { keys: [] });
+                return userObj.lock;
+            }
+            return false;
+        },
+        userSaveLS: function (email, password, uid) {
+            let self = this;
+            let userObj = {
+                uid: uid,
+                email: email,
+                password: password,
+                lock: false,
+            };
+            let encrypted = cryptoJSON.encrypt(userObj, self.secKey, { keys: [] });
+            self.$ls.set('loginUser', encrypted);
         }
     }
 }).$mount("#app");
