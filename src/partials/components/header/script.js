@@ -24,63 +24,67 @@ export default {
 
         self.masterDetailsData.once('value', function (mdSnap) {
             let mdData = mdSnap.val();
-            let keys = Object.keys(mdData);
-            let cur_date = moment();
-            let process_item = 0;
-            keys.forEach(function (key) {
-                let item = mdData[key];
-                if(item.posted_status === "Yes"){
-                    let booking_date = moment(item.booking_date);
+            if(mdData !== null){
+                let keys = Object.keys(mdData);
+                let cur_date = moment();
+                let process_item = 0;
+                keys.forEach(function (key) {
+                    let item = mdData[key];
+                    if(item.posted_status === "Yes"){
+                        let booking_date = moment(item.booking_date);
 
-                    let grabDueDatesUnix = {};
-                    let dueDate = booking_date.clone().set('date', 1);
-                    for (let i=0; i < item.payment_installment; i++){
-                        dueDate.add(1, "M");
-                        if(cur_date.unix() >= dueDate.clone().add(1, 'M').subtract(7, 'days').unix() && cur_date.unix() <= dueDate.clone().add(1, 'M').unix()){
-                            grabDueDatesUnix = {
-                                start: dueDate,
-                                end: dueDate.clone().add(1, "M").subtract(1, 'days')
-                            };
-                            self.notiData[key] = "Receive Payment "+item.allotee_name+" -- "+item.allotee_code;
-                            break;
+                        let grabDueDatesUnix = {};
+                        let dueDate = booking_date.clone().set('date', 1);
+                        for (let i=0; i < item.payment_installment; i++){
+                            dueDate.add(1, "M");
+                            if(cur_date.unix() >= dueDate.clone().add(1, 'M').subtract(7, 'days').unix() && cur_date.unix() <= dueDate.clone().add(1, 'M').unix()){
+                                grabDueDatesUnix = {
+                                    start: dueDate,
+                                    end: dueDate.clone().add(1, "M").subtract(1, 'days')
+                                };
+                                self.notiData[key] = "Receive Payment "+item.allotee_name+" -- "+item.allotee_code;
+                                break;
+                            }
                         }
-                    }
 
-                    self.vouchersRef.orderByChild('ref_key').equalTo(key).once('value', function (vSnap) {
-                        if(vSnap.numChildren() > 0){
-                            let vData = vSnap.val();
-                            let keys = Object.keys(vData);
-                            keys.reverse();
-                            keys.forEach(function (vKey) {
-                                let vItemData = vData[vKey];
-                                if(vItemData.posted_status === "Yes"){
-                                    let v_date = moment(vItemData.voucher_date);
-                                    if(grabDueDatesUnix.start.unix() <= v_date.unix()){
-                                        delete self.notiData[key];
+                        self.vouchersRef.orderByChild('ref_key').equalTo(key).once('value', function (vSnap) {
+                            if(vSnap.numChildren() > 0){
+                                let vData = vSnap.val();
+                                let keys = Object.keys(vData);
+                                keys.reverse();
+                                keys.forEach(function (vKey) {
+                                    let vItemData = vData[vKey];
+                                    if(vItemData.posted_status === "Yes"){
+                                        let v_date = moment(vItemData.voucher_date);
+                                        if(grabDueDatesUnix.start.unix() <= v_date.unix()){
+                                            delete self.notiData[key];
+                                        }
+                                        return true;
                                     }
-                                    return true;
-                                }
-                            });
-                        }
+                                });
+                            }
+                            process_item++;
+                            if (process_item === keys.length) {
+                                self.notiData = func.sortObj(self.notiData);
+                                self.countNotif = Object.keys(self.notiData).length;
+                                self.loadNoti = false;
+                            }
+                        });
+                    }else{
                         process_item++;
                         if (process_item === keys.length) {
-                            self.notiData = func.sortObj(self.notiData);
                             self.countNotif = Object.keys(self.notiData).length;
+                            if(self.countNotif > 0){
+                                self.notiData = func.sortObj(self.notiData);
+
+                            }
                             self.loadNoti = false;
                         }
-                    });
-                }else{
-                    process_item++;
-                    if (process_item === keys.length) {
-                        self.countNotif = Object.keys(self.notiData).length;
-                        if(self.countNotif > 0){
-                            self.notiData = func.sortObj(self.notiData);
-
-                        }
-                        self.loadNoti = false;
                     }
-                }
-            });
+                });
+            }else{
+                self.loadNoti = false;
+            }
         });
 
     },
