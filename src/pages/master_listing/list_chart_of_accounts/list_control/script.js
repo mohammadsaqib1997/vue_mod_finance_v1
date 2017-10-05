@@ -122,41 +122,6 @@ export default {
                     self.validForm = false;
                 }
             });
-        },
-        showSheet: function (event) {
-            let self = this;
-            self.$validate().then(function (success) {
-                if (success) {
-                    let form = event.target;
-                    let formData = new FormData(form);
-                    let params = {};
-                    for (let pair of formData.entries()) {
-                        params[pair[0]] = pair[1];
-                    }
-                    firebase.auth().currentUser.getIdToken(true).then(function(idToken){
-                        params['auth'] = idToken;
-                        self.formSubmit('/pdf/control/render.pdf', params);
-                    }).catch(function(err){
-                        console.log(err);
-                    });
-                }
-            });
-        },
-        formSubmit: function (url, params) {
-            let f = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
-                action: url
-            }).appendTo(document.body);
-
-            for (let i in params) {
-                if (params.hasOwnProperty(i)) {
-                    $('<input type="hidden" />').attr({
-                        name: i,
-                        value: params[i]
-                    }).appendTo(f);
-                }
-            }
-            f.trigger('submit');
-            f.remove();
         }
     }
 }

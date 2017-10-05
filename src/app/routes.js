@@ -41,6 +41,8 @@ import searchJournalVoucher from '../pages/search/journal_voucher/journal_vouche
 
 import sheetLayout from '../partials/layouts/sheetLayout/sheetLayout.vue'
 import controlSheet from '../pages/sheets/list_control/list_control.vue'
+import subControlSheet from '../pages/sheets/list_sub_control/list_sub_control.vue'
+import subsidiarySheet from '../pages/sheets/list_subsidiary/list_subsidiary.vue'
 
 const routes = [
     {
@@ -171,6 +173,14 @@ const routes = [
                     {
                         path: 'control/:proId/:startId/:endId',
                         component: controlSheet,
+                    },
+                    {
+                        path: 'sub_control/:proId/:startId/:endId',
+                        component: subControlSheet,
+                    },
+                    {
+                        path: 'subsidiary/:proId/:startId/:endId',
+                        component: subsidiarySheet,
                     }
                 ]
             },

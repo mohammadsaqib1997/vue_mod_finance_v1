@@ -26,9 +26,16 @@
                             tr
                                 td(colspan='3')
                                     table(cellpadding='5' style='width:100%;')
-                                        tr(v-for='(item, id, ind) in fetchData')
-                                            td(style="width:40px;") {{ id }}
-                                            td {{ item.name }}
+                                        template(v-for='cont_item in fetchData.cont_data')
+                                            tr
+                                                td(style="width:40px;") {{cont_item.id}}
+                                                td(colspan='2') {{cont_item.name}}
+                                            template(v-for='sCont_item in fetchData.sub_cont_data')
+                                                template(v-if='sCont_item.cont_id === cont_item.id')
+                                                    tr
+                                                        td
+                                                        td(style="width:40px;") {{sCont_item.id}}
+                                                        td {{sCont_item.name}}
                     button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;" data-toggle="modal" data-target="#download-pdf") Save
                     button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
 

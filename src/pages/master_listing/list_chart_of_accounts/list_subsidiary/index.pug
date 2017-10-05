@@ -69,17 +69,7 @@
                                                         option(value='') Select Subsidiary
                                                         option(v-for='(row, key, ind) in subsData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_subs_end")') {{ validation.firstError('sel_subs_end') }}
-                            .row
-                                .col-xs-12.col-sm-12.col-md-12.col-lg-12
-                                    .form-group
-                                        .row
-                                            .col-xs-12.col-sm-12.col-md-6.col-lg-6
-                                                label Destination
-                                                select.form-control(v-model='sel_show_type')
-                                                    option(value='Screen') Screen
-                                                    option(value='File') File
-                                                p.text-danger.text-right(v-if='validation.hasError("sel_show_type")') {{ validation.firstError('sel_show_type') }}
-                            .row
+                            .row(v-if='validForm')
                                 .col-xs-12.col-sm-12.col-md-4.col-lg-4.pull-left
-                                    button.btn.btn-lg.btn-primary.btn-wide.pull-left(type='submit')
+                                    a.btn.btn-lg.btn-primary.btn-wide.pull-left(v-bind:href='anchURL' target='_blank')
                                         | Submit

@@ -20,6 +20,13 @@ export default {
             self.regSubsGet(self.sel_project);
         });
 
+        self.$watch('sel_subs_start', function (val, oldVal) {
+            self.validCheck();
+        });
+        self.$watch('sel_subs_end', function (val, oldVal) {
+            self.validCheck();
+        });
+
         const db = firebase.database();
         self.projectsRef = db.ref('/projects');
         self.regSubsRef = db.ref('/reg_subsidiary');
@@ -56,7 +63,8 @@ export default {
             //loaders
             dataLoad1: true,
             dataLoad2: false,
-            dataLoad3: false,
+            validForm: false,
+            anchURL: '',
 
             // data save
             proData: {},
@@ -73,7 +81,6 @@ export default {
             end_date: "",
             sel_subs_start: "",
             sel_subs_end: "",
-            sel_show_type: "Screen",
         }
     },
     validators: {
@@ -86,9 +93,6 @@ export default {
         sel_subs_end: function (value) {
             return Validator.value(value).required().lengthBetween(3, 11, "Invalid Register Sub Control Id!");
         },
-        sel_show_type: function (value) {
-            return Validator.value(value).required();
-        }
     },
     methods: {
         regSubsGet: function (pro_key) {
@@ -139,40 +143,17 @@ export default {
                 self.dataLoad2 = false;
             }
         },
-        showSheet: function (event) {
+        validCheck: function () {
             let self = this;
+            self.anchURL = '';
             self.$validate().then(function (success) {
                 if (success) {
-                    let form = event.target;
-                    let formData = new FormData(form);
-                    let params = {};
-                    for (let pair of formData.entries()) {
-                        params[pair[0]] = pair[1];
-                    }
-                    firebase.auth().currentUser.getIdToken(true).then(function(idToken){
-                        params['auth'] = idToken;
-                        self.formSubmit('/pdf/subsidiary/render.pdf', params);
-                    }).catch(function(err){
-                        console.log(err);
-                    });
+                    self.validForm = true;
+                    self.anchURL = '/sheet/subsidiary/'+self.sel_project+"/"+self.sel_subs_start+"/"+self.sel_subs_end;
+                }else{
+                    self.validForm = false;
                 }
             });
-        },
-        formSubmit: function (url, params) {
-            let f = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
-                action: url
-            }).appendTo(document.body);
-
-            for (let i in params) {
-                if (params.hasOwnProperty(i)) {
-                    $('<input type="hidden" />').attr({
-                        name: i,
-                        value: params[i]
-                    }).appendTo(f);
-                }
-            }
-            f.trigger('submit');
-            f.remove();
         }
     }
 }

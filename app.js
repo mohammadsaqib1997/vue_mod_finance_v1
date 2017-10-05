@@ -23,6 +23,7 @@ var gapi = require('./routes/gapi');
 var api = require('./routes/api');
 
 var lControlDownload = require('./routes/listing/control');
+var lSubControlDownload = require('./routes/listing/sub_control');
 
 var app = express();
 
@@ -83,6 +84,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
 app.use('/download', lControlDownload);
+app.use('/download', lSubControlDownload);
 
 app.use('/api', api);
 app.use('/gapi', gapi);

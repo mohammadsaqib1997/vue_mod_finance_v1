@@ -11,13 +11,17 @@ export default {
         self.$watch('sel_project', function (val, oldVal) {
             self.regSubContGet(val);
         });
+        self.$watch('sel_subCont_start', function (val, oldVal) {
+            self.validCheck();
+        });
+        self.$watch('sel_subCont_end', function (val, oldVal) {
+            self.validCheck();
+        });
 
         const db = firebase.database();
         self.projectsRef = db.ref('/projects');
-        self.contRef = db.ref('/controls');
         self.subContRef = db.ref('/sub_controls');
         self.regSubContRef = db.ref('/reg_sub_controls');
-        self.proSelContRef = db.ref('/pro_sel_control');
 
         self.projectsRef.on('value', function (proSnap) {
             let renderData = proSnap.val();
@@ -36,7 +40,8 @@ export default {
             //loaders
             dataLoad1: true,
             dataLoad2: false,
-            dataLoad3: false,
+            validForm: false,
+            anchURL: '',
 
             // data save
             proData: {},
@@ -44,17 +49,14 @@ export default {
             subContData: [],
 
             // references
-            contRef: null,
             subContRef: null,
             projectsRef: null,
             regSubContRef: null,
 
             // form fields
             sel_project: "",
-            sel_control: "",
             sel_subCont_start: "",
             sel_subCont_end: "",
-            sel_show_type: "Screen",
         }
     },
     validators: {
@@ -66,9 +68,6 @@ export default {
         },
         sel_subCont_end: function (value) {
             return Validator.value(value).required().lengthBetween(3, 11, "Invalid Register Sub Control Id!");
-        },
-        sel_show_type: function (value) {
-            return Validator.value(value).required();
         }
     },
     methods: {
@@ -111,40 +110,17 @@ export default {
                 self.dataLoad2 = false;
             }
         },
-        showSheet: function (event) {
+        validCheck: function () {
             let self = this;
+            self.anchURL = '';
             self.$validate().then(function (success) {
                 if (success) {
-                    let form = event.target;
-                    let formData = new FormData(form);
-                    let params = {};
-                    for (let pair of formData.entries()) {
-                        params[pair[0]] = pair[1];
-                    }
-                    firebase.auth().currentUser.getIdToken(true).then(function(idToken){
-                        params['auth'] = idToken;
-                        self.formSubmit('/pdf/sub_control/render.pdf', params);
-                    }).catch(function(err){
-                        console.log(err);
-                    });
+                    self.validForm = true;
+                    self.anchURL = '/sheet/sub_control/'+self.sel_project+"/"+self.sel_subCont_start+"/"+self.sel_subCont_end;
+                }else{
+                    self.validForm = false;
                 }
             });
-        },
-        formSubmit: function (url, params) {
-            let f = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
-                action: url
-            }).appendTo(document.body);
-
-            for (let i in params) {
-                if (params.hasOwnProperty(i)) {
-                    $('<input type="hidden" />').attr({
-                        name: i,
-                        value: params[i]
-                    }).appendTo(f);
-                }
-            }
-            f.trigger('submit');
-            f.remove();
         }
     }
 }

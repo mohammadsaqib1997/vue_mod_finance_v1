@@ -18,9 +18,7 @@ export default {
         self.projectRef.child(params.proId).on('value', function (proSnap) {
             let renderData = proSnap.val();
             if(renderData !== null){
-                self.proName = renderData.name;
-                self.optionalData.proName = self.proName;
-                self.optionalData.date = self.date;
+                self.optionalData.proName = renderData.name;
 
                 self.regControlsRef.child(params.proId).orderByKey().startAt(bw[0]).endAt(bw[1]).once('value').then(function (regContSnap) {
                     let regContData = regContSnap.val();
@@ -67,16 +65,18 @@ export default {
                 title: 'MASTER LISTING',
                 subTitle: 'CONTROL LISTING',
                 proName: '',
-                date: '',
+                date: moment().format('DD/MM/YYYY'),
+            },
+            dLinks: {
+                pdf: '/download/pdf/listing/control',
+                html: '/download/html/listing/control',
+                csv: '/download/csv/listing/control',
             },
 
             // references
             regControlsRef: null,
             controlsRef: null,
             projectRef: null,
-
-            proName: '',
-            date: moment().format('DD/MM/YYYY'),
         }
     },
     methods: {

@@ -1,5 +1,5 @@
 export default {
-    props: ['fetchData' , 'optionalData'],
+    props: ['fetchData' , 'optionalData', 'dLinks'],
     created: function () {
         let self = this;
 
@@ -68,7 +68,7 @@ export default {
         pdf: function () {
             let self = this;
             self.pdfLoader= true;
-            self.$http.post('/download/pdf/listing/control', {
+            self.$http.post(self.dLinks['pdf'], {
                 fetchData: self.fetchData,
                 optionalData: self.optionalData,
             }).then(function (res) {
@@ -87,7 +87,7 @@ export default {
         html: function () {
             let self = this;
             self.htmlLoader= true;
-            self.$http.post('/download/html/listing/control', {
+            self.$http.post(self.dLinks['html'], {
                 fetchData: self.fetchData,
                 optionalData: self.optionalData,
             }).then(function (res) {
@@ -106,7 +106,7 @@ export default {
         csv: function () {
             let self = this;
             self.csvLoader= true;
-            self.$http.post('/download/csv/listing/control', {
+            self.$http.post(self.dLinks['csv'], {
                 fetchData: self.fetchData,
                 optionalData: self.optionalData,
             }).then(function (res) {
