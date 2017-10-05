@@ -11714,6 +11714,7 @@ form.form-login .input-icon > input {
 }
 .lock-screen .box-ls img {
   min-width: 200px;
+  max-width: 200px;
 }
 .input-group > [class*="fa-"] {
   bottom: 0;
@@ -11833,6 +11834,29 @@ body .ui-tooltip {
   background: #000;
   border-radius: 4px;
   border-color: #000;
+}
+.lock-screen .box-ls img {
+  min-width: 200px;
+  max-width: 200px;
+  border: 2px solid #fff;
+}
+.lock-screen .alert.alert-danger {
+  width: 100%;
+  margin: 0 auto;
+  text-align: left;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  color: #d45252;
+  border-radius: 3px 3px 3px 3px;
+  font-size: 11px;
+}
+.lock-screen .user-info h4 {
+  color: #ffffff;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  margin-top: 0;
+  text-transform: uppercase;
 }
 .box-login .form-group p.alert.alert-danger {
      width: 370px;
