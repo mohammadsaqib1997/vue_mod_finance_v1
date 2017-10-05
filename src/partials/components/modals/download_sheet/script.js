@@ -16,6 +16,11 @@ export default {
             htmlDownload: null,
             htmlFile: '',
             htmlCounter: 5,
+
+            csvLoader: false,
+            csvDownload: null,
+            csvFile: '',
+            csvCounter: 5,
         }
     },
     watch: {
@@ -40,6 +45,19 @@ export default {
                     if(self.htmlCounter === 0){
                        clearInterval(interval);
                        let anch = document.getElementById('htmlDownload');
+                       anch.click();
+                    }
+                }, 1000);
+            }
+        },
+        csvDownload: function (val) {
+            let self  = this;
+            if(val !== null){
+                let interval = setInterval(function () {
+                    self.csvCounter--;
+                    if(self.csvCounter === 0){
+                       clearInterval(interval);
+                       let anch = document.getElementById('csvDownload');
                        anch.click();
                     }
                 }, 1000);
@@ -83,6 +101,25 @@ export default {
             }, function (err) {
                 console.log(err);
                 self.htmlLoader= false;
+            });
+        },
+        csv: function () {
+            let self = this;
+            self.csvLoader= true;
+            self.$http.post('/download/csv/listing/control', {
+                fetchData: self.fetchData,
+                optionalData: self.optionalData,
+            }).then(function (res) {
+                if(res.body.status === "ok"){
+                    self.csvDownload = res.body.link;
+                    self.csvFile = res.body.name;
+                }else{
+                    console.log(res.body.message);
+                }
+                self.csvLoader= false;
+            }, function (err) {
+                console.log(err);
+                self.csvLoader= false;
             });
         }
     }
