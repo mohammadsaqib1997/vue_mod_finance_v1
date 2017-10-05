@@ -39,6 +39,9 @@ import searchMasterDetail from '../pages/search/master_detail/master_detail.vue'
 import searchPartyInfo from '../pages/search/party_information/party_information.vue'
 import searchJournalVoucher from '../pages/search/journal_voucher/journal_voucher.vue'
 
+import sheetLayout from '../partials/layouts/sheetLayout/sheetLayout.vue'
+import controlSheet from '../pages/sheets/list_control/list_control.vue'
+
 const routes = [
     {
         path: '/',
@@ -155,6 +158,19 @@ const routes = [
                     {
                         path: '/search/vendor_detail/:id',
                         component: searchPartyInfo
+                    }
+                ]
+            },
+            {
+                path: 'sheet',
+                component: sheetLayout,
+                meta: {
+                    requiresAuth: true
+                },
+                children: [
+                    {
+                        path: 'control/:proId/:startId/:endId',
+                        component: controlSheet,
                     }
                 ]
             },
