@@ -21,6 +21,7 @@ var admin = require('./routes/admin');
 var pdf = require('./routes/pdf');
 var gapi = require('./routes/gapi');
 var api = require('./routes/api');
+var download = require('./routes/download');
 
 var app = express();
 
@@ -81,6 +82,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
 app.use('/api', api);
+app.use('/download', download);
 app.use('/gapi', gapi);
 app.use('/pdf', pdf);
 

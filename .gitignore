@@ -5,3 +5,4 @@ config
 *.zip
 public/vue_frameworks/app/*.js
 _old_*.js
+public/temp

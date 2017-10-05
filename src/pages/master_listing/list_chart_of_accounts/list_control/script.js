@@ -11,6 +11,12 @@ export default {
         self.$watch('sel_project', function (val, oldVal) {
             self.proSelContGet(val);
         });
+        self.$watch('sel_control_start', function (val, oldVal) {
+            self.validCheck();
+        });
+        self.$watch('sel_control_end', function (val, oldVal) {
+            self.validCheck();
+        });
 
         const db = firebase.database();
         self.projectsRef = db.ref('/projects');
@@ -35,6 +41,8 @@ export default {
             //loaders
             dataLoad1: true,
             dataLoad2: false,
+            validForm: false,
+            anchURL: '',
 
             // data save
             proData: {},
@@ -50,7 +58,6 @@ export default {
             sel_project: "",
             sel_control_start: "",
             sel_control_end: "",
-            sel_show_type: "Screen",
         }
     },
     validators: {
@@ -62,9 +69,6 @@ export default {
         },
         sel_control_end: function (value) {
             return Validator.value(value).required().lengthBetween(3, 11, "Invalid Register Control Id!");
-        },
-        sel_show_type: function (value) {
-            return Validator.value(value).required();
         }
     },
     methods: {
@@ -106,6 +110,18 @@ export default {
             } else {
                 self.dataLoad2 = false;
             }
+        },
+        validCheck: function () {
+            let self = this;
+            self.anchURL = '';
+            self.$validate().then(function (success) {
+                if (success) {
+                    self.validForm = true;
+                    self.anchURL = '/sheet/control/'+self.sel_project+"/"+self.sel_control_start+"/"+self.sel_control_end;
+                }else{
+                    self.validForm = false;
+                }
+            });
         },
         showSheet: function (event) {
             let self = this;

@@ -1,0 +1,15 @@
+extends partials/header_table
+block content
+    table.table.table-striped.table-responsive.misreport(style='width:100%;font-size: 14px;color: #545454 !important;font-weight: 400;border-spacing: 0;border-collapse: collapse;border: 0px;background: #ffffff;min-height: .01%;overflow-x: auto;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;float: left;', border='1', cellpadding='5')
+        tbody
+            tr.background-e2e8f0.no-border
+                th(style='width:25%;') Account Code
+                th(style='text-align:center;width:50%;') Account Description
+                th(style='text-align:right;width:25%;') Reference Code
+            tr
+                td(colspan='3')
+                    table(cellpadding='5' style='width:100%;')
+                        each item, id in fetchData
+                            tr
+                                td(style="width:40px;") #{id}
+                                td #{item.name}
