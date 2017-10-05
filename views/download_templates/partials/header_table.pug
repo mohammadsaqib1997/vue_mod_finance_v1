@@ -7,11 +7,13 @@ div(style='background: #f1f1f1 !important;float: left;width: 100%;padding-bottom
                 div(style='width: 66.66666667%;float: left;position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;margin: 0;')
                     h1(style='font-size: 38.02px;color: #545454;font-weight: 400;letter-spacing: 1px;line-height: 1;margin: 0;padding: 0;text-transform: uppercase;font-family: "Raleway", sans-serif;') #{optionalData.title}
                     span(style='font-size: 19px;color: #ec5d58;font-weight: 400;margin-top: 0;display: block;text-transform: uppercase;font-family: "Lato", sans-serif;') #{optionalData.subTitle}
-    div(style='padding: 30px !important;margin: 0;')
-        div(style='width: 100%;float: left;')
-            div(style='margin-bottom: 0;display: block;float: left;width: 100%;background-color: #ffffff;position: relative;color: #000;border: 1px solid rgba(0, 0, 0, 0.07);-moz-border-radius: 0 !important;-webkit-border-radius: 0;border-radius: 0 !important;')
-                div(style='border-left-color: #f5b620;border-left-style: solid;border-left-width: 4px;float: left;width: 100%;min-height: 0 !important;line-height: normal !important;position: relative;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: rgba(0, 0, 0, 0.07);padding: 0 !important;font-family: Helvetica, Arial, sans-serif;font-size: 13px;')
-                    h4.panel-title.pull-left.padding-15(style='margin-top: 0;margin-bottom: 0;font-size: 24px;color: inherit;text-transform: uppercase;padding: 15px;float: left;') Project Name: #{optionalData.proName}
-                    h6(style='padding: 15px !important;text-align: right;font-size: 12px;font-family: inherit;font-weight: 500;line-height: 1.1;color: inherit;float: right;margin: 10px 0;') Create Date: #{optionalData.date}
-                div(style='padding: 30px !important;position: relative;float: left;width: 97%;')
-                    block content
+    div(style='padding-top: 30px;padding-bottom: 30px;padding-left: 30px;padding-right: 30px;margin: 0 auto;')
+        div(style='width: 100%;float: left;background: #fff;')
+            div(style='margin-bottom: 0;display: block;background-color: #ffffff;position: relative;color: #000;')
+                div(style="float:left;width:100%;position: relative;margin: 0 auto;padding:0px;border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgba(0, 0, 0, 0.07)")
+                    div(style='border-left-color: #f5b620;border-left-style: solid;border-left-width: 4px;float: left;width: 100%;min-height: 0 !important;line-height: normal !important;position: relative;padding: 0 !important;font-family: Helvetica, Arial, sans-serif;font-size: 13px;')
+                        h4.panel-title.pull-left.padding-15(style='margin-top: 0;margin-bottom: 0;font-size: 24px;color: inherit;text-transform: uppercase;padding: 15px;float: left;') Project Name: #{optionalData.proName}
+                        h6(style='padding: 15px !important;text-align: right;font-size: 12px;font-family: inherit;font-weight: 500;line-height: 1.1;color: inherit;float: right;margin: 10px 0;') Create Date: #{optionalData.date}
+                div(style="float:left;width:100%;position: relative;margin: 0 auto;padding:0px;")
+                    div(style='padding-top: 30px;padding-bottom: 30px;padding-left: 30px;padding-right: 30px;position: relative;margin: 0 auto')
+                        block content
