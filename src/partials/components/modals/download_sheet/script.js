@@ -11,6 +11,11 @@ export default {
             pdfDownload: null,
             pdfFile: '',
             pdfCounter: 5,
+
+            htmlLoader: false,
+            htmlDownload: null,
+            htmlFile: '',
+            htmlCounter: 5,
         }
     },
     watch: {
@@ -22,6 +27,19 @@ export default {
                     if(self.pdfCounter === 0){
                        clearInterval(interval);
                        let anch = document.getElementById('pdfDownload');
+                       anch.click();
+                    }
+                }, 1000);
+            }
+        },
+        htmlDownload: function (val) {
+            let self  = this;
+            if(val !== null){
+                let interval = setInterval(function () {
+                    self.htmlCounter--;
+                    if(self.htmlCounter === 0){
+                       clearInterval(interval);
+                       let anch = document.getElementById('htmlDownload');
                        anch.click();
                     }
                 }, 1000);
@@ -46,6 +64,25 @@ export default {
             }, function (err) {
                 console.log(err);
                 self.pdfLoader= false;
+            });
+        },
+        html: function () {
+            let self = this;
+            self.htmlLoader= true;
+            self.$http.post('/download/html/listing/control', {
+                fetchData: self.fetchData,
+                optionalData: self.optionalData,
+            }).then(function (res) {
+                if(res.body.status === "ok"){
+                    self.htmlDownload = res.body.link;
+                    self.htmlFile = res.body.name;
+                }else{
+                    console.log(res.body.message);
+                }
+                self.htmlLoader= false;
+            }, function (err) {
+                console.log(err);
+                self.htmlLoader= false;
             });
         }
     }
