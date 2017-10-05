@@ -30,6 +30,13 @@
                                 a#htmlDownload.pull-right(v-bind:href='htmlDownload' v-bind:download="htmlFile")
                                     i.fa.fa-download
                     .col-xs-12.col-sm-12.col-md-12.col-lg-12.margin-bottom-0
-                        button.btn-default.btn.btn-o.btn-lg.col-xs-12.col-sm-12.col-md-12.col-lg-12.download-button(type='button')
-                            img.pull-left(src="/assets/images/icons/excel-icon.png" style="margin-right:15px;")
-                            | Download in Excel
+                        button.btn-default.btn.btn-o.btn-lg.col-xs-12.col-sm-12.col-md-12.col-lg-12.download-button(v-if='csvLoader')
+                            .fa.fa-refresh.fa-spin.fa-3x
+                        template(v-else)
+                            button.btn-default.btn.btn-o.btn-lg.col-xs-12.col-sm-12.col-md-12.col-lg-12.download-button(v-if='!csvDownload' v-on:click.prevent='csv')
+                                img.pull-left(src="/assets/images/icons/excel-icon.png" style="margin-right:15px;")
+                                | Download in Excel
+                            button.btn-default.btn.btn-o.btn-lg.col-xs-12.col-sm-12.col-md-12.col-lg-12.download-button(v-else)
+                                | Download automatically in {{ csvCounter }} seconds...
+                                a#csvDownload.pull-right(v-bind:href='csvDownload' v-bind:download="csvFile")
+                                    i.fa.fa-download
