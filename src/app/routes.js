@@ -44,6 +44,8 @@ import controlSheet from '../pages/sheets/list_control/list_control.vue'
 import subControlSheet from '../pages/sheets/list_sub_control/list_sub_control.vue'
 import subsidiarySheet from '../pages/sheets/list_subsidiary/list_subsidiary.vue'
 
+import subsidiaryBSheet from '../pages/sheets/bs_control/bs_control.vue'
+
 const routes = [
     {
         path: '/',
@@ -181,6 +183,10 @@ const routes = [
                     {
                         path: 'subsidiary/:proId/:startId/:endId',
                         component: subsidiarySheet,
+                    },
+                    {
+                        path: 'bs_control/:proId/:startDate/:endDate',
+                        component: subsidiaryBSheet,
                     }
                 ]
             },

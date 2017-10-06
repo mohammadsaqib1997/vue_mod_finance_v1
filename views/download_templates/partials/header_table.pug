@@ -14,6 +14,8 @@ div(style='background: #f1f1f1 !important;float: left;width: 100%;padding-bottom
                     div(style='border-left-color: #f5b620;border-left-style: solid;border-left-width: 4px;float: left;width: 100%;min-height: 0 !important;line-height: normal !important;position: relative;padding: 0 !important;font-family: Helvetica, Arial, sans-serif;font-size: 13px;')
                         h4.panel-title.pull-left.padding-15(style='margin-top: 0;margin-bottom: 0;font-size: 24px;color: inherit;text-transform: uppercase;padding: 15px;float: left;') Project Name: #{optionalData.proName}
                         h6(style='padding: 15px !important;text-align: right;font-size: 12px;font-family: inherit;font-weight: 500;line-height: 1.1;color: inherit;float: right;margin: 10px 0;') Create Date: #{optionalData.date}
+                        if optionalData.period
+                            h6(style='padding: 15px !important;text-align: right;font-size: 12px;font-family: inherit;font-weight: 500;line-height: 1.1;color: inherit;float: right;margin: 10px 0;') Period: #{optionalData.period}
                 div(style="float:left;width:100%;position: relative;margin: 0 auto;padding:0px;")
                     div(style='padding-top: 30px;padding-bottom: 30px;padding-left: 30px;padding-right: 30px;position: relative;margin: 0 auto')
                         block content
