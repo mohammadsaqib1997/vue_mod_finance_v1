@@ -24,6 +24,7 @@ var api = require('./routes/api');
 
 var lControlDownload = require('./routes/listing/control');
 var lSubControlDownload = require('./routes/listing/sub_control');
+var lSubsidiaryDownload = require('./routes/listing/subsidiary');
 
 var app = express();
 
@@ -85,6 +86,7 @@ app.use(fileUpload());
 
 app.use('/download', lControlDownload);
 app.use('/download', lSubControlDownload);
+app.use('/download', lSubsidiaryDownload);
 
 app.use('/api', api);
 app.use('/gapi', gapi);
