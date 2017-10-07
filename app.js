@@ -26,6 +26,8 @@ var lControlDownload = require('./routes/listing/control');
 var lSubControlDownload = require('./routes/listing/sub_control');
 var lSubsidiaryDownload = require('./routes/listing/subsidiary');
 var bsControlDownload = require('./routes/bal_sheet/control');
+var bsSubControlDownload = require('./routes/bal_sheet/sub_control');
+var bsSubsidiaryDownload = require('./routes/bal_sheet/subsidiary');
 
 var app = express();
 
@@ -89,6 +91,8 @@ app.use('/download', lControlDownload);
 app.use('/download', lSubControlDownload);
 app.use('/download', lSubsidiaryDownload);
 app.use('/download', bsControlDownload);
+app.use('/download', bsSubControlDownload);
+app.use('/download', bsSubsidiaryDownload);
 
 app.use('/api', api);
 app.use('/gapi', gapi);

@@ -8,6 +8,9 @@ export default {
     created: function () {
         let self = this;
 
+        self.$watch('sel_project', function (val, oldVal) {
+            self.validCheck();
+        });
         self.$watch('start_date', function (val, oldVal) {
             self.validCheck();
         });

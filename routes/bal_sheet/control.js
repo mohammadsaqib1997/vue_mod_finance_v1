@@ -55,7 +55,6 @@ router.post('/csv/bal_sheet/control', function (req, res, next) {
     let data = [];
 
     let fetchData = req.body.fetchData;
-    //let keys = Object.keys(fetchData);
 
     fetchData.data.forEach(function (item) {
         let gen = {};

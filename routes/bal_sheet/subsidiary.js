@@ -4,9 +4,9 @@ var fs = require('fs');
 var pdf = require('html-pdf');
 var json2csv = require('json2csv');
 
-router.post('/pdf/listing/subsidiary', function (req, res, next) {
+router.post('/pdf/bal_sheet/subsidiary', function (req, res, next) {
 
-    res.render('download_templates/list_subsidiary', req.body, function (errJade, html) {
+    res.render('download_templates/bs_subsidiary', req.body, function (errJade, html) {
         if (errJade) {
             return res.json({status: "failed", message: "Jade Error!"});
         } else {
@@ -24,9 +24,9 @@ router.post('/pdf/listing/subsidiary', function (req, res, next) {
     });
 });
 
-router.post('/html/listing/subsidiary', function (req, res, next) {
+router.post('/html/bal_sheet/subsidiary', function (req, res, next) {
 
-    res.render('download_templates/list_subsidiary', req.body, function (errJade, html) {
+    res.render('download_templates/bs_subsidiary', req.body, function (errJade, html) {
         if (errJade) {
             return res.json({status: "failed", message: "Jade Error!"});
         } else {
@@ -45,52 +45,36 @@ router.post('/html/listing/subsidiary', function (req, res, next) {
     });
 });
 
-router.post('/csv/listing/subsidiary', function (req, res, next) {
+router.post('/csv/bal_sheet/subsidiary', function (req, res, next) {
 
     let time = new Date().getTime();
     let fileDes = __dirname + "/../../public/temp/" + time + ".csv";
 
-    let fields = ['control_id', 'sub_control_id', 'subsidiary_id', 'name'];
+    let fields = ['id', 'head_of_account', 'debit', 'credit'];
     let data = [];
 
     let fetchData = req.body.fetchData;
-    let cKeys = Object.keys(fetchData.cont_data);
 
-    cKeys.forEach(function (cKey) {
-        let cRow = fetchData.cont_data[cKey];
+    fetchData.data.forEach(function (item) {
         let gen = {};
-        gen['control_id'] = cRow.id;
-        gen['sub_control_id'] = '';
-        gen['subsidiary_id'] = '';
-        gen['name'] = cRow.name;
+        gen['id'] = item.id;
+        gen['head_of_account'] = item.name;
+        gen['debit'] = item.totDr;
+        gen['credit'] = item.totCr;
         data.push(gen);
-
-        let scKeys = Object.keys(fetchData.sub_cont_data);
-        scKeys.forEach(function (scKey) {
-            let scRow = fetchData.sub_cont_data[scKey];
-            if(scRow.cont_id === cRow.id) {
-                let gen = {};
-                gen['control_id'] = '';
-                gen['sub_control_id'] = scRow.id;
-                gen['subsidiary_id'] = '';
-                gen['name'] = scRow.name;
-                data.push(gen);
-
-                let ssKeys = Object.keys(fetchData.subs_data);
-                ssKeys.forEach(function (ssKey) {
-                    let ssRow = fetchData.subs_data[ssKey];
-                    if (ssRow.cont_id === cRow.id && ssRow.sub_cont_id === scRow.id){
-                        let gen = {};
-                        gen['control_id'] = '';
-                        gen['sub_control_id'] = '';
-                        gen['subsidiary_id'] = ssRow.id;
-                        gen['name'] = ssRow.name;
-                        data.push(gen);
-                    }
-                });
-            }
-        });
     });
+    let gen = {};
+    gen['id'] = '';
+    gen['head_of_account'] = 'Grand Total (Rs.)';
+    gen['debit'] = fetchData.reqData.grTotDr;
+    gen['credit'] = fetchData.reqData.grTotCr;
+    data.push(gen);
+    let last = {};
+    last['id'] = '';
+    last['head_of_account'] = 'Difference';
+    last['debit'] = ((fetchData.reqData.grTotDr - fetchData.reqData.grTotCr) > -1) ? fetchData.reqData.grTotDr - fetchData.reqData.grTotCr : '';
+    last['credit'] = ((fetchData.reqData.grTotDr - fetchData.reqData.grTotCr) < 0) ? fetchData.reqData.grTotDr - fetchData.reqData.grTotCr : '';
+    data.push(last);
 
     let csv = json2csv({ data: data, fields: fields });
 

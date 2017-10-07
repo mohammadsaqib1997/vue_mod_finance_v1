@@ -44,7 +44,11 @@ import controlSheet from '../pages/sheets/list_control/list_control.vue'
 import subControlSheet from '../pages/sheets/list_sub_control/list_sub_control.vue'
 import subsidiarySheet from '../pages/sheets/list_subsidiary/list_subsidiary.vue'
 
-import subsidiaryBSheet from '../pages/sheets/bs_control/bs_control.vue'
+import controlBSheet from '../pages/sheets/bs_control/bs_control.vue'
+import subControlBSheet from '../pages/sheets/bs_sub_control/bs_sub_control.vue'
+import subsidiaryBSheet from '../pages/sheets/bs_subsidiary/bs_subsidiary.vue'
+
+import controlTBSheet from '../pages/sheets/tbal_control/tbal_control.vue'
 
 const routes = [
     {
@@ -186,7 +190,19 @@ const routes = [
                     },
                     {
                         path: 'bs_control/:proId/:startDate/:endDate',
+                        component: controlBSheet,
+                    },
+                    {
+                        path: 'bs_sub_control/:proId/:startDate/:endDate',
+                        component: subControlBSheet,
+                    },
+                    {
+                        path: 'bs_subsidiary/:proId/:startDate/:endDate',
                         component: subsidiaryBSheet,
+                    },
+                    {
+                        path: 'trial_bal_control/:proId/:startDate/:endDate',
+                        component: controlTBSheet,
                     }
                 ]
             },
