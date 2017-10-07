@@ -117,8 +117,8 @@ input.btn.btn-red.btn-md.full-width {
     padding-top: 20px;
 }
 
-#calculatortab .nav li a:hover,
-#calculatortab .nav li a {
+#calculator .nav li a:hover,
+#calculator .nav li a {
     border-radius: 0;
     padding: 5px 0px;
     text-align: center;
@@ -127,17 +127,17 @@ input.btn.btn-red.btn-md.full-width {
     background: transparent;
     border-bottom: 2px solid #ccc;
 }
-#calculatortab .nav li.active a{
+#calculator .nav li.active a{
     color: #e8534f;
     border-bottom: 2px solid #e8534f;
 }
-#calculatortab .tab-content .tab-pane, #calculatortab .pill-content > .pill-pane{
+#calculator .tab-content .tab-pane, #calculatortab .pill-content > .pill-pane{
     padding: 0;
 }
-#calculatortab .tab-content {
+#calculator .tab-content {
     margin-top: 20px;
 }
-#calculatortab fieldset{
+#calculator fieldset{
 margin: 20px 0 20px 0;
 padding: .35em .625em .75em;
 border: 1px solid #e6e8e8;
