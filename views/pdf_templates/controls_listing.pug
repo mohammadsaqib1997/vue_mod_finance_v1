@@ -69,12 +69,13 @@ html(lang='en')
                                         th(style='text-align:center;width:50%;') Account Description
                                         th(style='text-align:right;width:25%;') Reference Code
                                     tr
-                                        td(colspan='3')
-                                            table(cellpadding='5' style='width:100%;')
-                                                each item, id in data
-                                                    tr
-                                                        td(style="width:40px;") #{id}
-                                                        td #{item.name}
+                                        td.no-padding(colspan='3')
+                                            table.table.table-striped.table-responsive(cellpadding='5' style='width:100%;')
+                                                tbody
+                                                    each item, id in data
+                                                        tr
+                                                            td(style="width:40px;") #{id}
+                                                            td #{item.name}
                             button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;" data-toggle="modal" data-target="#download-pdf") Save
                             button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
             .modal.fade.modal-aside.center(tabindex='-1' id="download-pdf" role='dialog', aria-labelledby='Full Calendar', aria-hidden='true')

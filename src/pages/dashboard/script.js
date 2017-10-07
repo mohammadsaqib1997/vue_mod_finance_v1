@@ -1,6 +1,6 @@
 import dashboardLayout from '../../partials/layouts/dashboardLayout/dashboardLayout.vue'
 import projectModel from '../../partials/components/modals/add_project/add_project.vue'
-import calanderModel from '../../partials/components/modals/full_calander/full_calander.vue'
+import calculatorModel from '../../partials/components/modals/calculator/calculator.vue'
 import dashboardSearch from '../../partials/components/dashboard_search/dashboard_search.vue'
 
 export default {
@@ -32,7 +32,7 @@ export default {
     },
     components: {
         dashboardLayout,
-        calanderModel,
+        calculatorModel,
         projectModel,
         dashboardSearch
     }

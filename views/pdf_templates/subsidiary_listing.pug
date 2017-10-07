@@ -68,25 +68,26 @@ html(lang='en')
                                         th(style='text-align:center;width:50%;') Account Description
                                         th(style='text-align:right;width:25%;') Reference Code
                                     tr
-                                        td(colspan='3')
-                                            table(cellpadding='5' style='width:100%;')
-                                                each cont_item in data.cont_data
-                                                    tr
-                                                        td(style="width:40px;") #{cont_item.id}
-                                                        td(colspan='3') #{cont_item.name}
-                                                    each sCont_item in data.sub_cont_data
-                                                        if sCont_item.cont_id === cont_item.id
-                                                            tr
-                                                                td
-                                                                td(style="width:40px;") #{sCont_item.id}
-                                                                td(colspan='2') #{sCont_item.name}
-                                                            each subs_item in data.subs_data
-                                                                if subs_item.cont_id === cont_item.id && subs_item.sub_cont_id === sCont_item.id
-                                                                    tr
-                                                                        td
-                                                                        td
-                                                                        td(style="width:40px;") #{subs_item.id}
-                                                                        td #{subs_item.name}
+                                        td.no-padding(colspan='3')
+                                            table.table.table-striped.table-responsive(cellpadding='5' style='width:100%;')
+                                                tbody
+                                                    each cont_item in data.cont_data
+                                                        tr
+                                                            td(style="width:40px;") #{cont_item.id}
+                                                            td(colspan='3') #{cont_item.name}
+                                                        each sCont_item in data.sub_cont_data
+                                                            if sCont_item.cont_id === cont_item.id
+                                                                tr
+                                                                    td
+                                                                    td(style="width:40px;") #{sCont_item.id}
+                                                                    td(colspan='2') #{sCont_item.name}
+                                                                each subs_item in data.subs_data
+                                                                    if subs_item.cont_id === cont_item.id && subs_item.sub_cont_id === sCont_item.id
+                                                                        tr
+                                                                            td
+                                                                            td
+                                                                            td(style="width:40px;") #{subs_item.id}
+                                                                            td #{subs_item.name}
                             button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;" data-toggle="modal" data-target="#download-pdf") Save
                             button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
             .modal.fade.modal-aside.center(tabindex='-1' id="download-pdf" role='dialog', aria-labelledby='Full Calendar', aria-hidden='true')

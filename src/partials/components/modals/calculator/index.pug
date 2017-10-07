@@ -1,0 +1,167 @@
+.modal.fade.modal-aside.center(tabindex='-1' id="calculatorModel" role='dialog', aria-labelledby='All Calculator', aria-hidden='true')
+    .modal-dialog.modal-dialog.modal-lg
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                h4#myModalLabel.modal-title Calculator
+            .modal-body
+                .panel.panel-white
+                    .panel-body
+                        .row
+                            .col-md-12
+                                p.result 00.0
+                                .calculator-section
+                                    .row
+                                        .col-md-4
+                                            label(style="line-height: 32px;") Enter Current Calculation Label:
+                                        .col-md-8.padding-left-none
+                                            .row.margin-none.save-section
+                                                .col-md-8.padding-none
+                                                    input.form-control.labelsave(type="text")
+                                                .col-md-4.padding-none
+                                                    input.btn.btn-red.btn-md.full-width(type="submit" style="background: #a6c367;text-transform: uppercase;font-weight: 600;")
+                                    #calculatortab
+                                        .recent-calcu
+                                            ul.nav
+                                                li.col-md-6.padding-none.active
+                                                    a(href='#simple', data-toggle='tab') Simple Calculator
+                                                li.col-md-6.padding-none
+                                                    a(href='#compound', data-toggle='tab') Compound Calculator
+                                            .tab-content
+                                                #simple.tab-pane.fade.in.active
+                                                    .row
+                                                        .col-md-4
+                                                            .interestlabel.form-group
+                                                                fieldset
+                                                                    label.control-label(for='given_data') Solve for:
+                                                                    .row
+                                                                        .col-md-12
+                                                                            select.form-control#given_data(name='interest-select')
+                                                                                option(value='find_A', selected='selected')
+                                                                                    | Total P+I (A)
+                                                                                option(value='find_P')
+                                                                                    | Principal (P)
+                                                                                option(value='find_r')
+                                                                                    | Rate (R)
+                                                                                option(value='find_t')
+                                                                                    | Time Period (t)
+                                                                            span.formula Where: A = P(1 + rt)
+                                                            .interestform.form-container
+                                                                .commonTable
+                                                                    .row.form-group
+                                                                        .col-md-12
+                                                                            input.form-control(value='', type='text', title='Principal (P): $', placeholder='Principal (P): $', required='')
+                                                                    .row.form-group
+                                                                        .col-md-12
+                                                                            input.form-control(value='', type='text', title='Rate): %', placeholder='Rate (R): %', required='')
+                                                                            span.note per year
+                                                                    .row.form-group
+                                                                        .col-md-12
+                                                                            input.form-control.nmbr_real.real(value='', type='text', title='Time:', placeholder='Time:', required='')
+                                                                    .row.form-group
+                                                                        .col-md-12
+                                                                            select.form-control#time_t
+                                                                                option(value)
+                                                                                    | Time Unit
+                                                                                option(value='day 365')
+                                                                                    | days (365/Yr)
+                                                                                option(value='day 360')
+                                                                                    | days (360/Yr)
+                                                                                option(value='week')
+                                                                                    | weeks
+                                                                                option(value='month')
+                                                                                    | months
+                                                                                option(value='quarter')
+                                                                                    | quarters
+                                                                                option(value='year')
+                                                                                    | years
+                                                                    .row.form-group
+                                                                        .col-md-6.padding-none
+                                                                            #actionCalculate.calculatorButton.pull-left
+                                                                                input.btn.btn-red.btn-md.text-uppercase(type='submit', value='Calculate')
+                                                                        .col-md-6.padding-none
+                                                                            #actionClear.calculatorButton.pull-right
+                                                                                input.btn.btn-red.btn-md.text-uppercase(type='reset', name='reset', value='Clear')
+                                                        .col-md-8
+                                                            h4.heading Recent Calculations
+                                                            .recent-calculations
+                                                                .row.margin-none
+                                                                    .col-md-8.padding-none
+                                                                        p.text-left 2016 Jan-Aug PROFIT PERCENTAGE
+                                                                    .col-md-4.padding-none
+                                                                        p.text-right.text-bold 24%
+                                                                .row.margin-none
+                                                                    .col-md-8.padding-none
+                                                                        p.text-left 2017 Tax monthly
+                                                                    .col-md-4.padding-none
+                                                                        p.text-right.text-bold 42,000
+                                                                .row.margin-none
+                                                                    .col-md-8.padding-none
+                                                                        p.text-left S.M Accosiates Monthly Plan
+                                                                    .col-md-4.padding-none
+                                                                        p.text-right.text-bold 86,000
+                                                                .row.margin-none
+                                                                    .col-md-8.padding-none
+                                                                        p.text-left Yearly Discount Rate
+                                                                    .col-md-4.padding-none
+                                                                        p.text-right.text-bold 0.34
+                                                                .row.margin-none.no-border
+                                                                    .col-md-12.padding-none
+                                                                        a(href="#" class="anchor-red pull-right") Clear All
+                                                #compound.tab-pane.fade.in
+                                                    .row
+                                                        .col-md-4
+                                                            .interestform.form-container
+                                                                .commonTable
+                                                                    .row.form-group
+                                                                        .col-md-12
+                                                                            input.form-control(value='', type='text', title='Initial Investment', placeholder='Initial Investment', required='')
+                                                                    .row.form-group
+                                                                        .col-md-12
+                                                                            input.form-control(value='', type='text', title='Monthly Addition', placeholder='Monthly Addition', required='')
+                                                                    .row.form-group
+                                                                        .col-md-12
+                                                                            input.form-control(value='', type='text', title='Interest Rate %', placeholder='Interest Rate %', required='')
+                                                                    .row.form-group
+                                                                        .col-md-12
+                                                                            input.form-control(value='', type='text', title='Number of Years', placeholder='Number of Years', required='')
+                                                                    .row.form-group
+                                                                        .col-md-12
+                                                                            input.form-control(value='', type='text', title='Future Value', placeholder='Future Value', required='')
+                                                                    .row.form-group
+                                                                        .col-md-12
+                                                                            input.form-control(value='', type='text', title='Interest Earned', placeholder='Interest Earned', required='')
+                                                                    .row.form-group
+                                                                        .col-md-6.padding-none
+                                                                            #actionCalculate.calculatorButton.pull-left
+                                                                                input.btn.btn-red.btn-md.text-uppercase(type='submit', value='Compute')
+                                                                        .col-md-6.padding-none
+                                                                            #actionClear.calculatorButton.pull-right
+                                                                                input.btn.btn-red.btn-md.text-uppercase(type='reset', name='reset', value='Clear')
+                                                        .col-md-8
+                                                            h4.heading Recent Calculations
+                                                            .recent-calculations
+                                                                .row.margin-none
+                                                                    .col-md-8.padding-none
+                                                                        p.text-left 2016 Jan-Aug PROFIT PERCENTAGE
+                                                                    .col-md-4.padding-none
+                                                                        p.text-right.text-bold 24%
+                                                                .row.margin-none
+                                                                    .col-md-8.padding-none
+                                                                        p.text-left 2017 Tax monthly
+                                                                    .col-md-4.padding-none
+                                                                        p.text-right.text-bold 42,000
+                                                                .row.margin-none
+                                                                    .col-md-8.padding-none
+                                                                        p.text-left S.M Accosiates Monthly Plan
+                                                                    .col-md-4.padding-none
+                                                                        p.text-right.text-bold 86,000
+                                                                .row.margin-none
+                                                                    .col-md-8.padding-none
+                                                                        p.text-left Yearly Discount Rate
+                                                                    .col-md-4.padding-none
+                                                                        p.text-right.text-bold 0.34
+                                                                .row.margin-none.no-border
+                                                                    .col-md-12.padding-none
+                                                                        a(href="#" class="anchor-red pull-right") Clear All
