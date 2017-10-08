@@ -17,7 +17,7 @@
                             #simple.tab-pane.fade.in.active
                                 .row
                                     .col-md-12
-                                        p.result 00.0
+                                        p.result {{ simple_res }}
                                         .calculator-section
                                             .row
                                                 .col-md-4
@@ -28,49 +28,11 @@
                                                             input.form-control.labelsave(type='text')
                                                         .col-md-4.padding-none
                                                             input.btn.btn-red.btn-md.full-width(type='submit', style='background: #a6c367;text-transform: uppercase;font-weight: 600;')
-                                            #calculatortab
+                                            #calculatortab1
                                                 .recent-calcu
                                                     .row
                                                         .col-md-6
-                                                            .interestlabel.form-group
-                                                                fieldset
-                                                                    label.control-label(for='given_data') Solve for:
-                                                                    .row
-                                                                        .col-md-12
-                                                                            select#given_data.form-control(name='interest-select')
-                                                                                option(value='find_A', selected='selected') Total P+I (A)
-                                                                                option(value='find_P') Principal (P)
-                                                                                option(value='find_r') Rate (R)
-                                                                                option(value='find_t') Time Period (t)
-                                                                            span.formula Where: A = P(1 + rt)
-                                                            .interestform.form-container
-                                                                .commonTable
-                                                                    .row.form-group
-                                                                        .col-md-12
-                                                                            input.form-control(value='', type='text', title='Principal (P): $', placeholder='Principal (P): Rs', required='')
-                                                                    .row.form-group
-                                                                        .col-md-12
-                                                                            input.form-control(value='', type='text', title='Rate): %', placeholder='Rate (R): % per year', required='')
-                                                                    .row.form-group
-                                                                        .col-md-12
-                                                                            input.form-control.nmbr_real.real(value='', type='text', title='Time:', placeholder='Time:', required='')
-                                                                    .row.form-group
-                                                                        .col-md-12
-                                                                            select#time_t.form-control
-                                                                                option(value='value') Time Unit
-                                                                                option(value='day 365') days (365/Yr)
-                                                                                option(value='day 360') days (360/Yr)
-                                                                                option(value='week') weeks
-                                                                                option(value='month') months
-                                                                                option(value='quarter') quarters
-                                                                                option(value='year') years
-                                                                    .row.form-group
-                                                                        .col-md-6
-                                                                            #actionCalculate.calculatorButton.pull-left
-                                                                                input.btn.btn-red.btn-md.text-uppercase(type='submit', value='Calculate')
-                                                                        .col-md-6
-                                                                            #actionClear.calculatorButton.pull-right
-                                                                                input.btn.btn-red.btn-md.text-uppercase(type='reset', name='reset', value='Clear')
+                                                            simpleIntCal(v-on:calculate="showSimpleResult")
                                                         .col-md-6
                                                             h4.heading Recent Calculations
                                                             .recent-calculations
@@ -103,10 +65,10 @@
                                         .row
                                             .col-md-6
                                                 p Future Value
-                                                p.result 00.00
+                                                p.result {{ comp_fv_res }}
                                             .col-md-6
                                                 p Interest Earned
-                                                p.result 00.00
+                                                p.result {{ comp_iv_res }}
                                         .calculator-section
                                             .row
                                                 .col-md-4
@@ -117,31 +79,11 @@
                                                             input.form-control.labelsave(type='text')
                                                         .col-md-4.padding-none
                                                             input.btn.btn-red.btn-md.full-width(type='submit', style='background: #a6c367;text-transform: uppercase;font-weight: 600;')
-                                            #calculatortab
+                                            #calculatortab2
                                                 .recent-calcu
                                                     .row
                                                         .col-md-6
-                                                            .interestform.form-container
-                                                                .commonTable
-                                                                    .row.form-group
-                                                                        .col-md-12
-                                                                            input.form-control(value='', type='text', title='Initial Investment', placeholder='Initial Investment', required='')
-                                                                    .row.form-group
-                                                                        .col-md-12
-                                                                            input.form-control(value='', type='text', title='Monthly Addition', placeholder='Monthly Addition', required='')
-                                                                    .row.form-group
-                                                                        .col-md-12
-                                                                            input.form-control(value='', type='text', title='Interest Rate %', placeholder='Interest Rate %', required='')
-                                                                    .row.form-group
-                                                                        .col-md-12
-                                                                            input.form-control(value='', type='text', title='Number of Years', placeholder='Number of Years', required='')
-                                                                    .row.form-group
-                                                                        .col-md-6
-                                                                            #actionCalculate.calculatorButton.pull-left
-                                                                                input.btn.btn-red.btn-md.text-uppercase(type='submit', value='Compute')
-                                                                        .col-md-6
-                                                                            #actionClear.calculatorButton.pull-right
-                                                                                input.btn.btn-red.btn-md.text-uppercase(type='reset', name='reset', value='Clear')
+                                                            compoundIntCal(v-on:calculate="showCompoundResult")
                                                         .col-md-6
                                                             h4.heading Recent Calculations
                                                             .recent-calculations

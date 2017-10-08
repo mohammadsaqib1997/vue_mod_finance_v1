@@ -24,40 +24,42 @@ export default {
 
         self.masterDetailsData.once('value', function (mdSnap) {
             let mdData = mdSnap.val();
-            if(mdData !== null){
+            if (mdData !== null) {
                 let keys = Object.keys(mdData);
                 let cur_date = moment();
                 let process_item = 0;
                 keys.forEach(function (key) {
                     let item = mdData[key];
-                    if(item.posted_status === "Yes"){
+                    if (item.posted_status === "Yes") {
                         let booking_date = moment(item.booking_date);
 
                         let grabDueDatesUnix = {};
                         let dueDate = booking_date.clone().set('date', 1);
-                        for (let i=0; i < item.payment_installment; i++){
+                        for (let i = 0; i < item.payment_installment; i++) {
                             dueDate.add(1, "M");
-                            if(cur_date.unix() >= dueDate.clone().add(1, 'M').subtract(7, 'days').unix() && cur_date.unix() <= dueDate.clone().add(1, 'M').unix()){
+                            if (cur_date.unix() >= dueDate.clone().add(1, 'M').subtract(7, 'days').unix() && cur_date.unix() <= dueDate.clone().add(1, 'M').unix()) {
                                 grabDueDatesUnix = {
                                     start: dueDate,
                                     end: dueDate.clone().add(1, "M").subtract(1, 'days')
                                 };
-                                self.notiData[key] = "Receive Payment "+item.allotee_name+" -- "+item.allotee_code;
+                                self.notiData[key] = "Receive Payment " + item.allotee_name + " -- " + item.allotee_code;
                                 break;
                             }
                         }
 
                         self.vouchersRef.orderByChild('ref_key').equalTo(key).once('value', function (vSnap) {
-                            if(vSnap.numChildren() > 0){
+                            if (vSnap.numChildren() > 0) {
                                 let vData = vSnap.val();
                                 let keys = Object.keys(vData);
                                 keys.reverse();
                                 keys.forEach(function (vKey) {
                                     let vItemData = vData[vKey];
-                                    if(vItemData.posted_status === "Yes"){
+                                    if (vItemData.posted_status === "Yes") {
                                         let v_date = moment(vItemData.voucher_date);
-                                        if(grabDueDatesUnix.start.unix() <= v_date.unix()){
-                                            delete self.notiData[key];
+                                        if (grabDueDatesUnix.hasOwnProperty('start')) {
+                                            if (grabDueDatesUnix.start.unix() <= v_date.unix()) {
+                                                delete self.notiData[key];
+                                            }
                                         }
                                         return true;
                                     }
@@ -70,11 +72,11 @@ export default {
                                 self.loadNoti = false;
                             }
                         });
-                    }else{
+                    } else {
                         process_item++;
                         if (process_item === keys.length) {
                             self.countNotif = Object.keys(self.notiData).length;
-                            if(self.countNotif > 0){
+                            if (self.countNotif > 0) {
                                 self.notiData = func.sortObj(self.notiData);
 
                             }
@@ -82,7 +84,7 @@ export default {
                         }
                     }
                 });
-            }else{
+            } else {
                 self.loadNoti = false;
             }
         });
@@ -166,11 +168,11 @@ export default {
         },
         lockScreen: function () {
             let self = this;
-            if(self.$ls.get('loginUser')){
+            if (self.$ls.get('loginUser')) {
                 let encObj = self.$ls.get('loginUser');
-                let userObj = cryptoJSON.decrypt(encObj, self.$root.secKey, { keys: [] });
+                let userObj = cryptoJSON.decrypt(encObj, self.$root.secKey, {keys: []});
                 userObj['lock'] = true;
-                let encrypted = cryptoJSON.encrypt(userObj, self.$root.secKey, { keys: [] });
+                let encrypted = cryptoJSON.encrypt(userObj, self.$root.secKey, {keys: []});
                 self.$ls.set('loginUser', encrypted);
                 self.$router.push('/lock_account');
                 $("#app").removeAttr("class");
