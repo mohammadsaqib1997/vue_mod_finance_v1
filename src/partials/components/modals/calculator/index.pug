@@ -23,11 +23,17 @@
                                                 .col-md-4
                                                     label(style='line-height: 32px;') Enter Current Calculation Label:
                                                 .col-md-8.padding-left-none
-                                                    .row.margin-none.save-section
+                                                    form.row.margin-none.save-section(v-on:submit.prevent='saveSimpleResult')
                                                         .col-md-8.padding-none
-                                                            input.form-control.labelsave(type='text')
+                                                            input.form-control.labelsave(type='text' v-model='saveSimCalName')
                                                         .col-md-4.padding-none
-                                                            input.btn.btn-red.btn-md.full-width(type='submit', style='background: #a6c367;text-transform: uppercase;font-weight: 600;')
+                                                            button.btn.btn-red.btn-md.full-width(v-if='!saveSimCalProcess' type='submit' style='background: rgb(166, 195, 103);text-transform: uppercase;font-weight: 600;border-radius: 0;width: 100%;border: none;') Submit
+                                                            button.btn.btn-red.btn-md.full-width(v-else type='button' style='background: rgb(166, 195, 103);text-transform: uppercase;font-weight: 600;border-radius: 0;width: 100%;border: none;' disabled='disabled')
+                                                                i.fa.fa-refresh.fa-spin
+                                                        .col-md-12.padding-none
+                                                            p.alert.alert-danger(v-if='validation.hasError("saveSimCalName")') {{ validation.firstError('saveSimCalName') }}
+                                                            p.alert.alert-danger(v-if='saveSimCalErr !== ""') {{ saveSimCalErr }}
+                                                            p.alert.alert-success(v-if='saveSimCalMsg !== ""') {{ saveSimCalMsg }}
                                             #calculatortab1
                                                 .recent-calcu
                                                     .row
@@ -36,29 +42,19 @@
                                                         .col-md-6
                                                             h4.heading Recent Calculations
                                                             .recent-calculations
-                                                                .row.margin-none
-                                                                    .col-md-8.padding-none
-                                                                        p.text-left 2016 Jan-Aug PROFIT PERCENTAGE
-                                                                    .col-md-4.padding-none
-                                                                        p.text-right.text-bold 24%
-                                                                .row.margin-none
-                                                                    .col-md-8.padding-none
-                                                                        p.text-left 2017 Tax monthly
-                                                                    .col-md-4.padding-none
-                                                                        p.text-right.text-bold 42,000
-                                                                .row.margin-none
-                                                                    .col-md-8.padding-none
-                                                                        p.text-left S.M Accosiates Monthly Plan
-                                                                    .col-md-4.padding-none
-                                                                        p.text-right.text-bold 86,000
-                                                                .row.margin-none
-                                                                    .col-md-8.padding-none
-                                                                        p.text-left Yearly Discount Rate
-                                                                    .col-md-4.padding-none
-                                                                        p.text-right.text-bold 0.34
-                                                                .row.margin-none.no-border
-                                                                    .col-md-12.padding-none
-                                                                        a.anchor-red.pull-right(href='#') Clear All
+                                                                template(v-if='load1')
+                                                                    .row.margin-none
+                                                                        .col-md-12.text-center
+                                                                            i.fa.fa-refresh.fa-spin.fa-3x
+                                                                template(v-else)
+                                                                    .row.margin-none(v-for='item in simCalData')
+                                                                        .col-md-8.padding-none
+                                                                            p.text-left {{ item.label }}
+                                                                        .col-md-4.padding-none
+                                                                            p.text-right.text-bold {{ item.result }}
+                                                                //.row.margin-none.no-border
+                                                                //    .col-md-12.padding-none
+                                                                //        a.anchor-red.pull-right(href='#') Clear All
                             #compound.tab-pane.fade.in
                                 .row
                                     .col-md-12
@@ -74,11 +70,17 @@
                                                 .col-md-4
                                                     label(style='line-height: 32px;') Enter Current Calculation Label:
                                                 .col-md-8.padding-left-none
-                                                    .row.margin-none.save-section
+                                                    form.row.margin-none.save-section(v-on:submit.prevent='saveCompoundResult')
                                                         .col-md-8.padding-none
-                                                            input.form-control.labelsave(type='text')
+                                                            input.form-control.labelsave(type='text' v-model='saveComCalName')
                                                         .col-md-4.padding-none
-                                                            input.btn.btn-red.btn-md.full-width(type='submit', style='background: #a6c367;text-transform: uppercase;font-weight: 600;')
+                                                            button.btn.btn-red.btn-md.full-width(v-if='!saveComCalProcess' type='submit' style='background: rgb(166, 195, 103);text-transform: uppercase;font-weight: 600;border-radius: 0;width: 100%;border: none;') Submit
+                                                            button.btn.btn-red.btn-md.full-width(v-else type='button' style='background: rgb(166, 195, 103);text-transform: uppercase;font-weight: 600;border-radius: 0;width: 100%;border: none;' disabled='disabled')
+                                                                i.fa.fa-refresh.fa-spin
+                                                        .col-md-12.padding-none
+                                                            p.alert.alert-danger(v-if='validation.hasError("saveComCalName")') {{ validation.firstError('saveComCalName') }}
+                                                            p.alert.alert-danger(v-if='saveComCalErr !== ""') {{ saveComCalErr }}
+                                                            p.alert.alert-success(v-if='saveComCalMsg !== ""') {{ saveComCalMsg }}
                                             #calculatortab2
                                                 .recent-calcu
                                                     .row
@@ -87,26 +89,17 @@
                                                         .col-md-6
                                                             h4.heading Recent Calculations
                                                             .recent-calculations
-                                                                .row.margin-none
-                                                                    .col-md-8.padding-none
-                                                                        p.text-left 2016 Jan-Aug PROFIT PERCENTAGE
-                                                                    .col-md-4.padding-none
-                                                                        p.text-right.text-bold 24%
-                                                                .row.margin-none
-                                                                    .col-md-8.padding-none
-                                                                        p.text-left 2017 Tax monthly
-                                                                    .col-md-4.padding-none
-                                                                        p.text-right.text-bold 42,000
-                                                                .row.margin-none
-                                                                    .col-md-8.padding-none
-                                                                        p.text-left S.M Accosiates Monthly Plan
-                                                                    .col-md-4.padding-none
-                                                                        p.text-right.text-bold 86,000
-                                                                .row.margin-none
-                                                                    .col-md-8.padding-none
-                                                                        p.text-left Yearly Discount Rate
-                                                                    .col-md-4.padding-none
-                                                                        p.text-right.text-bold 0.34
-                                                                .row.margin-none.no-border
-                                                                    .col-md-12.padding-none
-                                                                        a.anchor-red.pull-right(href='#') Clear All
+                                                                template(v-if='load2')
+                                                                    .row.margin-none
+                                                                        .col-md-12.text-center
+                                                                            i.fa.fa-refresh.fa-spin.fa-3x
+                                                                template(v-else)
+                                                                    .row.margin-none(v-for='item in comCalData')
+                                                                        .col-md-8.padding-none
+                                                                            p.text-left {{ item.label }}
+                                                                        .col-md-4.padding-none
+                                                                            p.text-right.text-bold Future Value: {{ item.result.fv }}
+                                                                            p.text-right.text-bold Interest Earned: {{ item.result.totInt }}
+                                                                //.row.margin-none.no-border
+                                                                //    .col-md-12.padding-none
+                                                                //        a.anchor-red.pull-right(href='#') Clear All

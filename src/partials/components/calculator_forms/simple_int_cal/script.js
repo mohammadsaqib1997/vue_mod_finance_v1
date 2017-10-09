@@ -196,7 +196,7 @@ export default {
             self.fields.t = '';
             self.fields.t_unit = '';
             self.validation.reset();
-            self.$emit('calculate', Number(0).toFixed(2));
+            self.$emit('calculate', {});
         },
         calculate: function () {
             let self = this;
@@ -223,9 +223,44 @@ export default {
                         saveRes = Number(saveRes).toFixed(2);
                     }
 
-                    self.$emit('calculate', saveRes);
+                    self.$emit('calculate', {
+                        result: saveRes,
+                        data: self.grabCalFields()
+                    });
                 }
             });
+        },
+        grabCalFields: function(){
+            let self = this;
+            let grabData = {};
+            let int_sel = self.interest_select;
+            let int_data = self.int_sel_data;
+            let fields = self.fields;
+
+            grabData['sol_for'] = int_sel;
+            grabData['formula'] = self.int_sel_formulas[int_data[int_sel].ref];
+
+            if(int_data[int_sel].ref === 'find_A'){
+                grabData['p'] = fields.p;
+                grabData['r'] = fields.r;
+                grabData['t'] = fields.t;
+                grabData['t_unit'] = fields.t_unit;
+            }else if(int_data[int_sel].ref === 'find_P'){
+                grabData['a'] = fields.a;
+                grabData['r'] = fields.r;
+                grabData['t'] = fields.t;
+                grabData['t_unit'] = fields.t_unit;
+            }else if(int_data[int_sel].ref === 'find_r'){
+                grabData['a'] = fields.a;
+                grabData['p'] = fields.p;
+                grabData['t'] = fields.t;
+                grabData['t_unit'] = fields.t_unit;
+            }else if(int_data[int_sel].ref === 'find_t'){
+                grabData['a'] = fields.a;
+                grabData['p'] = fields.p;
+                grabData['r'] = fields.r;
+            }
+            return grabData;
         }
     },
 }

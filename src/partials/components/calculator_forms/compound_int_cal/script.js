@@ -52,16 +52,10 @@ export default {
             self.interest_rate = '';
             self.payments_time = '';
             self.validation.reset();
-            self.$emit('calculate', {
-                fv: Number(0).toFixed(2),
-                totInt: Number(0).toFixed(2)
-            });
+            self.$emit('calculate', {});
         },
         calculate: function () {
             let self = this;
-            let int_sel = self.interest_select;
-            let int_data = self.int_sel_data;
-            let fields = self.fields;
             self.$validate().then(function (success) {
                 if (success) {
                     let i = self.interest_rate;
@@ -83,62 +77,23 @@ export default {
                     let total_interest = Number(eval(prin - totinv)).toFixed(2);
 
                     self.$emit('calculate', {
-                        fv: future_value,
-                        totInt: total_interest
+                        result: {
+                            fv: future_value,
+                            totInt: total_interest
+                        },
+                        data: self.grabCalFields()
                     });
                 }
             });
+        },
+        grabCalFields: function () {
+            let self = this;
+            let grabData = {};
+            grabData['init_invest'] = self.init_invest;
+            grabData['monthly_add'] = self.monthly_add;
+            grabData['interest_rate'] = self.interest_rate;
+            grabData['payments_time'] = self.payments_time;
+            return grabData;
         }
     },
 }
-
-/*
-
- function computeForm(form) {
-
- if ((form.payments.value == null || form.payments.value.length == 0) ||
- (form.moAdd.value == null || form.moAdd.value.length == 0) ||
- (form.interest.value == null || form.interest.value.length == 0) ||
- (form.principal.value == null || form.principal.value.length == 0)) {
- return;
- }
-
- if (!checkNumber(form.interest, .001, 99, "Interest Rate") ||
- !checkNumber(form.payments, 1, 99, "Years") ||
- !checkNumber(form.moAdd, 0, 10000000, "Monthly Addition") ||
- !checkNumber(form.principal, 10, 10000000, "Initial Investment")) {
- return;
- }
-
- var i = form.interest.value;
- if (i > 1.0) {i = form.interest.value / 100} else {i = form.interest.value};
- i /= 12;
- var ma = eval(form.moAdd.value);
- var prin = eval(form.principal.value);
- var pmts = eval(form.payments.value * 12);
- var count = 0;
-
- while(count < pmts) {
- newprin = prin + ma;
- prin = (newprin * i) + eval(prin + ma);
- count = count + 1;
- }
-
- form.fv.value = prin;
- var totinv = eval(count * ma) + eval(form.principal.value);
- form.totalint.value = eval(prin - totinv);
- }
-
-*/
-
-//find_A visible fields
-// p, r, t
-
-//find_P visible fields
-// a, r, t
-
-//find_r visible fields
-// a, p, t
-
-//find_t visible fields
-// a, p, r
