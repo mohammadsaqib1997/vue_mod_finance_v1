@@ -1,0 +1,41 @@
+extends partials/header_table
+block content
+    table(style='width:100%;font-size: 14px;color: #545454 !important;font-weight: 400;border-spacing: 0;border-collapse: collapse;border: 0px;background: #ffffff;min-height: .01%;overflow-x: auto;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;', border='1', cellpadding='5')
+        tbody
+            tr.no-border
+                th(colspan=2)
+                th.text-center(colspan=2) Opening
+                th.text-center(colspan=2) Activity During Period
+                th.text-center(colspan=2) Closing
+            tr.background-e2e8f0.no-border
+                th(style='width:10%;') Code
+                th(style='width:30%;') Account Description
+                th(style='width:10%;') Debit Balance
+                th(style='width:10%;') Credit Balance
+                th(style='width:10%;') Debit Activity
+                th(style='width:10%;') Credit Activity
+                th(style='width:10%;') Debit Balance
+                th(style='width:10%;') Credit Balance
+
+            each item in fetchData.data
+                tr
+                    td #{item.id}
+                    td #{item.name}
+                    td #{item.totODr}
+                    td #{item.totOCr}
+                    td #{item.totDr}
+                    td #{item.totCr}
+                    td #{item.totCDr}
+                    td #{item.totCCr}
+
+            tr(style="font-weight:bold;")
+                td(colspan=2 style="text-align:right;") Grand Total (Rs.)
+                td #{fetchData.reqData.grTotODr}
+                td #{fetchData.reqData.grTotOCr}
+                td #{fetchData.reqData.grTotDr}
+                td #{fetchData.reqData.grTotCr}
+                td #{fetchData.reqData.grTotCDr}
+                td #{fetchData.reqData.grTotCCr}
+            tr(style="font-weight:bold;")
+                td(colspan=7 style="text-align:right;") Difference
+                td #{fetchData.reqData.grTotCDr - fetchData.reqData.grTotCCr}

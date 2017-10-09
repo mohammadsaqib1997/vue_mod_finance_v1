@@ -49,6 +49,10 @@ import subControlBSheet from '../pages/sheets/bs_sub_control/bs_sub_control.vue'
 import subsidiaryBSheet from '../pages/sheets/bs_subsidiary/bs_subsidiary.vue'
 
 import controlTBSheet from '../pages/sheets/tbal_control/tbal_control.vue'
+import subControlTBSheet from '../pages/sheets/tbal_sub_control/tbal_sub_control.vue'
+import subsidiaryTBSheet from '../pages/sheets/tbal_subsidiary/tbal_subsidiary.vue'
+
+import detailLedgerSheet from '../pages/sheets/detail_ledger/detail_ledger.vue'
 
 const routes = [
     {
@@ -203,6 +207,18 @@ const routes = [
                     {
                         path: 'trial_bal_control/:proId/:startDate/:endDate',
                         component: controlTBSheet,
+                    },
+                    {
+                        path: 'trial_bal_sub_control/:proId/:startDate/:endDate',
+                        component: subControlTBSheet,
+                    },
+                    {
+                        path: 'trial_bal_subsidiary/:proId/:startDate/:endDate',
+                        component: subsidiaryTBSheet,
+                    },
+                    {
+                        path: 'detail_ledger/:proId/:subsId/:startDate/:endDate',
+                        component: detailLedgerSheet,
                     }
                 ]
             },

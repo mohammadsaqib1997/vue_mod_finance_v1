@@ -1,0 +1,36 @@
+extends partials/header_table
+block content
+    table(style='width:100%;font-size: 14px;color: #545454 !important;font-weight: 400;border-spacing: 0;border-collapse: collapse;border: 0px;background: #ffffff;min-height: .01%;overflow-x: auto;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;', border='1', cellpadding='5')
+        tbody
+            tr.background-e2e8f0.no-border
+                th.col-md-1 Date
+                th.col-md-1 Docment No.
+                th.col-md-1 Reference No.
+                th.col-md-5(colspan=2) Narration
+                th.col-md-1 Debit
+                th.col-md-1 Credit
+                th.col-md-1 Balance
+                th.col-md-1
+            tr.background-e3e3e3
+                td.col-md-1 #{fetchData.reqData.code}
+                td.col-md-5(colspan=3) #{fetchData.reqData.codeName}
+                td.col-md-1.text-bold Balance
+                td.col-md-1 #{fetchData.reqData.balance.balDr}
+                td.col-md-1 #{fetchData.reqData.balance.balCr}
+                td.col-md-1 #{fetchData.reqData.genBal = fetchData.reqData.balance.balDr - fetchData.reqData.balance.balCr}
+                td.col-md-1 #{(fetchData.reqData.genBal >= 0) ? "Dr" : "Cr"}
+            each item in fetchData.data
+                tr
+                    td.col-md-1(style="width:40px;") #{item.date}
+                    td.col-md-1 #{(item.type).toUpperCase()}
+                    td.col-md-1 #{item.v_id}
+                    td.col-md-4(colspan=2) #{item.remarks}
+                    td.col-md-1 #{item.debit}
+                    td.col-md-1 #{item.credit}
+                    td.col-md-1 #{fetchData.reqData.genBal = (fetchData.reqData.genBal + item.debit) - item.credit}
+                    td.col-md-1 #{(fetchData.reqData.genBal >= 0) ? "Dr" : "Cr"}
+            tr.no-border
+                td(colspan=5)
+                td.background-e6e6e6 #{fetchData.reqData.extra.totDr}
+                td.background-e6e6e6 #{fetchData.reqData.extra.totCr}
+                td(colspan=2)

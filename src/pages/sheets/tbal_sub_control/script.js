@@ -197,15 +197,15 @@ export default {
             fetchData: {},
             optionalData: {
                 title: 'TRIAL BALANCE',
-                subTitle: 'CONTROL LISTING',
+                subTitle: 'SUB CONTROL LISTING',
                 proName: '',
                 date: moment().format('DD/MM/YYYY'),
                 period: ''
             },
             dLinks: {
-                pdf: '/download/pdf/tbal_sheet/control',
-                html: '/download/html/tbal_sheet/control',
-                csv: '/download/csv/tbal_sheet/control',
+                pdf: '/download/pdf/tbal_sheet/sub_control',
+                html: '/download/html/tbal_sheet/sub_control',
+                csv: '/download/csv/tbal_sheet/sub_control',
             },
 
             // references
@@ -245,7 +245,7 @@ export default {
             let ckeys = Object.keys(obj);
             ckeys.forEach(function (cKey) {
                 let item = obj[cKey];
-                let totODr = item.debit, totOCr = item.credit;
+                let totODr = 0, totOCr = 0;
                 let totDr = 0, totCr = 0;
                 let totCDr = 0, totCCr = 0;
                 let subContCheck = false;
@@ -254,7 +254,9 @@ export default {
                     let scKeys = Object.keys(item.contData.regSubContData);
                     scKeys.forEach(function (scKey) {
                         let subItem = item.contData.regSubContData[scKey];
-                        let scTotDr = subItem.debit, scTotCr = subItem.credit;
+                        let scTotOCr = subItem.credit, scTotODr = subItem.debit;
+                        let scTotCr = 0, scTotDr = 0;
+                        let scTotCCr = 0, scTotCDr = 0;
                         let subsCheck = false;
 
                         if(subItem.subContData.regSubsData){
@@ -264,34 +266,42 @@ export default {
                                 let ssTotDr = ssItem.debit, ssTotCr = ssItem.credit;
 
                                 if(ssItem.subsData.entries_data){
-                                    ssTotDr += ssItem.subsData.entries_data.debit;
-                                    ssTotCr += ssItem.subsData.entries_data.credit;
-
-                                    scTotDr += ssTotDr;
-                                    scTotCr += ssTotCr;
+                                    ssTotDr += ssItem.subsData.entries_data.debit; ssTotCr += ssItem.subsData.entries_data.credit;
+                                    scTotDr += ssTotDr; scTotCr += ssTotCr;
 
                                     subsCheck = true;
                                 }
                             });
                         }
                         if(subsCheck){
-                            totDr += scTotDr;
-                            totCr += scTotCr;
+                            let bal = (scTotODr + scTotDr)-(scTotOCr + scTotCr);
+                            scTotCCr += (bal < 0) ? -(bal) : 0; scTotCDr += (bal > -1) ? bal : 0;
+                            totOCr += scTotOCr; totODr += scTotODr;
+                            totCCr += scTotCCr; totCDr += scTotCDr;
+                            totCr += scTotCr; totDr += scTotDr;
                             subContCheck = true;
+
+                            grabData['data'].push({
+                                id: scKey,
+                                name: subItem.subContData.name,
+                                totODr: scTotODr,
+                                totOCr: scTotOCr,
+                                totDr: scTotDr,
+                                totCr: scTotCr,
+                                totCDr: scTotCDr,
+                                totCCr: scTotCCr,
+                            });
                         }
                     });
                 }
                 if(subContCheck){
-                    let bal = (totODr + totDr)-(totOCr + totCr);
-                    totCCr += (bal < 0) ? -(bal) : 0; totCDr += (bal > -1) ? bal : 0;
-
                     grTotCr += totCr; grTotDr += totDr;
                     grTotODr += totODr; grTotOCr += totOCr;
                     grTotCDr += totCDr; grTotCCr += totCCr;
 
                     grabData['data'].push({
-                        id: cKey,
-                        name: item.contData.name,
+                        id: "Total Control",
+                        name: cKey+" "+item.contData.name,
                         totODr: totODr,
                         totOCr: totOCr,
                         totDr: totDr,

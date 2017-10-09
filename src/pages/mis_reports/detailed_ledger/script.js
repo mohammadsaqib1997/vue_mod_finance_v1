@@ -12,6 +12,16 @@ export default {
             self.loadRegSubsidiary(val);
         });
 
+        self.$watch('sel_subsidiary', function (val, oldVal) {
+            self.validCheck();
+        });
+        self.$watch('start_date', function (val, oldVal) {
+            self.validCheck();
+        });
+        self.$watch('end_date', function (val, oldVal) {
+            self.validCheck();
+        });
+
         const db = firebase.database();
         self.projectsRef = db.ref('/projects');
         self.regSubsidiaryRef = db.ref('/reg_subsidiary');
@@ -32,10 +42,10 @@ export default {
                 $(".datepicker").datepicker().on('change', function(e) {
                     let grabField = $(e.target);
                     if(grabField.hasClass('start_date')){
-                        self.start_date = grabField.val();
+                        self.start_date = new Date(grabField.val()).getTime();
                     }
                     if(grabField.hasClass('end_date')){
-                        self.end_date = grabField.val();
+                        self.end_date = new Date(grabField.val()).getTime();
                     }
                 });
             });
@@ -48,6 +58,8 @@ export default {
             //loaders
             dataLoad1: true,
             dataLoad2: false,
+            validForm: false,
+            anchURL: '',
 
             // data save
             proData: {},
@@ -63,7 +75,6 @@ export default {
             sel_subsidiary: "",
             start_date: "",
             end_date: "",
-            sel_show_type: "Screen",
         }
     },
     validators: {
@@ -71,17 +82,14 @@ export default {
             return Validator.value(value).required().lengthBetween(20, 36);
         },
         start_date: function (value) {
-            return Validator.value(value).required().lengthBetween(10, 10, "Invalid Date!");
+            return Validator.value(value).required().digit("Invalid Date!").maxLength(20, "Invalid Date!");
         },
         end_date: function (value) {
-            return Validator.value(value).required().lengthBetween(10, 10, "Invalid Date!");
+            return Validator.value(value).required().digit("Invalid Date!").maxLength(20, "Invalid Date!");
         },
         sel_subsidiary: function (value) {
             return Validator.value(value).required().lengthBetween(1, 20, "Invalid Id!");
         },
-        sel_show_type: function (value) {
-            return Validator.value(value).required();
-        }
     },
     methods: {
         loadRegSubsidiary: function (sel_pro) {
@@ -118,40 +126,17 @@ export default {
                 self.regSubsData = {};
             }
         },
-        showSheet: function (event) {
+        validCheck: function () {
             let self = this;
+            self.anchURL = '';
             self.$validate().then(function (success) {
                 if (success) {
-                    let form = event.target;
-                    let formData = new FormData(form);
-                    let params = {};
-                    for (let pair of formData.entries()) {
-                        params[pair[0]] = pair[1];
-                    }
-                    firebase.auth().currentUser.getIdToken(true).then(function(idToken){
-                        params['auth'] = idToken;
-                        self.formSubmit('/pdf/detailed_ledger/render.pdf', params);
-                    }).catch(function(err){
-                        console.log(err);
-                    });
+                    self.validForm = true;
+                    self.anchURL = '/sheet/detail_ledger/'+self.sel_project+"/"+self.sel_subsidiary+"/"+self.start_date+"/"+self.end_date;
+                }else{
+                    self.validForm = false;
                 }
             });
-        },
-        formSubmit: function (url, params) {
-            let f = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
-                action: url
-            }).appendTo(document.body);
-
-            for (let i in params) {
-                if (params.hasOwnProperty(i)) {
-                    $('<input type="hidden" />').attr({
-                        name: i,
-                        value: params[i]
-                    }).appendTo(f);
-                }
-            }
-            f.trigger('submit');
-            f.remove();
         }
     }
 }

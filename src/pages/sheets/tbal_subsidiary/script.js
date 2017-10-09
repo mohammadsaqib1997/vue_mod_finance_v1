@@ -197,15 +197,15 @@ export default {
             fetchData: {},
             optionalData: {
                 title: 'TRIAL BALANCE',
-                subTitle: 'CONTROL LISTING',
+                subTitle: 'SUBSIDIARY LISTING',
                 proName: '',
                 date: moment().format('DD/MM/YYYY'),
                 period: ''
             },
             dLinks: {
-                pdf: '/download/pdf/tbal_sheet/control',
-                html: '/download/html/tbal_sheet/control',
-                csv: '/download/csv/tbal_sheet/control',
+                pdf: '/download/pdf/tbal_sheet/subsidiary',
+                html: '/download/html/tbal_sheet/subsidiary',
+                csv: '/download/csv/tbal_sheet/subsidiary',
             },
 
             // references
@@ -245,7 +245,7 @@ export default {
             let ckeys = Object.keys(obj);
             ckeys.forEach(function (cKey) {
                 let item = obj[cKey];
-                let totODr = item.debit, totOCr = item.credit;
+                let totODr = 0, totOCr = 0;
                 let totDr = 0, totCr = 0;
                 let totCDr = 0, totCCr = 0;
                 let subContCheck = false;
@@ -254,44 +254,69 @@ export default {
                     let scKeys = Object.keys(item.contData.regSubContData);
                     scKeys.forEach(function (scKey) {
                         let subItem = item.contData.regSubContData[scKey];
-                        let scTotDr = subItem.debit, scTotCr = subItem.credit;
+                        let scTotOCr = 0, scTotODr = 0;
+                        let scTotCr = 0, scTotDr = 0;
+                        let scTotCCr = 0, scTotCDr = 0;
                         let subsCheck = false;
 
                         if(subItem.subContData.regSubsData){
                             let ssKeys = Object.keys(subItem.subContData.regSubsData);
                             ssKeys.forEach(function (ssKey) {
                                 let ssItem = subItem.subContData.regSubsData[ssKey];
-                                let ssTotDr = ssItem.debit, ssTotCr = ssItem.credit;
+                                let ssTotOCr = ssItem.credit, ssTotODr = ssItem.debit;
+                                let ssTotCr = 0, ssTotDr = 0;
+                                let ssTotCCr = 0, ssTotCDr = 0;
 
                                 if(ssItem.subsData.entries_data){
-                                    ssTotDr += ssItem.subsData.entries_data.debit;
-                                    ssTotCr += ssItem.subsData.entries_data.credit;
+                                    ssTotDr += ssItem.subsData.entries_data.debit; ssTotCr += ssItem.subsData.entries_data.credit;
+                                    let bal = (ssTotODr + ssTotDr)-(ssTotOCr + ssTotCr);
+                                    ssTotCCr += (bal < 0) ? -(bal) : 0; ssTotCDr += (bal > -1) ? bal : 0;
 
-                                    scTotDr += ssTotDr;
-                                    scTotCr += ssTotCr;
-
+                                    scTotOCr += ssTotOCr; scTotODr += ssTotODr;
+                                    scTotCCr += ssTotCCr; scTotCDr += ssTotCDr;
+                                    scTotCr += ssTotCr; scTotDr += ssTotDr;
                                     subsCheck = true;
+
+                                    grabData['data'].push({
+                                        id: ssKey,
+                                        name: ssItem.subsData.name,
+                                        totODr: ssTotODr,
+                                        totOCr: ssTotOCr,
+                                        totDr: ssTotDr,
+                                        totCr: ssTotCr,
+                                        totCDr: ssTotCDr,
+                                        totCCr: ssTotCCr,
+                                    });
                                 }
                             });
                         }
                         if(subsCheck){
-                            totDr += scTotDr;
-                            totCr += scTotCr;
+                            totOCr += scTotOCr; totODr += scTotODr;
+                            totCCr += scTotCCr; totCDr += scTotCDr;
+                            totCr += scTotCr; totDr += scTotDr;
                             subContCheck = true;
+
+                            grabData['data'].push({
+                                id: "Total Sub",
+                                name: scKey+" "+subItem.subContData.name,
+                                totODr: scTotODr,
+                                totOCr: scTotOCr,
+                                totDr: scTotDr,
+                                totCr: scTotCr,
+                                totCDr: scTotCDr,
+                                totCCr: scTotCCr,
+                            });
                         }
                     });
                 }
                 if(subContCheck){
-                    let bal = (totODr + totDr)-(totOCr + totCr);
-                    totCCr += (bal < 0) ? -(bal) : 0; totCDr += (bal > -1) ? bal : 0;
-
                     grTotCr += totCr; grTotDr += totDr;
                     grTotODr += totODr; grTotOCr += totOCr;
                     grTotCDr += totCDr; grTotCCr += totCCr;
 
                     grabData['data'].push({
-                        id: cKey,
-                        name: item.contData.name,
+                        id: "Total Control",
+                        name: cKey+" "+item.contData.name,
                         totODr: totODr,
                         totOCr: totOCr,
                         totDr: totDr,
