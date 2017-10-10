@@ -18,9 +18,9 @@ div
                     input.form-control(v-model='payments_time', type='text', title='Number of Years', placeholder='Number of Years')
                     p.alert.alert-danger(v-if='validation.hasError("payments_time")') {{ validation.firstError('payments_time') }}
             .row.form-group
-                .col-md-6
-                    .calculatorButton.pull-left
-                        button.btn.btn-red.btn-md.text-uppercase(v-on:click.prevent='calculate') Calculate
-                .col-md-6
+                .col-md-6.pull-right
                     .calculatorButton.pull-right
-                        button.btn.btn-red.btn-md.text-uppercase(v-on:click.prevent='resetFields') Clear
+                        button.btn.btn-red.btn-md.text-uppercase(v-on:click.prevent='calculate') Calculate
+                .col-md-6.pull-left
+                    .calculatorButton.pull-left
+                        button.btn.btn-red.btn-o.btn-md.text-uppercase(v-on:click.prevent='resetFields') Clear

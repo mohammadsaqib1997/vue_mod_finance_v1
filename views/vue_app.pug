@@ -46,7 +46,7 @@ html(lang='en')
         link(href='/assets/css/bootstrap-datepicker.min.css', rel='stylesheet', media='screen')
 
     body
-        #page-load.page-loader.text-center.fade.in
+        #page-load.page-loader.text-center
             img(src='/assets/images/loader.gif' style="margin-top: 30vh;width:100%;max-width:600px;")
         div#app(csrf=_csrf)
             router-view

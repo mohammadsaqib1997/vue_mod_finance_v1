@@ -12590,6 +12590,12 @@ body .panel select.form-control {
   border-radius: 5px !important;
   line-height: normal;
 }
+body .panel select.form-control {
+  background-image: url(/assets/images/select-arrow.png);
+  background-position: 99% center;
+  background-size: 30px auto;
+  background-repeat: no-repeat;
+}
 body .panel textarea, body .panel select,
 body .panel input[type="text"],
 body .panel input[type="password"],
@@ -12828,7 +12834,17 @@ a.btn.btn-primary.backtotop {
 .input-group.date {
   width: 100%;
 }
-
+div#calculator button.close:hover {
+  color: #000;
+  border-color: #000 !important;
+}
+p.alert.alert-danger {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 0;
+  text-align: right;
+}
 .voucher_details .row.detail-heading .col-md-1 {
   height: 40px;
   font-size: 14px;
@@ -12922,23 +12938,23 @@ body .create-user .panel select[multiple="multiple"]{
 }
 
 .page-loader {
-  display: none;
+  background-color: rgb(245, 245, 245);
   bottom: 0;
   position: fixed;
   z-index: 9998 !important;
   top: 0;
   right: 0;
   left: 0;
-  opacity: 0;
-  -webkit-transition: opacity .15s linear;
-  -o-transition: opacity .15s linear;
-  transition: opacity .15s linear;
 }
 
 .page-loader.in {
-  opacity: 1;
-  background-color: rgb(245, 245, 245);
-  display: block !important;
+   opacity: 1;
+   display: block !important;
+}
+
+.page-loader.out {
+  opacity: 0;
+  display: none !important;
 }
 
 .btn-dark-black:hover {

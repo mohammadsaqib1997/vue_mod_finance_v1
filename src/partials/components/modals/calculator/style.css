@@ -41,15 +41,6 @@ body .panel label {
     text-align: left;
 }
 
-body .panel input.form-control.labelsave {
-    border-radius: 0;
-    padding: 2px;
-}
-
-.row.save-section  .col-md-8 input.form-control.labelsave {
-    border-radius: 0 !important;
-    padding: 6px 12px;
-}
 .row.margin-none {
     margin: 0 auto;
 }

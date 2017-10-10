@@ -4,6 +4,14 @@ export default {
 
         }
     },
+    mounted: function () {
+        $(function () {
+            setTimeout(function () {
+                $("#page-load").fadeOut();
+            }, 2000);
+
+        });
+    },
     methods: {
 
     },
