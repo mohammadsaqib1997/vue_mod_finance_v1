@@ -12922,7 +12922,7 @@ body .create-user .panel select[multiple="multiple"]{
 }
 
 .page-loader {
-  background-color: #000;
+  display: none;
   bottom: 0;
   position: fixed;
   z-index: 9998 !important;
@@ -12937,7 +12937,7 @@ body .create-user .panel select[multiple="multiple"]{
 
 .page-loader.in {
   opacity: 1;
-  background-color: rgba(215, 215, 215, 0.4);
+  background-color: rgb(245, 245, 245);
   display: block !important;
 }
 

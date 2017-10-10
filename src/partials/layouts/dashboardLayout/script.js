@@ -16,6 +16,13 @@ export default {
             self.type = "Accountant";
         }
     },
+    mounted: function () {
+        $(function () {
+            setTimeout(function () {
+                $("#page-load").fadeOut(500).removeClass('in');
+            }, 2000)
+        });
+    },
     data: function () {
         return {
             username: "",
