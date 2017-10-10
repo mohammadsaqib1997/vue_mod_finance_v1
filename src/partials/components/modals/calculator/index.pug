@@ -20,15 +20,13 @@
                                         p.result {{ simple_res }}
                                         .calculator-section
                                             .row
-                                                .col-md-4
-                                                    label(style='line-height: 32px;') Enter Current Calculation Label:
-                                                .col-md-8.padding-left-none
+                                                .col-md-8.padding-left-none.pull-right
                                                     form.row.margin-none.save-section(v-on:submit.prevent='saveSimpleResult')
-                                                        .col-md-8.padding-none
-                                                            input.form-control.labelsave(type='text' v-model='saveSimCalName')
-                                                        .col-md-4.padding-none
-                                                            button.btn.btn-red.btn-md.full-width(v-if='!saveSimCalProcess' type='submit' style='background: rgb(166, 195, 103);text-transform: uppercase;font-weight: 600;border-radius: 0;width: 100%;border: none;') Submit
-                                                            button.btn.btn-red.btn-md.full-width(v-else type='button' style='background: rgb(166, 195, 103);text-transform: uppercase;font-weight: 600;border-radius: 0;width: 100%;border: none;' disabled='disabled')
+                                                        .col-md-10
+                                                            input.form-control.labelsave(type='text' v-model='saveSimCalName' placeholder="Enter Current Calculation Label")
+                                                        .col-md-2.padding-none
+                                                            button.btn.btn-red.btn-md.full-width.pull-right(v-if='!saveSimCalProcess' type='submit' style="text-transform: uppercase;font-weight: 600;border: none;padding: 20px 10px;") Submit
+                                                            button.btn.btn-red.btn-md.full-width.pull-right(v-else type='button' style="text-transform: uppercase;font-weight: 600;border: none;padding: 20px 10px;" disabled='disabled')
                                                                 i.fa.fa-refresh.fa-spin
                                                         .col-md-12.padding-none
                                                             p.alert.alert-danger(v-if='validation.hasError("saveSimCalName")') {{ validation.firstError('saveSimCalName') }}
@@ -67,15 +65,13 @@
                                                 p.result {{ comp_iv_res }}
                                         .calculator-section
                                             .row
-                                                .col-md-4
-                                                    label(style='line-height: 32px;') Enter Current Calculation Label:
-                                                .col-md-8.padding-left-none
+                                                .col-md-8.pull-right.padding-left-none
                                                     form.row.margin-none.save-section(v-on:submit.prevent='saveCompoundResult')
-                                                        .col-md-8.padding-none
-                                                            input.form-control.labelsave(type='text' v-model='saveComCalName')
-                                                        .col-md-4.padding-none
-                                                            button.btn.btn-red.btn-md.full-width(v-if='!saveComCalProcess' type='submit' style='background: rgb(166, 195, 103);text-transform: uppercase;font-weight: 600;border-radius: 0;width: 100%;border: none;') Submit
-                                                            button.btn.btn-red.btn-md.full-width(v-else type='button' style='background: rgb(166, 195, 103);text-transform: uppercase;font-weight: 600;border-radius: 0;width: 100%;border: none;' disabled='disabled')
+                                                        .col-md-10
+                                                            input.form-control.labelsave(type='text' v-model='saveComCalName' placeholder="Enter Current Calculation Label")
+                                                        .col-md-2.padding-none
+                                                            button.btn.btn-red.btn-md.full-width.pull-right(v-if='!saveComCalProcess' type='submit' style="text-transform: uppercase;font-weight: 600;border: none;padding: 20px 10px;") Submit
+                                                            button.btn.btn-red.btn-md.full-width.pull-right(v-else type='button' style="text-transform: uppercase;font-weight: 600;border: none;padding: 20px 10px;" disabled='disabled')
                                                                 i.fa.fa-refresh.fa-spin
                                                         .col-md-12.padding-none
                                                             p.alert.alert-danger(v-if='validation.hasError("saveComCalName")') {{ validation.firstError('saveComCalName') }}
@@ -95,11 +91,15 @@
                                                                             i.fa.fa-refresh.fa-spin.fa-3x
                                                                 template(v-else)
                                                                     .row.margin-none(v-for='item in comCalData')
-                                                                        .col-md-8.padding-none
+                                                                        .col-md-5.padding-none
                                                                             p.text-left {{ item.label }}
-                                                                        .col-md-4.padding-none
-                                                                            p.text-right.text-bold Future Value: {{ item.result.fv }}
-                                                                            p.text-right.text-bold Interest Earned: {{ item.result.totInt }}
+                                                                        .col-md-7.padding-none
+                                                                                .col-md-6.padding-none
+                                                                                    p.text-right.text-bold Future Value:
+                                                                                    p.text-right {{ item.result.fv }}
+                                                                                .col-md-6.padding-none
+                                                                                    p.text-right.text-bold Interest Earned:
+                                                                                    p.text-right {{ item.result.totInt }}
                                                                 //.row.margin-none.no-border
                                                                 //    .col-md-12.padding-none
                                                                 //        a.anchor-red.pull-right(href='#') Clear All

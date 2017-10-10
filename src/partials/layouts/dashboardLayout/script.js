@@ -19,8 +19,9 @@ export default {
     mounted: function () {
         $(function () {
             setTimeout(function () {
-                $("#page-load").fadeOut(500).removeClass('in');
-            }, 2000)
+                $("#page-load").fadeOut();
+            }, 2000);
+
         });
     },
     data: function () {

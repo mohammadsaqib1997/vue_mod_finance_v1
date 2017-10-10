@@ -4,4 +4,12 @@ export default {
             this.$router.push('/');
         }
     },
+    mounted: function () {
+        $(function () {
+            setTimeout(function () {
+                $("#page-load").fadeOut();
+            }, 2000);
+
+        });
+    },
 }
