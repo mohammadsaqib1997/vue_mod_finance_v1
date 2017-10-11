@@ -55,6 +55,10 @@
                         .row.form-group
                             .col-md-6
                                 .calculatorButton.pull-left
-                                    button.btn.btn-red.btn-md.text-uppercase(v-if='!inProcess' v-on:click.prevent='addEvent') Add
+                                    template(v-if='!inProcess')
+                                        button.btn.btn-red.btn-md.text-uppercase(v-if='editId === null' v-on:click.prevent='addEvent') Add
+                                        template(v-else)
+                                            button.btn.btn-red.btn-md.text-uppercase(v-on:click.prevent='editEvent') Edit
+                                            button.btn.btn-red.btn-md.text-uppercase(v-on:click.prevent='removeEvent') Remove
                                     button.btn.btn-red.btn-md.text-center(v-else)
                                         i.fa.fa-refresh.fa-spin
