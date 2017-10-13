@@ -54,6 +54,8 @@ import subsidiaryTBSheet from '../pages/sheets/tbal_subsidiary/tbal_subsidiary.v
 
 import detailLedgerSheet from '../pages/sheets/detail_ledger/detail_ledger.vue'
 
+import paymentPlanSheet from '../pages/sheets/payment_plan/payment_plan.vue'
+
 const routes = [
     {
         path: '/',
@@ -219,6 +221,10 @@ const routes = [
                     {
                         path: 'detail_ledger/:proId/:subsId/:startDate/:endDate',
                         component: detailLedgerSheet,
+                    },
+                    {
+                        path: 'payment_plan/:mdId',
+                        component: paymentPlanSheet,
                     }
                 ]
             },

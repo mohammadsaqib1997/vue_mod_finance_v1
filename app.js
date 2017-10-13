@@ -18,7 +18,6 @@ admin_firebase.initializeApp({
 });
 
 var admin = require('./routes/admin');
-var pdf = require('./routes/pdf');
 var gapi = require('./routes/gapi');
 var api = require('./routes/api');
 
@@ -32,6 +31,7 @@ var tbsControlDownload = require('./routes/tbal_sheet/control');
 var tbsSubControlDownload = require('./routes/tbal_sheet/sub_control');
 var tbsSubsidiaryDownload = require('./routes/tbal_sheet/subsidiary');
 var detailLedgerDownload = require('./routes/detail_sheet/subsidiary');
+var paymentPlanDownload = require('./routes/payment_plan');
 
 var app = express();
 
@@ -101,10 +101,10 @@ app.use('/download', tbsControlDownload);
 app.use('/download', tbsSubControlDownload);
 app.use('/download', tbsSubsidiaryDownload);
 app.use('/download', detailLedgerDownload);
+app.use('/download', paymentPlanDownload);
 
 app.use('/api', api);
 app.use('/gapi', gapi);
-app.use('/pdf', pdf);
 
 app.use(history({
     logger: console.log.bind(console),

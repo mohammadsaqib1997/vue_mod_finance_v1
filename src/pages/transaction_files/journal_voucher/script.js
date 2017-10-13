@@ -7,7 +7,7 @@ import getCodes from '../../../partials/components/get_codes/get_codes.vue'
 import getSubsName from '../../../partials/components/get_subs_name/get_subs_name.vue'
 
 const Validator = SimpleVueValidation.Validator;
-const dateYear = require("../../../../config/private.json").dateYear;
+const dateYear = require("../../../../config/client_private.json").dateYear;
 
 export default {
     created: function () {

@@ -3,7 +3,7 @@ import firebase from 'firebase'
 import SimpleVueValidation from 'simple-vue-validator'
 const Validator = SimpleVueValidation.Validator;
 
-const admin_email = require('../../../config/private.json').admin_email;
+const admin_email = require('../../../config/client_private.json').admin_email;
 
 export default {
     created: function () {

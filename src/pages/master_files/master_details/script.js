@@ -8,7 +8,7 @@ import addBrokerModel from '../../../partials/components/modals/add_broker/add_b
 import addTypeItemsModel from '../../../partials/components/modals/add_type_items/add_type_items.vue';
 import getSubsName from '../../../partials/components/get_subs_name/get_subs_name.vue'
 
-const dateYear = require("../../../../config/private.json").dateYear;
+const dateYear = require("../../../../config/client_private.json").dateYear;
 const Validator = SimpleVueValidation.Validator;
 
 export default {
@@ -957,31 +957,11 @@ export default {
             }
         },
         view_plan: function (sel_voucher) {
-            let self = this;
-            let params = {};
-            firebase.auth().currentUser.getIdToken(true).then(function (idToken) {
-                params['auth'] = idToken;
-                self.formSubmit('/pdf/payment/' + sel_voucher, params);
-            }).catch(function (err) {
-                console.log(err);
-            });
+            $("<a id='forceClick' href='/sheet/payment_plan/"+sel_voucher+"' target='_blank' style='display:none;'></a>").appendTo(document.body);
+            let anc = document.getElementById('forceClick');
+            anc.click();
+            anc.remove();
         },
-        formSubmit: function (url, params) {
-            let f = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
-                action: url
-            }).appendTo(document.body);
-
-            for (let i in params) {
-                if (params.hasOwnProperty(i)) {
-                    $('<input type="hidden" />').attr({
-                        name: i,
-                        value: params[i]
-                    }).appendTo(f);
-                }
-            }
-            f.trigger('submit');
-            f.remove();
-        }
     },
     components: {
         getCodes,

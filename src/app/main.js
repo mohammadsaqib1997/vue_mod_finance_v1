@@ -7,7 +7,7 @@ import SimpleVueValidation from 'simple-vue-validator'
 import firebase from 'firebase'
 import cryptoJSON from 'crypto-json'
 
-import config_fb from '../../config/private.json'
+import config_fb from '../../config/client_private.json'
 firebase.initializeApp(config_fb.config_fb);
 
 import routes from './routes'
