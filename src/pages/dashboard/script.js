@@ -3,6 +3,7 @@ import projectModel from '../../partials/components/modals/add_project/add_proje
 import calculatorModel from '../../partials/components/modals/calculator/calculator.vue'
 import dashboardSearch from '../../partials/components/dashboard_search/dashboard_search.vue'
 import calendarCom from '../../partials/components/full_calendar/full_calendar.vue'
+import calculatorview from '../../partials/components/modals/calculator_info/calculator_info.vue'
 
 export default {
     created: function () {
@@ -28,6 +29,7 @@ export default {
         calculatorModel,
         projectModel,
         dashboardSearch,
-        calendarCom
+        calendarCom,
+        calculatorview
     }
 }

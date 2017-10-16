@@ -41,6 +41,6 @@
                                 td {{((fetchData.reqData.grTotDr - fetchData.reqData.grTotCr) > -1) ? fetchData.reqData.grTotDr - fetchData.reqData.grTotCr : ''}}
                                 td {{((fetchData.reqData.grTotDr - fetchData.reqData.grTotCr) < 0) ? fetchData.reqData.grTotDr - fetchData.reqData.grTotCr : ''}}
                     button.btn.btn-danger.btn-lg.btn-dark-Red.text-uppercase(type='button' style="margin-right:20px;" data-toggle="modal" data-target="#download-pdf") Save
-                    button.btn.btn-dark-black.btn-lg.text-uppercase(type='button') Print
+                    button.btn.btn-dark-black.btn-lg.text-uppercase(type='button' onclick="window.print();") Print
 
     downloadSheetModel(v-bind:fetchData='fetchData' v-bind:optionalData='optionalData' v-bind:dLinks='dLinks')

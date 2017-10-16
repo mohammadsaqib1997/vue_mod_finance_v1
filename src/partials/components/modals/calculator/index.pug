@@ -46,13 +46,13 @@
                                                                             i.fa.fa-refresh.fa-spin.fa-3x
                                                                 template(v-else)
                                                                     .row.margin-none(v-for='item in simCalData')
-                                                                        .col-md-8.padding-none
+                                                                        .col-md-6.padding-none
                                                                             p.text-left {{ item.label }}
-                                                                        .col-md-4.padding-none
+                                                                        .col-md-3.padding-none
                                                                             p.text-right.text-bold {{ item.result }}
-                                                                //.row.margin-none.no-border
-                                                                //    .col-md-12.padding-none
-                                                                //        a.anchor-red.pull-right(href='#') Clear All
+                                                                        .col-md-3
+                                                                            a(href="#",data-toggle="modal" data-target="#calculatorview" style="margin-right:5px;") View
+                                                                            a(href="#") Delete
                             #compound.tab-pane.fade.in
                                 .row
                                     .col-md-12
@@ -97,9 +97,8 @@
                                                                                 .col-md-6.padding-none
                                                                                     p.text-right.text-bold Future Value:
                                                                                     p.text-right {{ item.result.fv }}
+                                                                                    a(href="#", class="btn btn-red pull-right" data-toggle="modal" data-target="#calculatorview", style="margin-bottom: 10px") View
                                                                                 .col-md-6.padding-none
                                                                                     p.text-right.text-bold Interest Earned:
                                                                                     p.text-right {{ item.result.totInt }}
-                                                                //.row.margin-none.no-border
-                                                                //    .col-md-12.padding-none
-                                                                //        a.anchor-red.pull-right(href='#') Clear All
+                                                                                    a(href="#", class="btn btn-red pull-right", style="margin-bottom: 10px") Delete
