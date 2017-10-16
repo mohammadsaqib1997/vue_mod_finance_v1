@@ -88,6 +88,8 @@ body .panel .recent-calcu input:not(disabled):not([type="submit"]):not([type="re
     width: 100%;
     color: #545454;
     font-size: 14px;
+    max-height: 392px;
+    overflow-y: auto;
 }
 h4.heading {
     color: #a6c367;
@@ -133,4 +135,28 @@ margin: 20px 0 20px 0;
 padding: .35em .625em .75em;
 border: 1px solid #e6e8e8;
 background: #f9f9f9;
+}
+
+#compound .recent-calculations{
+    max-height: 305px;
+}
+
+.recent-calculations::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.recent-calculations::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+.recent-calculations::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
 }
