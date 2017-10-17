@@ -94,11 +94,12 @@ export default {
 
             //data
             vouchersData: {},
+
+            // pagination, search
             orgData: {},
             search_txt: '',
             pagData: {},
-
-            maxRows: 5,
+            maxRows: 20,
             totRows: 0,
             totPages: 1,
             curPage: 1,
@@ -246,7 +247,8 @@ export default {
             let rKeys = Object.keys(val);
             self.pagData = {};
             self.totRows = rKeys.length;
-            let end = Math.min(self.start + self.maxRows - 1, self.totRows);
+            self.start = 0;
+            let end = Math.min(self.start + self.maxRows, self.totRows);
 
             self.calculatePagNo(self);
 

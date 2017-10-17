@@ -31,8 +31,10 @@ export default {
             let renderData = userSnap.val();
             if (renderData !== null) {
                 self.userData = renderData;
+                self.orgData = self.userData;
             } else {
                 self.userData = {};
+                self.orgData = self.userData;
             }
             self.dataLoad2 = false;
         });
@@ -54,6 +56,16 @@ export default {
             // data save
             proData: {},
             userData: {},
+
+            // pagination, search
+            orgData: {},
+            search_txt: '',
+            pagData: {},
+            maxRows: 20,
+            totRows: 0,
+            totPages: 1,
+            curPage: 1,
+            start: 0,
 
             // references
             projectsRef: null,
@@ -87,6 +99,16 @@ export default {
                 };
                 reader.readAsDataURL(val);
             }
+        },
+        search_txt: function (val) {
+            this.search_values(this, val);
+        },
+        userData: function (val) {
+            this.pagination(this, val);
+        },
+        curPage: function (val) {
+            this.start = (val * this.maxRows) - (this.maxRows - 1);
+            this.changePage();
         }
     },
     validators: {
@@ -275,6 +297,84 @@ export default {
                 self.inProcess = false;
                 callback();
             });
+        },
+        search_values: function (self, val) {
+            let saveData = self.orgData;
+            if(val !== ""){
+                let gen_search_data = {};
+                let searchKeys = Object.keys(saveData);
+                for(let i=0; i < searchKeys.length; i++){
+                    let sKey = searchKeys[i];
+                    let sItem = saveData[sKey];
+
+                    val = val.toLowerCase();
+
+                    if(sItem.first_name.toLowerCase().indexOf(val) > -1){
+                        gen_search_data[sKey] = sItem;
+                        continue;
+                    }
+                    if(sItem.last_name.toLowerCase().indexOf(val) > -1){
+                        gen_search_data[sKey] = sItem;
+                        continue;
+                    }
+                    if(sItem.email.toLowerCase().indexOf(val) > -1){
+                        gen_search_data[sKey] = sItem;
+                        continue;
+                    }
+                    if(sItem.city.indexOf(val) > -1){
+                        gen_search_data[sKey] = sItem;
+                        continue;
+                    }
+                    if((sItem.mob_num).toString().indexOf(val) > -1){
+                        gen_search_data[sKey] = sItem;
+                    }
+                }
+                self.userData = gen_search_data;
+            }else{
+                self.userData = self.orgData;
+            }
+        },
+        pagination: function (self, val) {
+            let rKeys = Object.keys(val);
+            self.pagData = {};
+            self.totRows = rKeys.length;
+            self.start = 0;
+            let end = Math.min(self.start + self.maxRows, self.totRows);
+
+            self.calculatePagNo(self);
+
+            if(self.totRows > 0){
+                for(let i=0; i<end; i++){
+                    self.pagData[rKeys[i]] = val[rKeys[i]];
+                }
+            }
+        },
+        calculatePagNo: function (self) {
+            self.totPages = 1;
+            self.curPage = 1;
+            if(self.totRows > self.maxRows){
+                self.totPages = Math.ceil(self.totRows/self.maxRows);
+            }
+        },
+        nextPage: function () {
+            this.curPage += 1;
+        },
+        prevPage: function () {
+            this.curPage -= 1;
+        },
+        changePage: function () {
+            let self = this;
+            let rKeys = Object.keys(self.userData);
+            self.pagData = {};
+            self.totRows = rKeys.length;
+            let end = Math.min(self.start + self.maxRows - 1, self.totRows);
+
+            if(self.totRows > 0){
+                for(let i=(self.start-1); i<end; i++){
+                    self.pagData[rKeys[i]] = self.userData[rKeys[i]];
+                }
+            }
+
         }
     },
     components: {

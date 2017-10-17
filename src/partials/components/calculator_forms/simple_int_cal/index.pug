@@ -19,7 +19,7 @@ div
                     p.alert.alert-danger(v-if='validation.hasError("fields.p")') {{ validation.firstError('fields.p') }}
             .row.form-group(v-if='v_fields.r')
                 .col-md-12
-                    input.form-control(v-model='fields.r', type='text', title='Rate): %', placeholder='Rate (R): % per year')
+                    input.form-control(v-model='fields.r', type='text', title='Rate: %', placeholder='Rate (R): % per year')
                     p.alert.alert-danger(v-if='validation.hasError("fields.r")') {{ validation.firstError('fields.r') }}
             .row.form-group
                 .col-md-6(v-if='v_fields.t')

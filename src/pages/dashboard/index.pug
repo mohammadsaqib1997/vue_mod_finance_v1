@@ -99,5 +99,5 @@
                                     img(src="/assets/images/icons/calc.png")
                                 .circle-tile-description.text-faded Calculator
     projectModel
-    calculatorModel
-    calculatorview
+    calculatorModel(v-on:send_key='receive_key')
+    calculatorInfo(v-bind:cal_key='cal_key')

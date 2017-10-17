@@ -155,28 +155,49 @@
                         div.text-center(v-if='dataLoad2')
                             i.fa.fa-refresh.fa-spin.fa-fw.fa-3x
                         template(v-else)
-                            .table-responsive
-                                table#sample_2.table.table-striped.table-hover
-                                    thead
-                                        tr
-                                            th Full Name
-                                            th Email
-                                            th City
-                                            th Phone
-                                            th Edit
-                                            th.text-right Action
-                                    tbody
-                                        tr(v-for='(row, key, ind) in userData')
-                                            td {{ row.first_name }} {{ row.last_name }}
-                                            td {{ row.email }}
-                                            td {{ row.city }}
-                                            td {{ row.mob_num }}
-                                            td
-                                                router-link.edit-row(v-bind:to='"/edit_user/"+key')
-                                                    | Edit
-                                            td.text-right
-                                                button.btn.btn-small.btn-success(v-if='!row.act_status' v-on:click='active(key)')
-                                                    | Activate
-                                                button.btn.btn-small.btn-danger(v-else v-on:click='deactive(key)')
-                                                    | Deactivate
+                            .row
+                                .col-lg-3.col-md-offset-9
+                                    .form-group
+                                        input.form-control(placeholder='Search...' v-model='search_txt')
+                            template(v-if="Object.keys(pagData).length > 0")
+                                .table-responsive
+                                    table#sample_2.table.table-striped.table-hover
+                                        thead
+                                            tr
+                                                th Full Name
+                                                th Email
+                                                th City
+                                                th Phone
+                                                th Edit
+                                                th.text-right Action
+                                        tbody
+                                            tr(v-for='(row, key, ind) in pagData')
+                                                td {{ row.first_name }} {{ row.last_name }}
+                                                td {{ row.email }}
+                                                td {{ row.city }}
+                                                td {{ row.mob_num }}
+                                                td
+                                                    router-link.edit-row(v-bind:to='"/edit_user/"+key')
+                                                        | Edit
+                                                td.text-right
+                                                    button.btn.btn-small.btn-success(v-if='!row.act_status' v-on:click='active(key)')
+                                                        | Activate
+                                                    button.btn.btn-small.btn-danger(v-else v-on:click='deactive(key)')
+                                                        | Deactivate
+                                .row
+                                    .col-lg-3.col-md-offset-9.text-right
+                                        label Page: {{curPage}}/{{ totPages }}
+                                        .btn-group
+                                            button.btn.btn-sm(v-if='curPage>1' v-on:click='prevPage')
+                                                i.fa.fa-chevron-left
+                                            button.btn.btn-sm(v-else disabled='disabled')
+                                                i.fa.fa-chevron-left
+                                            button.btn.btn-sm(v-if='curPage<totPages' v-on:click='nextPage')
+                                                i.fa.fa-chevron-right
+                                            button.btn.btn-sm(v-else disabled='disabled')
+                                                i.fa.fa-chevron-right
+                            template(v-else)
+                                .row
+                                    .col-lg-12
+                                        h3.text-center No Data Found!
 

@@ -45,14 +45,18 @@
                                                                         .col-md-12.text-center
                                                                             i.fa.fa-refresh.fa-spin.fa-3x
                                                                 template(v-else)
-                                                                    .row.margin-none(v-for='item in simCalData')
+                                                                    template(v-if='Object.keys(simCalData).length > 0')
+                                                                        .row.margin-none(v-for='(item, key, ind) in simCalData')
+                                                                            .col-md-6.padding-none
+                                                                                p.text-left {{ item.label }}
+                                                                            .col-md-3.padding-none
+                                                                                p.text-right.text-bold {{ item.result }}
+                                                                            .col-md-3
+                                                                                a(href="#", data-toggle="modal" data-target="#calculatorview" v-on:click='send_key(key)' style="margin-right:5px;") View
+                                                                                a(v-on:click.prevent='deleteCalItem(key)') Delete
+                                                                    .row.margin-none(v-else)
                                                                         .col-md-6.padding-none
-                                                                            p.text-left {{ item.label }}
-                                                                        .col-md-3.padding-none
-                                                                            p.text-right.text-bold {{ item.result }}
-                                                                        .col-md-3
-                                                                            a(href="#",data-toggle="modal" data-target="#calculatorview" style="margin-right:5px;") View
-                                                                            a(href="#") Delete
+                                                                            h5.text-left No Data Found!
                             #compound.tab-pane.fade.in
                                 .row
                                     .col-md-12
@@ -90,15 +94,19 @@
                                                                         .col-md-12.text-center
                                                                             i.fa.fa-refresh.fa-spin.fa-3x
                                                                 template(v-else)
-                                                                    .row.margin-none(v-for='item in comCalData')
-                                                                        .col-md-5.padding-none
-                                                                            p.text-left {{ item.label }}
-                                                                        .col-md-7.padding-none
-                                                                                .col-md-6.padding-none
-                                                                                    p.text-right.text-bold Future Value:
-                                                                                    p.text-right {{ item.result.fv }}
-                                                                                .col-md-6.padding-none
-                                                                                    p.text-right.text-bold Interest Earned:
-                                                                                    p.text-right {{ item.result.totInt }}
-                                                                                    a(href="#", class="pull-right", style="margin-bottom: 10px") Delete
-                                                                                    a(href="#", class="pull-right" data-toggle="modal" data-target="#calculatorview", style="margin-bottom: 10px;margin-right:10px;") View
+                                                                    template(v-if='Object.keys(comCalData).length > 0')
+                                                                        .row.margin-none(v-for='(item, key, ind) in comCalData')
+                                                                            .col-md-5.padding-none
+                                                                                p.text-left {{ item.label }}
+                                                                            .col-md-7.padding-none
+                                                                                    .col-md-6.padding-none
+                                                                                        p.text-right.text-bold Future Value:
+                                                                                        p.text-right {{ item.result.fv }}
+                                                                                    .col-md-6.padding-none
+                                                                                        p.text-right.text-bold Interest Earned:
+                                                                                        p.text-right {{ item.result.totInt }}
+                                                                                        a(href="#", class="pull-right" data-toggle="modal" data-target="#calculatorview", v-on:click='send_key(key)' style="margin-bottom: 10px;") View
+                                                                                        a(v-on:click.prevent='deleteCalItem(key)' class="pull-right", style="margin-bottom: 10px;margin-right:10px;") Delete
+                                                                    .row.margin-none(v-else)
+                                                                        .col-md-6.padding-none
+                                                                            h5.text-left No Data Found!

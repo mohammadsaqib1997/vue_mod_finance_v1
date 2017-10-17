@@ -160,6 +160,16 @@ export default {
                 }
             });
         },
+        deleteCalItem: function (key) {
+            this.saveCalRef.child(key).remove(function (err) {
+                if(err){
+                    console.log(err);
+                }
+            });
+        },
+        send_key: function(key){
+            this.$emit('send_key', key);
+        }
     },
     components: {
         simpleIntCal,
