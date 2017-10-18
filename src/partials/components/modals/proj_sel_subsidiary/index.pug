@@ -59,7 +59,7 @@
                                 template(v-else)
                                   label Contact Name
                                     select.form-control(v-model='party_id')
-                                        option(value='') Select Party Information
+                                        option(value='') Select Vendor
                                         option(v-for='(row, key, ind) in partyData', v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
                                     p.text-danger.text-right(v-if='validation.hasError("party_id")') {{ validation.firstError('party_id') }}
                         .row.margin-bottom-10

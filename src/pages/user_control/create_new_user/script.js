@@ -162,50 +162,57 @@ export default {
                 self.$refs.sel_city.validate(function (success_city) {
                     if (success_form && success_city) {
                         self.inProcess = true;
-                        self.usersRef
-                            .orderByChild('id')
-                            .limitToLast(1)
-                            .once('value')
-                            .then(function (userSnap) {
-                                let userData = userSnap.val();
-                                let next_id = 1;
-                                if (userData !== null) {
-                                    let keys = Object.keys(userData);
-                                    next_id = parseInt(userData[keys[0]].id) + 1;
-                                }
-                                let salt = bcrypt.genSaltSync(saltRounds);
-                                let newHash = bcrypt.hashSync(self.password, salt);
-                                let push_gen = self.usersRef.push();
-                                push_gen.set({
-                                    id: next_id,
-                                    first_name: self.first_name,
-                                    last_name: self.last_name,
-                                    email: self.email,
-                                    mob_num: self.mob_num,
-                                    password: newHash,
-                                    gender: self.gender,
-                                    projects: (self.pro_sel_type === "Select") ? self.sel_project : true,
-                                    zipcode: self.zipcode,
-                                    city: self.$refs.sel_city.query,
-                                    act_status: true,
-                                    type: "accountant",
-                                    createdAt: firebase.database.ServerValue.TIMESTAMP
-                                }, function (err) {
-                                    if (err) {
-                                        self.errMain = err.message;
-                                        self.inProcess = false;
-                                    } else {
-                                        if (self.profile_img !== null) {
-                                            self.upload_img(push_gen.key, function () {
-                                                self.succMsg(self);
-                                            });
-                                        }else{
-                                            self.succMsg(self);
+                        self.usersRef.once('value', function (usersSnap) {
+                            if(usersSnap.numChildren() > 5){
+                                self.errMain = "Maximum user allowd 5!";
+                                self.inProcess = false;
+                            }else{
+                                self.usersRef
+                                    .orderByChild('id')
+                                    .limitToLast(1)
+                                    .once('value')
+                                    .then(function (userSnap) {
+                                        let userData = userSnap.val();
+                                        let next_id = 1;
+                                        if (userData !== null) {
+                                            let keys = Object.keys(userData);
+                                            next_id = parseInt(userData[keys[0]].id) + 1;
                                         }
-                                    }
+                                        let salt = bcrypt.genSaltSync(saltRounds);
+                                        let newHash = bcrypt.hashSync(self.password, salt);
+                                        let push_gen = self.usersRef.push();
+                                        push_gen.set({
+                                            id: next_id,
+                                            first_name: self.first_name,
+                                            last_name: self.last_name,
+                                            email: self.email,
+                                            mob_num: self.mob_num,
+                                            password: newHash,
+                                            gender: self.gender,
+                                            projects: (self.pro_sel_type === "Select") ? self.sel_project : true,
+                                            zipcode: self.zipcode,
+                                            city: self.$refs.sel_city.query,
+                                            act_status: true,
+                                            type: "accountant",
+                                            createdAt: firebase.database.ServerValue.TIMESTAMP
+                                        }, function (err) {
+                                            if (err) {
+                                                self.errMain = err.message;
+                                                self.inProcess = false;
+                                            } else {
+                                                if (self.profile_img !== null) {
+                                                    self.upload_img(push_gen.key, function () {
+                                                        self.succMsg(self);
+                                                    });
+                                                }else{
+                                                    self.succMsg(self);
+                                                }
+                                            }
 
-                                });
-                            });
+                                        });
+                                    });
+                            }
+                        });
                     }
                 });
             });
