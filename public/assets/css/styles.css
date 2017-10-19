@@ -12217,6 +12217,8 @@ body #sidebar nav > ul > li.open {
     display: inline-block;
     font-size: 14px;
     color: #545454;
+	 line-height: 40px;
+
   }
   .table-heading{
     float: left;
@@ -12595,6 +12597,7 @@ body .panel select.form-control {
   background-position: 99% center;
   background-size: 30px auto;
   background-repeat: no-repeat;
+      padding-right: 30px !important;
 }
 body .panel textarea, body .panel select,
 body .panel input[type="text"],
