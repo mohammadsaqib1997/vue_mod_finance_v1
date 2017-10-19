@@ -94,6 +94,12 @@
                                                         option(v-if="ref_type === 'md'" v-for='(row, key, ind) in masterDetailsData' v-bind:value='key') {{ row.allotee_code }} | {{ row.allotee_name }}
                                                         option(v-if="ref_type === 'pi'" v-for='(row, key, ind) in partyInformationData' v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_ref")') {{ validation.firstError('sel_ref') }}
+                                            .form-group(v-if="ref_type === 'md'")
+                                                label Select Installment
+                                                select.form-control(v-model='sel_installment')
+                                                    option(value='') Select Installment
+                                                    option(v-for='num in gen_installments' v-bind:value='num') Installment {{ ("0"+num).slice(-2) }}
+                                                p.text-danger.text-right(v-if='validation.hasError("sel_installment")') {{ validation.firstError('sel_installment') }}
                                             .form-group(v-if="userType === 'admin'")
                                                 label
                                                     | Posted Y/N
@@ -130,11 +136,11 @@
                                                 template(v-for='row, ind in rows')
                                                     .row(v-bind:class='"row-"+ind')
                                                         .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-right-0
-                                                            get-codes(v-bind:project='sel_project' v-bind:code='row.code' v-on:name_change="changeCode($event, ind)")
+                                                            get-codes(v-bind:project='sel_project' v-bind:code='row.code' v-on:name_change="changeCode($event, ind)" v-on:list_subs_pro_id="getList(ind)")
                                                         .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
-                                                            get-subs-name(v-bind:project='sel_project' v-bind:name='row.code_name' v-on:name_change="changeSubName($event, ind)")
+                                                            get-subs-name(v-bind:project='sel_project' v-bind:name='row.code_name' v-on:name_change="changeSubName($event, ind)" v-on:list_subs_pro_id="getList(ind)")
                                                         .col-xs-12.col-sm-4.col-md-4.col-lg-4.padding-none
-                                                            input.form-control(type='text' v-model='row.remarks')
+                                                            input.form-control(type='text' v-model='row.remarks' v-on:keydown="copyRemarks(ind, $event)")
                                                         .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-none
                                                             input.form-control(type='text' v-model='row.quantity')
                                                         .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
@@ -165,3 +171,5 @@
                                                 | Update
                                         button.btn.btn-lg.btn-primary.btn-wide.pull-left(v-else type='button' v-on:click.prevent='addVoucher')
                                             | Submit
+
+    proSubsListModel(v-bind:pro_key="sel_project" v-on:get_subs_item="setSelCode")

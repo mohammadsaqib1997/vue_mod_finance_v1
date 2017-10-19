@@ -48,7 +48,6 @@ export default {
                                                 let entItemData = entItemSnap.val();
                                                 if (regSubsCode === entItemData.code) {
                                                     let date = moment(entItemData.v_date);
-                                                    let dueDate = date.clone().add(1, "M").set('date', 1);
                                                     grabEnt.push({
                                                         type: "MD",
                                                         voucher_id: mdData.id,
@@ -56,17 +55,17 @@ export default {
                                                         amount: entItemData.credit,
                                                         penalty: false,
                                                         pay_date: date.format("DD/MM/YYYY"),
-                                                        due_date: dueDate.format("DD/MM/YYYY"),
-                                                        due_date_unix: dueDate.unix(),
+                                                        due_date: date.format("DD/MM/YYYY"),
+                                                        due_date_unix: date.unix(),
                                                     });
                                                 }
 
                                                 process_item++;
                                                 if (process_item === md_entSnap.numChildren()) {
                                                     let server_date_unix = moment().unix();
-                                                    let booking_date = moment(mdData.booking_date).add(1, "M");
+                                                    let booking_date = moment(mdData.booking_date);
                                                     for (let i = 0; i < mdData.payment_installment; i++) {
-                                                        let dueDate = booking_date.add(1, "M").set('date', 1);
+                                                        let dueDate = booking_date.add(1, "M");
                                                         let dataSet = {
                                                             type: "",
                                                             voucher_id: "",

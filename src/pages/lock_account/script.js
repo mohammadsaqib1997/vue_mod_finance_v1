@@ -35,6 +35,7 @@ export default {
             self.$validate().then(function (success) {
                 if (success) {
                     if(self.matchPass(self.password)){
+                        $("#page-load").css({"display": "block"});
                         let encObj = self.$ls.get('loginUser');
                         let userObj = cryptoJSON.decrypt(encObj, self.$root.secKey, { keys: [] });
                         userObj['lock'] = false;

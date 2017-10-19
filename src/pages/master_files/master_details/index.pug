@@ -174,11 +174,11 @@
                                             template(v-for='row, ind in rows')
                                                 .row(v-bind:class='"row-"+ind')
                                                     .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-right-0
-                                                        get-codes(v-bind:project='sel_project', v-bind:code='row.code', v-on:name_change='changeCode($event, ind)')
+                                                        get-codes(v-bind:project='sel_project', v-bind:code='row.code', v-on:name_change='changeCode($event, ind)' v-on:list_subs_pro_id="getList(ind)")
                                                     .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
-                                                        get-subs-name(v-bind:project='sel_project' v-bind:name='row.code_name' v-on:name_change="changeSubName($event, ind)")
+                                                        get-subs-name(v-bind:project='sel_project' v-bind:name='row.code_name' v-on:name_change="changeSubName($event, ind)" v-on:list_subs_pro_id="getList(ind)")
                                                     .col-xs-12.col-sm-4.col-md-4.col-lg-4.padding-none
-                                                        input.form-control(type='text', v-model='row.remarks')
+                                                        input.form-control(type='text', v-model='row.remarks' v-on:keydown="copyRemarks(ind, $event)")
                                                     .col-xs-12.col-sm-1.col-md-1.col-lg-1.padding-none
                                                         input.form-control(type='text', v-model='row.quantity')
                                                     .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-none
@@ -201,7 +201,7 @@
                                                 input.form-control(type='text', v-bind:value='total_credit', disabled='disabled')
                         .row
                             .col-xs-12.col-sm-12.col-md-4.col-lg-4.pull-left
-                                button.btn.btn-primary.btn-wide.pull-right(v-if='inProcess', type='button', disabled='disabled')
+                                button.btn.btn-primary.btn-wide.pull-left(v-if='inProcess', type='button', disabled='disabled')
                                     i.fa.fa-refresh.fa-spin.fa-fw
                                 template(v-else)
                                     template(v-if='updateV')
@@ -211,3 +211,4 @@
                                         | Submit
     add-broker-model
     add-type-items-model
+    proSubsListModel(v-bind:pro_key="sel_project" v-on:get_subs_item="setSelCode")

@@ -64,6 +64,7 @@ export default {
                     self.mainErr = "";
                     if (self.email === admin_email) {
                         firebase.auth().signInWithEmailAndPassword(self.email, self.password).then(function () {
+                            $("#page-load").css({"display": "block"});
                             self.isProcess = false;
                             self.$root.userLoginEmit = true;
                             self.$root.userSaveLS(self.email, self.password, firebase.auth().currentUser.uid);
@@ -80,6 +81,7 @@ export default {
                             let body = res.body;
                             if (body.status === "ok") {
                                 firebase.auth().signInWithCustomToken(body.token).then(function () {
+                                    $("#page-load").css({"display": "block"});
                                     self.isProcess = false;
                                     self.$root.userLoginEmit = true;
                                     self.$root.userSaveLS(self.email, self.password, firebase.auth().currentUser.uid);

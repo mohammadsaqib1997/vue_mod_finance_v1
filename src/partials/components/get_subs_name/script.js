@@ -66,9 +66,15 @@ export default {
             return grabData;
         },
         checkPro: function (e) {
-            if(this.project === ""){
+            let self = this;
+            if(self.project === ""){
                 e.preventDefault();
                 alert("Please Select Project!");
+            }else{
+                if(e.keyCode === 120){
+                    e.preventDefault();
+                    self.$emit("list_subs_pro_id");
+                }
             }
         }
     }

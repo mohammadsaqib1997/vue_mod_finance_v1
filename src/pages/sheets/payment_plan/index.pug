@@ -144,7 +144,7 @@
                                 th.col-md-1 Status
                                 th.col-md-1 Balance
                             tr(v-for='(ent, ind) in fetchData.entData')
-                                td.col-md-1 {{("0" + (1 + ind)).slice(-2)}}
+                                td.col-md-1 {{("0" + (1 + (ind-1))).slice(-2)}}
                                 td.col-md-1 {{ent.type}}
                                 td.col-md-1 {{ent.voucher_id}}
                                 td.col-md-1(style='width:40px;') {{(ent.pay_date) ? ent.pay_date : ""}}

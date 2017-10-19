@@ -7,6 +7,7 @@ import getCodes from '../../../partials/components/get_codes/get_codes.vue'
 import addBrokerModel from '../../../partials/components/modals/add_broker/add_broker.vue';
 import addTypeItemsModel from '../../../partials/components/modals/add_type_items/add_type_items.vue';
 import getSubsName from '../../../partials/components/get_subs_name/get_subs_name.vue'
+import proSubsListModel from '../../../partials/components/modals/sc_subs_list/sc_subs_list.vue'
 
 const dateYear = require("../../../../config/client_private.json").dateYear;
 const Validator = SimpleVueValidation.Validator;
@@ -522,6 +523,8 @@ export default {
             total_debit: 0,
             total_credit: 0,
 
+            code_sel_ind: '',
+
             errMain: "",
             sucMain: "",
         }
@@ -640,39 +643,41 @@ export default {
                             }
 
                             let voucher_push_gen = self.masterDetailsRef.push();
-                            voucher_push_gen.set({
-                                id: next_id,
-                                sel_project: self.sel_project,
-                                posted_status: "No",
-                                allotee_code: self.allotee_code,
-                                allotee_name: self.allotee_name,
-                                contact_no: self.contact_no,
-                                allotee_email: self.allotee_email,
-                                sel_broker: self.sel_broker,
-                                sel_type: self.sel_type,
-                                sel_pro_type_no: self.sel_pro_type_no,
-                                doc_year: self.doc_year,
-                                booking_date: self.booking_date,
-                                selling_price: self.selling_price,
-                                booking_amount: self.booking_amount,
-                                payment_installment: self.payment_installment,
-                                payment_plan: self.payment_plan,
-                                uid: firebase.auth().currentUser.uid,
-                                createdAt: firebase.database.ServerValue.TIMESTAMP
-                            }, function (err) {
-                                if (err) {
-                                    self.errMain = err.message;
-                                    self.inProcess = false;
-                                } else {
-                                    let rows = self.rows;
-                                    let subLength = 0;
-                                    let process_item = 0;
-                                    rows.forEach(function (row) {
-                                        if (row.code !== "") {
-                                            subLength++;
-                                        }
-                                    });
-                                    if (subLength > 0) {
+
+                            let rows = self.rows;
+                            let subLength = 0;
+                            let process_item = 0;
+                            rows.forEach(function (row) {
+                                if (row.code !== "") {
+                                    subLength++;
+                                }
+                            });
+
+                            if (subLength > 0) {
+                                voucher_push_gen.set({
+                                    id: next_id,
+                                    sel_project: self.sel_project,
+                                    posted_status: "No",
+                                    allotee_code: self.allotee_code,
+                                    allotee_name: self.allotee_name,
+                                    contact_no: self.contact_no,
+                                    allotee_email: self.allotee_email,
+                                    sel_broker: self.sel_broker,
+                                    sel_type: self.sel_type,
+                                    sel_pro_type_no: self.sel_pro_type_no,
+                                    doc_year: self.doc_year,
+                                    booking_date: self.booking_date,
+                                    selling_price: self.selling_price,
+                                    booking_amount: self.booking_amount,
+                                    payment_installment: self.payment_installment,
+                                    payment_plan: self.payment_plan,
+                                    uid: firebase.auth().currentUser.uid,
+                                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                                }, function (err) {
+                                    if (err) {
+                                        self.errMain = err.message;
+                                        self.inProcess = false;
+                                    } else {
                                         rows.forEach(function (row, ind) {
                                             if (row.code !== "") {
                                                 delete row['key'];
@@ -694,12 +699,13 @@ export default {
                                                 });
                                             }
                                         });
-                                    } else {
-                                        self.view_plan(voucher_push_gen.key);
-                                        self.voucherMsg(self, "Successfully Inserted Master Detail Voucher!");
                                     }
-                                }
-                            });
+                                });
+
+                            } else {
+                                self.inProcess = false;
+                                alert("Please fill entries!");
+                            }
                         });
                 } else {
                     self.inProcess = false;
@@ -962,11 +968,28 @@ export default {
             anc.click();
             anc.remove();
         },
+        copyRemarks: function (ind, event) {
+            let self = this;
+            if(event.keyCode === 114){
+                event.preventDefault();
+                if(ind > 0){
+                    self.rows[ind].remarks = self.rows[ind-1].remarks;
+                }
+            }
+        },
+        getList: function (ind) {
+            this.code_sel_ind = ind;
+            $("#proSubsList").modal("show");
+        },
+        setSelCode: function (e) {
+            this.changeCode(e, this.code_sel_ind)
+        }
     },
     components: {
         getCodes,
         addBrokerModel,
         addTypeItemsModel,
-        getSubsName
+        getSubsName,
+        proSubsListModel
     }
 }
