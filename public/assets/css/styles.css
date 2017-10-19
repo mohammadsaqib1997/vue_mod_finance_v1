@@ -13281,3 +13281,12 @@ body .app-content {
 .no-border{
   border:none;
 }
+p.alert-danger.alert-error{
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  text-align: left;
+}
