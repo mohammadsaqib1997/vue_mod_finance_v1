@@ -790,6 +790,7 @@
         box-shadow: inset 0px -2px 1px rgba(0, 0, 0, 0.26) !important;
         padding: 5px;
         min-width: 0;
+        margin-top: 10px;
     }
     h3.p_subheading {
             font-size: 12px;
@@ -818,6 +819,7 @@
     .row.Total .col-xs-12.col-sm-2.col-md-2.col-lg-2.padding-right-0 p {
         font-size: 11px !important;
         padding-top: 4px;
+        line-height: normal !important;
     }
     .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {
         vertical-align: middle;
@@ -966,6 +968,7 @@
         box-shadow: inset 0px -2px 1px rgba(0, 0, 0, 0.26) !important;
         padding: 5px;
         min-width: 0;
+        margin-top: 10px;
     }
     h3.p_subheading {
             font-size: 12px;
@@ -1120,6 +1123,7 @@
         box-shadow: inset 0px -2px 1px rgba(0, 0, 0, 0.26) !important;
         padding: 5px;
         min-width: 0;
+        margin-top: 10px;
     }
     body h3.p_subheading {
         font-size: 12px;
@@ -1263,7 +1267,6 @@
     }
     .row.Total p.margin-bottom-0.text-center {
         line-height: normal !important;
-        margin-top: 20px;
         font-size: 10px !important;
     }
 }
