@@ -17,12 +17,17 @@ export default {
         let self = this;
 
         //numeric wathcer
-        let arr = ["selling_price", "booking_amount", "payment_installment"];
+        let arr = ["selling_price", "booking_amount"];
         arr.forEach(function (row) {
             self.$watch(row, function (val, oldVal) {
                 self[row] = func.isNumber(val, 8, "");
                 self.showPaymentPlan();
             });
+        });
+
+        self.$watch("payment_installment", function (val, oldVal) {
+            self.payment_installment = func.isNumber(val, 2, "");
+            self.showPaymentPlan();
         });
 
         self.$watch("sel_master_det", function (val, oldVal) {
@@ -122,7 +127,6 @@ export default {
             dataLoad5: true,
             dataLoad6: false,
             updateV: false,
-            typeChgCheck: true,
             updateStatus: false,
 
             // data save
@@ -537,11 +541,10 @@ export default {
             }else{
                 self.sel_type = "";
             }
-            self.loadTypesData();
+            if(!self.updateV){
+                self.loadTypesData();
+            }
         },
-        /*sel_type: function (val) {
-            this.loadTypesData();
-        }*/
     },
     validators: {
         sel_project: function (value) {
@@ -620,7 +623,7 @@ export default {
             return Validator.value(value).required().digit().maxLength(8);
         },
         payment_installment: function (value) {
-            return Validator.value(value).required().digit().maxLength(8);
+            return Validator.value(value).required().digit().maxLength(2);
         },
     },
     methods: {
@@ -717,36 +720,37 @@ export default {
             self.inProcess = true;
             self.$validate().then(function (success) {
                 if (success) {
-                    self.masterDetailsRef.child(self.sel_master_det).update({
-                        allotee_code: self.allotee_code,
-                        allotee_name: self.allotee_name,
-                        contact_no: self.contact_no,
-                        allotee_email: self.allotee_email,
-                        sel_broker: self.sel_broker,
-                        sel_type: self.sel_type,
-                        sel_pro_type_no: self.sel_pro_type_no,
-                        doc_year: self.doc_year,
-                        booking_date: self.booking_date,
-                        selling_price: self.selling_price,
-                        booking_amount: self.booking_amount,
-                        payment_installment: self.payment_installment,
-                        payment_plan: self.payment_plan,
-                        uid: firebase.auth().currentUser.uid,
-                        createdAt: firebase.database.ServerValue.TIMESTAMP
-                    }, function (err) {
-                        if (err) {
-                            self.errMain = err.message;
-                            self.inProcess = false;
-                        } else {
-                            let rows = self.rows;
-                            let subLength = 0;
-                            let process_item = 0;
-                            rows.forEach(function (row) {
-                                if (row.code !== "") {
-                                    subLength++;
-                                }
-                            });
-                            if (subLength > 0) {
+                    let rows = self.rows;
+                    let subLength = 0;
+                    let process_item = 0;
+                    rows.forEach(function (row) {
+                        if (row.code !== "") {
+                            subLength++;
+                        }
+                    });
+
+                    if (subLength > 0) {
+                        self.masterDetailsRef.child(self.sel_master_det).update({
+                            allotee_code: self.allotee_code,
+                            allotee_name: self.allotee_name,
+                            contact_no: self.contact_no,
+                            allotee_email: self.allotee_email,
+                            sel_broker: self.sel_broker,
+                            sel_type: self.sel_type,
+                            sel_pro_type_no: self.sel_pro_type_no,
+                            doc_year: self.doc_year,
+                            booking_date: self.booking_date,
+                            selling_price: self.selling_price,
+                            booking_amount: self.booking_amount,
+                            payment_installment: self.payment_installment,
+                            payment_plan: self.payment_plan,
+                            uid: firebase.auth().currentUser.uid,
+                            createdAt: firebase.database.ServerValue.TIMESTAMP
+                        }, function (err) {
+                            if (err) {
+                                self.errMain = err.message;
+                                self.inProcess = false;
+                            } else {
                                 rows.forEach(function (row, ind) {
                                     let key_save = row.key;
                                     if (row.code !== "") {
@@ -783,12 +787,12 @@ export default {
                                         }
                                     }
                                 });
-                            } else {
-                                self.sel_master_det = "";
-                                self.voucherMsg(self, "Successfully Updated Master Detail Voucher!");
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        self.inProcess = false;
+                        alert("Please fill entries!");
+                    }
                 } else {
                     self.inProcess = false;
                 }
@@ -828,6 +832,7 @@ export default {
                 let sel_voucher = self.masterDetailsData[key];
 
                 self.sel_project = sel_voucher.sel_project;
+                self.sel_type = sel_voucher.sel_type;
                 self.allotee_code = sel_voucher.allotee_code;
                 self.allotee_name = sel_voucher.allotee_name;
                 self.contact_no = sel_voucher.contact_no;
@@ -841,10 +846,7 @@ export default {
                 self.payment_plan = sel_voucher.payment_plan;
                 self.updateStatus = sel_voucher.posted_status !== 'Yes';
 
-                setTimeout(function () {
-                    self.typeChgCheck = false;
-                    self.sel_type = sel_voucher.sel_type;
-                }, 100);
+                self.loadTypesData();
 
                 $(".datepicker.booking_date").datepicker("update", new Date(sel_voucher.booking_date));
                 self.voucherEntriesGet(self);
@@ -928,9 +930,10 @@ export default {
         },
         loadTypesData: function () {
             let self = this;
-            self.dataLoad4 = true;
+            self.proTypesSubData = {};
             self.sel_pro_type_no = "";
             if (self.sel_project !== "" && self.sel_type !== "") {
+                self.dataLoad4 = true;
                 self.projectTypeItemsRef.orderByChild("pro_key").equalTo(self.sel_project).on("value", function (snap) {
                     if (snap.numChildren() > 0) {
                         let grabData = {};
@@ -940,19 +943,15 @@ export default {
                                 grabData[itemSnap.key] = item;
                             }
                         });
-                        if (self.updateV && !self.typeChgCheck) {
-                            self.sel_pro_type_no = self.masterDetailsData[self.sel_master_det].sel_pro_type_no;
-                            self.typeChgCheck = true;
-                        }
                         self.proTypesSubData = grabData;
+                        if (self.updateV) {
+                            self.sel_pro_type_no = self.masterDetailsData[self.sel_master_det].sel_pro_type_no;
+                        }
                     } else {
                         self.proTypesSubData = {};
                     }
                     self.dataLoad4 = false;
                 });
-            } else {
-                self.proTypesSubData = {};
-                self.dataLoad4 = false;
             }
         },
         showPaymentPlan: function () {

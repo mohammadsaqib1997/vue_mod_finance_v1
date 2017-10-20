@@ -100,6 +100,8 @@
                                                     option(value='') Select Installment
                                                     option(v-for='num in gen_installments' v-bind:value='num') Installment {{ ("0"+num).slice(-2) }}
                                                 p.text-danger.text-right(v-if='validation.hasError("sel_installment")') {{ validation.firstError('sel_installment') }}
+                                                .text-right(v-if='validation.isValidating("sel_installment")')
+                                                    i.fa.fa-spinner.fa-spin
                                             .form-group(v-if="userType === 'admin'")
                                                 label
                                                     | Posted Y/N

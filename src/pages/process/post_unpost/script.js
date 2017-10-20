@@ -226,9 +226,11 @@ export default {
                         gen_search_data[sKey] = sItem;
                         continue;
                     }
-                    if(sItem.ref_gen.toLowerCase().indexOf(val) > -1){
-                        gen_search_data[sKey] = sItem;
-                        continue;
+                    if(sItem.ref_gen){
+                        if(sItem.ref_gen.toLowerCase().indexOf(val) > -1){
+                            gen_search_data[sKey] = sItem;
+                            continue;
+                        }
                     }
                     if(sItem.project.toLowerCase().indexOf(val) > -1){
                         gen_search_data[sKey] = sItem;
