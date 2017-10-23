@@ -145,6 +145,11 @@
                                             p.text-danger.text-right(v-if='validation.hasError("booking_amount")') {{ validation.firstError('booking_amount') }}
                                     .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
+                                            label Possession Amount
+                                            input.form-control(type='text', v-model='possession_amount', placeholder='Enter your Possession Amount')
+                                            p.text-danger.text-right(v-if='validation.hasError("possession_amount")') {{ validation.firstError('possession_amount') }}
+                                    .col-xs-12.col-sm-12.col-md-3.col-lg-3
+                                        .form-group
                                             label Number Of Installment
                                             input.form-control(type='text', v-model='payment_installment', placeholder='Enter Your Number Of Installment')
                                             p.text-danger.text-right(v-if='validation.hasError("payment_installment")') {{ validation.firstError('payment_installment') }}

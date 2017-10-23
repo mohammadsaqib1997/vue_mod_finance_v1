@@ -17,16 +17,16 @@ export default {
         let self = this;
 
         //numeric wathcer
-        let arr = ["selling_price", "booking_amount"];
+        let arr = ["selling_price", "booking_amount", "possession_amount"];
         arr.forEach(function (row) {
             self.$watch(row, function (val, oldVal) {
-                self[row] = func.isNumber(val, 8, "");
+                self[row] = func.isNumber(val, 8, 0);
                 self.showPaymentPlan();
             });
         });
 
         self.$watch("payment_installment", function (val, oldVal) {
-            self.payment_installment = func.isNumber(val, 2, "");
+            self.payment_installment = func.isNumber(val, 2, 0);
             self.showPaymentPlan();
         });
 
@@ -157,9 +157,10 @@ export default {
             sel_pro_type_no: "",
             doc_year: "",
             booking_date: "",
-            selling_price: "",
-            booking_amount: "",
-            payment_installment: "",
+            selling_price: 0,
+            booking_amount: 0,
+            possession_amount: 0,
+            payment_installment: 0,
             payment_plan: "",
 
             rows: [
@@ -622,6 +623,9 @@ export default {
         booking_amount: function (value) {
             return Validator.value(value).required().digit().maxLength(8);
         },
+        possession_amount: function (value) {
+            return Validator.value(value).required().digit().maxLength(8);
+        },
         payment_installment: function (value) {
             return Validator.value(value).required().digit().maxLength(2);
         },
@@ -672,6 +676,7 @@ export default {
                                     booking_date: self.booking_date,
                                     selling_price: self.selling_price,
                                     booking_amount: self.booking_amount,
+                                    possession_amount: self.possession_amount,
                                     payment_installment: self.payment_installment,
                                     payment_plan: self.payment_plan,
                                     uid: firebase.auth().currentUser.uid,
@@ -742,6 +747,7 @@ export default {
                             booking_date: self.booking_date,
                             selling_price: self.selling_price,
                             booking_amount: self.booking_amount,
+                            possession_amount: self.possession_amount,
                             payment_installment: self.payment_installment,
                             payment_plan: self.payment_plan,
                             uid: firebase.auth().currentUser.uid,
@@ -842,6 +848,7 @@ export default {
                 self.booking_date = sel_voucher.booking_date;
                 self.selling_price = sel_voucher.selling_price;
                 self.booking_amount = sel_voucher.booking_amount;
+                self.possession_amount = (sel_voucher.possession_amount) ? sel_voucher.possession_amount: 0;
                 self.payment_installment = sel_voucher.payment_installment;
                 self.payment_plan = sel_voucher.payment_plan;
                 self.updateStatus = sel_voucher.posted_status !== 'Yes';
@@ -867,9 +874,10 @@ export default {
             self.sel_pro_type_no = "";
             self.doc_year = "";
             self.booking_date = "";
-            self.selling_price = "";
-            self.booking_amount = "";
-            self.payment_installment = "";
+            self.selling_price = 0;
+            self.booking_amount = 0;
+            self.possession_amount = 0;
+            self.payment_installment = 0;
             self.payment_plan = "";
 
             $(".datepicker.booking_date").val('');
@@ -958,8 +966,8 @@ export default {
         showPaymentPlan: function () {
             let self = this;
             self.payment_plan = "";
-            if (self.selling_price !== "" && self.booking_amount !== "" && self.payment_installment !== "") {
-                self.payment_plan = (self.selling_price - self.booking_amount) / self.payment_installment;
+            if (self.selling_price !== 0 && self.booking_amount !== 0 && self.payment_installment !== 0) {
+                self.payment_plan = (self.selling_price - (self.booking_amount + self.possession_amount)) / self.payment_installment;
             }
         },
         view_plan: function (sel_voucher) {

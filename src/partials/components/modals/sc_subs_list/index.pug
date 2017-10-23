@@ -9,12 +9,17 @@
                 .row.margin-none(v-if='load1')
                     .col-md-12.text-center
                         i.fa.fa-refresh.fa-spin.fa-3x
-                table.table.table-responsive.table-bordered.table-hover(v-else-if='loadData !== null')
-                    tbody
-                        tr(v-for='(item, key, ind) in loadData' v-on:click="selSub(key)")
-                            td {{ key }}
-                            td.text-left {{ item.name }}
-                .text-center(v-else)
-                    h3 No Data Found!
+                template(v-else)
+                    .row
+                        .col-md-6.col-md-offset-6
+                            .form-group
+                                input.form-control(placeholder='Search...' v-model='search_txt')
+                    table.table.table-responsive.table-bordered.table-hover(v-if='Object.keys(loadData).length > 0')
+                        tbody
+                            tr(v-for='(item, key, ind) in loadData' v-on:click="selSub(key)")
+                                td {{ key }}
+                                td.text-left {{ item.name }}
+                    .text-center(v-else)
+                        h3 No Data Found!
 
 

@@ -98,7 +98,7 @@
                                                 label Select Installment
                                                 select.form-control(v-model='sel_installment')
                                                     option(value='') Select Installment
-                                                    option(v-for='num in gen_installments' v-bind:value='num') Installment {{ ("0"+num).slice(-2) }}
+                                                    option(v-for='num in gen_installments' v-bind:value='num') {{ (num === "possession") ? "Possession Amount":"Installment "+("0"+num).slice(-2) }}
                                                 p.text-danger.text-right(v-if='validation.hasError("sel_installment")') {{ validation.firstError('sel_installment') }}
                                                 .text-right(v-if='validation.isValidating("sel_installment")')
                                                     i.fa.fa-spinner.fa-spin

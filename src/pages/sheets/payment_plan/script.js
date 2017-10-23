@@ -97,6 +97,21 @@ export default {
                                                                                 if (regSubsCode === jvEntItem.code) {
                                                                                     let payDate = moment(jvEntItem.v_date);
 
+                                                                                    if(jvItem.pay_installment === "possession"){
+                                                                                        booking_date.add(1, "M");
+                                                                                        grabEnt.ins_data[jvItem.pay_installment] = {
+                                                                                            inst_ind: "Possession Amount",
+                                                                                            type: "",
+                                                                                            voucher_id: "",
+                                                                                            installment: mdData.possession_amount,
+                                                                                            amount: 0,
+                                                                                            penalty: false,
+                                                                                            pay_date: false,
+                                                                                            due_date: booking_date.format("DD/MM/YYYY"),
+                                                                                            due_date_unix: booking_date.unix(),
+                                                                                        };
+                                                                                    }
+
                                                                                     grabEnt.ins_data[jvItem.pay_installment]['type'] = "JV";
                                                                                     grabEnt.ins_data[jvItem.pay_installment]['voucher_id'] = jvItem.id;
                                                                                     grabEnt.ins_data[jvItem.pay_installment]['pay_date'] = payDate.format("DD/MM/YYYY");

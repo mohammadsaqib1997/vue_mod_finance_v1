@@ -522,6 +522,11 @@ export default {
                 for (let i = 0; i < loopInc; i++) {
                     self.gen_installments.push(i+1);
                 }
+                if(mdData.hasOwnProperty('possession_amount')){
+                    if(mdData.possession_amount > 0){
+                        self.gen_installments.push('possession');
+                    }
+                }
                 if(self.ref_type === "md" && self.updateV && self.sel_ref === self.selectVoucherData.ref_key){
                     self.sel_installment = self.selectVoucherData.pay_installment;
                 }
@@ -573,7 +578,7 @@ export default {
         sel_installment: function(value){
             let self = this;
             if(this.ref_type === "md"){
-                return Validator.value(value).required().maxLength(5).custom(function () {
+                return Validator.value(value).required().maxLength(10).custom(function () {
                     if(value !== ""){
                         return Promise.delay(1000).then(function () {
                             return self.vouchersRef.orderByChild('ref_key').equalTo(self.sel_ref).once('value').then(function (voucherSnap) {
