@@ -146,7 +146,7 @@ div(style='background: #f1f1f1 !important;float: left;width: 100%;padding-bottom
                             each ent, ind in fetchData.entData
                                 - i += 1;
                                 tr(style='font-size: 14px;font-family: Helvetica, sans-serif;font-weight: 400;'+(((i%2) === 0) ? 'background-color: #f9f9f9;':'')+((count !== i) ? 'border-bottom: 1px solid #e2e2e4;':''))
-                                    td(style='width:10%;border-bottom: 1px solid #e2e2e4;color: #000 !important;border-top: none;vertical-align: middle;border: none;padding: 8px;line-height: 1.42857143;') #{("0" + (1 + ind)).slice(-2)}
+                                    td(style='width:10%;border-bottom: 1px solid #e2e2e4;color: #000 !important;border-top: none;vertical-align: middle;border: none;padding: 8px;line-height: 1.42857143;') #{ent.inst_ind}
                                     td(style='width:10%;border-bottom: 1px solid #e2e2e4;color: #000 !important;border-top: none;vertical-align: middle;border: none;padding: 8px;line-height: 1.42857143;') #{ent.type}
                                     td(style='width:10%;border-bottom: 1px solid #e2e2e4;color: #000 !important;border-top: none;vertical-align: middle;border: none;padding: 8px;line-height: 1.42857143;') #{ent.voucher_id}
                                     td(style='width:40px;border-bottom: 1px solid #e2e2e4;color: #000 !important;border-top: none;vertical-align: middle;border: none;padding: 8px;line-height: 1.42857143;') #{(ent.pay_date) ? ent.pay_date : ""}

@@ -27,7 +27,7 @@ export default {
         });
 
         self.$watch('sel_project', function (val, oldVal) {
-            self.loadMasterDetails(val);
+            self.loadMasterDetails();
         });
 
         self.rows.forEach(function (row, ind) {
@@ -86,20 +86,20 @@ export default {
             }
             self.dataLoad4 = false;
         });
-
-        setTimeout(function () {
-            $(function () {
-                $(".datepicker.voucher_date").datepicker({
-                    startDate: new Date(dateYear.open),
-                    endDate: new Date(dateYear.close),
-                    format: 'mm/dd/yyyy',
-                }).on('change', function (e) {
-                    let grabField = $(e.target);
-                    let date = new Date(grabField.val());
-                    self.voucher_date = date.getTime();
-                });
+    },
+    mounted: function () {
+        let self = this;
+        $(function () {
+            $(".datepicker.voucher_date").datepicker({
+                startDate: new Date(dateYear.open),
+                endDate: new Date(dateYear.close),
+                format: 'mm/dd/yyyy',
+            }).on('change', function (e) {
+                let grabField = $(e.target);
+                let date = new Date(grabField.val());
+                self.voucher_date = date.getTime();
             });
-        }, 100);
+        });
     },
     data: function () {
         return {
@@ -118,6 +118,7 @@ export default {
             vouchersData: {},
             masterDetailsData: {},
             partyInformationData: {},
+            selectVoucherData: {},
 
             // references
             projectsRef: null,
@@ -516,8 +517,13 @@ export default {
             self.sel_installment = "";
             if(self.ref_type === "md" && val !== ""){
                 let mdData = self.masterDetailsData[val];
-                for (let i = 0; i < mdData.payment_installment; i++) {
+                let loopInc = (mdData.payment_installment > 99) ? 99 : mdData.payment_installment;
+
+                for (let i = 0; i < loopInc; i++) {
                     self.gen_installments.push(i+1);
+                }
+                if(self.ref_type === "md" && self.updateV && self.sel_ref === self.selectVoucherData.ref_key){
+                    self.sel_installment = self.selectVoucherData.pay_installment;
                 }
             }
         }
@@ -565,8 +571,38 @@ export default {
             }
         },
         sel_installment: function(value){
+            let self = this;
             if(this.ref_type === "md"){
-                return Validator.value(value).required().maxLength(5);
+                return Validator.value(value).required().maxLength(5).custom(function () {
+                    if(value !== ""){
+                        return Promise.delay(1000).then(function () {
+                            return self.vouchersRef.orderByChild('ref_key').equalTo(self.sel_ref).once('value').then(function (voucherSnap) {
+                                let renderData = voucherSnap.val();
+                                if (renderData !== null) {
+                                    let valid = true;
+                                    voucherSnap.forEach(function (voucherItemSnap) {
+                                        let item = voucherItemSnap.val();
+                                        if(value === item.pay_installment){
+                                            if(self.updateV){
+                                                if(voucherItemSnap.key !== self.sel_voucher){
+                                                    valid = false;
+                                                    return true;
+                                                }
+                                            }else{
+                                                valid = false;
+                                                return true;
+                                            }
+                                        }
+                                    });
+
+                                    if(!valid){
+                                        return "Already payed!";
+                                    }
+                                }
+                            });
+                        });
+                    }
+                });
             }
         },
         sel_project: function (value) {
@@ -766,22 +802,21 @@ export default {
             if (key !== "") {
                 self.updateV = true;
                 self.fullVoucherReset(self);
-                let sel_voucher = self.vouchersData[key];
-                self.voucher_id = sel_voucher.id;
-                self.v_remarks = sel_voucher.v_remarks;
-                self.posted_status = sel_voucher.posted_status;
-                self.updateStatus = sel_voucher.posted_status !== 'Yes';
-                self.ref_type = sel_voucher.ref_type;
-                self.sel_project = sel_voucher.sel_project;
-                self.voucher_date = sel_voucher.voucher_date;
-                setTimeout(function () {
-                    self.sel_ref = sel_voucher.ref_key;
-                }, 100);
-                $(".datepicker.voucher_date").datepicker("setDate", new Date(sel_voucher.voucher_date));
+                self.selectVoucherData = self.vouchersData[key];
+                self.voucher_id = self.selectVoucherData.id;
+                self.v_remarks = self.selectVoucherData.v_remarks;
+                self.posted_status = self.selectVoucherData.posted_status;
+                self.updateStatus = self.selectVoucherData.posted_status !== 'Yes';
+                self.ref_type = self.selectVoucherData.ref_type;
+                self.sel_project = self.selectVoucherData.sel_project;
+                self.voucher_date = self.selectVoucherData.voucher_date;
+                $(".datepicker.voucher_date").datepicker("setDate", new Date(self.selectVoucherData.voucher_date));
+                self.loadMasterDetails();
                 self.voucherEntriesGet(self);
 
             } else {
                 self.updateV = false;
+                self.selectVoucherData = {};
                 self.fullVoucherReset(self);
             }
         },
@@ -789,7 +824,7 @@ export default {
             self.setPostStatus();
             self.voucher_id = "";
             self.v_remarks = "";
-            self.ref_type = "md";
+            self.ref_type = "mis";
             self.sel_ref = "";
             self.sel_project = "";
             $(".datepicker.voucher_date").val('');
@@ -856,14 +891,18 @@ export default {
                 self.posted_status = "No";
             }
         },
-        loadMasterDetails: function (val) {
+        loadMasterDetails: function () {
             let self = this;
-            if(val !== ""){
+            self.sel_ref = "";
+            if(self.sel_project !== ""){
                 self.dataLoad4 = true;
-                self.masterDetailsRef.orderByChild('sel_project').equalTo(val).once('value', function (snap) {
+                self.masterDetailsRef.orderByChild('sel_project').equalTo(self.sel_project).once('value', function (snap) {
                     let renderData = snap.val();
                     if (renderData !== null) {
                         self.masterDetailsData = renderData;
+                        if(self.ref_type === "md" && self.updateV){
+                            self.sel_ref = self.selectVoucherData.ref_key;
+                        }
                     } else {
                         self.masterDetailsData = {};
                     }
