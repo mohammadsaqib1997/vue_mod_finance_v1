@@ -72,21 +72,25 @@
                                             .form-group
                                                 label {{ proTypesData[sel_type].name }} No.
                                                 .row
-                                                    .col-xs-12.col-sm-10.col-md-10.col-lg-10
-                                                        .text-center(v-if='dataLoad4')
+                                                    .col-xs-12.col-sm-10.col-md-10.col-lg-10(v-if='dataLoad4')
+                                                        .text-center
                                                             i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                                        template(v-else='v-else')
-                                                            select.form-control(v-model='sel_pro_type_no')
-                                                                option(value='') Select {{ proTypesData[sel_type].name }} No.
-                                                                option(v-for='(row, key, ind) in proTypesSubData', v-bind:value='key') {{ row.name }}
-                                                            p.text-danger.text-right(v-if='validation.hasError("sel_pro_type_no")') {{ validation.firstError('sel_pro_type_no') }}
-                                                            .text-right(v-if='validation.isValidating("sel_pro_type_no")')
-                                                                i.fa.fa-spinner.fa-spin
-                                                    .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container
-                                                        ul.ul-action
-                                                            li
-                                                                a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_type_items')
-                                                                    i.ti-plus
+                                                    template(v-else)
+                                                        .col-xs-12.col-sm-10.col-md-10.col-lg-10
+                                                                select.form-control(v-model='sel_pro_type_no')
+                                                                    option(value='') Select {{ proTypesData[sel_type].name }} No.
+                                                                    option(v-for='(row, key, ind) in proTypesSubData', v-bind:value='key') {{ row.name }}
+                                                                p.text-danger.text-right(v-if='validation.hasError("sel_pro_type_no")') {{ validation.firstError('sel_pro_type_no') }}
+                                                                .text-right(v-if='validation.isValidating("sel_pro_type_no")')
+                                                                    i.fa.fa-spinner.fa-spin
+                                                        .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container
+                                                            ul.ul-action
+                                                                li(v-if="sel_pro_type_no === ''")
+                                                                    a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_type_items')
+                                                                        i.ti-plus
+                                                                li(v-else)
+                                                                    a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_type_items')
+                                                                        i.ti-pencil
                                 .row
                                     .col-xs-12.col-sm-12.col-md-12.col-lg-12
                                         h3.p_subheading Allotee Details
@@ -141,8 +145,8 @@
                                             p.text-danger.text-right(v-if='validation.hasError("booking_amount")') {{ validation.firstError('booking_amount') }}
                                     .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
-                                            label Installment
-                                            input.form-control(type='text', v-model='payment_installment', placeholder='Enter your Installment')
+                                            label Number Of Installment
+                                            input.form-control(type='text', v-model='payment_installment', placeholder='Enter Your Number Of Installment')
                                             p.text-danger.text-right(v-if='validation.hasError("payment_installment")') {{ validation.firstError('payment_installment') }}
                                     .col-xs-12.col-sm-12.col-md-3.col-lg-3
                                         .form-group
@@ -213,5 +217,5 @@
                                     button.btn.btn-lg.btn-primary.btn-wide.pull-left(v-else, type='button', v-on:click.prevent='addVoucher')
                                         | Submit
     add-broker-model
-    add-type-items-model
+    add-type-items-model(v-bind:sel_project="sel_project" v-bind:edit_data='(sel_pro_type_no !== "") ? proTypesSubData[sel_pro_type_no]: {}')
     proSubsListModel(v-bind:pro_key="sel_project" v-on:get_subs_item="setSelCode")

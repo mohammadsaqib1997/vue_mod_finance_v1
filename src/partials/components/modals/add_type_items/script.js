@@ -5,6 +5,10 @@ import SimpleVueValidation from 'simple-vue-validator'
 const Validator = SimpleVueValidation.Validator;
 
 export default {
+    props:[
+        "sel_project",
+        "edit_data"
+    ],
     created: function () {
         let self = this;
 
@@ -14,34 +18,12 @@ export default {
         self.projectTypeItemsRef = db.ref('/project_type_items');
         self.regSubsidiaryRef = db.ref('/reg_subsidiary');
         self.subsidiaryRef = db.ref('/subsidiary');
-
-        self.projectsRef.on('value', function (proSnap) {
-            let renderData = proSnap.val();
-            if (renderData !== null) {
-                self.proData = renderData;
-            } else {
-                self.proData = {};
-            }
-            self.dataLoad1 = false;
-        });
-
-        self.projectTypesRef.on('value', function (snap) {
-            let renderData = snap.val();
-            if (renderData !== null) {
-                self.proTypesData = renderData;
-            } else {
-                self.proTypesData = {};
-            }
-            self.dataLoad2 = false;
-        });
     },
     data: function () {
         return {
             //loaders
             inProcess: false,
             dataLoad1: true,
-            dataLoad2: true,
-            dataLoad3: false,
 
             //data
             proData: {},
@@ -55,10 +37,11 @@ export default {
             regSubsidiaryRef: null,
 
             // form fields
+            update: false,
             name: "",
             sel_subs: "",
-            sel_project: "",
             sel_type: "",
+            type_name: "",
             errMain: "",
             sucMain: "",
         }
@@ -67,11 +50,23 @@ export default {
         sel_project: function (val) {
             let self = this;
             if(val !== ""){
-                self.sel_type = self.proData[val].pro_type_id;
+                self.loadData(val);
             }else{
-                self.sel_type = "";
+                self.name = "";
+                self.sel_subs = "";
+                self.validation.reset();
             }
-            this.loadSubsidiary(val);
+        },
+        edit_data: function (val) {
+            if(val.hasOwnProperty('key')){
+                this.update = true;
+                this.loadData(this.sel_project);
+            }else{
+                this.sel_subs = "";
+                this.name = "";
+                this.update = false;
+                this.validation.reset();
+            }
         }
     },
     validators: {
@@ -88,8 +83,15 @@ export default {
                                 keys.forEach(function (key) {
                                     let item = data[key];
                                     if(item.pro_key === self.sel_project){
-                                        exist = true;
-                                        return false;
+                                        if(self.update){
+                                            if(key !== self.edit_data.key){
+                                                exist = true;
+                                                return false;
+                                            }
+                                        }else{
+                                            exist = true;
+                                            return false;
+                                        }
                                     }
                                 });
                                 if(exist){
@@ -117,8 +119,15 @@ export default {
                                 keys.forEach(function (key) {
                                     let item = data[key];
                                     if(item.pro_key === self.sel_project){
-                                        exist = true;
-                                        return false;
+                                        if(self.update){
+                                            if(key !== self.edit_data.key){
+                                                exist = true;
+                                                return false;
+                                            }
+                                        }else{
+                                            exist = true;
+                                            return false;
+                                        }
                                     }
                                 });
                                 if(exist){
@@ -140,76 +149,110 @@ export default {
             self.inProcess = true;
             self.$validate().then(function (success) {
                 if (success) {
-                    self.projectTypeItemsRef
-                        .orderByChild('id')
-                        .limitToLast(1)
-                        .once('value')
-                        .then(function (snap) {
-                            let renderData = snap.val();
-                            let next_id = 1;
-                            if (renderData !== null) {
-                                let keys = Object.keys(renderData);
-                                next_id = parseInt(renderData[keys[0]].id) + 1;
+                    if(self.update){
+                        self.projectTypeItemsRef.child(self.edit_data.key).update({
+                            name: self.name,
+                            subs_key: self.sel_subs
+                        }, function (err) {
+                            if (err) {
+                                self.errMain = err.message;
+                            } else {
+                                self.errMain = "";
+                                self.sucMain = "Successfully updated item!";
+                                setTimeout(function () {
+                                    self.sucMain = "";
+                                }, 1500);
                             }
-                            self.projectTypeItemsRef.push({
-                                id: next_id,
-                                name: self.name,
-                                pro_key: self.sel_project,
-                                type_key: self.sel_type,
-                                subs_key: self.sel_subs,
-                                createdAt: firebase.database.ServerValue.TIMESTAMP,
-                            }, function (err) {
-                                if (err) {
-                                    self.errMain = err.message;
-                                } else {
-                                    self.errMain = "";
-                                    self.sucMain = "Successfully inserted item!";
-                                    self.name = "";
-                                    self.sel_project = "";
-                                    self.sel_type = "";
-                                    self.validation.reset();
-                                    setTimeout(function () {
-                                        self.sucMain = "";
-                                    }, 1500);
-                                }
-                                self.inProcess = false;
-                            });
+                            self.inProcess = false;
                         });
+                    }else{
+                        self.projectTypeItemsRef
+                            .orderByChild('id')
+                            .limitToLast(1)
+                            .once('value')
+                            .then(function (snap) {
+                                let renderData = snap.val();
+                                let next_id = 1;
+                                if (renderData !== null) {
+                                    let keys = Object.keys(renderData);
+                                    next_id = parseInt(renderData[keys[0]].id) + 1;
+                                }
+                                self.projectTypeItemsRef.push({
+                                    id: next_id,
+                                    name: self.name,
+                                    pro_key: self.sel_project,
+                                    type_key: self.sel_type,
+                                    subs_key: self.sel_subs,
+                                    createdAt: firebase.database.ServerValue.TIMESTAMP,
+                                }, function (err) {
+                                    if (err) {
+                                        self.errMain = err.message;
+                                    } else {
+                                        self.errMain = "";
+                                        self.sucMain = "Successfully inserted item!";
+                                        self.name = "";
+                                        self.sel_subs = "";
+                                        self.validation.reset();
+                                        setTimeout(function () {
+                                            self.sucMain = "";
+                                        }, 1500);
+                                    }
+                                    self.inProcess = false;
+                                });
+                            });
+                    }
                 }else{
                     self.inProcess = false;
                 }
             });
         },
-        loadSubsidiary: function (val) {
+        loadData: function (val) {
             let self = this;
             self.sel_subs = "";
-            if(val !== ""){
-                self.dataLoad3 = true;
-                self.regSubsidiaryRef.child(val).once('value', function (regSubsSnap) {
-                    if(regSubsSnap.numChildren() > 0){
-                        let grabData = {};
-                        let process_item = 0;
-                        regSubsSnap.forEach(function (regSubSnap) {
-                            let regSubItem = regSubSnap.val();
-                            self.subsidiaryRef.child(regSubItem.key).once('value', function (subsSnap) {
-                                let subsData = subsSnap.val();
-                                regSubItem['name'] = subsData.name;
-                                grabData[subsSnap.key] = regSubItem;
+            self.sel_type = "";
+            self.type_name = "";
+            self.dataLoad1 = true;
+            // --data-load
+            self.projectsRef.child(val).once('value', function (proSnap) {
+                let proData = proSnap.val();
+                if(proData !== null){
+                    self.sel_type = proData.pro_type_id;
+                    // --data-load
+                    self.projectTypesRef.child(self.sel_type).once('value', function(proTypeSnap){
+                        self.type_name = proTypeSnap.val().name;
+                        // --data-load
+                        self.regSubsidiaryRef.child(val).once('value', function (regSubsSnap) {
+                            if(regSubsSnap.numChildren() > 0){
+                                let grabData = {};
+                                let process_item = 0;
+                                regSubsSnap.forEach(function (regSubSnap) {
+                                    let regSubItem = regSubSnap.val();
+                                    // --data-load
+                                    self.subsidiaryRef.child(regSubItem.key).once('value', function (subsSnap) {
+                                        let subsData = subsSnap.val();
+                                        regSubItem['name'] = subsData.name;
+                                        grabData[subsSnap.key] = regSubItem;
 
-                                process_item++;
-                                if(process_item === regSubsSnap.numChildren()){
-                                    self.regSubsData = grabData;
-                                }
-                            });
+                                        process_item++;
+                                        if(process_item === regSubsSnap.numChildren()){
+                                            self.regSubsData = grabData;
+                                            if(self.update){
+                                                self.sel_subs = self.edit_data.subs_key;
+                                                self.name = self.edit_data.name;
+                                            }
+                                            self.dataLoad1 = false;
+                                        }
+                                    });
+                                });
+                            }else{
+                                self.dataLoad1 = false;
+                            }
                         });
-                    }else{
-                        self.regSubsData = {};
-                    }
-                    self.dataLoad3 = false;
-                });
-            }else{
-                self.regSubsData = {}
-            }
+                    });
+                } else {
+                    self.dataLoad1 = false;
+                }
+            });
         }
     }
 }

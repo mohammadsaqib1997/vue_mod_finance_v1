@@ -940,6 +940,7 @@ export default {
                         snap.forEach(function (itemSnap) {
                             let item = itemSnap.val();
                             if (item.type_key === self.sel_type) {
+                                item['key'] = itemSnap.key;
                                 grabData[itemSnap.key] = item;
                             }
                         });
