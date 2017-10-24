@@ -166,7 +166,9 @@ export default {
                         keys.forEach(function (row, ind, arr) {
                             let item = data[row];
                             self.controlsRef.child(item.key).once('value').then(function (conSnap) {
-                                self.controlData[item.key] = conSnap.val();
+                                let contItem = conSnap.val();
+                                contItem['key'] = item.key;
+                                self.controlData[item.key] = contItem;
                                 if (ind === arr.length-1) {
                                     self.controlData = func.sortObj(self.controlData, false);
                                     self.dataLoad2 = false;
@@ -199,7 +201,9 @@ export default {
                         keys.forEach(function (row, ind, arr) {
                             let item = data[row];
                             self.subControlsRef.child(item.key).once('value').then(function (subConSnap) {
-                                self.subControlData[item.key] = subConSnap.val();
+                                let subContItem = subConSnap.val();
+                                subContItem['key'] = item.key;
+                                self.subControlData[item.key] = subContItem;
                                 if (ind === arr.length-1) {
                                     self.subControlData = func.sortObj(self.subControlData, false);
                                     self.dataLoad3 = false;
@@ -232,7 +236,10 @@ export default {
                         keys.forEach(function (row, ind, arr) {
                             let item = data[row];
                             self.subsRef.child(item.key).once('value').then(function (subsSnap) {
-                                self.subsData[item.key] = subsSnap.val();
+                                let subsItem = subsSnap.val();
+                                subsItem['key'] = item.key;
+                                subsItem['c_key'] = self.sel_control;
+                                self.subsData[item.key] = subsItem;
                                 if (ind === arr.length-1) {
                                     self.subsData = func.sortObj(self.subsData, false);
                                     self.dataLoad4 = false;

@@ -102,7 +102,9 @@ export default {
                         keys.forEach(function (key, ind, arr) {
                             let item = regContData[key];
                             self.controlsRef.child(item.key).once('value').then(function (conSnap) {
-                                self.controlData[item.key] = conSnap.val();
+                                let item = conSnap.val();
+                                item['key'] = conSnap.key;
+                                self.controlData[conSnap.key] = item;
                                 if(ind === arr.length-1){
                                     self.controlData = func.sortObj(self.controlData, false);
                                     self.dataLoad2 = false;

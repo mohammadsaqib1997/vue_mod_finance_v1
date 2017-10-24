@@ -5,6 +5,7 @@ import SimpleVueValidation from 'simple-vue-validator'
 const Validator = SimpleVueValidation.Validator;
 
 export default {
+    props: ["sel_subsidiary"],
     created: function () {
         let self = this;
 
@@ -30,6 +31,20 @@ export default {
             self.dataLoad1 = false;
         });
     },
+    watch: {
+        sel_subsidiary: function (val) {
+            this.update = (val) ? val.hasOwnProperty('key') : false;
+            if(this.update){
+                this.sel_control = val.c_key;
+                this.sel_sub_control = val.sub_cont_key;
+                this.subsidiary_name = val.name;
+            }else{
+                this.sel_control = "";
+                this.sel_sub_control = "";
+                this.subsidiary_name = "";
+            }
+        }
+    },
     data: function () {
         return {
             dbLoad: null,
@@ -38,6 +53,7 @@ export default {
             dataLoad1: true,
             dataLoad2: false,
             inProcess: false,
+            update: false,
 
             // data save
             controlData: {},
@@ -69,9 +85,21 @@ export default {
                 return Promise.delay(1000).then(function () {
                     if(self.sel_control !== ""){
                         return self.subsidiaryRef.orderByChild('name').equalTo(value).once('value').then(function (subsSnap) {
-                            let subsData = subsSnap.val();
-                            if(subsData !== null){
-                                return "Already taken!";
+                            if(subsSnap.numChildren() > 0){
+                                if(self.update){
+                                    let valid = true;
+                                    subsSnap.forEach(function (snap) {
+                                        if(snap.key !== self.sel_subsidiary.key){
+                                            valid = false;
+                                            return false;
+                                        }
+                                    });
+                                    if(!valid){
+                                        return "Already taken!";
+                                    }
+                                }else{
+                                    return "Already taken!";
+                                }
                             }
                         });
                     }
@@ -91,6 +119,11 @@ export default {
                         let data = subContSnap.val();
                         if(data !== null){
                             self.subControlData = data;
+                            if(self.update){
+                                if(self.sel_control === self.sel_subsidiary.c_key){
+                                    self.sel_sub_control = self.sel_subsidiary.sub_cont_key;
+                                }
+                            }
                         }
                         self.dataLoad2 = false;
                     });
@@ -104,40 +137,58 @@ export default {
             self.$validate().then(function (success) {
                 if (success) {
                     self.inProcess = true;
-                    self.subsidiaryRef
-                        .orderByChild('sub_cont_key')
-                        .equalTo(self.sel_sub_control)
-                        .limitToLast(1)
-                        .once('value')
-                        .then(function (subsSnap) {
-                            let subsData = subsSnap.val();
-                            let next_id = 1;
-                            if(subsData !== null){
-                                let keys = Object.keys(subsData);
-                                next_id = parseInt(subsData[keys[keys.length-1]].id)+1;
+                    if(self.update){
+                        self.subsidiaryRef.child(self.sel_subsidiary.key).update({
+                            name: self.subsidiary_name,
+                            sub_cont_key: self.sel_sub_control
+                        }, function (err) {
+                            if(err){
+                                self.errMain = err.message;
+                            }else{
+                                self.errMain = "";
+                                self.sucMain = "Successfully updated subsidiary!";
+                                self.validation.reset();
+                                setTimeout(function () {
+                                    self.sucMain = "";
+                                }, 1500);
                             }
                             self.inProcess = false;
-                            self.subsidiaryRef.push({
-                                id: next_id,
-                                name: self.subsidiary_name,
-                                sub_cont_key: self.sel_sub_control
-                            }, function (err) {
-                                if(err){
-                                    self.errMain = err.message;
-                                }else{
-                                    self.errMain = "";
-                                    self.sucMain = "Successfully inserted sub control!";
-                                    self.sel_control = "";
-                                    self.sel_sub_control = "";
-                                    self.subsidiary_name = "";
-                                    self.validation.reset();
-                                    setTimeout(function () {
-                                        self.sucMain = "";
-                                    }, 1500);
-                                }
-                                self.inProcess = false;
-                            });
                         });
+                    }else{
+                        self.subsidiaryRef
+                            .orderByChild('sub_cont_key')
+                            .equalTo(self.sel_sub_control)
+                            .limitToLast(1)
+                            .once('value')
+                            .then(function (subsSnap) {
+                                let subsData = subsSnap.val();
+                                let next_id = 1;
+                                if(subsData !== null){
+                                    let keys = Object.keys(subsData);
+                                    next_id = parseInt(subsData[keys[keys.length-1]].id)+1;
+                                }
+                                self.subsidiaryRef.push({
+                                    id: next_id,
+                                    name: self.subsidiary_name,
+                                    sub_cont_key: self.sel_sub_control
+                                }, function (err) {
+                                    if(err){
+                                        self.errMain = err.message;
+                                    }else{
+                                        self.errMain = "";
+                                        self.sucMain = "Successfully inserted subsidiary!";
+                                        self.sel_control = "";
+                                        self.sel_sub_control = "";
+                                        self.subsidiary_name = "";
+                                        self.validation.reset();
+                                        setTimeout(function () {
+                                            self.sucMain = "";
+                                        }, 1500);
+                                    }
+                                    self.inProcess = false;
+                                });
+                            });
+                    }
                 }
             });
         }

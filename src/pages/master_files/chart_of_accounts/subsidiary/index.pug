@@ -73,11 +73,15 @@
                                                         option(value='') Select Control
                                                         option(v-for='(row, key, ind) in controlData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_control")') {{ validation.firstError('sel_control') }}
-                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container(v-if="sel_control === ''")
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container
                                                 ul.ul-action
-                                                    li
+                                                    li(v-if="sel_control === ''")
                                                         a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#proj_sel_control')
                                                             i.ti-plus
+                                                    li(v-if="sel_control !== ''")
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_control')
+                                                            span(style='color:#545454;margin-right:5px;') Edit
+                                                            i.ti-pencil
                                     .form-group
                                         .row
                                             .col-xs-12.col-sm-10.col-md-10.col-lg-10(v-if='dataLoad3')
@@ -91,11 +95,15 @@
                                                         option(value='') Select Sub Control
                                                         option(v-for='(row, key, ind) in subControlData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_sub_control")') {{ validation.firstError('sel_sub_control') }}
-                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container(v-if="sel_sub_control === ''")
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container
                                                 ul.ul-action
-                                                    li
+                                                    li(v-if="sel_sub_control === ''")
                                                         a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#proj_sel_sub_control')
                                                             i.ti-plus
+                                                    li(v-if="sel_sub_control !== ''")
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_sub_control')
+                                                            span(style='color:#545454;margin-right:5px;') Edit
+                                                            i.ti-pencil
                                     .form-group
                                         .row
                                             .col-xs-12.col-sm-10.col-md-10.col-lg-10(v-if='dataLoad4')
@@ -109,11 +117,15 @@
                                                         option(value='') Select Subsidiary
                                                         option(v-for='(row, key, ind) in subsData', v-bind:value='key') {{ row.name }}
                                                     p.text-danger.text-right(v-if='validation.hasError("sel_subsidiary")') {{ validation.firstError('sel_subsidiary') }}
-                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container(v-if="sel_subsidiary === ''")
+                                            .col-xs-12.col-sm-2.col-md-2.col-lg-2.icon-container
                                                 ul.ul-action
-                                                    li
+                                                    li(v-if="sel_subsidiary === ''")
                                                         a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#proj_sel_subs')
                                                             i.ti-plus
+                                                    li(v-if="sel_subsidiary !== ''")
+                                                        a.btn.btn-nobackground(href='#', data-toggle='modal', data-target='#add_subsidiary')
+                                                            span(style='color:#545454;margin-right:5px;') Edit
+                                                            i.ti-pencil
                             .row(v-if='dataLoad5')
                                 .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                     .text-center
@@ -169,6 +181,6 @@
         pro-sel-control-modal
         pro-sel-sub-control-modal
         pro-sel-subs-modal
-        add-control-modal
-        add-sub-control-modal
-        add-subsidiary-modal
+        add-control-modal(v-bind:sel_control='controlData[sel_control]')
+        add-sub-control-modal(v-bind:sel_sub_control='subControlData[sel_sub_control]')
+        add-subsidiary-modal(v-bind:sel_subsidiary='subsData[sel_subsidiary]')

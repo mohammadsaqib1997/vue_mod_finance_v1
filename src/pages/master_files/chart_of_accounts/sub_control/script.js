@@ -114,7 +114,9 @@ export default {
                         keys.forEach(function (key, ind, arr) {
                             let item = regContData[key];
                             self.controlsRef.child(item.key).once('value').then(function (conSnap) {
-                                self.controlData[item.key] = conSnap.val();
+                                let contItem = conSnap.val();
+                                contItem['key'] = item.key;
+                                self.controlData[item.key] = contItem;
                                 if(ind === arr.length-1){
                                     self.controlData = func.sortObj(self.controlData, false);
                                     self.dataLoad2 = false;
@@ -147,7 +149,9 @@ export default {
                             keys.forEach(function (row, ind, arr) {
                                 let item = data[row];
                                 self.subControlsRef.child(item.key).once('value').then(function (subConSnap) {
-                                    self.subControlData[item.key] = subConSnap.val();
+                                    let subContItem = subConSnap.val();
+                                    subContItem['key'] = subConSnap.key;
+                                    self.subControlData[item.key] = subContItem;
                                     if (ind === arr.length-1) {
                                         self.subControlData = func.sortObj(self.subControlData, false);
                                         self.dataLoad3 = false;
