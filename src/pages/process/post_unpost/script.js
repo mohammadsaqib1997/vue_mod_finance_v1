@@ -106,6 +106,9 @@ export default {
             curPage: 1,
             start: 0,
 
+            selectRows: [],
+            selectAll: false,
+
             //references
             projectsRef: null,
             masterDetailsRef: null,
@@ -125,6 +128,21 @@ export default {
         curPage: function (val) {
             this.start = (val * this.maxRows) - (this.maxRows - 1);
             this.changePage();
+        },
+        selectAll: function (val) {
+            let self = this;
+            if(val){
+                if(self.selectRows.length < Object.keys(self.pagData).length){
+                    self.selectRows = Object.keys(self.pagData);
+                }
+            }else{
+                if(self.selectRows.length === Object.keys(self.pagData).length){
+                    self.selectRows = [];
+                }
+            }
+        },
+        selectRows: function (val) {
+            this.selectAll = val.length === Object.keys(this.pagData).length;
         }
     },
     methods: {
@@ -174,6 +192,28 @@ export default {
                         console.log(err);
                     }
                     self.vouchersData[key]['posted_status'] = "No";
+                });
+            }
+        },
+        activeAll: function () {
+            let self = this;
+            if(self.selectRows.length > 0){
+                self.selectRows.forEach(function (key, ind, arr) {
+                    self.active(key);
+                    if(ind === arr.length-1){
+                        self.selectRows = [];
+                    }
+                });
+            }
+        },
+        deactiveAll: function () {
+            let self = this;
+            if(self.selectRows.length > 0){
+                self.selectRows.forEach(function (key, ind, arr) {
+                    self.deactive(key);
+                    if(ind === arr.length-1){
+                        self.selectRows = [];
+                    }
                 });
             }
         },

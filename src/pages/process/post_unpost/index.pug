@@ -17,7 +17,12 @@
                         h4.panel-title.pull-left.padding-15 Post/Un Post
                     .panel-body
                         .row
-                            .col-lg-3.col-md-offset-9
+                            .col-md-3(v-if="selectRows.length > 0")
+                                .form-group
+                                    .btn-group
+                                        button.btn.btn-sm.btn-success(v-on:click='activeAll') Post
+                                        button.btn.btn-sm.btn-danger(v-on:click='deactiveAll') UnPost
+                            .col-md-3.pull-right
                                 .form-group
                                     input.form-control(placeholder='Search...' v-model='search_txt')
                         div.text-center(v-if='dataLoad1')
@@ -28,6 +33,8 @@
                                     table#search_table.table.table-striped.table-hover
                                         thead
                                             tr
+                                                th
+                                                    input(type='checkbox' v-model='selectAll')
                                                 th Voucher ID
                                                 th Voucher Type
                                                 th Reference
@@ -36,6 +43,8 @@
                                                 th Post/Unpost
                                         tbody
                                             tr(v-for='(row, key, ind) in pagData')
+                                                td
+                                                    input(type='checkbox' v-bind:value='key' v-model='selectRows')
                                                 td {{ row.id }}
                                                 td {{ row.gen_type }}
                                                 td {{ row.ref_gen }}
