@@ -44,14 +44,12 @@
                                         i.fa.fa-spinner.fa-spin
                         .row.margin-bottom-10
                             .col-md-12
-                                .form-group
-                                    label Debit
-                                    input.form-control(type='text', v-model='debit')
+                                label Debit
+                                input.form-control(type='text', v-model='debit')
                         .row.margin-bottom-10
                             .col-md-12
-                                .form-group
-                                    label Credit
-                                    input.form-control(type='text', v-model='credit')
+                                label Credit
+                                input.form-control(type='text', v-model='credit')
                     button.btn.btn-primary(type='submit' v-if="!inProcess")
                         | Add
                     button.btn.btn-primary.btn-o.pull-right(type='button', data-dismiss='modal')

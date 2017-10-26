@@ -57,31 +57,29 @@
                                 .text-center(v-if='dataLoad5')
                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                 template(v-else)
-                                  label Contact Name
-                                    select.form-control(v-model='party_id')
-                                        option(value='') Select Vendor
-                                        option(v-for='(row, key, ind) in partyData', v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
-                                    p.text-danger.text-right(v-if='validation.hasError("party_id")') {{ validation.firstError('party_id') }}
+                                    label Contact Name
+                                        select.form-control(v-model='party_id')
+                                            option(value='') Select Vendor
+                                            option(v-for='(row, key, ind) in partyData', v-bind:value='key') {{ row.contact_name }} | {{ row.agent_name }}
+                                        p.text-danger.text-right(v-if='validation.hasError("party_id")') {{ validation.firstError('party_id') }}
                         .row.margin-bottom-10
                             .col-md-12
                                 .text-center(v-if='dataLoad6')
                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
                                 template(v-else)
-                                   label Bill Type
-                                    select.form-control(v-model='bill_type')
-                                        option(value='') Select Bill Type
-                                        option(v-for='(row, key, ind) in billTypesData', v-bind:value='key') {{ row.name }}
-                                    p.text-danger.text-right(v-if='validation.hasError("bill_type")') {{ validation.firstError('bill_type') }}
+                                    label Bill Type
+                                        select.form-control(v-model='bill_type')
+                                            option(value='') Select Bill Type
+                                            option(v-for='(row, key, ind) in billTypesData', v-bind:value='key') {{ row.name }}
+                                        p.text-danger.text-right(v-if='validation.hasError("bill_type")') {{ validation.firstError('bill_type') }}
                         .row.margin-bottom-10
                             .col-md-12
-                                .form-group
-                                    label Debit
-                                    input.form-control(type='text', v-model='debit')
+                                label Debit
+                                input.form-control(type='text', v-model='debit')
                         .row.margin-bottom-10
                             .col-md-12
-                                .form-group
-                                    label Credit
-                                    input.form-control(type='text', v-model='credit')
+                                label Credit
+                                input.form-control(type='text', v-model='credit')
                     button.btn.btn-primary(type='submit' v-if="!inProcess")
                         | Add
                     button.btn.btn-primary.btn-o.pull-right(type='button', data-dismiss='modal')
