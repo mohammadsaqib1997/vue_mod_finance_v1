@@ -28,10 +28,10 @@
                                                             button.btn.btn-red.btn-md.full-width.pull-right(v-if='!saveSimCalProcess' type='submit' style="text-transform: uppercase;font-weight: 600;border: none;padding: 20px 10px;") Submit
                                                             button.btn.btn-red.btn-md.full-width.pull-right(v-else type='button' style="text-transform: uppercase;font-weight: 600;border: none;padding: 20px 10px;" disabled='disabled')
                                                                 i.fa.fa-refresh.fa-spin
-                                                        .col-md-12.padding-none
-                                                            p.alert.alert-danger(v-if='validation.hasError("saveSimCalName")') {{ validation.firstError('saveSimCalName') }}
-                                                            p.alert.alert-danger(v-if='saveSimCalErr !== ""') {{ saveSimCalErr }}
-                                                            p.alert.alert-success(v-if='saveSimCalMsg !== ""') {{ saveSimCalMsg }}
+                                                        .col-md-12.padding-right-0
+                                                            p.alert.alert-danger(style="text-align:left;",v-if='validation.hasError("saveSimCalName")') {{ validation.firstError('saveSimCalName') }}
+                                                            p.alert.alert-danger(style="text-align:left;",v-if='saveSimCalErr !== ""') {{ saveSimCalErr }}
+                                                            p.alert.alert-success(style="text-align:left;",v-if='saveSimCalMsg !== ""') {{ saveSimCalMsg }}
                                             #calculatortab1
                                                 .recent-calcu
                                                     .row
@@ -77,10 +77,10 @@
                                                             button.btn.btn-red.btn-md.full-width.pull-right(v-if='!saveComCalProcess' type='submit' style="text-transform: uppercase;font-weight: 600;border: none;padding: 20px 10px;") Submit
                                                             button.btn.btn-red.btn-md.full-width.pull-right(v-else type='button' style="text-transform: uppercase;font-weight: 600;border: none;padding: 20px 10px;" disabled='disabled')
                                                                 i.fa.fa-refresh.fa-spin
-                                                        .col-md-12.padding-none
-                                                            p.alert.alert-danger(v-if='validation.hasError("saveComCalName")') {{ validation.firstError('saveComCalName') }}
-                                                            p.alert.alert-danger(v-if='saveComCalErr !== ""') {{ saveComCalErr }}
-                                                            p.alert.alert-success(v-if='saveComCalMsg !== ""') {{ saveComCalMsg }}
+                                                        .col-md-12.padding-right-0
+                                                            p.alert.alert-danger(style="text-align:left;",v-if='validation.hasError("saveComCalName")') {{ validation.firstError('saveComCalName') }}
+                                                            p.alert.alert-danger(style="text-align:left;",v-if='saveComCalErr !== ""') {{ saveComCalErr }}
+                                                            p.alert.alert-success(style="text-align:left;",v-if='saveComCalMsg !== ""') {{ saveComCalMsg }}
                                             #calculatortab2
                                                 .recent-calcu
                                                     .row
@@ -102,11 +102,11 @@
                                                                                     .col-md-6.padding-none
                                                                                         p.text-right.text-bold Future Value:
                                                                                         p.text-right {{ item.result.fv }}
-                                                                                    .col-md-6.padding-none
+                                                                                    .col-md-6.padding-left-0(style="padding-right: 2px;")
                                                                                         p.text-right.text-bold Interest Earned:
                                                                                         p.text-right {{ item.result.totInt }}
-                                                                                        a(href="#", class="pull-right" data-toggle="modal" data-target="#calculatorview", v-on:click='send_key(key)' style="margin-bottom: 10px;") View
-                                                                                        a(v-on:click.prevent='deleteCalItem(key)' class="pull-right", style="margin-bottom: 10px;margin-right:10px;") Delete
+                                                                                        a(v-on:click.prevent='deleteCalItem(key)' class="pull-right", style="margin-bottom: 10px;") Delete
+                                                                                        a(href="#", class="pull-right" data-toggle="modal" data-target="#calculatorview", v-on:click='send_key(key)' style="margin-bottom: 10px;margin-right:10px;") View
                                                                     .row.margin-none(v-else)
                                                                         .col-md-6.padding-none
                                                                             h5.text-left No Data Found!

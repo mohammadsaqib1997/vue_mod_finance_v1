@@ -705,6 +705,9 @@
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) and (max-width : 991px) {
+    .calculator-section button.btn.btn-red.btn-md.full-width.pull-right {
+        padding: 8px 10px !important;
+    }
     .navbar .navbar-header .navbar-brand {
         padding: 0 15px;
         display: none;
@@ -765,6 +768,9 @@
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width : 992px)  and (max-width : 1023px){
+    .calculator-section button.btn.btn-red.btn-md.full-width.pull-right {
+        padding: 8px 10px !important;
+    }
  .modal-aside.horizontal .modal-dialog .modal-content button.btn {
         font-size: 11px;
         padding: 5px 10px;
@@ -780,7 +786,7 @@
         max-width: 100%;
     }
     .modal-aside.horizontal .modal-dialog .modal-content,
-    body .panel label{
+    body .panel label,body .panel strong{
         font-size: 11px;
         width:auto;
     }
@@ -936,6 +942,9 @@
 }
 
 @media only screen and (min-width : 1024px)  and (max-width : 1200px){
+    .calculator-section button.btn.btn-red.btn-md.full-width.pull-right {
+        padding: 8px 10px !important;
+    }
 	.row.master_details .detail-Content.form-group {
 		padding: 0px !important;
 	}
@@ -958,7 +967,7 @@
         max-width: 100%;
     }
     .modal-aside.horizontal .modal-dialog .modal-content,
-    body .panel label{
+    body .panel label,body .panel strong{
         font-size: 11px;
         width:auto;
     }
@@ -1107,13 +1116,16 @@
 
 /* Large Devices, Wide Screens */
 @media only screen and (min-width : 1200px) and (max-width : 1280px) {
+    .calculator-section button.btn.btn-red.btn-md.full-width.pull-right {
+        padding: 8px 10px !important;
+    }
     .profile_page .fileinput-new.thumbnail {
         width: 100%;
         min-height: 0;
         max-width: 100%;
     }
-    .modal-aside.horizontal .modal-dialog .modal-content label,
-    body .panel label{
+    .modal-aside.horizontal .modal-dialog .modal-content,
+    body .panel label,body .panel strong{
         font-size: 11px;
         width:auto;
     }

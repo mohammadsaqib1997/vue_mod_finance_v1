@@ -4,7 +4,7 @@
             .modal-header
                 button.close(type='button', data-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') ×
-                h4#myModalLabel.modal-title Add Controls
+                h4#myModalLabel.modal-title {{ (cont_name && cont_name !== "") ? "Edit":"Add" }} Controls
             .modal-body
                 form(v-on:submit.prevent='addControl')
                     .form-group

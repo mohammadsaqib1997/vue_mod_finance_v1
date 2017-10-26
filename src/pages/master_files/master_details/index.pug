@@ -26,7 +26,7 @@
                                             select.form-control(v-else='v-else', v-model='sel_master_det')
                                                 option(value='') Select Master Detail
                                                 option(v-for='(row, key, ind) in masterDetailsData', v-bind:value='key') {{ row.allotee_code }} | {{ row.allotee_name }}
-                                        .col-xs-12.col-sm-12.col-md-4.col-lg-4(v-if='updateV')
+                                        .col-xs-12.col-sm-12.col-md-4.col-lg-4(style="line-height: 60px;",v-if='updateV')
                                             a.btn.btn-success(v-bind:href='"/sheet/payment_plan/"+sel_master_det' target='_blank')
                                                 i.fa.fa-eye
                             .col-xs-12.col-sm-12.col-md-12.col-lg-12

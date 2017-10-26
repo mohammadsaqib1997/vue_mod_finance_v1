@@ -12844,7 +12844,24 @@ div#calculator button.close:hover {
   color: #000;
   border-color: #000 !important;
 }
+body a:hover, body a:focus, body a:active {
+  color: #656565;
+}
+div#calculatorview button.close:hover {
+  color: #000;
+  border-color: #000 !important;
+}
 p.alert.alert-danger {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 0;
+  text-align: right;
+}
+.calculatorButton.pull-left button {
+  margin-right: 5px;
+}
+p.alert.alert-success {
   background: transparent;
   border: none;
   padding: 0;
