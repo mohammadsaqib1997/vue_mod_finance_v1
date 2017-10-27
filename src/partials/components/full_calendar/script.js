@@ -84,7 +84,8 @@ export default {
                                     id: event.key,
                                     title: item.title,
                                     start: item.start_time,
-                                    end: item.end_time
+                                    end: item.end_time,
+                                    className: self.classSetBedge[item.badge_type]
                                 }, true);
                             });
                         }
@@ -101,7 +102,8 @@ export default {
                             id: snap.key,
                             title: item.title,
                             start: item.start_time,
-                            end: item.end_time
+                            end: item.end_time,
+                            className: self.classSetBedge[item.badge_type]
                         }, true);
                     });
                 });
@@ -119,7 +121,12 @@ export default {
             badge_type: 'Meeting',
             calendarEventsRef: null,
             data: {},
-            checkSaveEvent: false
+            checkSaveEvent: false,
+            classSetBedge: {
+                'Meeting': 'meetingBadge',
+                'Reminder': 'reminderBadge',
+                'Event': 'eventBadge'
+            }
         }
     },
     validators: {

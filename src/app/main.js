@@ -203,6 +203,7 @@ new Vue({
                 email: email,
                 password: password,
                 lock: false,
+                lastRoute: "/"
             };
             let encrypted = cryptoJSON.encrypt(userObj, self.secKey, { keys: [] });
             self.$ls.set('loginUser', encrypted);

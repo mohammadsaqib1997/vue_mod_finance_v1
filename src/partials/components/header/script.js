@@ -35,14 +35,16 @@ export default {
 
                         let grabDueDatesUnix = {};
                         let dueDate = booking_date.clone().set('date', 1);
+                        let instCount = 0;
                         for (let i = 0; i < item.payment_installment; i++) {
+                            instCount++;
                             dueDate.add(1, "M");
                             if (cur_date.unix() >= dueDate.clone().add(1, 'M').subtract(7, 'days').unix() && cur_date.unix() <= dueDate.clone().add(1, 'M').unix()) {
                                 grabDueDatesUnix = {
                                     start: dueDate,
                                     end: dueDate.clone().add(1, "M").subtract(1, 'days')
                                 };
-                                self.notiData[key] = "Receive Payment " + item.allotee_name + " -- " + item.allotee_code;
+                                self.notiData[key] = "Installment Dues "+instCount+" -- " + item.allotee_name + " -- " + item.allotee_code;
                                 break;
                             }
                         }
@@ -172,6 +174,7 @@ export default {
                 let encObj = self.$ls.get('loginUser');
                 let userObj = cryptoJSON.decrypt(encObj, self.$root.secKey, {keys: []});
                 userObj['lock'] = true;
+                userObj['lastRoute'] = self.$route.path;
                 let encrypted = cryptoJSON.encrypt(userObj, self.$root.secKey, {keys: []});
                 self.$ls.set('loginUser', encrypted);
                 self.$router.push('/lock_account');

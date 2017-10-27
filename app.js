@@ -32,6 +32,7 @@ var tbsSubControlDownload = require('./routes/tbal_sheet/sub_control');
 var tbsSubsidiaryDownload = require('./routes/tbal_sheet/subsidiary');
 var detailLedgerDownload = require('./routes/detail_sheet/subsidiary');
 var paymentPlanDownload = require('./routes/payment_plan');
+var vendorEntriesDownload = require('./routes/vendor_entries');
 
 var app = express();
 
@@ -102,6 +103,7 @@ app.use('/download', tbsSubControlDownload);
 app.use('/download', tbsSubsidiaryDownload);
 app.use('/download', detailLedgerDownload);
 app.use('/download', paymentPlanDownload);
+app.use('/download', vendorEntriesDownload);
 
 app.use('/api', api);
 app.use('/gapi', gapi);

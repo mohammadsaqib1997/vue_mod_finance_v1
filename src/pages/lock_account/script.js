@@ -41,7 +41,7 @@ export default {
                         userObj['lock'] = false;
                         let encrypted = cryptoJSON.encrypt(userObj, self.$root.secKey, { keys: [] });
                         self.$ls.set('loginUser', encrypted);
-                        self.$router.push('/');
+                        self.$router.push(userObj.lastRoute);
                     }else{
                         self.mainErr = "Password not match!";
                     }

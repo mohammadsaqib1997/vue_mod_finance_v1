@@ -55,6 +55,7 @@ import subsidiaryTBSheet from '../pages/sheets/tbal_subsidiary/tbal_subsidiary.v
 import detailLedgerSheet from '../pages/sheets/detail_ledger/detail_ledger.vue'
 
 import paymentPlanSheet from '../pages/sheets/payment_plan/payment_plan.vue'
+import partyInformationEntriesSheet from '../pages/sheets/party_information_entries/party_information_entries.vue'
 
 const routes = [
     {
@@ -225,6 +226,10 @@ const routes = [
                     {
                         path: 'payment_plan/:mdId',
                         component: paymentPlanSheet,
+                    },
+                    {
+                        path: 'vendor_entries/:piId',
+                        component: partyInformationEntriesSheet,
                     }
                 ]
             },
