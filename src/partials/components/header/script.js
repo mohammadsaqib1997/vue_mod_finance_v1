@@ -34,7 +34,7 @@ export default {
                         let booking_date = moment(item.booking_date);
 
                         let grabDueDatesUnix = {};
-                        let dueDate = booking_date.clone().set('date', 1);
+                        let dueDate = booking_date.clone().add(1, "M");
                         let instCount = 0;
                         for (let i = 0; i < item.payment_installment; i++) {
                             instCount++;
@@ -63,7 +63,7 @@ export default {
                                                 delete self.notiData[key];
                                             }
                                         }
-                                        return true;
+                                        return false;
                                     }
                                 });
                             }
