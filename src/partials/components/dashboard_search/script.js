@@ -1,4 +1,4 @@
-import func from '../../../../custom_libs/func'
+import _ from 'lodash'
 
 export default {
     created: function () {
@@ -7,10 +7,11 @@ export default {
     data: function(){
         return {
             query: "",
-            src: "/gapi",
-            queryParamName: 'input',
             items: [],
             current: -1,
+            urlProc_pi: null,
+            urlProc_md: null,
+            urlProc_v: null,
 
             // reference
             partyInformationRef: null,
@@ -48,48 +49,66 @@ export default {
             let self = this;
             let grabData = [];
             self.current = -1;
-            self.$http.get('/api/search_dash?index=party_info&type=id&field=agent_name,id,agent_code&search='+val).then(function (res) {
-                let data = res.data;
-                if(data.length > 0){
-                    data.forEach(function (obj) {
-                        let sel_source = obj._source;
-                        grabData.push({
-                            text: sel_source.id+" | "+sel_source.agent_code+" | "+sel_source.agent_name,
-                            url: "/search/vendor_detail/"+obj._id
+
+            if(self.urlProc_pi !== null){
+                clearTimeout(self.urlProc_pi);
+            }
+            self.urlProc_pi = setTimeout(function () {
+                self.$http.get('/api/search_pi?search='+val).then(function (res) {
+                    self.urlProc_pi = null;
+                    let data = res.data.data;
+                    if(data.length > 0){
+                        data.forEach(function (obj) {
+                            grabData.push({
+                                text: obj.id+" | "+obj.agent_code+" | "+obj.agent_name,
+                                url: "/search/vendor_detail/"+obj._id
+                            });
                         });
-                    });
-                }
-                self.searchLoad(grabData);
-            });
-            self.$http.get('/api/search_dash?index=master_detail&type=id&field=allotee_name,id,allotee_code&search='+val).then(function (res) {
-                let data = res.data;
-                if(data.length > 0){
-                    data.forEach(function (obj) {
-                        let sel_source = obj._source;
-                        grabData.push({
-                            text: sel_source.id+" | "+sel_source.allotee_code+" | "+sel_source.allotee_name,
-                            url: "/search/master_detail/"+obj._id
+                    }
+                    self.searchLoad(grabData);
+                });
+            }, 500);
+
+            if(self.urlProc_md !== null){
+                clearTimeout(self.urlProc_md);
+            }
+            self.urlProc_md = setTimeout(function () {
+                self.$http.get('/api/search_md?search='+val).then(function (res) {
+                    self.urlProc_md = null;
+                    let data = res.data.data;
+                    if(data.length > 0){
+                        data.forEach(function (obj) {
+                            grabData.push({
+                                text: obj.id+" | "+obj.allotee_code+" | "+obj.allotee_name,
+                                url: "/search/master_detail/"+obj._id
+                            });
                         });
-                    });
-                }
-                self.searchLoad(grabData);
-            });
-            self.$http.get('/api/search_dash?index=voucher&type=id&field=id,v_remarks&search='+val).then(function (res) {
-                let data = res.data;
-                if(data.length > 0){
-                    data.forEach(function (obj) {
-                        let sel_source = obj._source;
-                        grabData.push({
-                            text: sel_source.id+" | "+sel_source.v_remarks,
-                            url: "/search/journal_voucher/"+obj._id
+                    }
+                    self.searchLoad(grabData);
+                });
+            }, 500);
+
+            if(self.urlProc_v !== null){
+                clearTimeout(self.urlProc_v);
+            }
+            self.urlProc_v = setTimeout(function () {
+                self.$http.get('/api/search_v?search='+val).then(function (res) {
+                    self.urlProc_v = null;
+                    let data = res.data.data;
+                    if(data.length > 0){
+                        data.forEach(function (obj) {
+                            grabData.push({
+                                text: obj.id+" | "+obj.v_remarks,
+                                url: "/search/journal_voucher/"+obj._id
+                            });
                         });
-                    });
-                }
-                self.searchLoad(grabData);
-            });
+                    }
+                    self.searchLoad(grabData);
+                });
+            }, 500);
         },
         searchLoad: function (data) {
-            this.items = data;
+            this.items = _.take(_.shuffle(data), 5);
             // console.log(this.searchData);
         },
         up: function up() {

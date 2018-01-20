@@ -779,7 +779,7 @@ export default {
         changeCode: function (e, ind) {
             if (e !== "") {
                 this.rows[ind].code = e.code;
-                this.rows[ind].code_name = e.sub_name;
+                this.rows[ind].code_name = e.name;
             }
         },
         changeSubName: function (e, ind) {

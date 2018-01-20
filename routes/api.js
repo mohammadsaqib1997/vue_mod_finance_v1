@@ -4,16 +4,16 @@ var config = require("../config/private.json");
 var cors = require('cors');
 var bcrypt = require("bcrypt-nodejs");
 var saltRounds = 10;
+var _ = require('lodash');
 
 var admin_firebase = require("firebase-admin");
 var db = admin_firebase.database();
 var usersRef = db.ref('users');
+var subsidiary = db.ref('subsidiary');
 var regSubsRef = db.ref('reg_subsidiary');
-
-var elasticSearch = require('elasticsearch');
-var client = elasticSearch.Client({
-    host: 'localhost:9200'
-});
+var partyInformation = db.ref('party_information');
+var masterDetails = db.ref('master_details');
+var vouchers = db.ref('vouchers');
 
 var nodemailer = require("nodemailer");
 var transporter = nodemailer.createTransport(config.smtp);
@@ -55,55 +55,42 @@ router.post('/check_user', cors(), function (req, res, next) {
 router.get('/get_codes', function (req, res, next) {
     let project = req.query.project;
     let input = req.query.input;
-    client.search({
-        index: 'reg_subs',
-        type: 'id',
-        body: {
-            _source: input + "*",
-            query: {
-                match: {
-                    _id: project
-                }
-            }
-        }
-    }, function (err, response) {
-        if (err) {
-            res.json(null);
-        } else {
-            if (response.hits.hits.length > 0) {
-                let hits = response.hits.hits[0];
-                let source = hits._source;
-                let codes = Object.keys(source);
-                let process_item = 0;
 
-                if (codes.length > 0) {
-                    codes.forEach(function (code) {
-                        let row = source[code];
-                        client.search({
-                            index: 'subs',
-                            type: 'id',
-                            body: {
-                                query: {
-                                    match: {
-                                        _id: row.key
-                                    }
-                                }
-                            }
-                        }, function (err, response2) {
-                            response.hits.hits[0]._source[code].sub_name = response2.hits.hits[0]._source.name;
-                            process_item++;
-                            if (process_item === codes.length) {
-                                res.json(response);
-                            }
-                        });
+    regSubsRef.child(project).once('value', function (snap) {
+        if(snap.val() !== null){
+            let grabDataArr = [];
+            snap.forEach(function (childSnap) {
+                let item = childSnap.val();
+                item['_id'] = childSnap.key;
+                grabDataArr.push(item);
+            });
 
-                    });
+            let phase1 = _.filter(grabDataArr, function (o) {
+                if(_.includes(o._id.toLowerCase(), input.toLowerCase())){
+                    return true;
                 } else {
-                    res.json(null);
+                    return false;
                 }
-            } else {
-                res.json(null);
+            });
+
+            let phase2 = [];
+            if(phase1.length > 0){
+                phase1.forEach(function (item, ind, arr) {
+                    subsidiary.child(item.key).once('value', function (subs_snap) {
+                        if(subs_snap.val() !== null){
+                            phase2.push({name: subs_snap.val().name, code: item._id});
+                        }
+
+                        if(ind === arr.length-1){
+                            res.json({data: _.take(phase2, 5)});
+                        }
+                    });
+                });
+            }else{
+                res.json({data: phase2});
             }
+        }else{
+            res.json({data: []});
         }
     });
 });
@@ -111,70 +98,43 @@ router.get('/get_codes', function (req, res, next) {
 router.get('/get_subs_name', function (req, res, next) {
     let project = req.query.project;
     let input = req.query.input;
-    client.search({
-        index: 'subs',
-        type: 'id',
-        body: {
-            size: 15,
-            query: {
-                bool: {
-                    must: {
-                        regexp: {
-                            name: input + ".*"
-                        }
-                    }
-                }
-            },
-            _source: ['name']
-        }
-    }, function (err, response) {
-        if (err) {
-            res.json(null);
-        } else {
-            if (response.hits.hits.length > 0) {
-                let hits1 = response.hits.hits;
-                let grab_ids = [];
-                hits1.forEach(function (hit, ind, arr) {
-                    grab_ids.push(hit._id);
-                    if (ind === arr.length - 1) {
-                        client.search({
-                            index: 'reg_subs',
-                            type: 'id',
-                            body: {
-                                query: {
-                                    match: {
-                                        _id: project
-                                    }
-                                },
-                            }
-                        }, function (err, response2) {
-                            let hits = response2.hits.hits;
-                            if (hits.length > 0) {
-                                let source = hits[0]._source;
-                                let keys = Object.keys(source);
-                                let grabFields = [];
-                                keys.forEach(function (key, ind, arr) {
-                                    let item = source[key];
-                                    let id_ind = grab_ids.indexOf(item.key);
-                                    if (id_ind !== -1) {
-                                        let sel_hit = hits1[id_ind];
-                                        sel_hit._source['code'] = key;
-                                        grabFields.push(sel_hit);
-                                    }
 
-                                    if (ind === arr.length - 1) {
-                                        res.json(grabFields);
-                                    }
-                                });
-                            } else {
-                                res.json(null);
-                            }
-                        });
-                    }
+    subsidiary.once('value', function (snap) {
+        if(snap.val() !== null){
+            let grabDataArr = [];
+            snap.forEach(function (childSnap) {
+                let item = childSnap.val();
+                item['_id'] = childSnap.key;
+                grabDataArr.push(item);
+            });
+            let phase1 = _.filter(grabDataArr, function (o) {
+                if(_.includes(o.name.toLowerCase(), input.toLowerCase())){
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+            let phase2 = [];
+            if(phase1.length > 0){
+                phase1.forEach(function (item, ind, arr) {
+                    regSubsRef.child(project).orderByChild('key').equalTo(item._id).once('value', function (snap) {
+                        if(snap.val() !== null){
+                            phase2.push({name: item.name, code: Object.keys(snap.val())[0]});
+                        }
+
+
+                        if(ind === arr.length-1){
+                            res.json({data: _.take(phase2, 5)});
+                        }
+                    });
                 });
-            } else {
-                res.json(null);
+            }else{
+                res.json({data: phase2});
             }
+
+        } else {
+            res.json({data: []});
         }
     });
 });
@@ -264,45 +224,85 @@ router.post("/send_create_user_email", function (req, res, next) {
     });
 });
 
-router.get("/search_dash", function (req, res, next) {
+router.get("/search_pi", function (req, res, next) {
     let data = req.query;
-    let search_param = {
-        index: data.index,
-        type: data.type,
-        body: {
-            size: 5,
-            query: {
-                // bool: {
-                //     must: []
-                // },
-                /*match_phrase_prefix: {
-                    query: data.search,
-                    fields: ['agent_name'],
-                    lenient: true
-                }*/
-                multi_match : {
-                    fields : [],
-                    query : data.search,
-                    type : "phrase_prefix",
-                    lenient: true
+    partyInformation.once('value', function (snap) {
+        if(snap.val() !== null){
+            let grabDataArr = [];
+            snap.forEach(function (childSnap) {
+                let item = childSnap.val();
+                item['_id'] = childSnap.key;
+                grabDataArr.push(item);
+            });
+            let reg = _.filter(grabDataArr, function (o) {
+                if(_.includes(o.agent_name.toLowerCase(), data.search.toLowerCase())){
+                    return true;
+                }else if (_.includes(o.id.toString(), data.search.toString())) {
+                    return true;
+                }else if (_.includes(o.agent_code.toString(), data.search.toString())) {
+                    return true;
+                } else {
+                    return false;
                 }
-            }
+            });
+            res.json({data: _.take(reg, 5)});
+        }else{
+            res.json({data: []});
         }
-    };
+    });
+});
 
-    if(data.field.indexOf(',') > -1){
-        data.field.split(',').forEach(function (field) {
-            search_param['body']['query']['multi_match']['fields'].push(field);
-        });
-    }else{
-        search_param['body']['query']['multi_match']['fields'].push(data.field);
-    }
-    //[0]['match_phrase_prefix'][data.field] = data.search;
-    client.search(search_param, function (err, result) {
-        if (err) {
-            return res.json(JSON.parse(err.response));
+router.get("/search_md", function (req, res, next) {
+    let data = req.query;
+    masterDetails.once('value', function (snap) {
+        if(snap.val() !== null){
+            let grabDataArr = [];
+            snap.forEach(function (childSnap) {
+                let item = childSnap.val();
+                item['_id'] = childSnap.key;
+                grabDataArr.push(item);
+            });
+            let reg = _.filter(grabDataArr, function (o) {
+                if(_.includes(o.allotee_name.toLowerCase(), data.search.toLowerCase())){
+                    return true;
+                }else if (_.includes(o.id.toString(), data.search.toString())) {
+                    return true;
+                }else if (_.includes(o.allotee_code.toString(), data.search.toString())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            res.json({data: _.take(reg, 5)});
+        }else{
+            res.json({data: []});
         }
-        return res.json(result.hits.hits);
+    });
+});
+
+router.get("/search_v", function (req, res, next) {
+    let data = req.query;
+    vouchers.once('value', function (snap) {
+        if(snap.val() !== null){
+            let grabDataArr = [];
+            snap.forEach(function (childSnap) {
+                let item = childSnap.val();
+                item['_id'] = childSnap.key;
+                grabDataArr.push(item);
+            });
+            let reg = _.filter(grabDataArr, function (o) {
+                if(_.includes(o.v_remarks.toLowerCase(), data.search.toLowerCase())){
+                    return true;
+                }else if (_.includes(o.id.toString(), data.search.toString())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            res.json({data: _.take(reg, 5)});
+        }else{
+            res.json({data: []});
+        }
     });
 });
 

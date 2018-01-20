@@ -9,9 +9,8 @@ div
         v-on:keydown.enter='hit'
         v-on:keydown.esc='reset'
         v-on:blur='blur_reset'
-        v-on:input='update'
         )
-    ul(v-show='hasItems')
+    ul(v-show='items && items.length > 0 && hasFocus')
         li(v-for='(item, $item) in items' v-bind:class='activeClass($item)' v-on:mousedown='hit' v-on:mousemove='setActive($item)')
             span.name(v-text='item.code')
             //span.des(v-text='item.description')

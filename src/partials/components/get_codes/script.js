@@ -1,75 +1,63 @@
-import VueTypeahead from 'vue-typeahead'
-import func from '../../../../custom_libs/func'
-
 export default {
-    extends: VueTypeahead,
-
-    created: function () {
-        let self = this;
-
-        self.src = "/api/get_codes?project="+self.project;
-        self.query = self.selected;
-    },
     watch: {
-        selected: function (val) {
-            this.query = val;
+        query: function (val) {
+            if(val !== ""){
+                if(!this.bot) {
+                    this.loadData(val);
+                }
+            }else{
+                this.searchLoad([]);
+            }
+            this.bot = false;
         },
         project: function (val) {
-            this.src = "/api/get_codes?project="+val;
-            this.$emit('name_change', {code: "", sub_name: ""});
-            this.selected = "";
-            this.reset_items();
+            this.$emit('name_change', {code: "", name: ""});
+            this.reset();
         },
         code: function (val) {
+            this.bot = true;
             this.query = this.selected = val;
         },
     },
     props: ['project', 'code'],
     data: function(){
         return {
-            src: "/api/get_codes",
-            queryParamName: 'input',
-            selected: this.code
+            hasFocus: false,
+            bot: false,
+            selected: this.code,
+            query: this.code,
+            items: [],
+            current: -1,
+            urlProc_subs: null
         }
     },
     methods: {
         blur_reset: function () {
+            this.bot = true;
+            this.hasFocus = false;
             if(this.query !== ""){
+                this.query = this.selected;
                 this.reset_items();
             }else{
-                this.$emit('name_change', {code: "", sub_name: ""});
+                this.$emit('name_change', {code: "", name: ""});
                 this.query = this.selected = "";
             }
         },
         reset_items: function () {
-            this.query = this.selected;
+            this.current = -1;
             this.items = [];
         },
         onHit (item) {
             if(item){
                 this.$emit('name_change', item);
-                this.selected = item.code;
+                this.bot = true;
+                this.query = this.selected = item.code;
                 this.reset_items();
             }
         },
-        prepareResponseData (data) {
-            let grabData = [];
-            if(data !== null){
-                let hits = data.hits.hits;
-                if(hits.length > 0){
-                    let source = hits[0]._source;
-                    let codes = Object.keys(source);
-                    codes.forEach(function (code) {
-                        let item = source[code];
-                        item['code'] = code;
-                        grabData.push(item);
-                    });
-                }
-            }
-            return grabData;
-        },
         checkPro: function (e) {
             let self = this;
+            self.hasFocus = true;
             if(self.project === ""){
                 e.preventDefault();
                 alert("Please Select Project!");
@@ -79,6 +67,55 @@ export default {
                     self.$emit("list_subs_pro_id");
                 }
             }
-        }
+        },
+        loadData: function (input) {
+            let self = this;
+            if(self.urlProc_subs !== null){
+                clearTimeout(self.urlProc_subs);
+            }
+            self.urlProc_subs = setTimeout(function () {
+                self.$http.get('/api/get_codes?project='+self.project+'&input='+input).then(function (res) {
+                    self.urlProc_subs = null;
+                    self.searchLoad(res.data.data);
+                });
+            }, 500);
+        },
+        searchLoad: function (data) {
+            this.items = data;
+        },
+        up: function up() {
+            if (this.current > 0) {
+                this.current--;
+            } else if (this.current === -1) {
+                this.current = this.items.length - 1;
+            } else {
+                this.current = -1;
+            }
+        },
+        down: function down() {
+            if (this.current < this.items.length - 1) {
+                this.current++;
+            } else {
+                this.current = -1;
+            }
+        },
+        hit: function () {
+            if (this.current !== -1) {
+                this.onHit(this.items[this.current]);
+            }
+        },
+        reset: function () {
+            this.current = -1;
+            this.items = [];
+            this.query = this.selected = '';
+        },
+        activeClass: function activeClass(index) {
+            return {
+                active: this.current === index
+            };
+        },
+        setActive: function setActive(index) {
+            this.current = index;
+        },
     }
 }

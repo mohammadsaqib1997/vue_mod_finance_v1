@@ -68,7 +68,7 @@ export default {
         selSub: function (key) {
             let self = this;
             $("#proSubsList").modal("hide");
-            self.$emit("get_subs_item", {code: key, sub_name: self.loadData[key].name});
+            self.$emit("get_subs_item", {code: key, name: self.loadData[key].name});
         },
         search_values: function (self, val) {
             if(val !== ""){
