@@ -150,7 +150,7 @@ export default {
             return Validator.value(value).lengthBetween(20, 36);
         },
         bill_type: function (value) {
-            return Validator.value(value).required().lengthBetween(1, 11, "Invalid Bill Type!");
+            return Validator.value(value).lengthBetween(1, 11, "Invalid Bill Type!");
         },
     },
     methods: {
