@@ -535,6 +535,13 @@ export default {
         }
     },
     watch: {
+        dataLoad5: function (val) {
+            setTimeout(function () {
+                $('.selectpicker').selectpicker({
+                    liveSearch: true
+                });
+            }, 500);
+        },
         sel_project: function (val) {
             let self = this;
             if(val !== ""){

@@ -23,7 +23,7 @@
                                         .col-xs-12.col-sm-12.col-md-4.col-lg-4
                                             div.text-center(v-if='dataLoad2')
                                                 i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                            select.form-control(v-else v-model='sel_voucher')
+                                            select.form-control.selectpicker(v-else v-model='sel_voucher')
                                                 option(value='') Select Voucher
                                                 option(v-for='(row, key, ind) in vouchersData' v-bind:value='key') {{ row.id }} | {{ row.v_remarks }}
 

@@ -511,6 +511,13 @@ export default {
         }
     },
     watch: {
+        dataLoad2: function (val) {
+            setTimeout(function () {
+                $('.selectpicker').selectpicker({
+                    liveSearch: true
+                });
+            }, 500);
+        },
         sel_ref: function (val) {
             let self = this;
             self.gen_installments = [];
