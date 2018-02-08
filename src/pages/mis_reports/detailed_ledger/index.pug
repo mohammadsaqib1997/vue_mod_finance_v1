@@ -20,7 +20,7 @@
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .text-center(v-if='dataLoad1')
                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                template(v-else='v-else')
+                                template(v-else)
                                     .form-group
                                         label Project
                                         select.form-control(name='sel_project', v-model='sel_project')
@@ -31,13 +31,12 @@
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .text-center(v-if='dataLoad2')
                                     i.fa.fa-refresh.fa-spin.fa-fw.fa-2x
-                                template(v-else='v-else')
-                                    .form-group
-                                        label Subsidiary
-                                        select.form-control(name='sel_subsidiary', v-model='sel_subsidiary')
-                                            option(value='') Select Subsidiary
-                                            option(v-for='(row, key, ind) in regSubsData', v-bind:value='key') {{ row.name }}
-                                        p.text-danger.text-right(v-if='validation.hasError("sel_subsidiary")') {{ validation.firstError('sel_subsidiary') }}
+                                .form-group.main_subs_cont(v-else)
+                                    label Subsidiary
+                                    select.form-control.selectpicker.subs_spicker(name='sel_subsidiary', v-model='sel_subsidiary')
+                                        option(value='') Select Subsidiary
+                                        option(v-for='(row, key, ind) in regSubsData', v-bind:value='key') {{ row.name }}
+                                    p.text-danger.text-right(v-if='validation.hasError("sel_subsidiary")') {{ validation.firstError('sel_subsidiary') }}
                         .row
                             .col-xs-12.col-sm-12.col-md-6.col-lg-6
                                 .form-group

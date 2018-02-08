@@ -213,7 +213,7 @@ export default {
             obj.entData.md_data.forEach(function (md_ent_item) {
                 totAmount += md_ent_item.amount;
                 balance -= md_ent_item.amount;
-                let penalty = (md_ent_item.penalty) ? (md_ent_item.installment*1)/100:0;
+                let penalty = (md_ent_item.penalty) ? ((md_ent_item.applied_penalty) ? (md_ent_item.installment*md_ent_item.applied_penalty)/100 : 0) : 0;
                 totPenalty += penalty;
                 balance += penalty;
                 let remaining = ((md_ent_item.installment + penalty) - md_ent_item.amount);

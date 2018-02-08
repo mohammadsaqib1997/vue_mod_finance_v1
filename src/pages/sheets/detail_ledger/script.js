@@ -48,16 +48,12 @@ export default {
                                     }
                                     process_item++;
                                     if (process_item === keys.length) {
-                                        grabEnt = func.sortObjByVal(grabEnt, "v_date");
-                                        grabEnt = self.bwDatesEntries(bw, grabEnt);
-                                        self.fetchData['data'] = grabEnt.newEnt;
-                                        self.fetchData['reqData'] = {
-                                            code: (item.code) ? item.code : "",
-                                            codeName: (item.code_name) ? item.code_name : "",
-                                            balance: grabEnt.balance,
-                                            extra: self.reArrange(grabEnt.newEnt, grabEnt.balance)
-                                        };
-                                        self.dataLoad1 = false;
+                                        self.completeProc({
+                                            grabEnt,
+                                            params,
+                                            item,
+                                            bw
+                                        });
                                     }
                                 });
                             } else if (item.type === "md") {
@@ -69,16 +65,12 @@ export default {
                                     }
                                     process_item++;
                                     if (process_item === keys.length) {
-                                        grabEnt = func.sortObjByVal(grabEnt, "v_date");
-                                        grabEnt = self.bwDatesEntries(bw, grabEnt);
-                                        self.fetchData['data'] = grabEnt.newEnt;
-                                        self.fetchData['reqData'] = {
-                                            code: (item.code) ? item.code : "",
-                                            codeName: (item.code_name) ? item.code_name : "",
-                                            balance: grabEnt.balance,
-                                            extra: self.reArrange(grabEnt.newEnt, grabEnt.balance)
-                                        };
-                                        self.dataLoad1 = false;
+                                        self.completeProc({
+                                            grabEnt,
+                                            params,
+                                            item,
+                                            bw
+                                        });
                                     }
                                 });
                             }
@@ -131,10 +123,31 @@ export default {
         }
     },
     methods: {
-        bwDatesEntries: function (bwDates, objEnt) {
+        async completeProc (obj) {
+            let grabEnt = func.sortObjByVal(obj.grabEnt, "v_date");
+            grabEnt = await this.bwDatesEntries(obj.bw, grabEnt, obj.params.proId, obj.item.code);
+            this.fetchData['data'] = grabEnt.newEnt;
+            this.fetchData['reqData'] = {
+                code: (obj.item.code) ? obj.item.code : "",
+                codeName: (obj.item.code_name) ? obj.item.code_name : "",
+                balance: grabEnt.balance,
+                extra: this.reArrange(grabEnt.newEnt, grabEnt.balance)
+            };
+            this.dataLoad1 = false;
+        },
+        async bwDatesEntries (bwDates, objEnt, project_id, code) {
             let newGrabEnt = [];
             let balCr = 0;
             let balDr = 0;
+
+            await this.regSubsidiaryRef.child(project_id+'/'+code).once('value', function (snap) {
+                if (snap.val() !== null) {
+                    let data = snap.val();
+                    balCr = data.credit;
+                    balDr = data.debit;
+                }
+            });
+
             objEnt.forEach(function (row) {
                 let sel_row = null;
                 if (row.v_date < bwDates[0]) {

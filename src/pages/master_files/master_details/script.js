@@ -30,6 +30,10 @@ export default {
             self.showPaymentPlan();
         });
 
+        self.$watch("applied_penalty", function (val, oldVal) {
+            self.applied_penalty = func.isNumber(val, 3, 0);
+        });
+
         self.$watch("sel_master_det", function (val, oldVal) {
             self.updateVoucherVal(val);
         });
@@ -161,6 +165,7 @@ export default {
             booking_amount: 0,
             possession_amount: 0,
             payment_installment: 0,
+            applied_penalty: 0,
             payment_plan: "",
 
             rows: [
@@ -633,6 +638,9 @@ export default {
         possession_amount: function (value) {
             return Validator.value(value).required().digit().maxLength(8);
         },
+        applied_penalty: function (value) {
+            return Validator.value(value).digit().between(0, 100);
+        },
         payment_installment: function (value) {
             return Validator.value(value).required().digit().maxLength(2);
         },
@@ -686,6 +694,7 @@ export default {
                                     possession_amount: self.possession_amount,
                                     payment_installment: self.payment_installment,
                                     payment_plan: self.payment_plan,
+                                    applied_penalty: self.applied_penalty,
                                     uid: firebase.auth().currentUser.uid,
                                     createdAt: firebase.database.ServerValue.TIMESTAMP
                                 }, function (err) {
@@ -757,6 +766,7 @@ export default {
                             possession_amount: self.possession_amount,
                             payment_installment: self.payment_installment,
                             payment_plan: self.payment_plan,
+                            applied_penalty: self.applied_penalty,
                             uid: firebase.auth().currentUser.uid,
                             createdAt: firebase.database.ServerValue.TIMESTAMP
                         }, function (err) {
@@ -858,6 +868,7 @@ export default {
                 self.possession_amount = (sel_voucher.possession_amount) ? sel_voucher.possession_amount: 0;
                 self.payment_installment = sel_voucher.payment_installment;
                 self.payment_plan = sel_voucher.payment_plan;
+                self.applied_penalty = (sel_voucher.applied_penalty) ? sel_voucher.applied_penalty: 0;
                 self.updateStatus = sel_voucher.posted_status !== 'Yes';
 
                 self.loadTypesData();
@@ -886,6 +897,7 @@ export default {
             self.possession_amount = 0;
             self.payment_installment = 0;
             self.payment_plan = "";
+            self.applied_penalty = 0;
 
             $(".datepicker.booking_date").val('');
 
